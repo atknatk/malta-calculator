@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import { Inter } from "next/font/google";
+
+import LocalFont from "next/font/local";
+import { ThemeProvider } from "@/components/theme-provider";
+import Background from "./_components/background";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
+const calSans = LocalFont({
+  src: "../../public/fonts/CalSans-SemiBold.ttf",
+  variable: "--font-calsans",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +26,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <html lang="en" suppressHydrationWarning>
+    <head />
+    <body
+        className={`${
+          inter.className
+          // biome-ignore lint/nursery/useSortedClasses: <explanation>
+        } ${calSans.variable}`}
+      >
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <Background>{children}</Background>
+          <Toaster richColors />
+          <TailwindIndicator />
+        </ThemeProvider>
+    </body>
+  </html>
   );
 }
+
