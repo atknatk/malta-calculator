@@ -28,6 +28,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.13",
+    "@tanstack/react-table": "^8.17.3",
     "@tremor/react": "^3.17.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
