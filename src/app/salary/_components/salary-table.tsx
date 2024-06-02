@@ -172,7 +172,6 @@ export function SalaryTable({ data, setData }:
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    //getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -180,7 +179,6 @@ export function SalaryTable({ data, setData }:
     autoResetPageIndex,
     meta: {
       updateData: (rowIndex, columnId, value) => {
-        // Skip page index reset until after next rerender
         skipAutoResetPageIndex()
         setData(old =>
           old.map((row, index) => {
@@ -241,9 +239,12 @@ export function SalaryTable({ data, setData }:
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, index) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead 
+                    key={header.id}
+                    className={`${index === 0 ? 'sticky left-0 bg-white z-10' : ''} ${header.isPlaceholder ? '' : 'top-0 z-10'}`}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -263,8 +264,11 @@ export function SalaryTable({ data, setData }:
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="p-1" key={cell.id}>
+                  {row.getVisibleCells().map((cell, index) => (
+                    <TableCell 
+                    className={`${index === 0 ? 'sticky left-0 bg-white p-1' : 'p-1'}`}
+                    key={cell.id}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
