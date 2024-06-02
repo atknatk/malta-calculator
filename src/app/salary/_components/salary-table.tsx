@@ -31,7 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {  MonthlySalaryOutput } from "@/types/salary-calculator-type"
+import { MonthlySalaryOutput } from "@/types/salary-calculator-type"
 import { formatMoney } from "@/utils/money-format"
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -39,6 +39,46 @@ declare module '@tanstack/react-table' {
   }
 }
 
+// Give our default column cell renderer editing superpowers!
+const salaryDefaultColumn: Partial<ColumnDef<MonthlySalaryOutput>> = {
+
+  accessorKey: "grossWage",
+  header: "Gross Wage",
+  cell: ({ getValue, row: { index }, column: { id }, table }) => {
+
+  },
+}
+
+const EditableCell = ({
+  getValue,
+  row: { index },
+  column: { id },
+  table,
+}: {
+  getValue: any;
+  row: { index: number };
+  column: { id: string };
+  table: any;
+}) => {
+  const initialValue = getValue();
+  const [value, setValue] = React.useState(initialValue)
+  const onBlur = () => {
+    table.options.meta?.updateData(index, id, value)
+  }
+  React.useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+  return (
+    <Input
+      value={value as string}
+      className="w-[5rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+      type="number"
+      step={50}
+      onChange={e => setValue(e.target.value)}
+      onBlur={onBlur}
+    />
+  )
+};
 
 const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryOutput, value: string) => void): ColumnDef<MonthlySalaryOutput>[] => [
   {
@@ -51,26 +91,7 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
   {
     accessorKey: "grossWage",
     header: "Gross Wage",
-    cell: ({ getValue, row: { index }, column: { id }, table }) => {
-      const initialValue = getValue();
-      const [value, setValue] = React.useState(initialValue)
-      const onBlur = () => {
-        table.options.meta?.updateData(index, id, value)
-      }
-      React.useEffect(() => {
-        setValue(initialValue)
-      }, [initialValue])
-      return (
-        <Input
-          value={value as string}
-          className="w-[5rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-          type="number"
-          step={50}
-          onChange={e => setValue(e.target.value)}
-          onBlur={onBlur}
-        />
-      )
-    },
+    cell: EditableCell,
   },
   {
     accessorKey: "basicSalary",
@@ -158,7 +179,7 @@ export function SalaryTable({ data, setData }:
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const handleInputChange = (index: number, key: keyof MonthlySalaryOutput, value: string) => {
-    const updatedData : any= [...data];
+    const updatedData: any = [...data];
     updatedData[index][key] = value;
     setData(updatedData);
   };
@@ -198,7 +219,7 @@ export function SalaryTable({ data, setData }:
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination: { pageIndex: 0, pageSize: data.length } ,
+      pagination: { pageIndex: 0, pageSize: data.length },
     }
   })
 
@@ -241,9 +262,9 @@ export function SalaryTable({ data, setData }:
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   return (
-                    <TableHead 
-                    key={header.id}
-                    className={`${index === 0 ? 'sticky left-0 bg-white z-10' : ''} ${header.isPlaceholder ? '' : 'top-0 z-10'}`}
+                    <TableHead
+                      key={header.id}
+                      className={`${index === 0 ? 'sticky left-0 bg-white z-10' : ''} ${header.isPlaceholder ? '' : 'top-0 z-10'}`}
                     >
                       {header.isPlaceholder
                         ? null
@@ -265,9 +286,9 @@ export function SalaryTable({ data, setData }:
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell, index) => (
-                    <TableCell 
-                    className={`${index === 0 ? 'sticky left-0 bg-white p-1' : 'p-1'}`}
-                    key={cell.id}
+                    <TableCell
+                      className={`${index === 0 ? 'sticky left-0 bg-white p-1' : 'p-1'}`}
+                      key={cell.id}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
