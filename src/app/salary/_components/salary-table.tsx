@@ -11,6 +11,7 @@ import {
   getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
+  RowData
 } from "@tanstack/react-table"
 import { ChevronDown } from "lucide-react"
 
@@ -32,8 +33,14 @@ import {
 } from "@/components/ui/table"
 import {  MonthlySalaryOutput } from "@/types/salary-calculator-type"
 import { formatMoney } from "@/utils/money-format"
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void
+  }
+}
 
-export const columns: ColumnDef<MonthlySalaryOutput>[] = [
+
+const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryOutput, value: string) => void): ColumnDef<MonthlySalaryOutput>[] => [
   {
     accessorKey: "month",
     header: "Month",
@@ -44,11 +51,26 @@ export const columns: ColumnDef<MonthlySalaryOutput>[] = [
   {
     accessorKey: "grossWage",
     header: "Gross Wage",
-    cell: ({ row }) => <Input 
-    onFocus={(e)=> {e.target.select()}} 
-    className="w-[5rem]" 
-    value={row.getValue("grossWage")}
-    ></Input>,//<div>{row.getValue("grossSalary")}</div>,
+    cell: ({ getValue, row: { index }, column: { id }, table }) => {
+      const initialValue = getValue();
+      const [value, setValue] = React.useState(initialValue)
+      const onBlur = () => {
+        table.options.meta?.updateData(index, id, value)
+      }
+      React.useEffect(() => {
+        setValue(initialValue)
+      }, [initialValue])
+      return (
+        <Input
+          value={value as string}
+          className="w-[5rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+          type="number"
+          step={50}
+          onChange={e => setValue(e.target.value)}
+          onBlur={onBlur}
+        />
+      )
+    },
   },
   {
     accessorKey: "basicSalary",
@@ -135,6 +157,14 @@ export function SalaryTable({ data, setData }:
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const handleInputChange = (index: number, key: keyof MonthlySalaryOutput, value: string) => {
+    const updatedData : any= [...data];
+    updatedData[index][key] = value;
+    setData(updatedData);
+  };
+
+  const columns = React.useMemo(() => getColumns(handleInputChange), [data]);
+  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
 
   const table = useReactTable({
     data,
@@ -147,12 +177,30 @@ export function SalaryTable({ data, setData }:
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    autoResetPageIndex,
+    meta: {
+      updateData: (rowIndex, columnId, value) => {
+        // Skip page index reset until after next rerender
+        skipAutoResetPageIndex()
+        setData(old =>
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...old[rowIndex]!,
+                [columnId]: value,
+              }
+            }
+            return row
+          })
+        )
+      },
+    },
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination: { pageIndex: 0, pageSize: data.length } 
+      pagination: { pageIndex: 0, pageSize: data.length } ,
     }
   })
 
@@ -240,4 +288,21 @@ export function SalaryTable({ data, setData }:
       </div>
     </div>
   )
+}
+
+
+function useSkipper() {
+  const shouldSkipRef = React.useRef(true)
+  const shouldSkip = shouldSkipRef.current
+
+  // Wrap a function with this to skip a pagination reset temporarily
+  const skip = React.useCallback(() => {
+    shouldSkipRef.current = false
+  }, [])
+
+  React.useEffect(() => {
+    shouldSkipRef.current = true
+  })
+
+  return [shouldSkip, skip] as const
 }
