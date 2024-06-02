@@ -1,12 +1,12 @@
 export type MonthlySalaryInput = {
     month: Month;
-    grossSalary: number;
+    grossWage: number;
     additionalAmount: number;
 };
 
 export type MonthlySalaryOutput = {
     month: Month;
-    grossSalary: number;
+    grossWage: number;
     basicSalary: number;
     nonTaxBenefit: number;
     taxBenefit: number;

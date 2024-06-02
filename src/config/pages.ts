@@ -203,30 +203,30 @@ export const pagesConfig = [
 
 export const marketingPagesConfig = [
   {
-    href: "/blog",
+    href: "/salary",
     title: "Salary",
     description: "Malta Salary & Tax Calculator",segment: "blog",
     icon: "book",
     
   },
   {
-    href: "/play",
+    href: "/notice-period",
     title: "Notice Period",
-    description: "All the latest tools build by OpenStatus.",
+    description: "All the latest tools build by Malta Calculator.",
     segment: "play",
     icon: "toy-brick",
   },
   {
-    href: "/Pension",
+    href: "/pension",
     title: "Pension",
-    description: "All the latest features, fixes and work to OpenStatus.",
+    description: "All the latest features, fixes and work to Malta Calculator.",
     segment: "changelog",
     icon: "newspaper",
   },
   {
-    href: "/pricing",
+    href: "/vocation",
     title: "Vocation",
-    description: "The pricing for OpenStatus.",
+    description: "The pricing for Malta Calculator.",
     segment: "pricing",
     icon: "credit-card",
   },

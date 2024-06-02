@@ -34,7 +34,7 @@ const brackets = [
 // console.log(`The calculated income tax is: ${tax}`);
 
 
-function calculateMonthlyDeductions(salaryInput: MonthlySalaryInput[]): MonthlySalaryOutput[] {
+export function calculateMonthlyDeductions(salaryInput: MonthlySalaryInput[]): MonthlySalaryOutput[] {
     const taxBrackets = [
         { threshold: 0, rate: 0 },
         { threshold: 9100, rate: 0.15 },
@@ -42,12 +42,12 @@ function calculateMonthlyDeductions(salaryInput: MonthlySalaryInput[]): MonthlyS
         { threshold: 60000, rate: 0.35 }
     ];
 
-    return salaryInput.map(({ month, grossSalary, additionalAmount }) => {
+    return salaryInput.map(({ month, grossWage, additionalAmount }) => {
         // Örnek hesaplama formülleri
-        const basicSalary = grossSalary * 0.8;
-        const nonTaxBenefit = grossSalary * 0.05;
-        const taxBenefit = grossSalary * 0.05;
-        const bonus = grossSalary * 0.1;
+        const basicSalary = grossWage * 0.8;
+        const nonTaxBenefit = grossWage * 0.05;
+        const taxBenefit = grossWage * 0.05;
+        const bonus = grossWage * 0.1;
         const halfAdditional = additionalAmount / 2; // Eklenen miktarın yarısı
         const grossTotal = basicSalary + nonTaxBenefit + taxBenefit + bonus + halfAdditional; // Yarıyı ekle
 
@@ -63,7 +63,7 @@ function calculateMonthlyDeductions(salaryInput: MonthlySalaryInput[]): MonthlyS
 
         return {
             month,
-            grossSalary,
+            grossWage,
             basicSalary,
             nonTaxBenefit,
             taxBenefit,
@@ -85,18 +85,18 @@ function calculateMonthlyDeductions(salaryInput: MonthlySalaryInput[]): MonthlyS
 // Örnek kullanım:
 // Örnek kullanım:
 const monthlySalaries: MonthlySalaryInput[] = [
-    { month: Month.January, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.February, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.March, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.April, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.May, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.June, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.July, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.August, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.September, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.October, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.November, grossSalary: 3000, additionalAmount: 500 },
-    { month: Month.December, grossSalary: 3000, additionalAmount: 500 },
+    { month: Month.January, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.February, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.March, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.April, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.May, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.June, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.July, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.August, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.September, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.October, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.November, grossWage: 3000, additionalAmount: 500 },
+    { month: Month.December, grossWage: 3000, additionalAmount: 500 },
 ];
 
 

@@ -21,35 +21,36 @@ export function MarketingFooter({ className }: Props) {
             <div>
               <BrandName />
               <p className="mt-2 font-light text-muted-foreground text-sm">
-                We are on a mission to provide a reliable, easy and fast way to
-                monitor the performance of your APIs and websites.
+              A comprehensive calculation app that supports you at every stage of your professional life, ensuring accurate calculations and simplifying your work processes for greater efficiency and peace of mind!
                 <br />
                 <span className="underline decoration-dotted underline-offset-2">
-                  Speed Matters
+                  Salary Calculator
                 </span>
               </p>
             </div>
           </div>
+          <div className="order-1 flex flex-col gap-3 text-sm">
+            <p className="font-semibold text-foreground"></p>
+            {/* <FooterLink href="/play/checker" label="Speed Checker" />
+            <FooterLink href="https://maltacalculator.com" label="All Status Codes" /> */}
+          </div>
           <div className="order-2 flex flex-col gap-3 text-sm">
-            <p className="font-semibold text-foreground">Resources</p>
-            <FooterLink href="/blog" label="Blog" />
-            <FooterLink href="/pricing" label="Pricing" />
-            <FooterLink href="https://docs.openstatus.dev" label="Docs" />
-            <FooterLink href="/oss-friends" label="OSS Friends" />
-            <FooterLink href="/status" label="External Providers Monitoring" />
-          </div>
-          <div className="order-3 flex flex-col gap-3 text-sm">
             <p className="font-semibold text-foreground">Company</p>
-            <FooterLink href="/about" label="About" />
-            <FooterLink href="/changelog" label="Changelog" />
-            <FooterLink href="/legal/terms" label="Terms" />
-            <FooterLink href="/legal/privacy" label="Privacy" />
+            <FooterLink href="/" label="About" />
+            <FooterLink href="/" label="Changelog" />
+            <FooterLink href="/" label="Terms" />
+            <FooterLink href="/" label="Privacy" />
           </div>
-          <div className="order-3 flex flex-col gap-3 text-sm">
-            <p className="font-semibold text-foreground">Tools</p>
-            <FooterLink href="/play/checker" label="Speed Checker" />
-            <FooterLink href="https://openstat.us" label="All Status Codes" />
+          
+           <div className="order-3 flex flex-col gap-3 text-sm">
+            <p className="font-semibold text-foreground">Resources</p>
+            <FooterLink href="/salary" label="Salary Calculator" />
+            <FooterLink href="/pension" label="Pension Calculator" />
+            <FooterLink href="/childcare" label="Childcare Calculator" />
+            <FooterLink href="/vocation" label="Vocation Calculator" />
           </div>
+       
+     
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-wrap gap-2">

@@ -1,11 +1,6 @@
 import type { LucideIcon } from "lucide-react";
-import Link from "next/link";
-
-
 import { Shell } from "@/components/dashboard/shell";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
-
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   icon?: LucideIcon;
