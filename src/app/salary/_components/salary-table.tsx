@@ -74,6 +74,7 @@ const EditableCell = ({
       className="w-[5rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       type="number"
       step={50}
+      onFocus={e => {e.target.select()}}
       onChange={e => setValue(e.target.value)}
       onBlur={onBlur}
     />
