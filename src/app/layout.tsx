@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { cn } from "@/lib/utils";
 import { Inter } from "next/font/google";
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 
 import LocalFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -48,6 +49,7 @@ export default function RootLayout({
           <TailwindIndicator />
         </ThemeProvider>
     </body>
+    <GoogleAnalytics gaId="G-LCNYBX78G0" />
   </html>
   );
 }

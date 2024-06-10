@@ -65,18 +65,25 @@ const EditableCell = ({
   const onBlur = () => {
     table.options.meta?.updateData(index, id, value)
   }
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter') {
+        onBlur();
+    }
+  };
   React.useEffect(() => {
     setValue(initialValue)
   }, [initialValue])
   return (
     <Input
       value={value as string}
-      className="w-[5rem] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+      className="w-[5rem] h-8 py-0 px-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       type="number"
       step={50}
       onFocus={e => {e.target.select()}}
       onChange={e => setValue(e.target.value)}
       onBlur={onBlur}
+      onKeyUp={handleKeyPress}
+
     />
   )
 };
@@ -94,11 +101,11 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
     header: "Gross Wage",
     cell: EditableCell,
   },
-  {
-    accessorKey: "basicSalary",
-    header: "Basic Salary",
-    cell: ({ row }) => <div className="font-bold">{formatMoney(row.getValue("basicSalary"))}</div>,
-  },
+  // {
+  //   accessorKey: "basicSalary",
+  //   header: "Basic Salary",
+  //   cell: ({ row }) => <div className="font-bold">{formatMoney(row.getValue("basicSalary"))}</div>,
+  // },
   {
     accessorKey: "nonTaxBenefit",
     header: "Non-Tax Benefit",

@@ -20,6 +20,11 @@ const formSchema = z.object({
       }).max(1000000, {
         message: "Cumulative Income Tax Base must be at most 1000000.",
       }).default(0),
+    allowanceBonus: z.number().min(0, {
+        message: "Allowance / Bonus must be at least 0.",
+      }).max(1000000, {
+        message: "Allowance / Bonus must be at most 1000000.",
+      }).default(0),
   });
 
 
@@ -51,6 +56,9 @@ export function SalaryCalculatorForm({
     onValuesChange={onValuesChangeProp}
     formSchema={formSchema}
     fieldConfig={{
+      allowanceBonus: {
+        label : 'Allowance / Bonus per Month'
+      },
       grossSalary: {
         inputProps: {
            id: 'gross-salary-input'

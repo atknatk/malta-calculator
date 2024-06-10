@@ -24,8 +24,8 @@ export function SalaryCalculatorClient({ children }: any) {
     for (const month of Object.values(Month)) {
       monthlySalaries.push({
         month,
-        additionalAmount: 0,
-        grossWage: values.grossSalary
+        allowanceBonus: values.allowanceBonus,
+        grossWage: values.grossSalary > 0 ? Number((values.grossSalary / 12).toFixed(2)) : values.grossSalary,
       });
     }
     const val = calculateMonthlyDeductions(monthlySalaries)
@@ -62,8 +62,8 @@ export function SalaryCalculatorClient({ children }: any) {
     for (const line of updatedData) {
       monthlySalaries.push({
         month: line.month,
-        additionalAmount: 0,
-        grossWage: line.grossWage
+        allowanceBonus: values.allowanceBonus,
+        grossWage: line.grossWage,
       });
     }
     const calculatedData = calculateMonthlyDeductions(monthlySalaries)

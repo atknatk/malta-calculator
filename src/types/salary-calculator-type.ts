@@ -1,7 +1,8 @@
 export type MonthlySalaryInput = {
     month: Month;
     grossWage: number;
-    additionalAmount: number;
+    //additionalAmount: number;
+    allowanceBonus: number;
 };
 
 export type MonthlySalaryOutput = {
