@@ -265,7 +265,7 @@ export function SalaryTable({ data, setData }:
                   return (
                     <TableHead
                       key={header.id}
-                      className={`${index === 0 ? 'sticky left-0 bg-white z-10' : ''} ${header.isPlaceholder ? '' : 'top-0 z-10'}`}
+                      className={`${index === 0 ? 'sticky left-0 bg-background z-10' : ''} ${header.isPlaceholder ? '' : 'top-0 z-10'}`}
                     >
                       {header.isPlaceholder
                         ? null
@@ -288,7 +288,7 @@ export function SalaryTable({ data, setData }:
                 >
                   {row.getVisibleCells().map((cell, index) => (
                     <TableCell
-                      className={`${index === 0 ? 'sticky left-0 bg-white p-1' : 'p-1'}`}
+                      className={`${index === 0 ? 'sticky left-0 bg-background p-1' : 'p-1'}`}
                       key={cell.id}
                     >
                       {flexRender(
