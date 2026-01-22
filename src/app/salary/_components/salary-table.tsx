@@ -63,11 +63,14 @@ const EditableCell = ({
   const initialValue = getValue();
   const [value, setValue] = React.useState(initialValue)
   const onBlur = () => {
-    table.options.meta?.updateData(index, id, value)
+    // String değeri number'a çevir ve NaN kontrolü yap
+    const numericValue = parseFloat(value as string);
+    const finalValue = isNaN(numericValue) ? 0 : numericValue;
+    table.options.meta?.updateData(index, id, finalValue)
   }
   const handleKeyPress = (event: any) => {
     if (event.key === 'Enter') {
-        onBlur();
+      onBlur();
     }
   };
   React.useEffect(() => {
@@ -79,7 +82,7 @@ const EditableCell = ({
       className="w-[5rem] h-8 py-0 px-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       type="number"
       step={50}
-      onFocus={e => {e.target.select()}}
+      onFocus={e => { e.target.select() }}
       onChange={e => setValue(e.target.value)}
       onBlur={onBlur}
       onKeyUp={handleKeyPress}
@@ -142,9 +145,9 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
     cell: ({ row }) => <div>{formatMoney(row.getValue("incomeBase"))}</div>,
   },
   {
-    accessorKey: "kumulativeIncomeBase",
-    header: "Kumulative Income Base",
-    cell: ({ row }) => <div>{formatMoney(row.getValue("kumulativeIncomeBase"))}</div>,
+    accessorKey: "cumulativeIncomeBase",
+    header: "Cumulative Income Base",
+    cell: ({ row }) => <div>{formatMoney(row.getValue("cumulativeIncomeBase"))}</div>,
   },
   {
     accessorKey: "incomeTax",
@@ -184,7 +187,17 @@ export function SalaryTable({ data, setData }:
     []
   )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>({
+      // Hide less important columns by default
+      sscBase: false,
+      incomeBase: false,
+      cumulativeIncomeBase: false,
+      nonTaxBenefit: false,
+      taxBenefit: false,
+      bonus: false,
+      governmentBonus: false,
+      discr: false,
+    })
   const [rowSelection, setRowSelection] = React.useState({})
   const handleInputChange = (index: number, key: keyof MonthlySalaryOutput, value: string) => {
     const updatedData: any = [...data];

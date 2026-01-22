@@ -224,8 +224,8 @@ export const marketingPagesConfig = [
     icon: "newspaper",
   },
   {
-    href: "/vocation",
-    title: "Vocation",
+    href: "/vacation",
+    title: "Vacation",
     description: "The pricing for Malta Calculator.",
     segment: "pricing",
     icon: "credit-card",

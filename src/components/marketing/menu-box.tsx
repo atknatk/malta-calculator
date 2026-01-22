@@ -50,7 +50,7 @@ const playgrounds: CardProps[] = [
   },
   {
     href: "/play/status",
-    title: "Vocation Page",
+    title: "Vacation Page",
     description:
       "Grab your API key and create a custom status page with our Astro starter.",
     icon: Palette,

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogMetadata,
     title: "Malta Salary Calculator",
-    url: "https://maltacalculator/salary",
+    url: "https://maltacalculator.com/salary",
   },
   twitter: {
     ...twitterMetadata,
