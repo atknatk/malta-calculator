@@ -43,11 +43,12 @@ export function MarketingFooter({ className }: Props) {
           </div>
 
           <div className="order-3 flex flex-col gap-3 text-sm">
-            <p className="font-semibold text-foreground">Resources</p>
+            <p className="font-semibold text-foreground">Calculators</p>
+            <FooterLink href="/calculators" label="All Calculators" />
             <FooterLink href="/salary" label="Salary Calculator" />
-            <FooterLink href="/pension" label="Pension Calculator" />
-            <FooterLink href="/childcare" label="Childcare Calculator" />
-            <FooterLink href="/vocation" label="Vocation Calculator" />
+            <FooterLink href="/calculators/pension" label="Pension Estimator" />
+            <FooterLink href="/calculators/childcare" label="Childcare Subsidy" />
+            <FooterLink href="/calculators/vacation" label="Vacation Days" />
           </div>
 
 

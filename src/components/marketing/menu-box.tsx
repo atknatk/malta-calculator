@@ -43,7 +43,7 @@ const calculators: CalculatorCard[] = [
     badge: "Popular",
   },
   {
-    href: "/notice",
+    href: "/calculators/notice-period",
     title: "Notice Period Calculator",
     description:
       "Calculate your required notice period based on years of service and employment contract.",
@@ -54,7 +54,7 @@ const calculators: CalculatorCard[] = [
     badge: "Coming Soon",
   },
   {
-    href: "/pension",
+    href: "/calculators/pension",
     title: "Pension Calculator",
     description:
       "Estimate your Malta state pension based on contributions and retirement age.",
@@ -65,7 +65,7 @@ const calculators: CalculatorCard[] = [
     badge: "Coming Soon",
   },
   {
-    href: "/childcare",
+    href: "/calculators/childcare",
     title: "Childcare Subsidy",
     description:
       "Calculate your eligible childcare subsidy based on income and number of children.",
