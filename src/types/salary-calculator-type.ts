@@ -1,4 +1,4 @@
-import { SSCCategory, TaxRateType } from "@/config/malta-tax-config";
+import { SSCCategory, TaxRateType, SimpleTaxType, ChildCount } from "@/config/malta-tax-config";
 
 export type MonthlySalaryInput = {
     month: Month;
@@ -32,6 +32,8 @@ export type MonthlySalaryOutput = {
 export type SalaryCalculatorConfig = {
     year: number;
     taxRateType: TaxRateType;
+    simpleTaxType?: SimpleTaxType;   // UI'dan gelen basit tip (single, married, parent)
+    childCount?: ChildCount;          // Çocuk sayısı (0, 1, 2+) - 2026+ için etkili
     sscCategory: SSCCategory;
     birthDate: Date;
     yearlyNonTaxBenefit: number;  // Yıllık vergi dışı yan hak (varsayılan: 0)

@@ -25,6 +25,10 @@ const monthValues = [
 ] as const;
 type MonthValue = (typeof monthValues)[number];
 
+// Child count values (0, 1, 2+)
+const childCountValues = [0, 1, 2] as const;
+type ChildCountValue = (typeof childCountValues)[number];
+
 // Current year for defaults
 const currentYear = new Date().getFullYear().toString();
 
@@ -36,6 +40,7 @@ export const salarySearchParams = {
     salary: parseAsInteger.withDefault(36000),
     year: parseAsString.withDefault(currentYear),
     taxType: parseAsStringLiteral(taxRateTypes).withDefault("single"),
+    childCount: parseAsInteger.withDefault(0),  // Çocuk sayısı (0, 1, 2) - 2026+ için etkili
     sscCategory: parseAsStringLiteral(sscCategories).withDefault("C"),
 
     // Period params
@@ -67,6 +72,7 @@ export type SalarySearchParams = {
     salary: number;
     year: string;
     taxType: TaxRateType;
+    childCount: number;
     sscCategory: SSCCategory;
     startOfMonth: MonthValue;
     endOfMonth: MonthValue;

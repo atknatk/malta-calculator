@@ -10,6 +10,7 @@ import {
     getCOLAForMonth,
     isBornBefore1962,
     getWeeksForMonth,
+    resolveTaxRateType,
     type TaxBracket,
     type SSCRates,
     type SSCCategory,
@@ -139,13 +140,15 @@ function calculateMonthlyIncomeTax(
  * Varsayılan konfigurasyon
  */
 export const defaultConfig: SalaryCalculatorConfig = {
-    year: 2025,
+    year: 2026,
     taxRateType: 'single',
+    simpleTaxType: 'single',
+    childCount: 0,
     sscCategory: 'C',
     birthDate: new Date(1990, 0, 1),
     yearlyNonTaxBenefit: 0,
     yearlyTaxableBenefit: 0,
-    enableCOLA: true,           // COLA otomatik hesaplanır
+    enableCOLA: true,
 };
 
 /**
@@ -155,8 +158,18 @@ export function calculateMonthlyDeductions(
     salaryInput: MonthlySalaryInput[],
     config: SalaryCalculatorConfig = defaultConfig
 ): MonthlySalaryOutput[] {
+    // Vergi tipini çöz: simpleTaxType + childCount varsa bunları kullan, yoksa taxRateType
+    let effectiveTaxType = config.taxRateType;
+    if (config.simpleTaxType) {
+        effectiveTaxType = resolveTaxRateType(
+            config.year,
+            config.simpleTaxType,
+            config.childCount ?? 0
+        );
+    }
+
     // Config'den değerleri al
-    const taxBrackets = getTaxBracketsForYear(config.year, config.taxRateType);
+    const taxBrackets = getTaxBracketsForYear(config.year, effectiveTaxType);
     const sscRates = getSSCRatesForYear(config.year);
     const isBornBefore1962Flag = isBornBefore1962(config.birthDate);
 

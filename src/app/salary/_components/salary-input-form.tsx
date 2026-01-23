@@ -2,9 +2,9 @@
 import { z } from "zod";
 import { Month } from "@/types/salary-calculator-type";
 import { useEffect, useState, useRef } from "react";
-import { getAvailableYears } from "@/config/malta-tax-config";
+import { getAvailableYears, isChildCountEffective } from "@/config/malta-tax-config";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Settings2, Euro, Calendar, Users, Shield, Gift, Wallet, Sparkles } from "lucide-react";
+import { ChevronDown, Settings2, Euro, Calendar, Users, Shield, Gift, Wallet, Sparkles, Baby } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const monthValues = Object.values(Month) as [Month, ...Month[]];
@@ -18,6 +18,7 @@ export type SalaryFormValues = {
   grossSalary: number;
   year: string;
   taxRateType: "single" | "married" | "parent";
+  childCount: 0 | 1 | 2;  // Çocuk sayısı: 0, 1, 2+ (2026+ için etkili)
   sscCategory: "A" | "B" | "C";
   birthYear: number;
   startOfMonth?: Month;
@@ -68,6 +69,7 @@ function PremiumInput({
           <input
             ref={inputRef}
             type="number"
+            step="100"
             inputMode="decimal"
             pattern="[0-9]*"
             value={value}
@@ -256,6 +258,7 @@ export function SalaryCalculatorForm({
     grossSalary: valuesProp?.grossSalary ?? 36000,
     year: valuesProp?.year ?? currentYear,
     taxRateType: valuesProp?.taxRateType ?? "single",
+    childCount: valuesProp?.childCount ?? 0,
     sscCategory: valuesProp?.sscCategory ?? "C",
     birthYear: valuesProp?.birthYear ?? 1990,
     startOfMonth: valuesProp?.startOfMonth ?? Month.January,
@@ -265,6 +268,10 @@ export function SalaryCalculatorForm({
     monthlyBonus: valuesProp?.monthlyBonus ?? 0,
     allowanceBonus: valuesProp?.allowanceBonus ?? 0,
   };
+
+  // Çocuk sayısı seçici gösterilsin mi?
+  const showChildCount = isChildCountEffective(parseInt(formValues.year)) &&
+    (formValues.taxRateType === 'married' || formValues.taxRateType === 'parent');
 
   const updateValue = <K extends keyof SalaryFormValues>(key: K, value: SalaryFormValues[K]) => {
     onValuesChangeProp?.({ ...valuesProp, [key]: value });
@@ -314,7 +321,14 @@ export function SalaryCalculatorForm({
           <PremiumToggleGroup
             options={["single", "married", "parent"] as const}
             value={formValues.taxRateType}
-            onChange={(v) => updateValue("taxRateType", v)}
+            onChange={(v) => {
+              // Single seçildiğinde childCount'u da sıfırla, tek çağrıda güncelle
+              if (v === 'single') {
+                onValuesChangeProp?.({ ...valuesProp, taxRateType: v, childCount: 0 });
+              } else {
+                updateValue("taxRateType", v);
+              }
+            }}
             labels={{
               single: "👤 Single",
               married: "💑 Married",
@@ -323,6 +337,35 @@ export function SalaryCalculatorForm({
             size="lg"
           />
         </GlassSection>
+
+        {/* Çocuk Sayısı - 2026+ için ve married/parent seçildiğinde göster */}
+        <AnimatePresence>
+          {showChildCount && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <GlassSection icon={Baby} title="Number of Children" delay={0.18}>
+                <PremiumToggleGroup
+                  options={["0", "1", "2"] as const}
+                  value={formValues.childCount.toString() as "0" | "1" | "2"}
+                  onChange={(v) => updateValue("childCount", parseInt(v) as 0 | 1 | 2)}
+                  labels={{
+                    "0": "No children",
+                    "1": "1 child",
+                    "2": "2+ children",
+                  }}
+                  size="default"
+                />
+                <p className="text-xs text-muted-foreground/60 mt-2">
+                  From 2026, tax rates vary based on the number of children. This affects your tax deductions.
+                </p>
+              </GlassSection>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <GlassSection icon={Shield} title="SSC Category" delay={0.2}>
           <PremiumToggleGroup

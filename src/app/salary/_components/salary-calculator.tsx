@@ -15,7 +15,7 @@ import { SalaryCalculatorForm } from "./salary-input-form";
 import { SalaryTable } from "./salary-table";
 import { MobileMonthlyCards } from "./mobile-monthly-cards";
 import { calculateMonthlyDeductions, defaultConfig } from "@/utils/salary-calculator";
-import { SSCCategory, TaxRateType } from "@/config/malta-tax-config";
+import { SSCCategory, TaxRateType, SimpleTaxType, ChildCount } from "@/config/malta-tax-config";
 import { cn } from "@/lib/utils";
 import { useQueryStates } from "nuqs";
 import { salarySearchParams, type SalarySearchParams } from "../search-params";
@@ -124,6 +124,7 @@ export function SalaryCalculatorClient({
     grossSalary: queryParams.salary,
     year: queryParams.year,
     taxRateType: queryParams.taxType,
+    childCount: (queryParams.childCount ?? 0) as 0 | 1 | 2,
     sscCategory: queryParams.sscCategory,
     birthYear: queryParams.birthYear,
     startOfMonth: queryParams.startOfMonth as Month,
@@ -139,6 +140,8 @@ export function SalaryCalculatorClient({
     return {
       year: parseInt(formValues.year),
       taxRateType: formValues.taxRateType as TaxRateType,
+      simpleTaxType: formValues.taxRateType as SimpleTaxType,
+      childCount: formValues.childCount as ChildCount,
       sscCategory: formValues.sscCategory as SSCCategory,
       birthDate: new Date(formValues.birthYear, 0, 1),
       yearlyNonTaxBenefit: formValues.yearlyNonTaxBenefit,
@@ -236,6 +239,7 @@ export function SalaryCalculatorClient({
       salary: values.grossSalary,
       year: values.year,
       taxType: values.taxRateType as any,
+      childCount: values.childCount,
       sscCategory: values.sscCategory as any,
       birthYear: values.birthYear,
       startOfMonth: values.startOfMonth as any,

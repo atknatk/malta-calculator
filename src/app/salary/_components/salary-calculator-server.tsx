@@ -4,7 +4,7 @@
  */
 import { Month, MonthlySalaryInput, MonthlySalaryOutput, SalaryCalculatorConfig } from "@/types/salary-calculator-type";
 import { calculateMonthlyDeductions } from "@/utils/salary-calculator";
-import { SSCCategory, TaxRateType } from "@/config/malta-tax-config";
+import { SSCCategory, TaxRateType, SimpleTaxType, ChildCount } from "@/config/malta-tax-config";
 import { SalaryCalculatorClient } from "./salary-calculator";
 import type { SalarySearchParams } from "../search-params";
 
@@ -20,6 +20,8 @@ function buildConfig(params: SalarySearchParams): SalaryCalculatorConfig {
     return {
         year: parseInt(params.year),
         taxRateType: params.taxType as TaxRateType,
+        simpleTaxType: params.taxType as SimpleTaxType,
+        childCount: (params.childCount ?? 0) as ChildCount,
         sscCategory: params.sscCategory as SSCCategory,
         birthDate: new Date(params.birthYear, 0, 1),
         yearlyNonTaxBenefit: params.yearlyNonTaxBenefit,
