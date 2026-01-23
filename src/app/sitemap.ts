@@ -10,6 +10,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${baseUrl}/calculators`, priority: 0.9, changeFrequency: "monthly" as const },
     ];
 
+    // Blog pages (SEO-rich content)
+    const blogPages = [
+        { url: `${baseUrl}/blog`, priority: 0.8, changeFrequency: "weekly" as const },
+        { url: `${baseUrl}/blog/malta-tax-rates-2026-complete-guide`, priority: 0.9, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-ssc-contributions-2026-explained`, priority: 0.9, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/understanding-cola-malta-2026`, priority: 0.9, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-expat-tax-hqp-scheme-guide`, priority: 0.9, changeFrequency: "yearly" as const },
+    ];
+
     // Company pages
     const companyPages = [
         { url: `${baseUrl}/about`, priority: 0.5, changeFrequency: "yearly" as const },
@@ -52,6 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     return [
         ...mainPages,
+        ...blogPages,
         ...companyPages,
         ...calculatorPages,
     ].map((page) => ({

@@ -30,9 +30,11 @@ export function MarketingFooter({ className }: Props) {
             </div>
           </div>
           <div className="order-1 flex flex-col gap-3 text-sm">
-            <p className="font-semibold text-foreground"></p>
-            {/* <FooterLink href="/play/checker" label="Speed Checker" />
-            <FooterLink href="https://maltacalculator.com" label="All Status Codes" /> */}
+            <p className="font-semibold text-foreground">Guides</p>
+            <FooterLink href="/blog" label="All Articles" />
+            <FooterLink href="/blog/malta-tax-rates-2026-complete-guide" label="Tax Rates 2026" />
+            <FooterLink href="/blog/malta-ssc-contributions-2026-explained" label="SSC Guide" />
+            <FooterLink href="/blog/understanding-cola-malta-2026" label="COLA Explained" />
           </div>
           <div className="order-2 flex flex-col gap-3 text-sm">
             <p className="font-semibold text-foreground">Company</p>
