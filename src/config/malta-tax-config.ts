@@ -20,7 +20,7 @@ export type YearlyTaxConfig = {
     brackets: Record<TaxRateType, TaxBracket[]>;
 };
 
-export type SSCCategory = 'A' | 'B' | 'C' | 'D';
+export type SSCCategory = 'A' | 'B' | 'C';
 
 export type SSCRates = {
     categoryA: number;           // Haftalık sabit oran (18 yaş altı)
@@ -448,17 +448,16 @@ export function getAvailableYears(): number[] {
 
 /**
  * SSC kategorisini belirler
+ * Note: Category D (Above Cap) removed - C already handles cap via weeklyCapOld/New
  */
 export function determineSSCCategory(
     age: number,
     weeklyWage: number,
     minimumWage: number,
-    weeklyCap: number
 ): SSCCategory {
     if (age < 18) return 'A';
     if (weeklyWage <= minimumWage) return 'B';
-    if (weeklyWage < weeklyCap) return 'C';
-    return 'D';
+    return 'C';
 }
 
 /**

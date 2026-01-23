@@ -79,13 +79,6 @@ function calculateSSCTax(
                 Math.round(sscBase * 0.10 * 100) / 100
             );
 
-        case 'D':
-            // Tavan üstü gelir - sabit haftalık oran
-            if (isBornBefore1962Flag) {
-                return sscRates.categoryDOld * weeksInMonth;
-            }
-            return sscRates.categoryDNew * weeksInMonth;
-
         default:
             return 0;
     }

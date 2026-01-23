@@ -18,7 +18,7 @@ export type SalaryFormValues = {
   grossSalary: number;
   year: string;
   taxRateType: "single" | "married" | "parent";
-  sscCategory: "A" | "B" | "C" | "D";
+  sscCategory: "A" | "B" | "C";
   birthYear: number;
   startOfMonth?: Month;
   endOfMonth?: Month;
@@ -326,19 +326,18 @@ export function SalaryCalculatorForm({
 
         <GlassSection icon={Shield} title="SSC Category" delay={0.2}>
           <PremiumToggleGroup
-            options={["A", "B", "C", "D"] as const}
+            options={["A", "B", "C"] as const}
             value={formValues.sscCategory}
             onChange={(v) => updateValue("sscCategory", v)}
             labels={{
               A: "Under 18",
               B: "Part-time",
               C: "Full-time",
-              D: "Above Cap",
             }}
             size="default"
           />
           <p className="text-xs text-muted-foreground/60">
-            Category C is the standard for full-time employees
+            Category C is the standard for full-time employees. SSC rates vary based on birth year (before/after 1962).
           </p>
         </GlassSection>
       </div>

@@ -61,17 +61,17 @@ function MonthCard({
                 )}
                 onClick={() => !isEditing && setIsExpanded(!isExpanded)}
             >
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                            <span className="text-sm font-bold text-primary">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs sm:text-sm font-bold text-primary">
                                 {item.month.substring(0, 3).toUpperCase()}
                             </span>
                         </div>
-                        <div>
-                            <h3 className="font-semibold text-foreground">{item.month}</h3>
-                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                <span>Gross:</span>
+                        <div className="min-w-0 flex-1">
+                            <h3 className="font-semibold text-foreground text-sm sm:text-base truncate">{item.month}</h3>
+                            <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
+                                <span className="flex-shrink-0">Gross:</span>
                                 {isEditing ? (
                                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                                         <Input
@@ -81,7 +81,7 @@ function MonthCard({
                                             onChange={(e) => setEditValue(e.target.value)}
                                             onKeyDown={handleKeyDown}
                                             onBlur={handleSave}
-                                            className="w-24 h-7 text-sm px-2"
+                                            className="w-20 sm:w-24 h-6 sm:h-7 text-xs sm:text-sm px-2"
                                             autoFocus
                                         />
                                         <button
@@ -89,7 +89,7 @@ function MonthCard({
                                                 e.stopPropagation();
                                                 handleSave();
                                             }}
-                                            className="p-1 rounded bg-primary text-primary-foreground"
+                                            className="p-1 rounded bg-primary text-primary-foreground flex-shrink-0"
                                         >
                                             <Check className="w-3 h-3" />
                                         </button>
@@ -102,18 +102,18 @@ function MonthCard({
                                         }}
                                         className="flex items-center gap-1 hover:text-primary transition-colors"
                                     >
-                                        <span className="font-medium">{formatMoney(item.grossWage)}</span>
-                                        <Edit3 className="w-3 h-3" />
+                                        <span className="font-medium whitespace-nowrap">{formatMoney(item.grossWage)}</span>
+                                        <Edit3 className="w-3 h-3 flex-shrink-0" />
                                     </button>
                                 )}
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                         <div className="text-right">
-                            <span className="text-xs text-muted-foreground">Net</span>
-                            <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                            <span className="text-[10px] sm:text-xs text-muted-foreground">Net</span>
+                            <p className="text-base sm:text-lg font-bold text-green-600 dark:text-green-400 whitespace-nowrap">
                                 {formatMoney(item.net)}
                             </p>
                         </div>
@@ -121,7 +121,7 @@ function MonthCard({
                             animate={{ rotate: isExpanded ? 180 : 0 }}
                             transition={{ duration: 0.2 }}
                         >
-                            <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                            <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
                         </motion.div>
                     </div>
                 </div>

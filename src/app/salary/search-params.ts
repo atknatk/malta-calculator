@@ -15,9 +15,15 @@ const taxRateTypes = ["single", "married", "parent"] as const;
 type TaxRateType = (typeof taxRateTypes)[number];
 
 // SSC Categories
-const sscCategories = ["A", "B", "C", "D"] as const;
+const sscCategories = ["A", "B", "C"] as const;
 type SSCCategory = (typeof sscCategories)[number];
 
+// Month values for start/end month selection
+const monthValues = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+] as const;
+type MonthValue = (typeof monthValues)[number];
 
 // Current year for defaults
 const currentYear = new Date().getFullYear().toString();
@@ -32,6 +38,9 @@ export const salarySearchParams = {
     taxType: parseAsStringLiteral(taxRateTypes).withDefault("single"),
     sscCategory: parseAsStringLiteral(sscCategories).withDefault("C"),
 
+    // Period params
+    startOfMonth: parseAsStringLiteral(monthValues).withDefault("January"),
+    endOfMonth: parseAsStringLiteral(monthValues).withDefault("December"),
 
     // Advanced params
     birthYear: parseAsInteger.withDefault(1990),
@@ -59,6 +68,8 @@ export type SalarySearchParams = {
     year: string;
     taxType: TaxRateType;
     sscCategory: SSCCategory;
+    startOfMonth: MonthValue;
+    endOfMonth: MonthValue;
     birthYear: number;
     yearlyNonTaxBenefit: number;
     yearlyTaxableBenefit: number;

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google'
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import LocalFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -44,6 +44,7 @@ export default function RootLayout({
           // biome-ignore lint/nursery/useSortedClasses: <explanation>
           } ${calSans.variable}`}
       >
+        <SpeedInsights />
         <NuqsAdapter>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <Background>{children}</Background>
