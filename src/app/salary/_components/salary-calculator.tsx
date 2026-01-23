@@ -50,19 +50,17 @@ interface Summary {
   };
 }
 
-// Animated Summary Card
+// Summary Card
 function SummaryCard({
   icon: Icon,
   label,
   value,
   variant = "default",
-  delay = 0,
 }: {
   icon: typeof TrendingUp;
   label: string;
   value: string;
   variant?: "default" | "success" | "warning" | "danger";
-  delay?: number;
 }) {
   const variantStyles = {
     default: "bg-muted",
@@ -72,26 +70,23 @@ function SummaryCard({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay, duration: 0.3, ease: "easeOut" }}
+    <div
       className={cn(
-        "p-4 rounded-2xl transition-all duration-300 hover:scale-[1.02]",
+        "p-3 rounded-xl transition-all duration-300 hover:scale-[1.02]",
         variantStyles[variant]
       )}
     >
-      <div className="flex items-center gap-2 mb-2">
-        <Icon className="h-4 w-4 opacity-70" />
-        <span className="text-sm text-muted-foreground">{label}</span>
+      <div className="flex items-center gap-1.5 mb-1">
+        <Icon className="h-3.5 w-3.5 opacity-70 flex-shrink-0" />
+        <span className="text-xs text-muted-foreground">{label}</span>
       </div>
       <div className={cn(
-        "text-xl sm:text-2xl font-bold",
+        "text-sm sm:text-base font-bold",
         variant !== "default" && variantStyles[variant].split(" ").slice(1).join(" ")
       )}>
         {value}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -252,78 +247,75 @@ export function SalaryCalculatorClient({
   };
 
   return (
-    <>
-      <SalaryFormCard
-        title="Salary Calculator"
-        variant="primary"
-        icon={Gauge}
-        className={"sm:col-span-3"}
-      >
-        <SalaryCalculatorForm
-          values={formValues}
-          onValuesChange={handleValuesChange}
-        />
-      </SalaryFormCard>
+    <div className="space-y-6">
+      {/* Two Column Layout: Form + Summary */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Left Column: Calculator Form */}
+        <SalaryFormCard
+          title="Salary Calculator"
+          variant="primary"
+          icon={Gauge}
+        >
+          <SalaryCalculatorForm
+            values={formValues}
+            onValuesChange={handleValuesChange}
+          />
+        </SalaryFormCard>
+
+        {/* Right Column: Summary */}
+        {summary && (
+          <SalaryFormCard title="Summary" icon={Wallet}>
+            {/* Annual Summary Cards - 2x2 grid */}
+            <div className="grid grid-cols-2 gap-2">
+              <SummaryCard
+                icon={TrendingUp}
+                label="Gross"
+                value={`€${Math.round(summary.annual.gross).toLocaleString()}`}
+              />
+              <SummaryCard
+                icon={Coins}
+                label="SSC"
+                value={`€${Math.round(summary.annual.ssc).toLocaleString()}`}
+                variant="warning"
+              />
+              <SummaryCard
+                icon={Receipt}
+                label="Tax"
+                value={`€${Math.round(summary.annual.tax).toLocaleString()}`}
+                variant="danger"
+              />
+              <SummaryCard
+                icon={Wallet}
+                label="Net"
+                value={`€${Math.round(summary.annual.net).toLocaleString()}`}
+                variant="success"
+              />
+            </div>
+
+            {/* Monthly Net Highlight */}
+            <div className="mt-3 p-4 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+              <div className="text-center">
+                <span className="text-sm text-muted-foreground block mb-1">Monthly Net</span>
+                <span className="text-2xl sm:text-3xl font-bold text-primary">
+                  €{summary.monthly.net.toFixed(2)}
+                </span>
+              </div>
+            </div>
+          </SalaryFormCard>
+        )}
+      </div>
 
       {children}
 
-      {summary && (
-        <SalaryFormCard title="Summary" className={"sm:col-span-3"}>
-          {/* Annual Summary Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <SummaryCard
-              icon={TrendingUp}
-              label="Annual Gross"
-              value={`€${summary.annual.gross.toFixed(2)}`}
-              delay={0}
-            />
-            <SummaryCard
-              icon={Coins}
-              label="Annual SSC"
-              value={`€${summary.annual.ssc.toFixed(2)}`}
-              variant="warning"
-              delay={0.1}
-            />
-            <SummaryCard
-              icon={Receipt}
-              label="Annual Tax"
-              value={`€${summary.annual.tax.toFixed(2)}`}
-              variant="danger"
-              delay={0.2}
-            />
-            <SummaryCard
-              icon={Wallet}
-              label="Annual Net"
-              value={`€${summary.annual.net.toFixed(2)}`}
-              variant="success"
-              delay={0.3}
-            />
-          </div>
-
-          {/* Monthly Net Highlight */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.3 }}
-            className="mt-4 p-4 sm:p-6 bg-gradient-to-r from-cyan-500/20 via-blue-500/15 to-violet-500/10 rounded-2xl border border-cyan-500/30 shadow-lg shadow-cyan-500/10"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <span className="text-muted-foreground">Monthly Net Salary</span>
-              <span className="text-3xl sm:text-4xl font-bold text-primary">
-                €{summary.monthly.net.toFixed(2)}
-              </span>
-            </div>
-          </motion.div>
-        </SalaryFormCard>
-      )}
-
-      <SalaryFormCard title="Monthly Breakdown" className={"sm:col-span-3"}>
+      {/* Full Width Table */}
+      <SalaryFormCard title="Monthly Breakdown" className="w-full">
         {isMobile ? (
           <MobileMonthlyCards data={data} setData={setData} />
         ) : (
           <SalaryTable data={data} setData={setData} />
         )}
       </SalaryFormCard>
-    </>
+    </div>
   );
 }
+

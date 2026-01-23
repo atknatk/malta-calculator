@@ -176,7 +176,7 @@ function GlassSection({
       className="space-y-4"
     >
       <div className="flex items-center gap-3">
-        <div className="p-2.5 rounded-xl bg-gradient-to-br from-cyan-500/25 via-blue-500/20 to-violet-500/15 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
+        <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/25 via-primary/15 to-secondary/10 border border-primary/20 shadow-lg shadow-primary/10">
           <Icon className="h-4 w-4 text-primary" />
         </div>
         <span className="font-semibold text-foreground tracking-tight">{title}</span>
@@ -205,8 +205,8 @@ function AdvancedSettings({
         onClick={onToggle}
         className={cn(
           "w-full flex items-center justify-between p-4 rounded-2xl transition-all duration-300",
-          "bg-gradient-to-r from-slate-50 via-cyan-50/30 to-blue-50/20 dark:from-slate-800/90 dark:via-cyan-900/20 dark:to-blue-900/10 hover:from-slate-100 hover:via-cyan-100/40 hover:to-blue-100/30",
-          "border border-border/30 hover:border-border/50",
+          "bg-gradient-to-r from-muted via-primary/5 to-secondary/5 hover:from-primary/10 hover:via-primary/5 hover:to-secondary/10",
+          "border border-border/30 hover:border-primary/30",
           "group"
         )}
       >
@@ -287,7 +287,7 @@ export function SalaryCalculatorForm({
         className="relative"
       >
         {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/15 via-blue-500/10 to-violet-500/15 rounded-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/10 to-secondary/10 rounded-3xl" />
 
         <div className="relative p-6 rounded-3xl border border-primary/10 space-y-4">
           <div className="flex items-center gap-2 text-primary">

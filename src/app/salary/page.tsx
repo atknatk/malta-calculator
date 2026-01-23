@@ -5,6 +5,7 @@ import {
   defaultMetadata,
   ogMetadata,
   twitterMetadata,
+  SITE_URL,
 } from "../shared-metadata";
 import { SalaryCalculatorServer } from "./_components/salary-calculator-server";
 import SalaryPlaygroundCards from "./_components/play-ground-cart";
@@ -25,18 +26,33 @@ export async function generateMetadata({
     maximumFractionDigits: 0,
   }).format(salary);
 
+  const taxTypeLabel =
+    params.taxType === "single"
+      ? "Bekar / Single"
+      : params.taxType === "married"
+        ? "Evli / Married"
+        : "Ebeveyn / Parent";
+
+  const title = `Malta Net Maaş: ${formattedSalary}/yıl | ${params.year} Hesaplama`;
+  const description = `Malta ${params.year} net maaş hesaplayıcı. Brüt maaş: ${formattedSalary}, Vergi tipi: ${taxTypeLabel}, SSC: ${params.sscCategory}. Vergi kesintisi, SSC katkısı ve COLA dahil detaylı döküm. Calculate Malta net salary with tax deductions, SSC contributions and COLA breakdown.`;
+
   return {
     ...defaultMetadata,
-    title: `Malta Salary Calculator - ${formattedSalary}/year`,
-    description: `Calculate your net salary in Malta for ${params.year}. Gross salary: ${formattedSalary}, Tax type: ${params.taxType}, SSC category: ${params.sscCategory}.`,
+    title,
+    description,
+    alternates: {
+      canonical: `${SITE_URL}/salary`,
+    },
     openGraph: {
       ...ogMetadata,
-      title: `Malta Salary Calculator - ${formattedSalary}/year`,
-      url: "https://maltacalculator.com/salary",
+      title,
+      description,
+      url: `${SITE_URL}/salary`,
     },
     twitter: {
       ...twitterMetadata,
-      title: `Malta Salary Calculator - ${formattedSalary}/year`,
+      title,
+      description,
     },
   };
 }
@@ -48,13 +64,14 @@ export default async function SalaryCalculatorPage({
   const params = await salaryParamsCache.parse(searchParams);
 
   return (
-    <>
+    <main role="main" aria-label="Malta Salary Calculator">
       <BackButton href="/" />
-      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 sm:grid-cols-2">
+      <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
         <SalaryCalculatorServer initialParams={params}>
           <SalaryPlaygroundCards />
         </SalaryCalculatorServer>
       </div>
-    </>
+    </main>
   );
 }
+
