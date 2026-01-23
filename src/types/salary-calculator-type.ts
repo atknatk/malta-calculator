@@ -34,8 +34,8 @@ export type SalaryCalculatorConfig = {
     taxRateType: TaxRateType;
     sscCategory: SSCCategory;
     birthDate: Date;
-    yearlyNonTaxBenefit: number;  // Yıllık vergi dışı yan hak (varsayılan: 1170)
-    yearlyTaxableBenefit: number; // Yıllık vergiye tabi yan hak (varsayılan: 1170)
+    yearlyNonTaxBenefit: number;  // Yıllık vergi dışı yan hak (varsayılan: 0)
+    yearlyTaxableBenefit: number; // Yıllık vergiye tabi yan hak (varsayılan: 0)
     monthlyBonus?: number;        // Aylık bonus
     governmentBonus?: number;     // Devlet bonusu (aylık) - deprecated, use enableCOLA
     enableCOLA?: boolean;         // COLA otomatik hesaplama (varsayılan: true)

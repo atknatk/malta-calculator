@@ -6,7 +6,6 @@ import { getAvailableYears } from "@/config/malta-tax-config";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Settings2, Euro, Calendar, Users, Shield, Gift, Wallet, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const monthValues = Object.values(Month) as [Month, ...Month[]];
 const allYears = getAvailableYears().map(y => y.toString());
@@ -14,24 +13,20 @@ const allYears = getAvailableYears().map(y => y.toString());
 const availableYears = allYears.slice(-3) as [string, ...string[]];
 const currentYear = new Date().getFullYear().toString();
 
-// Define your form schema using zod
-const formSchema = z.object({
-  grossSalary: z.number().min(0).max(1000000).default(36000),
-  year: z.enum(availableYears).default(currentYear as typeof availableYears[number]),
-  taxRateType: z.enum(["single", "married", "parent"]).default("single"),
-  sscCategory: z.enum(["A", "B", "C", "D"]).default("C"),
-  birthYear: z.number().min(1940).max(2010).default(1990),
-  startOfMonth: z.enum(monthValues).default(Month.January),
-  endOfMonth: z.enum(monthValues).default(Month.December),
-  yearlyNonTaxBenefit: z.number().min(0).max(50000).default(1170),
-  yearlyTaxableBenefit: z.number().min(0).max(50000).default(1170),
-  monthlyBonus: z.number().min(0).max(100000).default(0),
-  governmentBonus: z.number().min(0).max(5000).default(0),
-  allowanceBonus: z.number().min(0).max(100000).default(0),
-  weeksPerMonth: z.enum(["4", "5", "auto"]).default("auto"),
-});
-
-export type SalaryFormValues = z.infer<typeof formSchema>;
+// Form values type - URL params ile uyumlu
+export type SalaryFormValues = {
+  grossSalary: number;
+  year: string;
+  taxRateType: "single" | "married" | "parent";
+  sscCategory: "A" | "B" | "C" | "D";
+  birthYear: number;
+  startOfMonth?: Month;
+  endOfMonth?: Month;
+  yearlyNonTaxBenefit: number;
+  yearlyTaxableBenefit: number;
+  monthlyBonus: number;
+  allowanceBonus: number;
+};
 
 // Premium Number Input Component - Mobile Optimized
 function PremiumInput({
@@ -256,7 +251,7 @@ export function SalaryCalculatorForm({
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  // Default values
+  // Default values merged with props
   const formValues: SalaryFormValues = {
     grossSalary: valuesProp?.grossSalary ?? 36000,
     year: valuesProp?.year ?? currentYear,
@@ -265,24 +260,15 @@ export function SalaryCalculatorForm({
     birthYear: valuesProp?.birthYear ?? 1990,
     startOfMonth: valuesProp?.startOfMonth ?? Month.January,
     endOfMonth: valuesProp?.endOfMonth ?? Month.December,
-    yearlyNonTaxBenefit: valuesProp?.yearlyNonTaxBenefit ?? 1170,
-    yearlyTaxableBenefit: valuesProp?.yearlyTaxableBenefit ?? 1170,
+    yearlyNonTaxBenefit: valuesProp?.yearlyNonTaxBenefit ?? 0,
+    yearlyTaxableBenefit: valuesProp?.yearlyTaxableBenefit ?? 0,
     monthlyBonus: valuesProp?.monthlyBonus ?? 0,
-    governmentBonus: valuesProp?.governmentBonus ?? 0,
     allowanceBonus: valuesProp?.allowanceBonus ?? 0,
-    weeksPerMonth: valuesProp?.weeksPerMonth ?? "auto",
   };
 
   const updateValue = <K extends keyof SalaryFormValues>(key: K, value: SalaryFormValues[K]) => {
     onValuesChangeProp?.({ ...valuesProp, [key]: value });
   };
-
-  useEffect(() => {
-    // Initialize with defaults on mount
-    if (!valuesProp || Object.keys(valuesProp).length === 0) {
-      onValuesChangeProp?.(formValues);
-    }
-  }, []);
 
   return (
     <div className="space-y-8">
@@ -304,8 +290,8 @@ export function SalaryCalculatorForm({
 
           <PremiumInput
             label="Annual Gross Salary"
-            value={formValues.grossSalary}
-            onChange={(v) => updateValue("grossSalary", parseFloat(v) || 0)}
+            value={formValues.grossSalary || ""}
+            onChange={(v) => updateValue("grossSalary", v === "" ? 0 : parseFloat(v) || 0)}
             suffix="€/yr"
             description="Enter your total annual gross salary before any deductions"
             large
@@ -424,20 +410,12 @@ export function SalaryCalculatorForm({
 
         {/* Bonus Section */}
         <GlassSection icon={Wallet} title="Bonuses" delay={0}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <PremiumInput
-              label="Monthly Bonus"
-              value={formValues.monthlyBonus}
-              onChange={(v) => updateValue("monthlyBonus", parseFloat(v) || 0)}
-              suffix="€"
-            />
-            <PremiumInput
-              label="Government Bonus (COLA)"
-              value={formValues.governmentBonus}
-              onChange={(v) => updateValue("governmentBonus", parseFloat(v) || 0)}
-              suffix="€"
-            />
-          </div>
+          <PremiumInput
+            label="Monthly Bonus"
+            value={formValues.monthlyBonus}
+            onChange={(v) => updateValue("monthlyBonus", parseFloat(v) || 0)}
+            suffix="€"
+          />
           <PremiumInput
             label="Monthly Allowance"
             value={formValues.allowanceBonus}
@@ -445,24 +423,6 @@ export function SalaryCalculatorForm({
             suffix="€"
           />
         </GlassSection>
-
-        {/* Weeks Per Month */}
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-foreground/70">Weeks Per Month</label>
-          <PremiumToggleGroup
-            options={["auto", "4", "5"] as const}
-            value={formValues.weeksPerMonth}
-            onChange={(v) => updateValue("weeksPerMonth", v)}
-            labels={{
-              auto: "🔄 Auto",
-              "4": "4 Weeks",
-              "5": "5 Weeks",
-            }}
-          />
-          <p className="text-xs text-muted-foreground/60">
-            Auto: varies by month (4 or 5 weeks based on calendar)
-          </p>
-        </div>
       </AdvancedSettings>
     </div>
   );

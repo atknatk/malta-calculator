@@ -14,6 +14,8 @@ import {
   ogMetadata,
   twitterMetadata,
 } from "@/app/shared-metadata";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 const inter = Inter({ subsets: ["latin"] });
 const calSans = LocalFont({
   src: "../../public/fonts/CalSans-SemiBold.ttf",
@@ -36,21 +38,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-    <head />
-    <body
-        className={`${
-          inter.className
+      <head />
+      <body
+        className={`${inter.className
           // biome-ignore lint/nursery/useSortedClasses: <explanation>
-        } ${calSans.variable}`}
+          } ${calSans.variable}`}
       >
+        <NuqsAdapter>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <Background>{children}</Background>
-          <Toaster richColors />
-          <TailwindIndicator />
-        </ThemeProvider>
-    </body>
-    <GoogleAnalytics gaId="G-LCNYBX78G0" />
-  </html>
+            <Background>{children}</Background>
+            <Toaster richColors />
+            <TailwindIndicator />
+          </ThemeProvider>
+        </NuqsAdapter>
+      </body>
+      <GoogleAnalytics gaId="G-LCNYBX78G0" />
+    </html>
   );
 }
 

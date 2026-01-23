@@ -401,10 +401,10 @@ export const colaByYear: YearlyCOLAConfig[] = [
     {
         year: 2026,
         cola: {
-            march: 125.00,
-            june: 140.00,
-            september: 125.00,
-            december: 140.00,
+            march: 121.16,
+            june: 135.10,
+            september: 121.16,
+            december: 135.10,
         },
     },
 ];
@@ -502,3 +502,57 @@ function getCOLAForMonthFromConfig(cola: COLAConfig, month: string): number {
             return 0;
     }
 }
+
+// ==================== HAFTA HESAPLAMA ====================
+
+/**
+ * Belirtilen ay için Pazartesi sayısını hesaplar
+ * Malta SSC hafta sayısı = aydaki Pazartesi sayısı
+ */
+export function getMondaysInMonth(year: number, monthIndex: number): number {
+    let count = 0;
+    const lastDay = new Date(year, monthIndex + 1, 0).getDate();
+
+    for (let day = 1; day <= lastDay; day++) {
+        const date = new Date(year, monthIndex, day);
+        if (date.getDay() === 1) { // 1 = Monday
+            count++;
+        }
+    }
+    return count;
+}
+
+/**
+ * Belirtilen yıl için tüm ayların hafta sayılarını döndürür
+ * Hafta sayısı = aydaki Pazartesi sayısı (Malta SSC hesabı)
+ */
+export function getWeeksPerMonthForYear(year: number): Record<string, number> {
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const result: Record<string, number> = {};
+    months.forEach((month, idx) => {
+        result[month] = getMondaysInMonth(year, idx);
+    });
+
+    return result;
+}
+
+/**
+ * Belirtilen yıl ve ay için hafta sayısını döndürür
+ */
+export function getWeeksForMonth(year: number, month: string): number {
+    const monthMap: Record<string, number> = {
+        'january': 0, 'february': 1, 'march': 2, 'april': 3,
+        'may': 4, 'june': 5, 'july': 6, 'august': 7,
+        'september': 8, 'october': 9, 'november': 10, 'december': 11
+    };
+
+    const monthIndex = monthMap[month.toLowerCase()];
+    if (monthIndex === undefined) return 4; // fallback
+
+    return getMondaysInMonth(year, monthIndex);
+}
+

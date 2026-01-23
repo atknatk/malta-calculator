@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Gauge,
   TrendingUp,
@@ -11,12 +11,14 @@ import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Month, MonthlySalaryInput, MonthlySalaryOutput, SalaryCalculatorConfig } from "@/types/salary-calculator-type";
 import { SalaryFormCard } from "@/components/salary/form-card";
-import { SalaryCalculatorForm, SalaryFormValues } from "./salary-input-form";
+import { SalaryCalculatorForm } from "./salary-input-form";
 import { SalaryTable } from "./salary-table";
 import { MobileMonthlyCards } from "./mobile-monthly-cards";
 import { calculateMonthlyDeductions, defaultConfig } from "@/utils/salary-calculator";
 import { SSCCategory, TaxRateType } from "@/config/malta-tax-config";
 import { cn } from "@/lib/utils";
+import { useQueryStates } from "nuqs";
+import { salarySearchParams, type SalarySearchParams } from "../search-params";
 
 // Hook to detect mobile viewport
 function useIsMobile(breakpoint = 768) {
@@ -30,6 +32,22 @@ function useIsMobile(breakpoint = 768) {
   }, [breakpoint]);
 
   return isMobile;
+}
+
+// Summary type
+interface Summary {
+  annual: {
+    gross: number;
+    ssc: number;
+    tax: number;
+    net: number;
+  };
+  monthly: {
+    gross: number;
+    ssc: number;
+    tax: number;
+    net: number;
+  };
 }
 
 // Animated Summary Card
@@ -77,37 +95,59 @@ function SummaryCard({
   );
 }
 
-export function SalaryCalculatorClient({ children }: { children: React.ReactNode }) {
-  const [data, setData] = useState<MonthlySalaryOutput[]>([]);
-  const [formValues, setFormValues] = useState<Partial<SalaryFormValues>>({});
+interface SalaryCalculatorClientProps {
+  children: React.ReactNode;
+  initialData: MonthlySalaryOutput[];
+  initialSummary: Summary | null;
+  initialParams: SalarySearchParams;
+}
+
+export function SalaryCalculatorClient({
+  children,
+  initialData,
+  initialSummary,
+  initialParams,
+}: SalaryCalculatorClientProps) {
+  // nuqs ile URL state yönetimi
+  const [queryParams, setQueryParams] = useQueryStates(salarySearchParams, {
+    shallow: false, // Server'a bildir, SSR güncelle
+    throttleMs: 500, // Debounce for smooth UX
+  });
+
+  const [data, setData] = useState<MonthlySalaryOutput[]>(initialData);
   const isUpdatingRef = React.useRef(false);
   const previousDataRef = React.useRef<MonthlySalaryOutput[]>(data);
   const isMobile = useIsMobile();
 
+  // Mevcut form değerlerini URL params'tan al
+  const formValues = useMemo(() => ({
+    grossSalary: queryParams.salary,
+    year: queryParams.year,
+    taxRateType: queryParams.taxType,
+    sscCategory: queryParams.sscCategory,
+    birthYear: queryParams.birthYear,
+    yearlyNonTaxBenefit: queryParams.yearlyNonTaxBenefit,
+    yearlyTaxableBenefit: queryParams.yearlyTaxableBenefit,
+    monthlyBonus: queryParams.monthlyBonus,
+    allowanceBonus: queryParams.allowanceBonus,
+  }), [queryParams]);
+
   // Form değerlerinden config oluştur
   const config: SalaryCalculatorConfig = useMemo(() => {
-    // Hafta sayısı override
-    let weeksPerMonthOverride: number | undefined = undefined;
-    if (formValues.weeksPerMonth === "4") weeksPerMonthOverride = 4;
-    else if (formValues.weeksPerMonth === "5") weeksPerMonthOverride = 5;
-    // "auto" durumunda undefined kalır, default değerler kullanılır
-
     return {
-      year: formValues.year ? parseInt(formValues.year as string) : defaultConfig.year,
-      taxRateType: (formValues.taxRateType as TaxRateType) || defaultConfig.taxRateType,
-      sscCategory: (formValues.sscCategory as SSCCategory) || defaultConfig.sscCategory,
-      birthDate: new Date(formValues.birthYear || 1990, 0, 1),
-      yearlyNonTaxBenefit: formValues.yearlyNonTaxBenefit ?? defaultConfig.yearlyNonTaxBenefit,
-      yearlyTaxableBenefit: formValues.yearlyTaxableBenefit ?? defaultConfig.yearlyTaxableBenefit,
-      monthlyBonus: formValues.monthlyBonus ?? 0,
-      enableCOLA: true, // COLA otomatik olarak eklenir
-      weeksPerMonthOverride,
+      year: parseInt(formValues.year),
+      taxRateType: formValues.taxRateType as TaxRateType,
+      sscCategory: formValues.sscCategory as SSCCategory,
+      birthDate: new Date(formValues.birthYear, 0, 1),
+      yearlyNonTaxBenefit: formValues.yearlyNonTaxBenefit,
+      yearlyTaxableBenefit: formValues.yearlyTaxableBenefit,
+      monthlyBonus: formValues.monthlyBonus,
+      enableCOLA: true,
     };
   }, [formValues]);
 
-  // Form değerleri değiştiğinde hesapla
-  React.useEffect(() => {
-    // Default gross salary: 36000 (schema default)
+  // URL params değiştiğinde hesapla
+  useEffect(() => {
     const grossSalary = formValues.grossSalary ?? 36000;
     const allowanceBonus = formValues.allowanceBonus || 0;
 
@@ -125,7 +165,7 @@ export function SalaryCalculatorClient({ children }: { children: React.ReactNode
   }, [formValues, config]);
 
   // Tablo içinden değer değiştiğinde güncelle
-  React.useEffect(() => {
+  useEffect(() => {
     if (isUpdatingRef.current) {
       isUpdatingRef.current = false;
       previousDataRef.current = data;
@@ -133,7 +173,6 @@ export function SalaryCalculatorClient({ children }: { children: React.ReactNode
     }
     if (data.length === 0) return;
 
-    // Get the index of the last changed item
     const lastChangedIndex = data.findIndex((item, index) => {
       return item.grossWage !== previousDataRef.current[index]?.grossWage;
     });
@@ -143,7 +182,6 @@ export function SalaryCalculatorClient({ children }: { children: React.ReactNode
       return;
     }
 
-    // Create a new array with updated values for subsequent rows
     const updatedData = data.map((item, index) => {
       if (index > lastChangedIndex) {
         return { ...item, grossWage: data[lastChangedIndex].grossWage };
@@ -154,7 +192,6 @@ export function SalaryCalculatorClient({ children }: { children: React.ReactNode
     isUpdatingRef.current = true;
     const monthlySalaries: MonthlySalaryInput[] = [];
     for (const line of updatedData) {
-      // NaN koruması
       const safeGrossWage = isNaN(Number(line.grossWage)) ? 0 : Number(line.grossWage);
       monthlySalaries.push({
         month: line.month,
@@ -166,7 +203,7 @@ export function SalaryCalculatorClient({ children }: { children: React.ReactNode
     setData(calculatedData);
   }, [data, config, formValues.allowanceBonus]);
 
-  // Yıllık ve aylık özet hesapla
+  // Özet hesapla
   const summary = useMemo(() => {
     if (data.length === 0) return null;
 
@@ -191,6 +228,21 @@ export function SalaryCalculatorClient({ children }: { children: React.ReactNode
     };
   }, [data]);
 
+  // Form value update handler - URL'i günceller
+  const handleValuesChange = (values: Partial<typeof formValues>) => {
+    setQueryParams({
+      salary: values.grossSalary,
+      year: values.year,
+      taxType: values.taxRateType as any,
+      sscCategory: values.sscCategory as any,
+      birthYear: values.birthYear,
+      yearlyNonTaxBenefit: values.yearlyNonTaxBenefit,
+      yearlyTaxableBenefit: values.yearlyTaxableBenefit,
+      monthlyBonus: values.monthlyBonus,
+      allowanceBonus: values.allowanceBonus,
+    });
+  };
+
   return (
     <>
       <SalaryFormCard
@@ -201,7 +253,7 @@ export function SalaryCalculatorClient({ children }: { children: React.ReactNode
       >
         <SalaryCalculatorForm
           values={formValues}
-          onValuesChange={(v) => setFormValues(v as Partial<SalaryFormValues>)}
+          onValuesChange={handleValuesChange}
         />
       </SalaryFormCard>
 

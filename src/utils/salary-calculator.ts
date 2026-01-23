@@ -9,6 +9,7 @@ import {
     getSSCRatesForYear,
     getCOLAForMonth,
     isBornBefore1962,
+    getWeeksForMonth,
     type TaxBracket,
     type SSCRates,
     type SSCCategory,
@@ -17,7 +18,6 @@ import {
 
 import {
     Month,
-    weeksPerMonth,
     type MonthlySalaryInput,
     type MonthlySalaryOutput,
     type SalaryCalculatorConfig,
@@ -150,8 +150,8 @@ export const defaultConfig: SalaryCalculatorConfig = {
     taxRateType: 'single',
     sscCategory: 'C',
     birthDate: new Date(1990, 0, 1),
-    yearlyNonTaxBenefit: 1170,  // €97.50 * 12
-    yearlyTaxableBenefit: 1170, // €97.50 * 12
+    yearlyNonTaxBenefit: 0,
+    yearlyTaxableBenefit: 0,
     enableCOLA: true,           // COLA otomatik hesaplanır
 };
 
@@ -191,8 +191,8 @@ export function calculateMonthlyDeductions(
         const inputGovBonus = isNaN(Number(input.governmentBonus)) ? 0 : Number(input.governmentBonus);
         const safeAllowanceBonus = isNaN(Number(input.allowanceBonus)) ? 0 : Number(input.allowanceBonus);
 
-        // Hafta sayısı: override varsa onu kullan, yoksa input'tan, o da yoksa default
-        const weeksInMonth = config.weeksPerMonthOverride ?? input.weeksInMonth ?? weeksPerMonth[month];
+        // Hafta sayısı: override varsa onu kullan, yoksa input'tan, o da yoksa yıl bazlı dinamik hesaplama
+        const weeksInMonth = config.weeksPerMonthOverride ?? input.weeksInMonth ?? getWeeksForMonth(config.year, month);
 
         // Temel hesaplamalar
         const basicSalary = grossWage;
