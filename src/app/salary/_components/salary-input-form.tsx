@@ -59,20 +59,22 @@ function PremiumInput({
     e.target.select();
     onFocusChange?.(true);
 
-    // On mobile, scroll input to top so the floating bottom card doesn't overlap
+    // On mobile, scroll input below the floating TOP card so it doesn't overlap
+    // Floating card height (~100px) + safe area + padding = ~140px offset needed
     if (typeof window !== 'undefined' && window.innerWidth < 768 && inputRef.current) {
-      // Small delay to let virtual keyboard appear
+      // Small delay to let virtual keyboard appear and floating card animate in
       setTimeout(() => {
         const element = inputRef.current;
         if (element) {
           const rect = element.getBoundingClientRect();
-          const scrollTarget = window.scrollY + rect.top - 120; // 120px from top for better visibility
+          const floatingCardHeight = 200; // Approximate height of top floating card + padding
+          const scrollTarget = window.scrollY + rect.top - floatingCardHeight;
           window.scrollTo({
             top: Math.max(0, scrollTarget),
             behavior: 'smooth'
           });
         }
-      }, 100);
+      }, 150); // Slightly longer delay to wait for card animation
     }
   };
 

@@ -354,20 +354,20 @@ export function SalaryCalculatorClient({
         )}
       </SalaryFormCard>
 
-      {/* Mobile Floating Net Salary Card - iOS Liquid Glass Effect */}
+      {/* Mobile Floating Net Salary Card - iOS Liquid Glass Effect - Positioned at TOP */}
       <AnimatePresence>
         {isMobile && isSalaryInputFocused && summary && (
           <motion.div
-            initial={{ y: 100, opacity: 0, scale: 0.9 }}
+            initial={{ y: -100, opacity: 0, scale: 0.9 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 100, opacity: 0, scale: 0.9 }}
+            exit={{ y: -100, opacity: 0, scale: 0.9 }}
             transition={{
               type: "spring",
               stiffness: 300,
               damping: 25,
               mass: 0.8,
             }}
-            className="fixed bottom-0 left-0 right-0 z-50 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            className="fixed top-0 left-0 right-0 z-50 p-3 pt-[max(0.75rem,env(safe-area-inset-top))]"
           >
             <div className="relative overflow-hidden rounded-3xl shadow-2xl">
               {/* iOS Liquid Glass Base - Multiple translucent layers */}
