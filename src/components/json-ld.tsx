@@ -153,9 +153,34 @@ export function OrganizationJsonLd() {
         "@context": "https://schema.org",
         "@type": "Organization",
         name: SITE_NAME,
+        alternateName: "Malta Salary Calculator",
         url: SITE_URL,
-        logo: `${SITE_URL}/logo.png`,
-        sameAs: [],
+        logo: {
+            "@type": "ImageObject",
+            url: `${SITE_URL}/icon.png`,
+            width: 180,
+            height: 180,
+        },
+        image: `${SITE_URL}/og-image.png`,
+        description: "Malta's most trusted salary calculator. Free tools for calculating net salary, taxes, SSC contributions, and more.",
+        foundingDate: "2024",
+        areaServed: {
+            "@type": "Country",
+            name: "Malta",
+        },
+        serviceType: ["Financial Calculator", "Tax Calculator", "Salary Calculator"],
+        sameAs: [
+            // Add your social media profiles here when available
+            // "https://twitter.com/maltacalculator",
+            // "https://www.facebook.com/maltacalculator",
+            // "https://www.linkedin.com/company/maltacalculator",
+        ],
+        contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer service",
+            url: `${SITE_URL}/contact`,
+            availableLanguage: ["English"],
+        },
     };
 
     return (
