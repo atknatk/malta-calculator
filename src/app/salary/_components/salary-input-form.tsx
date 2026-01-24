@@ -66,9 +66,9 @@ function PremiumInput({
       setTimeout(() => {
         const element = inputRef.current;
         if (element) {
-          const rect = element.getBoundingClientRect();
-          const floatingCardHeight = 200; // Approximate height of top floating card + padding
-          const scrollTarget = window.scrollY + rect.top - floatingCardHeight;
+          // const rect = element.getBoundingClientRect();
+          // const floatingCardHeight = 200; // Approximate height of top floating card + padding
+          const scrollTarget = 0; //window.scrollY + rect.top - floatingCardHeight;
           window.scrollTo({
             top: Math.max(0, scrollTarget),
             behavior: 'smooth'

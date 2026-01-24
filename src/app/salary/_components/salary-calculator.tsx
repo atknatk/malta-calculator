@@ -14,7 +14,7 @@ import { SalaryFormCard } from "@/components/salary/form-card";
 import { SalaryCalculatorForm, type MonthlyBonuses } from "./salary-input-form";
 import { SalaryTable } from "./salary-table";
 import { MobileMonthlyCards } from "./mobile-monthly-cards";
-import { calculateMonthlyDeductions, defaultConfig } from "@/utils/salary-calculator";
+import { calculateMonthlyDeductions } from "@/utils/salary-calculator";
 import { SSCCategory, TaxRateType, SimpleTaxType, ChildCount } from "@/config/malta-tax-config";
 import { cn } from "@/lib/utils";
 import { useQueryStates } from "nuqs";
