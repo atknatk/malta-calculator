@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useSpring, useTransform, useMotionValue } from "framer-motion";
 import { Month, MonthlySalaryInput, MonthlySalaryOutput, SalaryCalculatorConfig } from "@/types/salary-calculator-type";
 import { SalaryFormCard } from "@/components/salary/form-card";
 import { SalaryCalculatorForm, type MonthlyBonuses } from "./salary-input-form";
@@ -32,6 +32,80 @@ function useIsMobile(breakpoint = 768) {
   }, [breakpoint]);
 
   return isMobile;
+}
+
+// Hook for animated counting number - ultra fast tween animation
+function useAnimatedNumber(value: number) {
+  const motionValue = useMotionValue(value);
+
+  useEffect(() => {
+    const controls = motionValue.set(value);
+  }, [motionValue, value]);
+
+  // Use animate for fast duration-based transition
+  const animatedValue = useSpring(motionValue, {
+    duration: 250, // 150ms - very fast
+    bounce: 0,
+  });
+
+  return animatedValue;
+}
+
+// Animated counter component - fast counting effect
+function AnimatedCounter({
+  value,
+  className,
+  prefix = "",
+  suffix = "",
+  decimals = 2,
+}: {
+  value: number;
+  className?: string;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+}) {
+  const animatedValue = useAnimatedNumber(value);
+  const displayValue = useTransform(animatedValue, (v) =>
+    v.toLocaleString("en-US", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    })
+  );
+
+  return (
+    <motion.span className={className}>
+      {prefix}
+      <motion.span>{displayValue}</motion.span>
+      {suffix}
+    </motion.span>
+  );
+}
+
+// Animated counter for integers (no decimals)
+function AnimatedCounterInt({
+  value,
+  className,
+  prefix = "",
+  suffix = "",
+}: {
+  value: number;
+  className?: string;
+  prefix?: string;
+  suffix?: string;
+}) {
+  const animatedValue = useAnimatedNumber(value);
+  const displayValue = useTransform(animatedValue, (v) =>
+    Math.round(v).toLocaleString("en-US")
+  );
+
+  return (
+    <motion.span className={className}>
+      {prefix}
+      <motion.span>{displayValue}</motion.span>
+      {suffix}
+    </motion.span>
+  );
 }
 
 // Summary type
@@ -106,7 +180,7 @@ export function SalaryCalculatorClient({
   // nuqs ile URL state yönetimi
   const [queryParams, setQueryParams] = useQueryStates(salarySearchParams, {
     shallow: false, // Server'a bildir, SSR güncelle
-    throttleMs: 500, // Debounce for smooth UX
+    throttleMs: 100, // Fast updates for responsive counter
   });
 
   const [data, setData] = useState<MonthlySalaryOutput[]>(initialData);
@@ -321,9 +395,12 @@ export function SalaryCalculatorClient({
             <div className="mt-3 p-4 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/10 rounded-xl border border-primary/20">
               <div className="text-center">
                 <span className="text-sm text-muted-foreground block mb-1">Monthly Net</span>
-                <span className="text-2xl sm:text-3xl font-bold text-primary">
-                  €{summary.monthly.net.toFixed(2)}
-                </span>
+                <AnimatedCounter
+                  value={summary.monthly.net}
+                  className="text-2xl sm:text-3xl font-bold text-primary"
+                  prefix="€"
+                  decimals={2}
+                />
               </div>
             </div>
           </SalaryFormCard>
@@ -406,17 +483,18 @@ export function SalaryCalculatorClient({
                     </div>
                   </div>
                   <div className="text-right">
-                    <motion.span
-                      key={summary.monthly.net}
-                      initial={{ scale: 1.05, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    <AnimatedCounter
+                      value={summary.monthly.net}
                       className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400 block"
-                    >
-                      €{summary.monthly.net.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </motion.span>
+                      prefix="€"
+                      decimals={2}
+                    />
                     <span className="text-gray-500 dark:text-gray-400 text-xs font-medium">
-                      €{Math.round(summary.annual.net).toLocaleString()}/year
+                      <AnimatedCounterInt
+                        value={summary.annual.net}
+                        prefix="€"
+                        suffix="/year"
+                      />
                     </span>
                   </div>
                 </div>
