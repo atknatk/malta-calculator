@@ -104,8 +104,120 @@ export function OrganizationJsonLd() {
         "@type": "Organization",
         name: SITE_NAME,
         url: SITE_URL,
-        logo: `${SITE_URL}/favicon.ico`,
+        logo: `${SITE_URL}/logo.png`,
         sameAs: [],
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    );
+}
+
+export function SiteNavigationJsonLd() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        itemListElement: [
+            {
+                "@type": "SiteNavigationElement",
+                position: 1,
+                name: "Salary Calculator",
+                description: "Calculate your Malta net salary with accurate tax, SSC, and COLA",
+                url: `${SITE_URL}/salary`,
+            },
+            {
+                "@type": "SiteNavigationElement",
+                position: 2,
+                name: "All Calculators",
+                description: "Browse all Malta financial calculators",
+                url: `${SITE_URL}/calculators`,
+            },
+            {
+                "@type": "SiteNavigationElement",
+                position: 3,
+                name: "Blog",
+                description: "Malta tax and salary guides",
+                url: `${SITE_URL}/blog`,
+            },
+            {
+                "@type": "SiteNavigationElement",
+                position: 4,
+                name: "Tax Rates 2026",
+                description: "Complete guide to Malta income tax brackets 2026",
+                url: `${SITE_URL}/blog/malta-tax-rates-2026-complete-guide`,
+            },
+            {
+                "@type": "SiteNavigationElement",
+                position: 5,
+                name: "SSC Guide",
+                description: "Malta SSC contributions explained",
+                url: `${SITE_URL}/blog/malta-ssc-contributions-2026-explained`,
+            },
+            {
+                "@type": "SiteNavigationElement",
+                position: 6,
+                name: "About",
+                description: "About Malta Calculator",
+                url: `${SITE_URL}/about`,
+            },
+        ],
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    );
+}
+
+interface BreadcrumbItem {
+    name: string;
+    url: string;
+}
+
+interface BreadcrumbJsonLdProps {
+    items: BreadcrumbItem[];
+}
+
+export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: items.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: item.name,
+            item: item.url,
+        })),
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    );
+}
+
+export function WebsiteJsonLd() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: SITE_NAME,
+        url: SITE_URL,
+        description: "Free Malta salary calculator with accurate 2024-2026 tax rates, SSC contributions, and COLA calculations.",
+        potentialAction: {
+            "@type": "SearchAction",
+            target: {
+                "@type": "EntryPoint",
+                urlTemplate: `${SITE_URL}/salary?salary={salary}`,
+            },
+            "query-input": "required name=salary",
+        },
     };
 
     return (

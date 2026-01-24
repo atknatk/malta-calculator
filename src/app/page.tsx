@@ -5,6 +5,8 @@ import {
   FAQPageJsonLd,
   OrganizationJsonLd,
   WebApplicationJsonLd,
+  SiteNavigationJsonLd,
+  WebsiteJsonLd,
 } from "@/components/json-ld";
 import type { Metadata } from "next";
 import {
@@ -35,9 +37,11 @@ export default function Home() {
   return (
     <MarketingLayout>
       {/* Structured Data for SEO */}
+      <WebsiteJsonLd />
       <WebApplicationJsonLd />
       <FAQPageJsonLd />
       <OrganizationJsonLd />
+      <SiteNavigationJsonLd />
 
       <main role="main" aria-label="Malta Salary Calculator Homepage">
         <div className="grid gap-8">
