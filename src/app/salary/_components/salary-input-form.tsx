@@ -59,16 +59,14 @@ function PremiumInput({
     e.target.select();
     onFocusChange?.(true);
 
-    // On mobile, scroll input below the floating TOP card so it doesn't overlap
-    // Floating card height (~100px) + safe area + padding = ~140px offset needed
-    if (typeof window !== 'undefined' && window.innerWidth < 768 && inputRef.current) {
+    // On mobile, scroll to top only for the main gross salary input (large prop)
+    // This prevents unwanted scrolling when focusing other inputs
+    if (large && typeof window !== 'undefined' && window.innerWidth < 768 && inputRef.current) {
       // Small delay to let virtual keyboard appear and floating card animate in
       setTimeout(() => {
         const element = inputRef.current;
         if (element) {
-          // const rect = element.getBoundingClientRect();
-          // const floatingCardHeight = 200; // Approximate height of top floating card + padding
-          const scrollTarget = 0; //window.scrollY + rect.top - floatingCardHeight;
+          const scrollTarget = 0;
           window.scrollTo({
             top: Math.max(0, scrollTarget),
             behavior: 'smooth'
