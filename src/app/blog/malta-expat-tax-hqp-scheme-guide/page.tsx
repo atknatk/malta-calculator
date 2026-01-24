@@ -9,6 +9,7 @@ import {
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Calculator, Globe, CheckCircle } from "lucide-react";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
     ...defaultMetadata,
@@ -43,6 +44,17 @@ export const metadata: Metadata = {
 export default function MaltaHQPPage() {
     return (
         <MarketingLayout>
+            <ArticleJsonLd
+                title="Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide"
+                description="Complete guide to Malta's HQP tax scheme with 15% flat tax rate for expats in iGaming, finance, and aviation."
+                slug="malta-expat-tax-hqp-scheme-guide"
+                datePublished="2026-01-01"
+            />
+            <BreadcrumbJsonLd items={[
+                { name: "Home", url: SITE_URL },
+                { name: "Blog", url: `${SITE_URL}/blog` },
+                { name: "HQP Expat Tax", url: `${SITE_URL}/blog/malta-expat-tax-hqp-scheme-guide` },
+            ]} />
             <main role="main" aria-label="Malta HQP Tax Scheme Guide">
                 <Shell className="max-w-4xl py-12">
                     <Link

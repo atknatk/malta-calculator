@@ -9,6 +9,7 @@ import {
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Calculator } from "lucide-react";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
     ...defaultMetadata,
@@ -43,6 +44,17 @@ export const metadata: Metadata = {
 export default function MaltaTaxRates2026Page() {
     return (
         <MarketingLayout>
+            <ArticleJsonLd
+                title="Malta Tax Rates 2026: Complete Guide to Income Tax Brackets"
+                description="Complete guide to Malta income tax rates for 2026 including brackets for single, married, and parent taxpayers."
+                slug="malta-tax-rates-2026-complete-guide"
+                datePublished="2026-01-01"
+            />
+            <BreadcrumbJsonLd items={[
+                { name: "Home", url: SITE_URL },
+                { name: "Blog", url: `${SITE_URL}/blog` },
+                { name: "Tax Rates 2026", url: `${SITE_URL}/blog/malta-tax-rates-2026-complete-guide` },
+            ]} />
             <main role="main" aria-label="Malta Tax Rates 2026 Guide">
                 <Shell className="max-w-4xl py-12">
                     {/* Back Link */}

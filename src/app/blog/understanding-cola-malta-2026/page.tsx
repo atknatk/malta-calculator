@@ -9,6 +9,7 @@ import {
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Calculator, TrendingUp } from "lucide-react";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
     ...defaultMetadata,
@@ -42,6 +43,17 @@ export const metadata: Metadata = {
 export default function MaltaCOLAPage() {
     return (
         <MarketingLayout>
+            <ArticleJsonLd
+                title="Understanding COLA in Malta 2026: Cost of Living Adjustment Guide"
+                description="What is COLA in Malta and how does it affect your salary? Complete guide to the Cost of Living Adjustment."
+                slug="understanding-cola-malta-2026"
+                datePublished="2026-01-01"
+            />
+            <BreadcrumbJsonLd items={[
+                { name: "Home", url: SITE_URL },
+                { name: "Blog", url: `${SITE_URL}/blog` },
+                { name: "COLA Guide 2026", url: `${SITE_URL}/blog/understanding-cola-malta-2026` },
+            ]} />
             <main role="main" aria-label="Malta COLA 2026 Guide">
                 <Shell className="max-w-4xl py-12">
                     <Link

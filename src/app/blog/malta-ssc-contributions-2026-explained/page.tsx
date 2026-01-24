@@ -9,6 +9,7 @@ import {
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Calculator } from "lucide-react";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
     ...defaultMetadata,
@@ -43,6 +44,17 @@ export const metadata: Metadata = {
 export default function MaltaSSCPage() {
     return (
         <MarketingLayout>
+            <ArticleJsonLd
+                title="Malta SSC Contributions 2026: Rates, Caps & Categories Explained"
+                description="Complete guide to Malta Social Security Contributions (SSC) for 2026 including Class 1 rates and categories."
+                slug="malta-ssc-contributions-2026-explained"
+                datePublished="2026-01-01"
+            />
+            <BreadcrumbJsonLd items={[
+                { name: "Home", url: SITE_URL },
+                { name: "Blog", url: `${SITE_URL}/blog` },
+                { name: "SSC Contributions 2026", url: `${SITE_URL}/blog/malta-ssc-contributions-2026-explained` },
+            ]} />
             <main role="main" aria-label="Malta SSC Contributions 2026 Guide">
                 <Shell className="max-w-4xl py-12">
                     <Link
