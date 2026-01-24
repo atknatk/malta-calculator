@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 export const SITE_NAME = "Malta Calculator";
 export const SITE_URL = "https://maltacalculator.com";
@@ -68,4 +68,13 @@ export const ogMetadata: Metadata["openGraph"] = {
   locale: "en_MT",
   url: SITE_URL,
   siteName: SITE_NAME,
+};
+
+// Viewport configuration to prevent iOS Safari zoom on input focus
+export const viewportConfig: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };

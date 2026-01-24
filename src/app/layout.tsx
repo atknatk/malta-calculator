@@ -13,6 +13,7 @@ import {
   defaultMetadata,
   ogMetadata,
   twitterMetadata,
+  viewportConfig,
 } from "@/app/shared-metadata";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
@@ -31,6 +32,8 @@ export const metadata: Metadata = {
     ...ogMetadata,
   },
 };
+
+export const viewport = viewportConfig;
 export default function RootLayout({
   children,
 }: Readonly<{
