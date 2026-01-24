@@ -210,6 +210,47 @@ const blogPosts: BlogPost[] = [
         readTime: "8 min read",
         category: "Expat Guide",
     },
+    // Transport blog posts
+    {
+        slug: "malta-vehicle-registration-tax-guide-2026",
+        title: "Malta Vehicle Registration Tax 2026: CO2-Based Tax Guide",
+        description: "Malta vehicle registration tax guide. CO2 emission bands, electric vehicle exemptions, age depreciation, and EU/non-EU import rules.",
+        date: "January 2026",
+        readTime: "8 min read",
+        category: "Transport",
+    },
+    {
+        slug: "malta-road-license-guide-2026",
+        title: "Malta Road License 2026: Annual Circulation Tax Guide",
+        description: "Malta road license guide. Annual fees by engine capacity, electric vehicle exemptions, vintage rates, and payment options.",
+        date: "January 2026",
+        readTime: "6 min read",
+        category: "Transport",
+    },
+    {
+        slug: "malta-drivers-license-guide-2026",
+        title: "Malta Driving License 2026: Fees, Tests & Requirements",
+        description: "Malta driving license guide. License fees, theory and practical tests, categories, and age requirements.",
+        date: "January 2026",
+        readTime: "7 min read",
+        category: "Transport",
+    },
+    {
+        slug: "malta-vrt-guide-2026",
+        title: "Malta VRT 2026: Vehicle Roadworthiness Test Guide",
+        description: "Malta VRT (MOT) guide. Test fees, frequency by vehicle type, what to bring, and re-test information.",
+        date: "January 2026",
+        readTime: "5 min read",
+        category: "Transport",
+    },
+    {
+        slug: "malta-import-vehicle-guide-2026",
+        title: "Importing a Vehicle to Malta 2026: Complete Guide",
+        description: "Malta vehicle import guide. EU and non-EU rules, registration tax, VAT, customs duties, and step-by-step process.",
+        date: "January 2026",
+        readTime: "9 min read",
+        category: "Transport",
+    },
 ];
 
 export default function BlogPage() {
@@ -257,3 +298,6 @@ export default function BlogPage() {
         </MarketingLayout>
     );
 }
+
+export const revalidate = false;          // tamamen statik (build-time)
+export const dynamic = 'force-static';    // bu segmenti statik olmaya zorla

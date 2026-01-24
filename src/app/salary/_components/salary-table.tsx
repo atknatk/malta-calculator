@@ -199,13 +199,15 @@ export function SalaryTable({ data, setData }:
       discr: false,
     })
   const [rowSelection, setRowSelection] = React.useState({})
-  const handleInputChange = (index: number, key: keyof MonthlySalaryOutput, value: string) => {
-    const updatedData: any = [...data];
-    updatedData[index][key] = value;
-    setData(updatedData);
-  };
+  const handleInputChange = React.useCallback((index: number, key: keyof MonthlySalaryOutput, value: string) => {
+    setData((prevData) => {
+      const updatedData = [...prevData] as any;
+      updatedData[index][key] = value;
+      return updatedData;
+    });
+  }, [setData]);
 
-  const columns = React.useMemo(() => getColumns(handleInputChange), [data]);
+  const columns = React.useMemo(() => getColumns(handleInputChange), [handleInputChange]);
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
 
   const table = useReactTable({

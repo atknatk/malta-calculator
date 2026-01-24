@@ -19,6 +19,7 @@ import {
     ArrowRight,
     Sparkles,
     Landmark,
+    Car,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -268,6 +269,49 @@ const categories: CalculatorCategory[] = [
             },
         ],
     },
+    {
+        title: "Transport & Vehicles",
+        titleTr: "Ulaşım & Araçlar",
+        icon: <Car className="h-6 w-6 text-white" />,
+        gradient: "from-slate-500 to-zinc-600",
+        items: [
+            {
+                href: "/calculators/vehicle-registration-tax",
+                title: "Vehicle Registration Tax",
+                titleTr: "Araç Kayıt Vergisi",
+                description: "CO2-based registration tax",
+                available: true,
+            },
+            {
+                href: "/calculators/road-license",
+                title: "Road License",
+                titleTr: "Yıllık Araç Vergisi",
+                description: "Annual circulation tax by engine",
+                available: true,
+            },
+            {
+                href: "/calculators/drivers-license",
+                title: "Driver's License Fees",
+                titleTr: "Ehliyet Ücretleri",
+                description: "License, tests & renewal costs",
+                available: true,
+            },
+            {
+                href: "/calculators/vrt",
+                title: "VRT (MOT) Fees",
+                titleTr: "Muayene Ücreti",
+                description: "Vehicle roadworthiness test costs",
+                available: true,
+            },
+            {
+                href: "/calculators/import-vehicle",
+                title: "Import Vehicle",
+                titleTr: "Araç İthalatı",
+                description: "Total cost to import a vehicle",
+                available: true,
+            },
+        ],
+    },
 ];
 
 export default function CalculatorsPage() {
@@ -355,7 +399,7 @@ export default function CalculatorsPage() {
                     <div className="mt-20 p-8 rounded-3xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                             <div>
-                                <div className="text-3xl font-bold text-gradient">9</div>
+                                <div className="text-3xl font-bold text-gradient">14</div>
                                 <div className="text-sm text-muted-foreground">Active Calculators</div>
                             </div>
                             <div>
@@ -363,7 +407,7 @@ export default function CalculatorsPage() {
                                 <div className="text-sm text-muted-foreground">Coming Soon</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-bold text-gradient">7</div>
+                                <div className="text-3xl font-bold text-gradient">8</div>
                                 <div className="text-sm text-muted-foreground">Categories</div>
                             </div>
                             <div>
@@ -377,3 +421,6 @@ export default function CalculatorsPage() {
         </MarketingLayout>
     );
 }
+
+export const revalidate = false;          // tamamen statik (build-time)
+export const dynamic = 'force-static';    // bu segmenti statik olmaya zorla

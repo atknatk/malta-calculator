@@ -26,3 +26,6 @@ export default function RetirementAgePage() {
         </MarketingLayout>
     );
 }
+
+export const revalidate = false;          // tamamen statik (build-time)
+export const dynamic = 'force-static';    // bu segmenti statik olmaya zorla

@@ -3,7 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import { Analytics } from "@vercel/analytics/next"
 import LocalFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 import Background from "./_components/background";
@@ -45,6 +45,7 @@ export default function RootLayout({
           } ${calSans.variable}`}
       >
         <SpeedInsights />
+        <Analytics />
         <NuqsAdapter>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <Background>{children}</Background>
