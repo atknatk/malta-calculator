@@ -427,7 +427,20 @@ export function SalaryCalculatorClient({
             }}
           />
         ) : (
-          <SalaryTable data={data} setData={setData} />
+          <SalaryTable
+            data={data}
+            setData={setData}
+            onBonusChange={(month, value) => {
+              // Update URL state with new bonus value
+              const newBonuses = { ...formValues.monthlyBonuses };
+              if (value > 0) {
+                newBonuses[month] = value;
+              } else {
+                delete newBonuses[month];
+              }
+              handleValuesChange({ ...formValues, monthlyBonuses: newBonuses });
+            }}
+          />
         )}
       </SalaryFormCard>
 

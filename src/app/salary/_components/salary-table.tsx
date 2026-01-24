@@ -31,11 +31,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { MonthlySalaryOutput } from "@/types/salary-calculator-type"
+import { Month, MonthlySalaryOutput } from "@/types/salary-calculator-type"
 import { formatMoney } from "@/utils/money-format"
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void
+    onBonusChange?: (month: Month, value: number) => void
   }
 }
 
@@ -86,7 +87,50 @@ const EditableCell = ({
       onChange={e => setValue(e.target.value)}
       onBlur={onBlur}
       onKeyUp={handleKeyPress}
+    />
+  )
+};
 
+// Special Editable Cell for Bonus that triggers onBonusChange callback
+const BonusEditableCell = ({
+  getValue,
+  row,
+  table,
+}: {
+  getValue: any;
+  row: { index: number; original: MonthlySalaryOutput };
+  table: any;
+}) => {
+  const initialValue = getValue();
+  const [value, setValue] = React.useState(initialValue)
+
+  const onBlur = () => {
+    const numericValue = parseFloat(value as string);
+    const finalValue = isNaN(numericValue) ? 0 : numericValue;
+    // Trigger the callback to update URL state
+    table.options.meta?.onBonusChange?.(row.original.month, finalValue);
+  }
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter') {
+      onBlur();
+    }
+  };
+
+  React.useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  return (
+    <Input
+      value={value as string}
+      className="w-[5rem] h-8 py-0 px-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+      type="number"
+      step={100}
+      onFocus={e => { e.target.select() }}
+      onChange={e => setValue(e.target.value)}
+      onBlur={onBlur}
+      onKeyUp={handleKeyPress}
     />
   )
 };
@@ -122,7 +166,7 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
   {
     accessorKey: "bonus",
     header: "Bonus",
-    cell: EditableCell,
+    cell: BonusEditableCell,
   },
   {
     accessorKey: "grossTotal",
@@ -176,10 +220,11 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
   },
 ]
 
-export function SalaryTable({ data, setData }:
+export function SalaryTable({ data, setData, onBonusChange }:
   {
     data: MonthlySalaryOutput[],
-    setData: React.Dispatch<React.SetStateAction<MonthlySalaryOutput[]>>
+    setData: React.Dispatch<React.SetStateAction<MonthlySalaryOutput[]>>,
+    onBonusChange?: (month: Month, value: number) => void
   }
 ) {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -268,6 +313,7 @@ export function SalaryTable({ data, setData }:
           })
         )
       },
+      onBonusChange,
     },
     state: {
       sorting,
