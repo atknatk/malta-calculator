@@ -205,26 +205,26 @@ export const marketingPagesConfig = [
   {
     href: "/salary",
     title: "Salary",
-    description: "Malta Salary & Tax Calculator",segment: "blog",
+    description: "Malta Salary & Tax Calculator", segment: "blog",
     icon: "book",
-    
+
   },
   {
-    href: "/notice-period",
+    href: "/calculators/notice-period",
     title: "Notice Period",
     description: "All the latest tools build by Malta Calculator.",
     segment: "play",
     icon: "toy-brick",
   },
+  // {
+  //   href: "/calculators/pension",
+  //   title: "Pension",
+  //   description: "All the latest features, fixes and work to Malta Calculator.",
+  //   segment: "changelog",
+  //   icon: "newspaper",
+  // },
   {
-    href: "/pension",
-    title: "Pension",
-    description: "All the latest features, fixes and work to Malta Calculator.",
-    segment: "changelog",
-    icon: "newspaper",
-  },
-  {
-    href: "/vacation",
+    href: "/calculators/vacation",
     title: "Vacation",
     description: "The pricing for Malta Calculator.",
     segment: "pricing",
