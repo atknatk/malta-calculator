@@ -1,5 +1,50 @@
 import { SITE_NAME, SITE_URL } from "@/app/shared-metadata";
 
+interface ArticleJsonLdProps {
+    title: string;
+    description: string;
+    slug: string;
+    datePublished: string;
+    dateModified?: string;
+}
+
+export function ArticleJsonLd({ title, description, slug, datePublished, dateModified }: ArticleJsonLdProps) {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: title,
+        description: description,
+        url: `${SITE_URL}/blog/${slug}`,
+        datePublished: datePublished,
+        dateModified: dateModified || datePublished,
+        author: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: SITE_URL,
+        },
+        publisher: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: SITE_URL,
+            logo: {
+                "@type": "ImageObject",
+                url: `${SITE_URL}/icon.png`,
+            },
+        },
+        mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `${SITE_URL}/blog/${slug}`,
+        },
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    );
+}
+
 interface JsonLdProps {
     type: "WebApplication" | "FAQPage" | "Organization";
 }
