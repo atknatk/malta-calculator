@@ -39,6 +39,7 @@ export function MarketingFooter({ className }: Props) {
           <div className="order-2 flex flex-col gap-3 text-sm">
             <p className="font-semibold text-foreground">Company</p>
             <FooterLink href="/about" label="About" />
+            <FooterLink href="/contact" label="Contact" />
             <FooterLink href="/changelog" label="Changelog" />
             <FooterLink href="/terms" label="Terms" />
             <FooterLink href="/privacy" label="Privacy" />

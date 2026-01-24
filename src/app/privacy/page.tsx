@@ -259,7 +259,7 @@ export default function PrivacyPage() {
                                 </div>
                             </div>
                             <p className="text-muted-foreground leading-relaxed mt-4">
-                                To exercise these rights, contact us at <a href="mailto:privacy@maltacalculator.com" className="text-primary hover:underline">privacy@maltacalculator.com</a>. The Malta supervisory authority is the Information and Data Protection Commissioner (IDPC).
+                                To exercise these rights, <a href="/contact" className="text-primary hover:underline">contact us through our contact form</a>. The Malta supervisory authority is the Information and Data Protection Commissioner (IDPC).
                             </p>
                         </section>
 
@@ -295,7 +295,7 @@ export default function PrivacyPage() {
                             </div>
                             <p className="text-muted-foreground leading-relaxed">For privacy-related inquiries:</p>
                             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-                                <p className="text-muted-foreground"><strong>Email:</strong> <a href="mailto:privacy@maltacalculator.com" className="text-primary hover:underline">privacy@maltacalculator.com</a></p>
+                                <p className="text-muted-foreground"><strong>Contact Form:</strong> <a href="/contact" className="text-primary hover:underline">Visit our Contact Page</a></p>
                                 <p className="text-muted-foreground mt-2"><strong>Website:</strong> <a href={SITE_URL} className="text-primary hover:underline">{SITE_URL}</a></p>
                             </div>
                         </section>

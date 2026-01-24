@@ -42,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Company pages
     const companyPages = [
         { url: `${baseUrl}/about`, priority: 0.5, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/contact`, priority: 0.6, changeFrequency: "yearly" as const },
         { url: `${baseUrl}/changelog`, priority: 0.6, changeFrequency: "monthly" as const },
         { url: `${baseUrl}/terms`, priority: 0.3, changeFrequency: "yearly" as const },
         { url: `${baseUrl}/privacy`, priority: 0.3, changeFrequency: "yearly" as const },

@@ -106,7 +106,11 @@ export default function AboutPage() {
                             <h2 className="text-2xl font-semibold mb-4">Contact</h2>
                             <p className="text-muted-foreground leading-relaxed">
                                 Sorularınız veya geri bildirimleriniz için bizimle iletişime geçebilirsiniz.
-                                For questions or feedback, you can reach us through our social media channels.
+                                For questions or feedback, please use our{" "}
+                                <a href="/contact" className="text-primary hover:underline font-medium">
+                                    contact form
+                                </a>
+                                .
                             </p>
                         </section>
                     </article>

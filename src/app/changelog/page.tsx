@@ -351,12 +351,12 @@ export default function ChangelogPage() {
                                 Have a suggestion for a new calculator?
                             </p>
                             <p className="text-sm text-muted-foreground">
-                                We&apos;d love to hear from you! Contact us at{" "}
+                                We&apos;d love to hear from you!{" "}
                                 <a
-                                    href="mailto:feedback@maltacalculator.com"
-                                    className="text-primary hover:underline"
+                                    href="/contact"
+                                    className="text-primary hover:underline font-medium"
                                 >
-                                    feedback@maltacalculator.com
+                                    Send us your feedback →
                                 </a>
                             </p>
                         </section>

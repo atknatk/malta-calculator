@@ -194,7 +194,7 @@ export default function TermsPage() {
                             </p>
                             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
                                 <p className="text-muted-foreground">
-                                    <strong>Email:</strong> <a href="mailto:legal@maltacalculator.com" className="text-primary hover:underline">legal@maltacalculator.com</a>
+                                    <strong>Contact Form:</strong> <a href="/contact" className="text-primary hover:underline">Visit our Contact Page</a>
                                 </p>
                                 <p className="text-muted-foreground mt-2">
                                     <strong>Website:</strong> <a href={SITE_URL} className="text-primary hover:underline">{SITE_URL}</a>
