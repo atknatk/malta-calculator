@@ -312,3 +312,50 @@ export function WebsiteJsonLd() {
         />
     );
 }
+
+interface CollectionItem {
+    name: string;
+    description: string;
+    url: string;
+}
+
+interface CollectionPageJsonLdProps {
+    name: string;
+    description: string;
+    url: string;
+    items: CollectionItem[];
+}
+
+export function CollectionPageJsonLd({ name, description, url, items }: CollectionPageJsonLdProps) {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: name,
+        description: description,
+        url: url,
+        provider: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: SITE_URL,
+        },
+        mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: items.length,
+            itemListElement: items.map((item, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: item.name,
+                description: item.description,
+                url: item.url,
+            })),
+        },
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    );
+}
+

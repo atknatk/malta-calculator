@@ -22,12 +22,13 @@ import {
     Car,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
     ...defaultMetadata,
     title: "All Calculators | Malta Calculator",
     description:
-        "Malta için tüm finansal hesaplayıcılar. Maaş, vergi, SSC, emeklilik, çocuk yardımı, kira vergisi ve daha fazlası. All financial calculators for Malta - salary, tax, SSC, pension, childcare, rental tax and more.",
+        "All financial calculators for Malta - salary, tax, SSC, pension, childcare, rental tax and more. Comprehensive tools for residents and workers.",
     alternates: {
         canonical: `${SITE_URL}/calculators`,
     },
@@ -45,14 +46,12 @@ export const metadata: Metadata = {
 interface CalculatorItem {
     href: string;
     title: string;
-    titleTr: string;
     description: string;
     available: boolean;
 }
 
 interface CalculatorCategory {
     title: string;
-    titleTr: string;
     icon: React.ReactNode;
     gradient: string;
     items: CalculatorItem[];
@@ -61,49 +60,42 @@ interface CalculatorCategory {
 const categories: CalculatorCategory[] = [
     {
         title: "Employment & Salary",
-        titleTr: "İstihdam & Maaş",
         icon: <Briefcase className="h-6 w-6 text-white" />,
         gradient: "from-amber-500 to-orange-600",
         items: [
             {
                 href: "/salary",
                 title: "Salary Calculator",
-                titleTr: "Maaş Hesaplayıcı",
                 description: "Net salary with tax, SSC & COLA",
                 available: true,
             },
             {
                 href: "/calculators/notice-period",
                 title: "Notice Period",
-                titleTr: "İhbar Süresi",
                 description: "Required notice based on service years",
                 available: true,
             },
             {
                 href: "/calculators/overtime",
                 title: "Overtime Calculator",
-                titleTr: "Fazla Mesai",
                 description: "Overtime pay at 1.5x and 2x rates",
                 available: true,
             },
             {
                 href: "/calculators/bonus-tax",
                 title: "Bonus Tax",
-                titleTr: "Bonus Vergisi",
                 description: "Tax on one-time bonuses",
                 available: false,
             },
             {
                 href: "/calculators/part-time",
                 title: "Part-Time Salary",
-                titleTr: "Yarı Zamanlı Maaş",
                 description: "Pro-rata calculations for part-time",
                 available: false,
             },
             {
                 href: "/calculators/expatriate-tax",
                 title: "Expatriate Tax (HQP)",
-                titleTr: "Yabancı Vergi (HQP)",
                 description: "15% flat tax for highly qualified persons",
                 available: false,
             },
@@ -111,35 +103,30 @@ const categories: CalculatorCategory[] = [
     },
     {
         title: "Family & Children",
-        titleTr: "Aile & Çocuk",
         icon: <Baby className="h-6 w-6 text-white" />,
         gradient: "from-pink-500 to-rose-600",
         items: [
             {
                 href: "/calculators/childcare",
                 title: "Childcare Subsidy",
-                titleTr: "Kreş Yardımı",
                 description: "Childcare support based on income",
                 available: false,
             },
             {
                 href: "/calculators/maternity",
                 title: "Maternity/Paternity Leave",
-                titleTr: "Doğum İzni",
                 description: "Leave duration and pay calculation",
                 available: false,
             },
             {
                 href: "/calculators/children-allowance",
                 title: "Children&apos;s Allowance",
-                titleTr: "Çocuk Yardımı",
                 description: "Monthly allowance per child",
                 available: false,
             },
             {
                 href: "/calculators/in-work-benefit",
                 title: "In-Work Benefit",
-                titleTr: "Çalışma Desteği",
                 description: "Support for low-income working families",
                 available: false,
             },
@@ -147,28 +134,24 @@ const categories: CalculatorCategory[] = [
     },
     {
         title: "Property & Housing",
-        titleTr: "Gayrimenkul & Konut",
         icon: <Home className="h-6 w-6 text-white" />,
         gradient: "from-emerald-500 to-green-600",
         items: [
             {
                 href: "/calculators/stamp-duty",
                 title: "Stamp Duty",
-                titleTr: "Damga Vergisi",
                 description: "Property purchase stamp duty (5% / 3.5%)",
                 available: true,
             },
             {
                 href: "/calculators/rental-tax",
                 title: "Rental Tax",
-                titleTr: "Kira Vergisi",
                 description: "15% flat rate rental income tax",
                 available: false,
             },
             {
                 href: "/calculators/first-time-buyer",
                 title: "First-Time Buyer",
-                titleTr: "İlk Ev Alımı",
                 description: "First-time buyer scheme benefits",
                 available: false,
             },
@@ -176,28 +159,24 @@ const categories: CalculatorCategory[] = [
     },
     {
         title: "Banking & Loans",
-        titleTr: "Bankacılık & Krediler",
         icon: <Landmark className="h-6 w-6 text-white" />,
         gradient: "from-sky-500 to-blue-600",
         items: [
             {
                 href: "/calculators/mortgage",
                 title: "Mortgage Calculator",
-                titleTr: "Konut Kredisi",
                 description: "Home loan with 10% min deposit",
                 available: true,
             },
             {
                 href: "/calculators/savings-interest",
                 title: "Savings Interest",
-                titleTr: "Mevduat Faizi",
                 description: "Compound interest with 15% tax",
                 available: true,
             },
             {
                 href: "/calculators/personal-loan",
                 title: "Personal Loan",
-                titleTr: "Bireysel Kredi",
                 description: "Personal loan repayment calculator",
                 available: true,
             },
@@ -205,21 +184,18 @@ const categories: CalculatorCategory[] = [
     },
     {
         title: "Retirement & Savings",
-        titleTr: "Emeklilik & Tasarruf",
         icon: <Palmtree className="h-6 w-6 text-white" />,
         gradient: "from-blue-500 to-cyan-600",
         items: [
             {
                 href: "/calculators/pension",
                 title: "Pension Estimator",
-                titleTr: "Emekli Maaşı Tahmini",
                 description: "Estimated state pension amount",
                 available: false,
             },
             {
                 href: "/calculators/retirement-age",
                 title: "Retirement Age",
-                titleTr: "Emeklilik Yaşı",
                 description: "Your retirement age calculation",
                 available: true,
             },
@@ -227,21 +203,18 @@ const categories: CalculatorCategory[] = [
     },
     {
         title: "Self-Employment",
-        titleTr: "Serbest Meslek",
         icon: <Calculator className="h-6 w-6 text-white" />,
         gradient: "from-violet-500 to-purple-600",
         items: [
             {
                 href: "/calculators/self-employed-tax",
                 title: "Self-Employed Tax",
-                titleTr: "Serbest Meslek Vergisi",
                 description: "Income tax for self-employed",
                 available: false,
             },
             {
                 href: "/calculators/self-employed-ssc",
                 title: "Self-Employed SSC",
-                titleTr: "Serbest Meslek SSC",
                 description: "Class 2 SSC contributions",
                 available: false,
             },
@@ -249,21 +222,18 @@ const categories: CalculatorCategory[] = [
     },
     {
         title: "Leave & Time Off",
-        titleTr: "İzin & Tatil",
         icon: <Calendar className="h-6 w-6 text-white" />,
         gradient: "from-teal-500 to-emerald-600",
         items: [
             {
                 href: "/calculators/vacation",
                 title: "Vacation Days",
-                titleTr: "Yıllık İzin",
                 description: "Annual leave entitlement (min 192h)",
                 available: true,
             },
             {
                 href: "/calculators/sick-leave",
                 title: "Sick Leave",
-                titleTr: "Hastalık İzni",
                 description: "Sick leave duration and pay",
                 available: false,
             },
@@ -271,42 +241,36 @@ const categories: CalculatorCategory[] = [
     },
     {
         title: "Transport & Vehicles",
-        titleTr: "Ulaşım & Araçlar",
         icon: <Car className="h-6 w-6 text-white" />,
         gradient: "from-slate-500 to-zinc-600",
         items: [
             {
                 href: "/calculators/vehicle-registration-tax",
                 title: "Vehicle Registration Tax",
-                titleTr: "Araç Kayıt Vergisi",
                 description: "CO2-based registration tax",
                 available: true,
             },
             {
                 href: "/calculators/road-license",
                 title: "Road License",
-                titleTr: "Yıllık Araç Vergisi",
                 description: "Annual circulation tax by engine",
                 available: true,
             },
             {
                 href: "/calculators/drivers-license",
                 title: "Driver's License Fees",
-                titleTr: "Ehliyet Ücretleri",
                 description: "License, tests & renewal costs",
                 available: true,
             },
             {
                 href: "/calculators/vrt",
                 title: "VRT (MOT) Fees",
-                titleTr: "Muayene Ücreti",
                 description: "Vehicle roadworthiness test costs",
                 available: true,
             },
             {
                 href: "/calculators/import-vehicle",
                 title: "Import Vehicle",
-                titleTr: "Araç İthalatı",
                 description: "Total cost to import a vehicle",
                 available: true,
             },
@@ -315,8 +279,29 @@ const categories: CalculatorCategory[] = [
 ];
 
 export default function CalculatorsPage() {
+    // Prepare items for JSON-LD
+    const allCalculators = categories.flatMap((cat) =>
+        cat.items.map((item) => ({
+            name: item.title,
+            description: item.description,
+            url: `${SITE_URL}${item.href}`,
+        }))
+    );
+
     return (
         <MarketingLayout>
+            <BreadcrumbJsonLd
+                items={[
+                    { name: "Home", url: SITE_URL },
+                    { name: "All Calculators", url: `${SITE_URL}/calculators` },
+                ]}
+            />
+            <CollectionPageJsonLd
+                name="All Malta Calculators"
+                description="Comprehensive financial calculation tools for Malta residents and workers. Salary, tax, mortgage, loan, vehicle, and more."
+                url={`${SITE_URL}/calculators`}
+                items={allCalculators}
+            />
             <main role="main" aria-label="All Malta Calculators">
                 <Shell className="py-12">
                     {/* Header */}
@@ -329,9 +314,7 @@ export default function CalculatorsPage() {
                             All Malta Calculators
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                            Malta&apos;da yaşayan ve çalışanlar için kapsamlı finansal hesaplama araçları.
-                            <br />
-                            Comprehensive financial calculation tools for Malta residents.
+                            Comprehensive financial calculation tools for Malta residents and workers.
                         </p>
                     </div>
 
@@ -353,7 +336,6 @@ export default function CalculatorsPage() {
                                         <h2 className="text-2xl font-cal font-bold">
                                             {category.title}
                                         </h2>
-                                        <p className="text-muted-foreground">{category.titleTr}</p>
                                     </div>
                                 </div>
 
@@ -382,10 +364,7 @@ export default function CalculatorsPage() {
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className="text-sm text-muted-foreground mb-1">
-                                                {item.titleTr}
-                                            </p>
-                                            <p className="text-sm text-muted-foreground/70">
+                                            <p className="text-sm text-muted-foreground">
                                                 {item.description}
                                             </p>
                                         </Link>
