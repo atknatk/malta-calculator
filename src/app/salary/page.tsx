@@ -28,13 +28,13 @@ export async function generateMetadata({
 
   const taxTypeLabel =
     params.taxType === "single"
-      ? "Bekar / Single"
+      ? "Single"
       : params.taxType === "married"
-        ? "Evli / Married"
-        : "Ebeveyn / Parent";
+        ? "Married"
+        : "Parent";
 
-  const title = `Malta Net Maaş: ${formattedSalary}/yıl | ${params.year} Hesaplama`;
-  const description = `Malta ${params.year} net maaş hesaplayıcı. Brüt maaş: ${formattedSalary}, Vergi tipi: ${taxTypeLabel}, SSC: ${params.sscCategory}. Vergi kesintisi, SSC katkısı ve COLA dahil detaylı döküm. Calculate Malta net salary with tax deductions, SSC contributions and COLA breakdown.`;
+  const title = `Malta Salary Calculator: ${formattedSalary}/year | ${params.year} Net Pay`;
+  const description = `Calculate your Malta net salary for ${params.year}. Gross salary: ${formattedSalary}, Tax status: ${taxTypeLabel}, SSC Category: ${params.sscCategory}. Detailed breakdown including tax deductions, SSC contributions, and COLA.`;
 
   return {
     ...defaultMetadata,

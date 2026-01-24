@@ -1,31 +1,22 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
-import { Clock, ArrowLeft, Bell } from "lucide-react";
+import { Clock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 interface ComingSoonPageProps {
     title: string;
-    titleTr: string;
     description: string;
-    descriptionTr: string;
     icon: React.ReactNode;
     category: string;
-    categoryTr: string;
     features: string[];
-    featuresTr: string[];
 }
 
 export function ComingSoonPage({
     title,
-    titleTr,
     description,
-    descriptionTr,
     icon,
     category,
-    categoryTr,
     features,
-    featuresTr,
 }: ComingSoonPageProps) {
     return (
         <MarketingLayout>
@@ -38,12 +29,12 @@ export function ComingSoonPage({
                             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
                         >
                             <ArrowLeft className="h-4 w-4" />
-                            Tüm Hesaplayıcılar / All Calculators
+                            All Calculators
                         </Link>
 
                         {/* Category Badge */}
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-6">
-                            {category} / {categoryTr}
+                            {category}
                         </div>
 
                         {/* Icon */}
@@ -52,56 +43,39 @@ export function ComingSoonPage({
                         </div>
 
                         {/* Title */}
-                        <h1 className="font-cal text-4xl md:text-5xl font-bold mb-4">
+                        <h1 className="font-cal text-4xl md:text-5xl font-bold mb-6">
                             {title}
                         </h1>
-                        <p className="text-lg text-muted-foreground mb-2">{titleTr}</p>
 
                         {/* Coming Soon Badge */}
                         <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold mb-8">
                             <Clock className="h-5 w-5" />
-                            Coming Soon / Çok Yakında
+                            Coming Soon
                         </div>
 
                         {/* Description */}
                         <div className="max-w-2xl mx-auto mb-12">
-                            <p className="text-muted-foreground leading-relaxed mb-4">
+                            <p className="text-lg text-muted-foreground leading-relaxed">
                                 {description}
-                            </p>
-                            <p className="text-muted-foreground leading-relaxed">
-                                {descriptionTr}
                             </p>
                         </div>
 
                         {/* Features Preview */}
                         <div className="bg-muted/30 rounded-3xl p-8 mb-12">
                             <h2 className="text-xl font-semibold mb-6">
-                                Planned Features / Planlanan Özellikler
+                                Planned Features
                             </h2>
-                            <div className="grid md:grid-cols-2 gap-4 text-left">
-                                <ul className="space-y-3">
-                                    {features.map((feature, i) => (
-                                        <li
-                                            key={i}
-                                            className="flex items-start gap-2 text-muted-foreground"
-                                        >
-                                            <span className="text-primary mt-1">✓</span>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <ul className="space-y-3">
-                                    {featuresTr.map((feature, i) => (
-                                        <li
-                                            key={i}
-                                            className="flex items-start gap-2 text-muted-foreground"
-                                        >
-                                            <span className="text-secondary mt-1">✓</span>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                            <ul className="grid md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
+                                {features.map((feature, i) => (
+                                    <li
+                                        key={i}
+                                        className="flex items-start gap-2 text-muted-foreground"
+                                    >
+                                        <span className="text-primary mt-1">✓</span>
+                                        {feature}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
 
                         {/* CTA */}

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     ...defaultMetadata,
     title: "Privacy Policy | Malta Calculator",
     description:
-        "Malta Calculator Gizlilik Politikası. Verilerinizi nasıl topladığımız, kullandığımız ve koruduğumuz hakkında bilgi. Privacy Policy for Malta Calculator - how we collect, use, and protect your data.",
+        "Privacy Policy for Malta Calculator. Learn how we collect, use, and protect your data. GDPR compliant, no personal financial data stored.",
     alternates: {
         canonical: `${SITE_URL}/privacy`,
     },

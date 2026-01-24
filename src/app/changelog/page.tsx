@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     ...defaultMetadata,
     title: "Changelog | Malta Calculator",
     description:
-        "Malta Calculator değişiklik geçmişi. Yeni özellikler, iyileştirmeler ve güncellemeler. Changelog for Malta Calculator - new features, improvements, and updates.",
+        "Changelog for Malta Calculator - new features, improvements, and updates. Track all changes to our Malta salary and tax calculators.",
     alternates: {
         canonical: `${SITE_URL}/changelog`,
     },

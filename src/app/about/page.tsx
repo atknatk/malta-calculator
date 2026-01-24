@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     ...defaultMetadata,
     title: "About Us | Malta Calculator",
     description:
-        "Malta Calculator hakkında. Malta'da yaşayan ve çalışanlar için ücretsiz maaş, vergi ve SSC hesaplama araçları sunan bağımsız bir platform. Learn about Malta Calculator - free salary, tax and SSC calculation tools for residents and workers in Malta.",
+        "Learn about Malta Calculator - free salary, tax, and SSC calculation tools for residents and workers in Malta. Independent platform with accurate 2024-2026 tax data.",
     alternates: {
         canonical: `${SITE_URL}/about`,
     },

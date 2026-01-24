@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     ...defaultMetadata,
     title: "Terms of Service | Malta Calculator",
     description:
-        "Malta Calculator Kullanım Şartları. Hizmetlerimizi kullanırken geçerli olan kurallar ve koşullar. Terms of Service for Malta Calculator - rules and conditions that apply when using our services.",
+        "Terms of Service for Malta Calculator. Rules and conditions that apply when using our free salary, tax, and SSC calculation services.",
     alternates: {
         canonical: `${SITE_URL}/terms`,
     },

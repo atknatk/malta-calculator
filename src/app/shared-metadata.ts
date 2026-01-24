@@ -3,15 +3,17 @@ import type { Metadata } from "next";
 export const SITE_NAME = "Malta Calculator";
 export const SITE_URL = "https://maltacalculator.com";
 
-export const TITLE = "Malta Salary Calculator 2026 | Tax, SSC & Net Pay";
+export const TITLE = "Malta Salary Calculator 2026 | Free Tax, SSC & Net Pay Calculator";
 export const DESCRIPTION =
-  "Malta'da net maaşınızı hesaplayın. 2024-2026 vergi dilimleri, SSC katkıları ve COLA ile doğru hesaplama. Bekar ve evli vergi mükellefleri için ücretsiz, anlık sonuçlar. Calculate your Malta net salary with accurate tax brackets, SSC contributions, and COLA.";
+  "Calculate your Malta net salary with accurate 2024-2026 tax brackets, SSC contributions, and COLA. Free instant results for single, married, and parent taxpayers. The #1 Malta salary calculator.";
 
 export const KEYWORDS = [
   "Malta salary calculator",
+  "Malta salary calculator 2026",
   "Malta tax calculator",
   "Malta net salary",
   "Malta gross to net",
+  "salary calculator Malta",
   "Malta SSC calculator",
   "Malta social security contributions",
   "Malta COLA",
@@ -20,8 +22,8 @@ export const KEYWORDS = [
   "Malta 2026 tax rates",
   "Malta 2025 tax rates",
   "Malta 2024 tax rates",
-  "Malta maaş hesaplama",
-  "Malta vergi hesaplama",
+  "net salary Malta",
+  "Malta salary",
 ];
 
 export const defaultMetadata: Metadata = {
