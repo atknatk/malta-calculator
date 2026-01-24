@@ -58,6 +58,22 @@ function PremiumInput({
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.target.select();
     onFocusChange?.(true);
+
+    // On mobile, scroll input to top so the floating bottom card doesn't overlap
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && inputRef.current) {
+      // Small delay to let virtual keyboard appear
+      setTimeout(() => {
+        const element = inputRef.current;
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const scrollTarget = window.scrollY + rect.top - 120; // 120px from top for better visibility
+          window.scrollTo({
+            top: Math.max(0, scrollTarget),
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
   };
 
   const handleBlur = () => {

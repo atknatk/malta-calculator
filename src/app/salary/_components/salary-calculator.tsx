@@ -354,62 +354,73 @@ export function SalaryCalculatorClient({
         )}
       </SalaryFormCard>
 
-      {/* Mobile Floating Net Salary Card - Only visible on mobile when salary input is focused */}
+      {/* Mobile Floating Net Salary Card - iOS Liquid Glass Effect */}
       <AnimatePresence>
         {isMobile && isSalaryInputFocused && summary && (
           <motion.div
-            initial={{ y: 100, opacity: 0, scale: 0.95 }}
+            initial={{ y: 100, opacity: 0, scale: 0.9 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 100, opacity: 0, scale: 0.95 }}
+            exit={{ y: 100, opacity: 0, scale: 0.9 }}
             transition={{
               type: "spring",
-              stiffness: 400,
-              damping: 30,
+              stiffness: 300,
+              damping: 25,
               mass: 0.8,
             }}
-            className="fixed bottom-0 left-0 right-0 z-50 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
+            className="fixed bottom-0 left-0 right-0 z-50 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
           >
-            <div className="relative overflow-hidden rounded-2xl">
-              {/* Glassmorphism background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-green-500/90 via-emerald-500/90 to-teal-500/90 backdrop-blur-xl" />
+            <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+              {/* iOS Liquid Glass Base - Multiple translucent layers */}
+              <div className="absolute inset-0 bg-white/70 dark:bg-gray-900/70" />
 
-              {/* Animated shimmer effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                animate={{ x: ["-100%", "200%"] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              />
+              {/* Frosted glass blur layer */}
+              <div className="absolute inset-0 backdrop-blur-2xl backdrop-saturate-150" />
+
+              {/* Subtle gradient overlay for depth */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-white/20 dark:from-white/10 dark:to-white/5" />
+
+              {/* Top highlight edge - liquid glass reflection */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/30" />
+
+              {/* Subtle inner glow */}
+              <div className="absolute inset-0 rounded-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]" />
+
+              {/* Border */}
+              <div className="absolute inset-0 rounded-3xl border border-white/50 dark:border-white/20" />
 
               {/* Content */}
               <div className="relative px-5 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm">
-                      <Wallet className="h-5 w-5 text-white" />
+                    {/* Icon with frosted background */}
+                    <div className="p-2.5 rounded-2xl bg-green-500/15 dark:bg-green-400/20 backdrop-blur-sm border border-green-500/20">
+                      <Wallet className="h-5 w-5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <span className="text-white/80 text-xs font-medium uppercase tracking-wider block">Monthly Net</span>
-                      <span className="text-white/60 text-[10px]">After tax & SSC</span>
+                      <span className="text-gray-600 dark:text-gray-300 text-xs font-semibold uppercase tracking-wider block">
+                        Monthly Net
+                      </span>
+                      <span className="text-gray-400 dark:text-gray-500 text-[10px]">
+                        After tax & SSC
+                      </span>
                     </div>
                   </div>
                   <div className="text-right">
                     <motion.span
                       key={summary.monthly.net}
-                      initial={{ scale: 1.1, opacity: 0 }}
+                      initial={{ scale: 1.05, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg block"
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400 block"
                     >
                       €{summary.monthly.net.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </motion.span>
-                    <span className="text-white/70 text-xs">
+                    <span className="text-gray-500 dark:text-gray-400 text-xs font-medium">
                       €{Math.round(summary.annual.net).toLocaleString()}/year
                     </span>
                   </div>
                 </div>
               </div>
-
-              {/* Bottom glow effect */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-green-400/50 blur-2xl" />
             </div>
           </motion.div>
         )}
