@@ -15,9 +15,9 @@ export function Hero() {
   }, []);
 
   return (
-    <div className="relative min-h-[85vh] flex w-full flex-col items-center justify-center gap-8 px-4 py-16 text-center overflow-hidden">
-      {/* Animated Floating Orbs - Always visible */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="relative min-h-[85vh] flex w-full flex-col items-center justify-center gap-8 py-16 text-center">
+      {/* Animated Floating Orbs - Full screen positioned */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="orb orb-gold w-[400px] h-[400px] -top-20 -left-20 animate-orb" />
         <div className="orb orb-blue w-[350px] h-[350px] top-1/4 -right-20 animate-orb-delayed" />
         <div className="orb orb-coral w-[300px] h-[300px] bottom-20 left-1/4 animate-orb-slow" />
