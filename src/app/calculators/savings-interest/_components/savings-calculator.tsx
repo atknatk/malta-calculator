@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PiggyBank, Euro, Calculator, Info, Percent, Calendar, TrendingUp, Receipt } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import {
     calculateSavings,
     formatCurrency,
@@ -113,17 +114,14 @@ export function SavingsCalculator() {
                                 <Euro className="h-4 w-4 text-emerald-500/70" />
                                 Initial Deposit
                             </label>
-                            <div className="relative">
-                                <input
-                                    type="number"
-                                    step="1000"
-                                    min="0"
-                                    value={initialDeposit}
-                                    onChange={(e) => setInitialDeposit(Math.max(0, parseInt(e.target.value) || 0))}
-                                    className="w-full h-14 text-xl px-5 pr-12 rounded-xl bg-background border border-border focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 focus:outline-none font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                />
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70">€</div>
-                            </div>
+                            <NumericInput
+                                value={initialDeposit}
+                                onChange={(v) => setInitialDeposit(v === "" ? 0 : v)}
+                                min={0}
+                                allowDecimals={false}
+                                suffix="€"
+                                className="h-14 text-xl px-5 focus:border-emerald-500 focus:ring-emerald-500/20"
+                            />
                         </div>
 
                         {/* Monthly Contribution */}
@@ -132,17 +130,14 @@ export function SavingsCalculator() {
                                 <Calendar className="h-4 w-4 text-emerald-500/70" />
                                 Monthly Contribution
                             </label>
-                            <div className="relative">
-                                <input
-                                    type="number"
-                                    step="50"
-                                    min="0"
-                                    value={monthlyContribution}
-                                    onChange={(e) => setMonthlyContribution(Math.max(0, parseInt(e.target.value) || 0))}
-                                    className="w-full h-14 text-xl px-5 pr-12 rounded-xl bg-background border border-border focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 focus:outline-none font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                />
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70">€/mo</div>
-                            </div>
+                            <NumericInput
+                                value={monthlyContribution}
+                                onChange={(v) => setMonthlyContribution(v === "" ? 0 : v)}
+                                min={0}
+                                allowDecimals={false}
+                                suffix="€/mo"
+                                className="h-14 text-xl px-5 focus:border-emerald-500 focus:ring-emerald-500/20"
+                            />
                         </div>
 
                         {/* Interest Rate */}

@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Car, Fuel, Calendar, Euro, Leaf, Info, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import {
     calculateVehicleRegistrationTax,
     formatCurrency,
@@ -131,19 +132,15 @@ export function VehicleRegistrationTaxCalculator() {
                                     <Leaf className="h-4 w-4 text-primary/70" />
                                     CO2 Emissions (g/km)
                                 </label>
-                                <div className="relative">
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        max="400"
-                                        value={co2Emissions}
-                                        onChange={(e) => setCo2Emissions(Math.max(0, parseInt(e.target.value) || 0))}
-                                        className="w-full h-14 text-xl px-5 pr-20 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70">
-                                        g/km
-                                    </div>
-                                </div>
+                                <NumericInput
+                                    value={co2Emissions}
+                                    onChange={(v) => setCo2Emissions(v === "" ? 0 : v)}
+                                    min={0}
+                                    max={400}
+                                    allowDecimals={false}
+                                    suffix="g/km"
+                                    className="h-14 text-xl px-5"
+                                />
                                 <input
                                     type="range"
                                     min="0"
@@ -185,19 +182,15 @@ export function VehicleRegistrationTaxCalculator() {
                                 <Euro className="h-4 w-4 text-primary/70" />
                                 Vehicle Value
                             </label>
-                            <div className="relative">
-                                <input
-                                    type="number"
-                                    step="1000"
-                                    min="0"
-                                    value={vehicleValue}
-                                    onChange={(e) => setVehicleValue(Math.max(0, parseInt(e.target.value) || 0))}
-                                    className="w-full h-14 text-xl px-5 pr-16 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                />
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70 text-lg">
-                                    €
-                                </div>
-                            </div>
+                            <NumericInput
+                                value={vehicleValue}
+                                onChange={(v) => setVehicleValue(v === "" ? 0 : v)}
+                                min={0}
+                                allowDecimals={false}
+                                suffix="€"
+                                className="h-14 text-xl px-5"
+                                suffixClassName="text-lg"
+                            />
                         </div>
 
                         {/* EU Origin */}

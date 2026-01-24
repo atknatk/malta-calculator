@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Banknote, Euro, Calculator, Info, Percent, Calendar, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import {
     calculateLoan,
     formatCurrency,
@@ -72,18 +73,15 @@ export function LoanCalculator() {
                                 <Euro className="h-4 w-4 text-violet-500/70" />
                                 Loan Amount
                             </label>
-                            <div className="relative">
-                                <input
-                                    type="number"
-                                    step="1000"
-                                    min={info.minAmount}
-                                    max={info.maxAmount}
-                                    value={loanAmount}
-                                    onChange={(e) => setLoanAmount(Math.max(info.minAmount, Math.min(info.maxAmount, parseInt(e.target.value) || 0)))}
-                                    className="w-full h-14 text-xl px-5 pr-12 rounded-xl bg-background border border-border focus:border-violet-500 focus:ring-1 focus:ring-violet-500/20 focus:outline-none font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                />
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70">€</div>
-                            </div>
+                            <NumericInput
+                                value={loanAmount}
+                                onChange={(v) => setLoanAmount(v === "" ? info.minAmount : v)}
+                                min={info.minAmount}
+                                max={info.maxAmount}
+                                allowDecimals={false}
+                                suffix="€"
+                                className="h-14 text-xl px-5 focus:border-violet-500 focus:ring-violet-500/20"
+                            />
                             <input
                                 type="range"
                                 min={info.minAmount}

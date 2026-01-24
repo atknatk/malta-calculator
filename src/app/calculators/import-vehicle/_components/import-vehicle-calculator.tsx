@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Ship, Car, Fuel, Calendar, Euro, Globe, Info, Leaf } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import { calculateImportVehicle, formatCurrency, type ImportVehicleOutput } from "@/utils/import-vehicle-calculator";
 
 type FuelType = 'petrol' | 'diesel' | 'hybrid' | 'plugin_hybrid' | 'electric';
@@ -49,7 +50,13 @@ export function ImportVehicleCalculator() {
                             <label className="text-sm font-medium text-foreground/70">Purchase Price</label>
                             <div className="flex gap-2">
                                 <div className="relative flex-1">
-                                    <input type="number" step="1000" min="0" value={purchasePrice} onChange={(e) => setPurchasePrice(Math.max(0, parseInt(e.target.value) || 0))} className="w-full h-14 text-xl px-5 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+                                    <NumericInput
+                                        value={purchasePrice}
+                                        onChange={(v) => setPurchasePrice(v === "" ? 0 : v)}
+                                        min={0}
+                                        allowDecimals={false}
+                                        className="h-14 text-xl px-5"
+                                    />
                                 </div>
                                 <div className="flex rounded-xl border border-border overflow-hidden">
                                     {(['EUR', 'GBP', 'USD'] as const).map((c) => (
@@ -102,7 +109,13 @@ export function ImportVehicleCalculator() {
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-foreground/70">Shipping Cost ({currency})</label>
-                            <input type="number" step="100" min="0" value={shippingCost} onChange={(e) => setShippingCost(Math.max(0, parseInt(e.target.value) || 0))} className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:outline-none font-medium [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+                            <NumericInput
+                                value={shippingCost}
+                                onChange={(v) => setShippingCost(v === "" ? 0 : v)}
+                                min={0}
+                                allowDecimals={false}
+                                className="h-12 px-4"
+                            />
                         </div>
                     </div>
                 </motion.div>

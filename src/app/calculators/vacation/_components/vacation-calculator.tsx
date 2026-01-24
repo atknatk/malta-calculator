@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, Palmtree, Info, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import {
     calculateVacationLeave,
     getPublicHolidayInfo,
@@ -119,13 +120,13 @@ export function VacationCalculator() {
                                 <Clock className="h-4 w-4 text-primary/70" />
                                 Weekly Working Hours
                             </label>
-                            <input
-                                type="number"
-                                min="1"
-                                max="48"
+                            <NumericInput
                                 value={weeklyHours}
-                                onChange={(e) => setWeeklyHours(Math.max(1, Math.min(48, parseInt(e.target.value) || 40)))}
-                                className="w-full h-14 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                onChange={(v) => setWeeklyHours(v === "" ? 40 : v)}
+                                min={1}
+                                max={48}
+                                allowDecimals={false}
+                                className="h-14 px-4 text-lg"
                             />
                             <p className="text-xs text-muted-foreground">
                                 Standard full-time is 40 hours/week
@@ -138,13 +139,13 @@ export function VacationCalculator() {
                                 <Calendar className="h-4 w-4 text-primary/70" />
                                 Months Worked in {year}
                             </label>
-                            <input
-                                type="number"
-                                min="1"
-                                max="12"
+                            <NumericInput
                                 value={monthsWorked}
-                                onChange={(e) => setMonthsWorked(Math.max(1, Math.min(12, parseInt(e.target.value) || 12)))}
-                                className="w-full h-14 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                onChange={(v) => setMonthsWorked(v === "" ? 12 : v)}
+                                min={1}
+                                max={12}
+                                allowDecimals={false}
+                                className="h-14 px-4 text-lg"
                             />
                             <p className="text-xs text-muted-foreground">
                                 For pro-rata calculation if not working full year

@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Calendar, User, Clock, Info, PartyPopper, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import {
     calculateRetirementAge,
     getRetirementAgeBrackets,
@@ -102,13 +103,13 @@ export function RetirementAgeCalculator() {
                                 <Calendar className="h-4 w-4 text-primary/70" />
                                 Birth Year
                             </label>
-                            <input
-                                type="number"
-                                min="1920"
-                                max={currentYear}
+                            <NumericInput
                                 value={birthYear}
-                                onChange={(e) => setBirthYear(parseInt(e.target.value) || 1980)}
-                                className="w-full h-14 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                onChange={(v) => setBirthYear(v === "" ? 1980 : v)}
+                                min={1920}
+                                max={currentYear}
+                                allowDecimals={false}
+                                className="h-14 px-4 text-lg"
                             />
                         </div>
 

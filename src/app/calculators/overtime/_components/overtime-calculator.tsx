@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Clock, Euro, Timer, Info, Percent } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import {
     calculateOvertime,
     calculateHourlyRate,
@@ -124,19 +125,14 @@ export function OvertimeCalculator() {
                                     <Euro className="h-4 w-4 text-primary/70" />
                                     Hourly Rate
                                 </label>
-                                <div className="relative">
-                                    <input
-                                        type="number"
-                                        step="0.5"
-                                        min="0"
-                                        value={hourlyRate}
-                                        onChange={(e) => setHourlyRate(Math.max(0, parseFloat(e.target.value) || 0))}
-                                        className="w-full h-14 px-4 pr-16 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70">
-                                        €/hr
-                                    </div>
-                                </div>
+                                <NumericInput
+                                    value={hourlyRate}
+                                    onChange={(v) => setHourlyRate(v === "" ? 0 : v)}
+                                    min={0}
+                                    allowDecimals={true}
+                                    suffix="€/hr"
+                                    className="h-14 px-4 text-lg"
+                                />
                             </div>
                         ) : (
                             <div className="space-y-2">
@@ -144,19 +140,14 @@ export function OvertimeCalculator() {
                                     <Euro className="h-4 w-4 text-primary/70" />
                                     Annual Gross Salary
                                 </label>
-                                <div className="relative">
-                                    <input
-                                        type="number"
-                                        step="1000"
-                                        min="0"
-                                        value={annualSalary}
-                                        onChange={(e) => setAnnualSalary(Math.max(0, parseInt(e.target.value) || 0))}
-                                        className="w-full h-14 px-4 pr-16 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70">
-                                        €/yr
-                                    </div>
-                                </div>
+                                <NumericInput
+                                    value={annualSalary}
+                                    onChange={(v) => setAnnualSalary(v === "" ? 0 : v)}
+                                    min={0}
+                                    allowDecimals={false}
+                                    suffix="€/yr"
+                                    className="h-14 px-4 text-lg"
+                                />
                                 <p className="text-xs text-muted-foreground">
                                     Hourly rate: {formatCurrency(effectiveHourlyRate)}/hr (based on 40hr/week)
                                 </p>
@@ -169,13 +160,12 @@ export function OvertimeCalculator() {
                                 <Timer className="h-4 w-4 text-primary/70" />
                                 Overtime Hours
                             </label>
-                            <input
-                                type="number"
-                                step="0.5"
-                                min="0"
+                            <NumericInput
                                 value={overtimeHours}
-                                onChange={(e) => setOvertimeHours(Math.max(0, parseFloat(e.target.value) || 0))}
-                                className="w-full h-14 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                onChange={(v) => setOvertimeHours(v === "" ? 0 : v)}
+                                min={0}
+                                allowDecimals={true}
+                                className="h-14 px-4 text-lg"
                             />
                         </div>
 

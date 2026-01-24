@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Clock, Briefcase, Calendar, Info, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NumericInput } from "@/components/ui/numeric-input";
 import {
     calculateNoticePeriod,
     toMonths,
@@ -117,26 +118,26 @@ export function NoticePeriodCalculator() {
                                 <Calendar className="h-4 w-4 text-primary/70" />
                                 Years
                             </label>
-                            <input
-                                type="number"
-                                min="0"
-                                max="50"
+                            <NumericInput
                                 value={years}
-                                onChange={(e) => setYears(Math.max(0, parseInt(e.target.value) || 0))}
-                                className="w-full h-14 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                onChange={(v) => setYears(v === "" ? 0 : v)}
+                                min={0}
+                                max={50}
+                                allowDecimals={false}
+                                className="h-14 px-4 text-lg"
                             />
                         </div>
 
                         {/* Months Input */}
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-foreground/70">Months</label>
-                            <input
-                                type="number"
-                                min="0"
-                                max="11"
+                            <NumericInput
                                 value={months}
-                                onChange={(e) => setMonths(Math.min(11, Math.max(0, parseInt(e.target.value) || 0)))}
-                                className="w-full h-14 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none text-lg font-semibold transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                onChange={(v) => setMonths(v === "" ? 0 : v)}
+                                min={0}
+                                max={11}
+                                allowDecimals={false}
+                                className="h-14 px-4 text-lg"
                             />
                         </div>
 
