@@ -106,6 +106,7 @@ function MonthCard({
                                             onChange={(e) => setEditValue(e.target.value)}
                                             onKeyDown={handleKeyDown}
                                             onBlur={handleSave}
+                                            onFocus={(e) => e.target.select()}
                                             className="w-20 sm:w-24 h-6 sm:h-7 text-xs sm:text-sm px-2"
                                             autoFocus
                                         />
@@ -185,6 +186,7 @@ function MonthCard({
                                                 onChange={(e) => setBonusEditValue(e.target.value)}
                                                 onKeyDown={handleBonusKeyDown}
                                                 onBlur={handleBonusSave}
+                                                onFocus={(e) => e.target.select()}
                                                 className="w-20 h-6 text-xs px-2"
                                                 autoFocus
                                             />
