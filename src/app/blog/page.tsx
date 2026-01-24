@@ -8,8 +8,8 @@ import {
 } from "../shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Calendar, Clock, Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, BookOpen } from "lucide-react";
+import { BlogGrid, type BlogPost } from "./_components/blog-grid";
 
 export const metadata: Metadata = {
     ...defaultMetadata,
@@ -29,16 +29,6 @@ export const metadata: Metadata = {
         title: "Blog | Malta Tax & Salary Guides",
     },
 };
-
-interface BlogPost {
-    slug: string;
-    title: string;
-    description: string;
-    date: string;
-    readTime: string;
-    category: string;
-    featured?: boolean;
-}
 
 const blogPosts: BlogPost[] = [
     {
@@ -154,105 +144,96 @@ const blogPosts: BlogPost[] = [
         readTime: "8 min read",
         category: "Retirement",
     },
+    // Employment calculators blog posts
+    {
+        slug: "malta-notice-period-employment-guide-2026",
+        title: "Malta Notice Period Guide 2026: Employment Termination Rules",
+        description: "Complete guide to notice periods in Malta. Learn about probation periods, minimum notice requirements based on service years.",
+        date: "January 2026",
+        readTime: "5 min read",
+        category: "Employment",
+    },
+    {
+        slug: "malta-retirement-age-guide-2026",
+        title: "Malta Retirement Age 2026: Complete Pension Age Guide",
+        description: "Malta retirement age guide. Learn about pension eligibility, transitional arrangements, and how to calculate your retirement date.",
+        date: "January 2026",
+        readTime: "6 min read",
+        category: "Retirement",
+    },
+    {
+        slug: "malta-vacation-leave-entitlement-2026",
+        title: "Malta Vacation Leave 2026: Annual Leave Entitlement",
+        description: "Malta vacation leave guide. Minimum 192 hours (24 days) annual leave, public holidays, and carry-over rules.",
+        date: "January 2026",
+        readTime: "5 min read",
+        category: "Employment",
+    },
+    {
+        slug: "malta-overtime-pay-rates-2026",
+        title: "Malta Overtime Pay Rates 2026: 1.5x & 2x Guide",
+        description: "Malta overtime pay guide. Standard 1.5x rate, 2x for Sundays and public holidays, and calculation examples.",
+        date: "January 2026",
+        readTime: "5 min read",
+        category: "Salary Guide",
+    },
+    // Banking blog posts
+    {
+        slug: "malta-mortgage-guide-2026",
+        title: "Malta Mortgage Guide 2026: Home Loan Essentials",
+        description: "Complete guide to mortgages in Malta. 10% minimum deposit, LTV ratios, interest rates, and monthly payment calculations.",
+        date: "January 2026",
+        readTime: "6 min read",
+        category: "Banking",
+    },
+    {
+        slug: "malta-savings-interest-guide-2026",
+        title: "Malta Savings Interest Guide 2026: Compound Interest & Tax",
+        description: "Malta savings interest guide. Compound interest calculations, 15% withholding tax, and maximizing your returns.",
+        date: "January 2026",
+        readTime: "5 min read",
+        category: "Banking",
+    },
+    {
+        slug: "malta-personal-loan-guide-2026",
+        title: "Malta Personal Loan Guide 2026: Rates & Repayment",
+        description: "Malta personal loan guide. Interest rates, repayment terms, eligibility requirements, and monthly payment calculator.",
+        date: "January 2026",
+        readTime: "5 min read",
+        category: "Banking",
+    },
+    {
+        slug: "malta-expat-mortgage-guide-2026",
+        title: "Malta Expat Mortgage Guide 2026: AIP Permit & Stamp Duty",
+        description: "Expat property buying guide. AIP permit requirements, 5-year residency rule, 5% stamp duty (1%+4%), and financing options.",
+        date: "January 2026",
+        readTime: "8 min read",
+        category: "Expat Guide",
+    },
 ];
 
 export default function BlogPage() {
-    const featuredPost = blogPosts.find((post) => post.featured);
-    const regularPosts = blogPosts.filter((post) => !post.featured);
-
     return (
         <MarketingLayout>
             <main role="main" aria-label="Malta Calculator Blog">
                 <Shell className="py-12">
                     {/* Header */}
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-12">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 text-sm font-medium text-primary mb-6">
                             <BookOpen className="h-4 w-4" />
-                            <span>Expert Guides</span>
+                            <span>{blogPosts.length} Expert Guides</span>
                         </div>
                         <h1 className="font-cal text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                             Malta Tax & Salary Blog
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                            In-depth guides on Malta&apos;s tax system, SSC contributions, COLA adjustments,
-                            and everything you need to understand your salary.
+                            In-depth guides on Malta&apos;s tax system, SSC contributions, banking,
+                            and everything you need to understand your finances.
                         </p>
                     </div>
 
-                    {/* Featured Post */}
-                    {featuredPost && (
-                        <Link
-                            href={`/blog/${featuredPost.slug}`}
-                            className="group block mb-12"
-                        >
-                            <article className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-secondary/5 to-transparent border border-border/50 p-8 md:p-12 transition-all duration-300 hover:border-primary/50 hover:shadow-lg">
-                                <div className="flex flex-col md:flex-row md:items-center gap-6">
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <span className="px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
-                                                Featured
-                                            </span>
-                                            <span className="text-sm text-muted-foreground">
-                                                {featuredPost.category}
-                                            </span>
-                                        </div>
-                                        <h2 className="text-2xl md:text-3xl font-cal font-bold mb-4 group-hover:text-primary transition-colors">
-                                            {featuredPost.title}
-                                        </h2>
-                                        <p className="text-muted-foreground leading-relaxed mb-6">
-                                            {featuredPost.description}
-                                        </p>
-                                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                            <span className="flex items-center gap-1">
-                                                <Calendar className="h-4 w-4" />
-                                                {featuredPost.date}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <Clock className="h-4 w-4" />
-                                                {featuredPost.readTime}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="flex-shrink-0">
-                                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                                            <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-1" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </Link>
-                    )}
-
-                    {/* Regular Posts Grid */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {regularPosts.map((post) => (
-                            <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
-                                <article className="h-full p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/50 hover:shadow-lg transition-all duration-300">
-                                    <div className="flex flex-col h-full">
-                                        <span className="text-xs font-semibold text-primary mb-3">
-                                            {post.category}
-                                        </span>
-                                        <h2 className="text-lg font-semibold mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                                            {post.title}
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1 line-clamp-3">
-                                            {post.description}
-                                        </p>
-                                        <div className="flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border/50">
-                                            <span className="flex items-center gap-1">
-                                                <Calendar className="h-3 w-3" />
-                                                {post.date}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <Clock className="h-3 w-3" />
-                                                {post.readTime}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </article>
-                            </Link>
-                        ))}
-                    </div>
+                    {/* Blog Grid with Filtering */}
+                    <BlogGrid posts={blogPosts} />
 
                     {/* CTA Section */}
                     <div className="mt-16 text-center p-8 rounded-3xl bg-muted/30 border border-border/50">

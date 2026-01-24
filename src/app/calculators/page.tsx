@@ -18,6 +18,7 @@ import {
     Calendar,
     ArrowRight,
     Sparkles,
+    Landmark,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -75,14 +76,14 @@ const categories: CalculatorCategory[] = [
                 title: "Notice Period",
                 titleTr: "İhbar Süresi",
                 description: "Required notice based on service years",
-                available: false,
+                available: true,
             },
             {
                 href: "/calculators/overtime",
                 title: "Overtime Calculator",
                 titleTr: "Fazla Mesai",
                 description: "Overtime pay at 1.5x and 2x rates",
-                available: false,
+                available: true,
             },
             {
                 href: "/calculators/bonus-tax",
@@ -154,7 +155,7 @@ const categories: CalculatorCategory[] = [
                 title: "Stamp Duty",
                 titleTr: "Damga Vergisi",
                 description: "Property purchase stamp duty (5% / 3.5%)",
-                available: false,
+                available: true,
             },
             {
                 href: "/calculators/rental-tax",
@@ -169,6 +170,35 @@ const categories: CalculatorCategory[] = [
                 titleTr: "İlk Ev Alımı",
                 description: "First-time buyer scheme benefits",
                 available: false,
+            },
+        ],
+    },
+    {
+        title: "Banking & Loans",
+        titleTr: "Bankacılık & Krediler",
+        icon: <Landmark className="h-6 w-6 text-white" />,
+        gradient: "from-sky-500 to-blue-600",
+        items: [
+            {
+                href: "/calculators/mortgage",
+                title: "Mortgage Calculator",
+                titleTr: "Konut Kredisi",
+                description: "Home loan with 10% min deposit",
+                available: true,
+            },
+            {
+                href: "/calculators/savings-interest",
+                title: "Savings Interest",
+                titleTr: "Mevduat Faizi",
+                description: "Compound interest with 15% tax",
+                available: true,
+            },
+            {
+                href: "/calculators/personal-loan",
+                title: "Personal Loan",
+                titleTr: "Bireysel Kredi",
+                description: "Personal loan repayment calculator",
+                available: true,
             },
         ],
     },
@@ -190,7 +220,7 @@ const categories: CalculatorCategory[] = [
                 title: "Retirement Age",
                 titleTr: "Emeklilik Yaşı",
                 description: "Your retirement age calculation",
-                available: false,
+                available: true,
             },
         ],
     },
@@ -227,7 +257,7 @@ const categories: CalculatorCategory[] = [
                 title: "Vacation Days",
                 titleTr: "Yıllık İzin",
                 description: "Annual leave entitlement (min 192h)",
-                available: false,
+                available: true,
             },
             {
                 href: "/calculators/sick-leave",
@@ -325,15 +355,15 @@ export default function CalculatorsPage() {
                     <div className="mt-20 p-8 rounded-3xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                             <div>
-                                <div className="text-3xl font-bold text-gradient">1</div>
-                                <div className="text-sm text-muted-foreground">Active Calculator</div>
+                                <div className="text-3xl font-bold text-gradient">9</div>
+                                <div className="text-sm text-muted-foreground">Active Calculators</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-bold text-gradient-secondary">19</div>
+                                <div className="text-3xl font-bold text-gradient-secondary">14</div>
                                 <div className="text-sm text-muted-foreground">Coming Soon</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-bold text-gradient">6</div>
+                                <div className="text-3xl font-bold text-gradient">7</div>
                                 <div className="text-sm text-muted-foreground">Categories</div>
                             </div>
                             <div>

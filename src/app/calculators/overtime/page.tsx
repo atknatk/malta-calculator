@@ -1,7 +1,9 @@
-import { ComingSoonPage } from "@/components/coming-soon-page";
+import { MarketingLayout } from "@/components/layout/marketing-layout";
+import { Shell } from "@/components/dashboard/shell";
+import { BackButton } from "@/components/layout/back-button";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
-import { Clock } from "lucide-react";
+import { OvertimeCalculator } from "./_components/overtime-calculator";
 
 export const metadata: Metadata = {
     ...defaultMetadata,
@@ -14,17 +16,13 @@ export const metadata: Metadata = {
 
 export default function OvertimePage() {
     return (
-        <ComingSoonPage
-            title="Overtime Calculator"
-            description="Calculate your overtime pay based on Malta's employment regulations. Get accurate rates for weekday, weekend, and holiday overtime."
-            icon={<Clock className="h-12 w-12 text-primary" />}
-            category="Employment"
-            features={[
-                "1.5x rate for regular overtime",
-                "2x rate for Sundays and public holidays",
-                "Weekly hour thresholds",
-                "Tax calculation on overtime pay",
-            ]}
-        />
+        <MarketingLayout>
+            <main role="main" aria-label="Overtime Calculator">
+                <BackButton href="/calculators" />
+                <Shell className="max-w-4xl py-8">
+                    <OvertimeCalculator />
+                </Shell>
+            </main>
+        </MarketingLayout>
     );
 }

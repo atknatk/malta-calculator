@@ -204,39 +204,32 @@ export const pagesConfig = [
 export const marketingPagesConfig = [
   {
     href: "/salary",
-    title: "Salary",
-    description: "Malta Salary & Tax Calculator", segment: "blog",
+    title: "Salary Calculator",
+    description: "Calculate net salary with tax, SSC & COLA",
+    segment: "salary",
+    icon: "candlestick-chart",
+  },
+  {
+    href: "/calculators",
+    title: "All Calculators",
+    description: "Browse all 9+ Malta financial calculators",
+    segment: "calculators",
+    icon: "layout-dashboard",
+  },
+  {
+    href: "/blog",
+    title: "Blog",
+    description: "Guides, tips, and Malta financial information",
+    segment: "blog",
     icon: "book",
-
   },
   {
-    href: "/calculators/notice-period",
-    title: "Notice Period",
-    description: "All the latest tools build by Malta Calculator.",
-    segment: "play",
-    icon: "toy-brick",
+    href: "/about",
+    title: "About",
+    description: "About Malta Calculator",
+    segment: "about",
+    icon: "users",
   },
-  // {
-  //   href: "/calculators/pension",
-  //   title: "Pension",
-  //   description: "All the latest features, fixes and work to Malta Calculator.",
-  //   segment: "changelog",
-  //   icon: "newspaper",
-  // },
-  {
-    href: "/calculators/vacation",
-    title: "Vacation",
-    description: "The pricing for Malta Calculator.",
-    segment: "pricing",
-    icon: "credit-card",
-  },
-  // {
-  //   href: "https://docs.openstatus.dev",
-  //   description: "The documentation for OpenStatus.",
-  //   title: "Docs",
-  //   segment: "docs",
-  //   icon: "book",
-  // },
 ] as const satisfies readonly Page[];
 
 export function getPageBySegment(
