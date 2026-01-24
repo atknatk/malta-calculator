@@ -53,6 +53,8 @@ export const salarySearchParams = {
     yearlyTaxableBenefit: parseAsInteger.withDefault(0),
     monthlyBonus: parseAsInteger.withDefault(0),
     allowanceBonus: parseAsInteger.withDefault(0),
+    // Per-month bonuses (JSON string: {"January": 500, "December": 1000})
+    monthlyBonuses: parseAsString.withDefault(""),
 };
 
 /**
@@ -81,4 +83,5 @@ export type SalarySearchParams = {
     yearlyTaxableBenefit: number;
     monthlyBonus: number;
     allowanceBonus: number;
+    monthlyBonuses: string;  // JSON string for per-month bonuses
 };

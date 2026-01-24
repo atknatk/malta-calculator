@@ -11,21 +11,27 @@ import { cn } from "@/lib/utils";
 interface MobileMonthlyCardsProps {
     data: MonthlySalaryOutput[];
     setData: React.Dispatch<React.SetStateAction<MonthlySalaryOutput[]>>;
+    onBonusChange?: (month: string, value: number) => void;
 }
 
 function MonthCard({
     item,
     index,
     onGrossWageChange,
+    onBonusChange,
 }: {
     item: MonthlySalaryOutput;
     index: number;
     onGrossWageChange: (index: number, value: number) => void;
+    onBonusChange?: (month: string, value: number) => void;
 }) {
     const [isExpanded, setIsExpanded] = React.useState(false);
     const [isEditing, setIsEditing] = React.useState(false);
+    const [isEditingBonus, setIsEditingBonus] = React.useState(false);
     const [editValue, setEditValue] = React.useState(item.grossWage.toString());
+    const [bonusEditValue, setBonusEditValue] = React.useState(item.bonus.toString());
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const bonusInputRef = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
         setEditValue(item.grossWage.toString());
@@ -45,6 +51,25 @@ function MonthCard({
             setIsEditing(false);
         }
     };
+
+    const handleBonusSave = () => {
+        const numValue = parseFloat(bonusEditValue) || 0;
+        onBonusChange?.(item.month, numValue);
+        setIsEditingBonus(false);
+    };
+
+    const handleBonusKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            handleBonusSave();
+        } else if (e.key === "Escape") {
+            setBonusEditValue(item.bonus.toString());
+            setIsEditingBonus(false);
+        }
+    };
+
+    React.useEffect(() => {
+        setBonusEditValue(item.bonus.toString());
+    }, [item.bonus]);
 
     return (
         <motion.div
@@ -147,7 +172,51 @@ function MonthCard({
                                 {/* Secondary Details */}
                                 <DetailItem label="Non-Tax Benefit" value={formatMoney(item.nonTaxBenefit)} small />
                                 <DetailItem label="Tax Benefit" value={formatMoney(item.taxBenefit)} small />
-                                <DetailItem label="Bonus" value={formatMoney(item.bonus)} small />
+
+                                {/* Editable Bonus */}
+                                <div className={cn("flex flex-col", "text-xs")}>
+                                    <span className="text-muted-foreground text-xs">Bonus</span>
+                                    {isEditingBonus ? (
+                                        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                            <Input
+                                                ref={bonusInputRef}
+                                                type="number"
+                                                value={bonusEditValue}
+                                                onChange={(e) => setBonusEditValue(e.target.value)}
+                                                onKeyDown={handleBonusKeyDown}
+                                                onBlur={handleBonusSave}
+                                                className="w-20 h-6 text-xs px-2"
+                                                autoFocus
+                                            />
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleBonusSave();
+                                                }}
+                                                className="p-1 rounded bg-primary text-primary-foreground flex-shrink-0"
+                                            >
+                                                <Check className="w-3 h-3" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setIsEditingBonus(true);
+                                            }}
+                                            className="flex items-center gap-1 hover:text-primary transition-colors text-left"
+                                        >
+                                            <span className={cn(
+                                                "font-semibold text-sm",
+                                                item.bonus > 0 && "text-green-600 dark:text-green-400"
+                                            )}>
+                                                {formatMoney(item.bonus)}
+                                            </span>
+                                            <Edit3 className="w-3 h-3 flex-shrink-0" />
+                                        </button>
+                                    )}
+                                </div>
+
                                 <DetailItem label="Gov. Bonus" value={formatMoney(item.governmentBonus)} small />
                             </div>
 
@@ -199,7 +268,7 @@ function DetailItem({
     );
 }
 
-export function MobileMonthlyCards({ data, setData }: MobileMonthlyCardsProps) {
+export function MobileMonthlyCards({ data, setData, onBonusChange }: MobileMonthlyCardsProps) {
     const handleGrossWageChange = (index: number, value: number) => {
         setData((prevData) => {
             const newData = [...prevData];
@@ -219,6 +288,7 @@ export function MobileMonthlyCards({ data, setData }: MobileMonthlyCardsProps) {
                     item={item}
                     index={index}
                     onGrossWageChange={handleGrossWageChange}
+                    onBonusChange={onBonusChange}
                 />
             ))}
         </div>

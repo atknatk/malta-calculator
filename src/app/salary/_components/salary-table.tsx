@@ -122,7 +122,7 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
   {
     accessorKey: "bonus",
     header: "Bonus",
-    cell: ({ row }) => <div>{formatMoney(row.getValue("bonus"))}</div>,
+    cell: EditableCell,
   },
   {
     accessorKey: "grossTotal",
@@ -186,18 +186,50 @@ export function SalaryTable({ data, setData }:
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({
-      // Hide less important columns by default
-      sscBase: false,
-      incomeBase: false,
-      cumulativeIncomeBase: false,
-      nonTaxBenefit: false,
-      taxBenefit: false,
-      bonus: false,
-      governmentBonus: false,
-      discr: false,
-    })
+  // Default column visibility settings
+  const defaultColumnVisibility: VisibilityState = {
+    // Hide less important columns by default
+    sscBase: false,
+    incomeBase: false,
+    cumulativeIncomeBase: false,
+    nonTaxBenefit: false,
+    taxBenefit: false,
+    // bonus is now visible by default for editing per-month bonuses
+    governmentBonus: false,
+    discr: false,
+  };
+
+  // localStorage key for column visibility
+  const STORAGE_KEY = 'salary-table-column-visibility';
+
+  // Initialize column visibility from localStorage or use defaults
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return defaultColumnVisibility;
+
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved) as VisibilityState;
+        // Merge with defaults to handle new columns
+        return { ...defaultColumnVisibility, ...parsed };
+      }
+    } catch (e) {
+      console.warn('Failed to load column visibility from localStorage:', e);
+    }
+    return defaultColumnVisibility;
+  });
+
+  // Save column visibility to localStorage when it changes
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(columnVisibility));
+    } catch (e) {
+      console.warn('Failed to save column visibility to localStorage:', e);
+    }
+  }, [columnVisibility]);
   const [rowSelection, setRowSelection] = React.useState({})
   const handleInputChange = React.useCallback((index: number, key: keyof MonthlySalaryOutput, value: string) => {
     setData((prevData) => {

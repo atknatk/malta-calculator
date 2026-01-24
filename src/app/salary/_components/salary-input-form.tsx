@@ -4,7 +4,7 @@ import { Month } from "@/types/salary-calculator-type";
 import { useEffect, useState, useRef } from "react";
 import { getAvailableYears, isChildCountEffective } from "@/config/malta-tax-config";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Settings2, Euro, Calendar, Users, Shield, Gift, Wallet, Sparkles, Baby } from "lucide-react";
+import { ChevronDown, Settings2, Euro, Calendar, Users, Shield, Gift, Wallet, Sparkles, Baby, Plus, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const monthValues = Object.values(Month) as [Month, ...Month[]];
@@ -12,6 +12,9 @@ const allYears = getAvailableYears().map(y => y.toString());
 // Only show last 3 years for cleaner UI
 const availableYears = allYears.slice(-3) as [string, ...string[]];
 const currentYear = new Date().getFullYear().toString();
+
+// Monthly bonuses type - per month bonus amounts
+export type MonthlyBonuses = Partial<Record<Month, number>>;
 
 // Form values type - URL params ile uyumlu
 export type SalaryFormValues = {
@@ -27,6 +30,7 @@ export type SalaryFormValues = {
   yearlyTaxableBenefit: number;
   monthlyBonus: number;
   allowanceBonus: number;
+  monthlyBonuses: MonthlyBonuses;  // Per-month bonus amounts
 };
 
 // Premium Number Input Component - Mobile Optimized
@@ -38,6 +42,7 @@ function PremiumInput({
   suffix,
   description,
   large,
+  onFocusChange,
 }: {
   icon?: typeof Euro;
   label: string;
@@ -46,11 +51,17 @@ function PremiumInput({
   suffix?: string;
   description?: string;
   large?: boolean;
+  onFocusChange?: (focused: boolean) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.target.select();
+    onFocusChange?.(true);
+  };
+
+  const handleBlur = () => {
+    onFocusChange?.(false);
   };
 
   return (
@@ -75,6 +86,7 @@ function PremiumInput({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onFocus={handleFocus}
+            onBlur={handleBlur}
             className={cn(
               "w-full bg-background border border-border",
               "focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none",
@@ -247,9 +259,11 @@ function AdvancedSettings({
 export function SalaryCalculatorForm({
   values: valuesProp,
   onValuesChange: onValuesChangeProp,
+  onFocusChange,
 }: {
   values?: Partial<SalaryFormValues>;
   onValuesChange?: (values: Partial<SalaryFormValues>) => void;
+  onFocusChange?: (focused: boolean) => void;
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -267,6 +281,7 @@ export function SalaryCalculatorForm({
     yearlyTaxableBenefit: valuesProp?.yearlyTaxableBenefit ?? 0,
     monthlyBonus: valuesProp?.monthlyBonus ?? 0,
     allowanceBonus: valuesProp?.allowanceBonus ?? 0,
+    monthlyBonuses: valuesProp?.monthlyBonuses ?? {},
   };
 
   // Çocuk sayısı seçici gösterilsin mi?
@@ -302,6 +317,7 @@ export function SalaryCalculatorForm({
             suffix="€/yr"
             description="Enter your total annual gross salary before any deductions"
             large
+            onFocusChange={onFocusChange}
           />
         </div>
       </motion.div>
@@ -450,20 +466,126 @@ export function SalaryCalculatorForm({
           </div>
         </GlassSection>
 
-        {/* Bonus Section */}
+        {/* Bonus Section - Per-Month Bonus Editor */}
         <GlassSection icon={Wallet} title="Bonuses" delay={0}>
-          <PremiumInput
-            label="Monthly Bonus"
-            value={formValues.monthlyBonus}
-            onChange={(v) => updateValue("monthlyBonus", parseFloat(v) || 0)}
-            suffix="€"
-          />
-          <PremiumInput
-            label="Monthly Allowance"
-            value={formValues.allowanceBonus}
-            onChange={(v) => updateValue("allowanceBonus", parseFloat(v) || 0)}
-            suffix="€"
-          />
+          <p className="text-xs text-muted-foreground/70 mb-3">
+            Add bonuses for specific months (e.g., 13th month salary in December, performance bonus in March)
+          </p>
+
+          {/* Month selector chips */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {monthValues.map((month) => {
+              const hasBonus = (formValues.monthlyBonuses[month] ?? 0) > 0;
+              return (
+                <button
+                  key={month}
+                  type="button"
+                  onClick={() => {
+                    const newBonuses = { ...formValues.monthlyBonuses };
+                    if (hasBonus) {
+                      delete newBonuses[month];
+                    } else {
+                      newBonuses[month] = 0; // Will be edited below
+                    }
+                    updateValue("monthlyBonuses", newBonuses);
+                  }}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200",
+                    "border",
+                    hasBonus
+                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                      : "bg-background hover:bg-muted text-muted-foreground border-border hover:border-primary/30"
+                  )}
+                >
+                  {month.substring(0, 3)}
+                  {hasBonus && (
+                    <span className="ml-1 opacity-70">✓</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Bonus inputs for selected months */}
+          <AnimatePresence mode="popLayout">
+            {Object.entries(formValues.monthlyBonuses).length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-3 overflow-hidden"
+              >
+                {monthValues.filter(m => m in formValues.monthlyBonuses).map((month) => (
+                  <motion.div
+                    key={month}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    className="flex items-center gap-3 bg-muted/30 p-3 rounded-xl border border-border/50"
+                  >
+                    <span className="text-sm font-medium text-foreground min-w-[80px]">{month}</span>
+                    <div className="flex-1 relative">
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        value={formValues.monthlyBonuses[month] || ""}
+                        onChange={(e) => {
+                          const newBonuses = { ...formValues.monthlyBonuses };
+                          const val = parseFloat(e.target.value) || 0;
+                          if (val > 0) {
+                            newBonuses[month] = val;
+                          } else {
+                            newBonuses[month] = 0;
+                          }
+                          updateValue("monthlyBonuses", newBonuses);
+                        }}
+                        onFocus={(e) => e.target.select()}
+                        placeholder="Enter bonus amount"
+                        className={cn(
+                          "w-full h-10 px-3 pr-8 rounded-lg bg-background border border-border",
+                          "focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none",
+                          "text-sm font-medium",
+                          "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        )}
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">€</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newBonuses = { ...formValues.monthlyBonuses };
+                        delete newBonuses[month];
+                        updateValue("monthlyBonuses", newBonuses);
+                      }}
+                      className="p-1.5 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Total of monthly bonuses */}
+          {Object.values(formValues.monthlyBonuses).some(v => v && v > 0) && (
+            <div className="mt-3 pt-3 border-t border-border/30 flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Total Monthly Bonuses:</span>
+              <span className="font-bold text-primary">
+                €{Object.values(formValues.monthlyBonuses).reduce((sum, v) => sum + (v || 0), 0).toLocaleString()}
+              </span>
+            </div>
+          )}
+
+          <div className="mt-4 pt-4 border-t border-border/30">
+            <PremiumInput
+              label="Monthly Allowance"
+              value={formValues.allowanceBonus}
+              onChange={(v) => updateValue("allowanceBonus", parseFloat(v) || 0)}
+              suffix="€"
+              description="Fixed monthly allowance paid every month"
+            />
+          </div>
         </GlassSection>
       </AdvancedSettings>
     </div>
