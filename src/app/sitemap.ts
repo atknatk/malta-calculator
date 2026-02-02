@@ -47,6 +47,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${baseUrl}/blog/malta-social-security-number-guide-2026`, priority: 0.9, changeFrequency: "yearly" as const },
         { url: `${baseUrl}/blog/malta-work-permit-employment-guide-2026`, priority: 0.9, changeFrequency: "yearly" as const },
         { url: `${baseUrl}/blog/malta-mysocialsecurity-app-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        // Immigration blog pages
+        { url: `${baseUrl}/blog/malta-family-reunification-guide-2026`, priority: 0.9, changeFrequency: "yearly" as const },
     ];
 
     // Company pages
@@ -61,7 +63,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Calculator pages - active calculators with higher priority
     const activeCalculators = [
         "notice-period", "overtime", "stamp-duty", "retirement-age", "vacation",
-        "mortgage", "savings-interest", "personal-loan",
+        "mortgage", "savings-interest", "personal-loan", "family-reunification",
     ].map((slug) => ({
         url: `${baseUrl}/calculators/${slug}`,
         priority: 0.8,

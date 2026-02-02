@@ -55,6 +55,24 @@ interface ChangelogEntry {
 
 const changelogEntries: ChangelogEntry[] = [
     {
+        version: "v3.1.0",
+        date: "February 2, 2026",
+        title: "Immigration & Family Reunification",
+        type: "feature",
+        icon: <Globe className="w-5 h-5" />,
+        description: "New immigration calculators and comprehensive blog content.",
+        features: [
+            "👨‍👩‍👧‍👦 Family Reunification Calculator with two schemes",
+            "📋 Family Reunification (S.L. 217.6) gross salary calculation",
+            "🏠 Family Member Policy net salary calculation",
+            "📊 Scheme comparison tool for side-by-side analysis",
+            "📝 Comprehensive Family Reunification Guide blog post",
+            "📱 New blog posts: SSN Guide, Work Permit Guide, mySocialSecurity App",
+            "🔧 Enhanced JSON-LD with CalculatorJsonLd and CustomFAQJsonLd",
+            "📂 New workflows for creating calculators and blog posts",
+        ],
+    },
+    {
         version: "v3.0.0",
         date: "January 24, 2026",
         title: "Transport Malta Integration & Vehicle Calculators",
@@ -252,7 +270,7 @@ export default function ChangelogPage() {
                         {/* Stats Section */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
                             <div className="glass-panel p-4 text-center rounded-xl">
-                                <div className="text-2xl font-bold text-primary">14+</div>
+                                <div className="text-2xl font-bold text-primary">15+</div>
                                 <div className="text-sm text-muted-foreground">Calculators</div>
                             </div>
                             <div className="glass-panel p-4 text-center rounded-xl">

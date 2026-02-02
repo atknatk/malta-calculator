@@ -384,3 +384,72 @@ export function CollectionPageJsonLd({ name, description, url, items }: Collecti
     );
 }
 
+interface CalculatorJsonLdProps {
+    name: string;
+    description: string;
+    slug: string;
+    category: string;
+    features?: string[];
+}
+
+export function CalculatorJsonLd({ name, description, slug, category, features }: CalculatorJsonLdProps) {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: name,
+        description: description,
+        url: `${SITE_URL}/calculators/${slug}`,
+        applicationCategory: "FinanceApplication",
+        applicationSubCategory: category,
+        operatingSystem: "Web Browser",
+        offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "EUR",
+        },
+        featureList: features || [name],
+        creator: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: SITE_URL,
+        },
+        inLanguage: "en",
+        isAccessibleForFree: true,
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    );
+}
+
+interface CustomFAQJsonLdProps {
+    questions: Array<{
+        question: string;
+        answer: string;
+    }>;
+}
+
+export function CustomFAQJsonLd({ questions }: CustomFAQJsonLdProps) {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: questions.map((q) => ({
+            "@type": "Question",
+            name: q.question,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: q.answer,
+            },
+        })),
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    );
+}

@@ -20,6 +20,7 @@ import {
     Sparkles,
     Landmark,
     Car,
+    Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/json-ld";
@@ -272,6 +273,19 @@ const categories: CalculatorCategory[] = [
                 href: "/calculators/import-vehicle",
                 title: "Import Vehicle",
                 description: "Total cost to import a vehicle",
+                available: true,
+            },
+        ],
+    },
+    {
+        title: "Immigration & Visa",
+        icon: <Users className="h-6 w-6 text-white" />,
+        gradient: "from-indigo-500 to-violet-600",
+        items: [
+            {
+                href: "/calculators/family-reunification",
+                title: "Family Reunification",
+                description: "Salary requirements for sponsoring family",
                 available: true,
             },
         ],

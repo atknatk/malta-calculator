@@ -9,6 +9,7 @@ import {
   Palmtree,
   ArrowRight,
   Sparkles,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,17 @@ interface CalculatorCard {
 }
 
 const calculators: CalculatorCard[] = [
+  {
+    href: "/calculators/family-reunification",
+    title: "Family Reunification Calculator",
+    description:
+      "Calculate minimum salary requirements for sponsoring family members to Malta under official Identità policies.",
+    icon: Users,
+    gradient: "from-indigo-500/20 via-purple-500/10 to-violet-500/5",
+    iconBg: "bg-gradient-to-br from-indigo-500 to-violet-600",
+    available: true,
+    badge: "New",
+  },
   {
     href: "/calculators/notice-period",
     title: "Notice Period Calculator",

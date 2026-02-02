@@ -276,6 +276,15 @@ const blogPosts: BlogPost[] = [
         readTime: "7 min read",
         category: "Digital Guide",
     },
+    // Immigration blog posts
+    {
+        slug: "malta-family-reunification-guide-2026",
+        title: "Malta Family Reunification 2026: Complete Salary Guide",
+        description: "Complete guide to family reunification salary requirements in Malta. Two schemes explained with calculation examples.",
+        date: "February 2026",
+        readTime: "10 min read",
+        category: "Immigration",
+    },
 ];
 
 export default function BlogPage() {
