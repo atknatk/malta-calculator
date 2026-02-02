@@ -1,5 +1,4 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
-import { Hero } from "@/components/marketing/hero";
 import { MenuBox } from "@/components/marketing/menu-box";
 import {
   FAQPageJsonLd,
@@ -9,31 +8,68 @@ import {
   WebsiteJsonLd,
 } from "@/components/json-ld";
 import type { Metadata } from "next";
+import type { SearchParams } from "nuqs/server";
 import {
   defaultMetadata,
   ogMetadata,
   twitterMetadata,
   SITE_URL,
 } from "./shared-metadata";
+import { SalaryCalculatorServer } from "./salary/_components/salary-calculator-server";
+import SalaryPlaygroundCards from "./salary/_components/play-ground-cart";
+import { salaryParamsCache } from "./salary/search-params";
+import { CompactHero } from "@/components/marketing/compact-hero";
 
-export const metadata: Metadata = {
-  ...defaultMetadata,
-  title: "Malta Salary Calculator 2026 | Free Tax, SSC & Net Pay Calculator",
-  description:
-    "Calculate your Malta net salary for free. Accurate 2024-2026 tax brackets, SSC contributions, and COLA. Instant results for single, married, and parent taxpayers. The most trusted Malta salary calculator.",
-  alternates: {
-    canonical: SITE_URL,
-  },
-  openGraph: {
-    ...ogMetadata,
-    url: SITE_URL,
-  },
-  twitter: {
-    ...twitterMetadata,
-  },
+type PageProps = {
+  searchParams: Promise<SearchParams>;
 };
 
-export default function Home() {
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const params = await salaryParamsCache.parse(searchParams);
+  const salary = params.salary;
+  const formattedSalary = new Intl.NumberFormat("en-MT", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(salary);
+
+  const taxTypeLabel =
+    params.taxType === "single"
+      ? "Single"
+      : params.taxType === "married"
+        ? "Married"
+        : "Parent";
+
+  const title = `Malta Salary Calculator 2026 | Free Tax & Net Pay Calculator`;
+  const description = `Calculate your Malta net salary for ${params.year}. Gross salary: ${formattedSalary}, Tax status: ${taxTypeLabel}. Accurate tax deductions, SSC contributions, and COLA. Malta's #1 salary calculator.`;
+
+  return {
+    ...defaultMetadata,
+    title,
+    description,
+    alternates: {
+      canonical: SITE_URL,
+    },
+    openGraph: {
+      ...ogMetadata,
+      title,
+      description,
+      url: SITE_URL,
+    },
+    twitter: {
+      ...twitterMetadata,
+      title,
+      description,
+    },
+  };
+}
+
+export default async function Home({ searchParams }: PageProps) {
+  // Parse URL params server-side for SSR
+  const params = await salaryParamsCache.parse(searchParams);
+
   return (
     <MarketingLayout>
       {/* Structured Data for SEO */}
@@ -43,15 +79,20 @@ export default function Home() {
       <OrganizationJsonLd />
       <SiteNavigationJsonLd />
 
-      <main role="main" aria-label="Malta Salary Calculator Homepage">
-        <div className="grid gap-8">
-          <Hero />
-          <MenuBox />
+      <main role="main" aria-label="Malta Salary Calculator">
+        {/* Compact Hero - Mobile First */}
+        <CompactHero />
+
+        {/* Salary Calculator */}
+        <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
+          <SalaryCalculatorServer initialParams={params}>
+            <SalaryPlaygroundCards />
+          </SalaryCalculatorServer>
         </div>
+
+        {/* Other Calculators */}
+        <MenuBox />
       </main>
     </MarketingLayout>
   );
 }
-
-export const revalidate = false;          // tamamen statik (build-time)
-export const dynamic = 'force-static';    // bu segmenti statik olmaya zorla

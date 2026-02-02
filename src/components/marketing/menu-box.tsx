@@ -31,17 +31,6 @@ interface CalculatorCard {
 
 const calculators: CalculatorCard[] = [
   {
-    href: "/salary",
-    title: "Salary Calculator",
-    description:
-      "Calculate your net salary with accurate Malta tax deductions, SSC contributions, and COLA for 2024-2026.",
-    icon: Calculator,
-    gradient: "from-amber-500/20 via-orange-500/10 to-yellow-500/5",
-    iconBg: "bg-gradient-to-br from-amber-500 to-orange-600",
-    available: true,
-    badge: "Popular",
-  },
-  {
     href: "/calculators/notice-period",
     title: "Notice Period Calculator",
     description:
@@ -50,7 +39,7 @@ const calculators: CalculatorCard[] = [
     gradient: "from-blue-500/20 via-cyan-500/10 to-teal-500/5",
     iconBg: "bg-gradient-to-br from-blue-500 to-cyan-600",
     available: true,
-    badge: "New",
+    badge: "Popular",
   },
   {
     href: "/calculators/retirement-age",
