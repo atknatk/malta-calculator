@@ -56,7 +56,7 @@ export default function TermsPage() {
                                 Please read these terms carefully before using Malta Calculator.
                             </p>
                             <p className="text-sm text-muted-foreground">
-                                Last updated: January 24, 2026 | Effective: January 24, 2026
+                                Last updated: February 2, 2026 | Effective: February 2, 2026
                             </p>
                         </div>
 
@@ -94,6 +94,28 @@ export default function TermsPage() {
                             <p className="text-muted-foreground leading-relaxed mt-4">
                                 All calculations are for <strong>informational purposes only</strong> and should not be relied upon for official purposes.
                             </p>
+
+                            <h3 className="text-lg font-semibold mt-6 mb-3">2.1 Event Registration</h3>
+                            <p className="text-muted-foreground leading-relaxed">
+                                Malta Calculator offers event registration services that require user authentication. By registering for events:
+                            </p>
+                            <ul className="list-disc list-inside text-muted-foreground space-y-2 mt-2 ml-4">
+                                <li>You agree to provide accurate information during registration</li>
+                                <li>You consent to receiving event-related communications via email</li>
+                                <li>You understand that event details may be shared with event organizers</li>
+                            </ul>
+
+                            <h3 className="text-lg font-semibold mt-6 mb-3">2.2 Google Sign-In Authentication</h3>
+                            <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg mt-2">
+                                <p className="text-blue-700 dark:text-blue-300">
+                                    🔐 <strong>Third-Party Authentication:</strong> We use Google Sign-In for secure authentication. By using this feature:
+                                </p>
+                                <ul className="list-disc list-inside text-blue-700 dark:text-blue-300 mt-2 text-sm space-y-1">
+                                    <li>You authorize us to receive your basic profile information from Google</li>
+                                    <li>You agree to Google&apos;s <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Terms of Service</a></li>
+                                    <li>You can revoke access at any time via your Google Account settings</li>
+                                </ul>
+                            </div>
                         </section>
 
                         {/* Section 3 */}

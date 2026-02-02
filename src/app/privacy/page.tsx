@@ -57,7 +57,7 @@ export default function PrivacyPage() {
                                 Your privacy is important to us. This policy explains how we handle your information.
                             </p>
                             <p className="text-sm text-muted-foreground">
-                                Last updated: January 24, 2026 | Effective: January 24, 2026
+                                Last updated: February 2, 2026 | Effective: February 2, 2026
                             </p>
                         </div>
 
@@ -137,6 +137,37 @@ export default function PrivacyPage() {
                                 <li>Social security numbers or ID card numbers</li>
                                 <li>Employer information</li>
                             </ul>
+
+                            <h3 className="text-lg font-semibold mt-6 mb-3">2.4 Google Sign-In Authentication</h3>
+                            <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg mb-4">
+                                <p className="text-blue-700 dark:text-blue-300">
+                                    🔐 <strong>Google Authentication:</strong> When you sign in with Google for event registration, we receive and store:
+                                </p>
+                            </div>
+                            <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
+                                <li><strong>Email address:</strong> Used to identify your account and send event confirmations</li>
+                                <li><strong>Display name:</strong> Used to personalize your experience</li>
+                                <li><strong>Profile picture URL:</strong> Used to display your avatar (optional)</li>
+                                <li><strong>Google User ID:</strong> Used for secure account identification</li>
+                            </ul>
+
+                            <h4 className="text-base font-semibold mt-4 mb-2">Google API Services User Data Policy</h4>
+                            <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                                <p className="text-emerald-700 dark:text-emerald-300 mb-2">
+                                    ✅ Malta Calculator&apos;s use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" className="underline font-medium">Google API Services User Data Policy</a>, including the Limited Use requirements.
+                                </p>
+                                <p className="text-emerald-700 dark:text-emerald-300 text-sm">
+                                    We only use Google data for authentication and event registration purposes. We do not share your Google data with third parties except as necessary to provide our services.
+                                </p>
+                            </div>
+
+                            <h4 className="text-base font-semibold mt-4 mb-2">What We Do NOT Do With Google Data</h4>
+                            <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
+                                <li>We do NOT sell or rent your Google account information</li>
+                                <li>We do NOT use your data for advertising purposes</li>
+                                <li>We do NOT share your information with data brokers</li>
+                                <li>We do NOT access any data beyond what is listed above</li>
+                            </ul>
                         </section>
 
                         {/* Section 3 */}
@@ -202,6 +233,16 @@ export default function PrivacyPage() {
                                     <div>
                                         <strong>Google Analytics 4</strong>
                                         <p className="text-sm text-muted-foreground">Website analytics with IP anonymization enabled</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                                    <UserCheck className="w-5 h-5 text-blue-500 mt-0.5" />
+                                    <div>
+                                        <strong>Google Sign-In (OAuth 2.0)</strong>
+                                        <p className="text-sm text-muted-foreground">Secure authentication for event registration. We receive only basic profile information (email, name, profile photo).</p>
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Google Privacy Policy</a>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
