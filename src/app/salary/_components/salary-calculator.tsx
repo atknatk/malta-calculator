@@ -185,9 +185,34 @@ export function SalaryCalculatorClient({
 
   const [data, setData] = useState<MonthlySalaryOutput[]>(initialData);
   const [isSalaryInputFocused, setIsSalaryInputFocused] = useState(false);
+  const [isSummaryVisible, setIsSummaryVisible] = useState(true);
+  const [hasUserMadeChanges, setHasUserMadeChanges] = useState(false);
   const isUpdatingRef = React.useRef(false);
   const previousDataRef = React.useRef<MonthlySalaryOutput[]>(data);
+  const summaryCardRef = React.useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Track Summary card visibility with IntersectionObserver
+  useEffect(() => {
+    if (!summaryCardRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSummaryVisible(entry.isIntersecting);
+      },
+      {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.1, // Trigger when 10% of the element is visible
+      }
+    );
+
+    observer.observe(summaryCardRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []); // Only run once on mount
 
   // Parse monthlyBonuses from JSON string
   const parsedMonthlyBonuses = useMemo((): MonthlyBonuses => {
@@ -322,6 +347,9 @@ export function SalaryCalculatorClient({
 
   // Form value update handler - URL'i günceller
   const handleValuesChange = (values: Partial<typeof formValues>) => {
+    // Mark that user has made changes
+    setHasUserMadeChanges(true);
+
     // Serialize monthlyBonuses to JSON string for URL
     const monthlyBonusesJson = values.monthlyBonuses && Object.keys(values.monthlyBonuses).length > 0
       ? JSON.stringify(values.monthlyBonuses)
@@ -363,47 +391,49 @@ export function SalaryCalculatorClient({
 
         {/* Right Column: Summary */}
         {summary && (
-          <SalaryFormCard title="Summary" icon={Wallet}>
-            {/* Annual Summary Cards - 2x2 grid */}
-            <div className="grid grid-cols-2 gap-2">
-              <SummaryCard
-                icon={TrendingUp}
-                label="Gross"
-                value={`€${Math.round(summary.annual.gross).toLocaleString()}`}
-              />
-              <SummaryCard
-                icon={Coins}
-                label="SSC"
-                value={`€${Math.round(summary.annual.ssc).toLocaleString()}`}
-                variant="warning"
-              />
-              <SummaryCard
-                icon={Receipt}
-                label="Tax"
-                value={`€${Math.round(summary.annual.tax).toLocaleString()}`}
-                variant="danger"
-              />
-              <SummaryCard
-                icon={Wallet}
-                label="Net"
-                value={`€${Math.round(summary.annual.net).toLocaleString()}`}
-                variant="success"
-              />
-            </div>
-
-            {/* Monthly Net Highlight */}
-            <div className="mt-3 p-4 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/10 rounded-xl border border-primary/20">
-              <div className="text-center">
-                <span className="text-sm text-muted-foreground block mb-1">Monthly Net</span>
-                <AnimatedCounter
-                  value={summary.monthly.net}
-                  className="text-2xl sm:text-3xl font-bold text-primary"
-                  prefix="€"
-                  decimals={2}
+          <div ref={summaryCardRef}>
+            <SalaryFormCard title="Summary" icon={Wallet}>
+              {/* Annual Summary Cards - 2x2 grid */}
+              <div className="grid grid-cols-2 gap-2">
+                <SummaryCard
+                  icon={TrendingUp}
+                  label="Gross"
+                  value={`€${Math.round(summary.annual.gross).toLocaleString()}`}
+                />
+                <SummaryCard
+                  icon={Coins}
+                  label="SSC"
+                  value={`€${Math.round(summary.annual.ssc).toLocaleString()}`}
+                  variant="warning"
+                />
+                <SummaryCard
+                  icon={Receipt}
+                  label="Tax"
+                  value={`€${Math.round(summary.annual.tax).toLocaleString()}`}
+                  variant="danger"
+                />
+                <SummaryCard
+                  icon={Wallet}
+                  label="Net"
+                  value={`€${Math.round(summary.annual.net).toLocaleString()}`}
+                  variant="success"
                 />
               </div>
-            </div>
-          </SalaryFormCard>
+
+              {/* Monthly Net Highlight */}
+              <div className="mt-3 p-4 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+                <div className="text-center">
+                  <span className="text-sm text-muted-foreground block mb-1">Monthly Net</span>
+                  <AnimatedCounter
+                    value={summary.monthly.net}
+                    className="text-2xl sm:text-3xl font-bold text-primary"
+                    prefix="€"
+                    decimals={2}
+                  />
+                </div>
+              </div>
+            </SalaryFormCard>
+          </div>
         )}
       </div>
 
@@ -446,7 +476,7 @@ export function SalaryCalculatorClient({
 
       {/* Mobile Floating Net Salary Card - iOS Liquid Glass Effect - Positioned at TOP */}
       <AnimatePresence>
-        {isMobile && isSalaryInputFocused && summary && (
+        {isMobile && hasUserMadeChanges && (isSalaryInputFocused || !isSummaryVisible) && summary && (
           <motion.div
             initial={{ y: -100, opacity: 0, scale: 0.9 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}

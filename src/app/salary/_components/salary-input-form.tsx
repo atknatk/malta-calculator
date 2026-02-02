@@ -66,7 +66,7 @@ function PremiumInput({
       setTimeout(() => {
         const element = inputRef.current;
         if (element) {
-          const scrollTarget = 0;
+          const scrollTarget = 180;
           window.scrollTo({
             top: Math.max(0, scrollTarget),
             behavior: 'smooth'

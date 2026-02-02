@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Background from "./_components/background";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "sonner";
+import { ClerkProvider } from "@clerk/nextjs";
 import {
   defaultMetadata,
   ogMetadata,
@@ -40,25 +41,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
-      <body
-        className={`${inter.className
-          // biome-ignore lint/nursery/useSortedClasses: <explanation>
-          } ${calSans.variable}`}
-      >
-        <SpeedInsights />
-        <Analytics />
-        <NuqsAdapter>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            <Background>{children}</Background>
-            <Toaster richColors />
-            <TailwindIndicator />
-          </ThemeProvider>
-        </NuqsAdapter>
-      </body>
-      <GoogleAnalytics gaId="G-LCNYBX78G0" />
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body
+          className={`${inter.className
+            // biome-ignore lint/nursery/useSortedClasses: <explanation>
+            } ${calSans.variable}`}
+        >
+          <SpeedInsights />
+          <Analytics />
+          <NuqsAdapter>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+              <Background>{children}</Background>
+              <Toaster richColors />
+              <TailwindIndicator />
+            </ThemeProvider>
+          </NuqsAdapter>
+        </body>
+        <GoogleAnalytics gaId="G-LCNYBX78G0" />
+      </html>
+    </ClerkProvider>
   );
 }
 
