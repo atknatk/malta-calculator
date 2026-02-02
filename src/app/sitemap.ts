@@ -37,6 +37,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${baseUrl}/blog/malta-savings-interest-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
         { url: `${baseUrl}/blog/malta-personal-loan-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
         { url: `${baseUrl}/blog/malta-expat-mortgage-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        // Transport blog pages
+        { url: `${baseUrl}/blog/malta-vehicle-registration-tax-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-road-license-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-drivers-license-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-vrt-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-import-vehicle-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        // Employment & Social Security blog pages
+        { url: `${baseUrl}/blog/malta-social-security-number-guide-2026`, priority: 0.9, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-work-permit-employment-guide-2026`, priority: 0.9, changeFrequency: "yearly" as const },
+        { url: `${baseUrl}/blog/malta-mysocialsecurity-app-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
     ];
 
     // Company pages

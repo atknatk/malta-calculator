@@ -251,6 +251,31 @@ const blogPosts: BlogPost[] = [
         readTime: "9 min read",
         category: "Transport",
     },
+    // Employment & Social Security blog posts
+    {
+        slug: "malta-social-security-number-guide-2026",
+        title: "Malta Social Security Number 2026: Complete SSN Guide",
+        description: "Complete guide to Malta Social Security Number (SSN). How to apply, eligibility requirements, required documents for EU/Non-EU nationals.",
+        date: "February 2026",
+        readTime: "8 min read",
+        category: "Employment",
+    },
+    {
+        slug: "malta-work-permit-employment-guide-2026",
+        title: "Malta Work Permit 2026: EU & Non-EU Workers Guide",
+        description: "Complete guide to working in Malta. Work permits, employment licenses, Jobsplus registration, and employee rights.",
+        date: "February 2026",
+        readTime: "10 min read",
+        category: "Employment",
+    },
+    {
+        slug: "malta-mysocialsecurity-app-guide-2026",
+        title: "mySocialSecurity Malta App 2026: Complete Guide",
+        description: "Complete guide to mySocialSecurity Malta app. Register, update bank details, check contributions, and apply for benefits.",
+        date: "February 2026",
+        readTime: "7 min read",
+        category: "Digital Guide",
+    },
 ];
 
 export default function BlogPage() {
