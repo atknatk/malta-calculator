@@ -83,10 +83,12 @@ const EditableCell = ({
       className="w-[5rem] h-8 py-0 px-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       type="number"
       step={50}
+      aria-label={`Gross Wage input`}
       onFocus={e => { e.target.select() }}
       onChange={e => setValue(e.target.value)}
       onBlur={onBlur}
       onKeyUp={handleKeyPress}
+      onWheel={e => e.currentTarget.blur()}
     />
   )
 };
@@ -127,10 +129,12 @@ const BonusEditableCell = ({
       className="w-[5rem] h-8 py-0 px-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       type="number"
       step={100}
+      aria-label={`Bonus input for ${row.original.month}`}
       onFocus={e => { e.target.select() }}
       onChange={e => setValue(e.target.value)}
       onBlur={onBlur}
       onKeyUp={handleKeyPress}
+      onWheel={e => e.currentTarget.blur()}
     />
   )
 };
@@ -358,6 +362,7 @@ export function SalaryTable({ data, setData, onBonusChange }:
       </div>
       <div className="rounded-md border">
         <Table>
+          <caption className="sr-only">Monthly salary breakdown showing gross wage, taxes, social security contributions, and net pay for each month</caption>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

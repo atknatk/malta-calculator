@@ -138,8 +138,8 @@ function MonthCard({
 
                     <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                         <div className="text-right">
-                            <span className="text-[10px] sm:text-xs text-muted-foreground">Net</span>
-                            <p className="text-base sm:text-lg font-bold text-green-600 dark:text-green-400 whitespace-nowrap">
+                            <span className="text-[11px] sm:text-xs text-muted-foreground">Net</span>
+                            <p className="text-base sm:text-lg font-bold text-green-700 dark:text-green-400 whitespace-nowrap">
                                 {formatMoney(item.net)}
                             </p>
                         </div>
@@ -210,7 +210,7 @@ function MonthCard({
                                         >
                                             <span className={cn(
                                                 "font-semibold text-sm",
-                                                item.bonus > 0 && "text-green-600 dark:text-green-400"
+                                                item.bonus > 0 && "text-green-700 dark:text-green-400"
                                             )}>
                                                 {formatMoney(item.bonus)}
                                             </span>
@@ -249,9 +249,9 @@ function DetailItem({
     small?: boolean;
 }) {
     const variantClasses = {
-        success: "text-green-600 dark:text-green-400",
-        warning: "text-orange-600 dark:text-orange-400",
-        danger: "text-red-600 dark:text-red-400",
+        success: "text-green-700 dark:text-green-400",
+        warning: "text-orange-700 dark:text-orange-400",
+        danger: "text-red-700 dark:text-red-400",
     };
 
     return (

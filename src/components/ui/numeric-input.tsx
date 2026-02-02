@@ -178,6 +178,7 @@ const NumericInput = React.forwardRef<HTMLInputElement, NumericInputProps>(
                 onChange={handleChange}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
+                onWheel={(e) => e.currentTarget.blur()}
                 className={cn(
                     // Base styles - always applied
                     "w-full rounded-xl bg-background border border-border",
@@ -201,7 +202,7 @@ const NumericInput = React.forwardRef<HTMLInputElement, NumericInputProps>(
                     {inputElement}
                     <div
                         className={cn(
-                            "absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70 pointer-events-none",
+                            "absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground pointer-events-none",
                             suffixClassName
                         )}
                     >

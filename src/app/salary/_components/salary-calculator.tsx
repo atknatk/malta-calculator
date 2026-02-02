@@ -138,9 +138,9 @@ function SummaryCard({
 }) {
   const variantStyles = {
     default: "bg-muted",
-    success: "bg-green-500/10 text-green-600 dark:text-green-400",
-    warning: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
-    danger: "bg-red-500/10 text-red-600 dark:text-red-400",
+    success: "bg-green-500/10 text-green-700 dark:text-green-400",
+    warning: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
+    danger: "bg-red-500/10 text-red-700 dark:text-red-400",
   };
 
   return (
@@ -234,7 +234,7 @@ export function SalaryCalculatorClient({
 
   // URL params değiştiğinde hesapla
   useEffect(() => {
-    const grossSalary = formValues.grossSalary ?? 36000;
+    const grossSalary = formValues.grossSalary ?? 25000;
     const allowanceBonus = formValues.allowanceBonus || 0;
 
     const monthlySalaries: MonthlySalaryInput[] = [];
@@ -484,13 +484,13 @@ export function SalaryCalculatorClient({
                   <div className="flex items-center gap-3">
                     {/* Icon with frosted background */}
                     <div className="p-2.5 rounded-2xl bg-green-500/15 dark:bg-green-400/20 backdrop-blur-sm border border-green-500/20">
-                      <Wallet className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      <Wallet className="h-5 w-5 text-green-700 dark:text-green-400" />
                     </div>
                     <div>
                       <span className="text-gray-600 dark:text-gray-300 text-xs font-semibold uppercase tracking-wider block">
                         Monthly Net
                       </span>
-                      <span className="text-gray-400 dark:text-gray-500 text-[10px]">
+                      <span className="text-gray-600 dark:text-gray-400 text-[10px]">
                         After tax & SSC
                       </span>
                     </div>
@@ -498,11 +498,11 @@ export function SalaryCalculatorClient({
                   <div className="text-right">
                     <AnimatedCounter
                       value={summary.monthly.net}
-                      className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400 block"
+                      className="text-2xl sm:text-3xl font-bold text-green-700 dark:text-green-400 block"
                       prefix="€"
                       decimals={2}
                     />
-                    <span className="text-gray-500 dark:text-gray-400 text-xs font-medium">
+                    <span className="text-gray-600 dark:text-gray-300 text-xs font-medium">
                       <AnimatedCounterInt
                         value={summary.annual.net}
                         prefix="€"

@@ -103,10 +103,11 @@ function PremiumInput({
             onChange={(e) => onChange(e.target.value)}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            onWheel={(e) => e.currentTarget.blur()}
             className={cn(
               "w-full bg-background border border-border",
               "focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none",
-              "text-foreground font-semibold placeholder:text-muted-foreground/50",
+              "text-foreground font-semibold placeholder:text-muted-foreground/70",
               "transition-all duration-200 rounded-xl",
               "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
               large
@@ -116,7 +117,7 @@ function PremiumInput({
           />
           {suffix && (
             <div className={cn(
-              "absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground/70",
+              "absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground",
               large ? "text-lg" : "text-base"
             )}>
               {suffix}
@@ -125,7 +126,7 @@ function PremiumInput({
         </div>
       </div>
       {description && (
-        <p className="text-xs text-muted-foreground/60 pl-1">{description}</p>
+        <p className="text-xs text-muted-foreground pl-1">{description}</p>
       )}
     </motion.div>
   );
@@ -285,7 +286,7 @@ export function SalaryCalculatorForm({
 
   // Default values merged with props
   const formValues: SalaryFormValues = {
-    grossSalary: valuesProp?.grossSalary ?? 36000,
+    grossSalary: valuesProp?.grossSalary ?? 25000,
     year: valuesProp?.year ?? currentYear,
     taxRateType: valuesProp?.taxRateType ?? "single",
     childCount: valuesProp?.childCount ?? 0,
@@ -391,7 +392,7 @@ export function SalaryCalculatorForm({
                   }}
                   size="default"
                 />
-                <p className="text-xs text-muted-foreground/60 mt-2">
+                <p className="text-xs text-muted-foreground mt-2">
                   From 2026, tax rates vary based on the number of children. This affects your tax deductions.
                 </p>
               </GlassSection>
@@ -411,7 +412,7 @@ export function SalaryCalculatorForm({
             }}
             size="default"
           />
-          <p className="text-xs text-muted-foreground/60">
+          <p className="text-xs text-muted-foreground">
             Category C is the standard for full-time employees. SSC rates vary based on birth year (before/after 1962).
           </p>
         </GlassSection>
@@ -484,7 +485,7 @@ export function SalaryCalculatorForm({
 
         {/* Bonus Section - Per-Month Bonus Editor */}
         <GlassSection icon={Wallet} title="Bonuses" delay={0}>
-          <p className="text-xs text-muted-foreground/70 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Add bonuses for specific months (e.g., 13th month salary in December, performance bonus in March)
           </p>
 

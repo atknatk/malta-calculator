@@ -15,7 +15,7 @@
     --foreground: 20 14% 12%;
 
     --muted: 40 20% 94%;
-    --muted-foreground: 20 10% 45%;
+    --muted-foreground: 20 10% 35%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 20 14% 12%;
@@ -26,8 +26,8 @@
     --border: 40 20% 88%;
     --input: 40 20% 88%;
 
-    /* Malta Gold - Primary */
-    --primary: 38 92% 50%;
+    /* Malta Gold - Primary (Darkened for accessibility) */
+    --primary: 38 92% 32%;
     --primary-foreground: 0 0% 100%;
 
     /* Mediterranean Blue - Secondary */
@@ -46,7 +46,7 @@
     --radius: 0.75rem;
 
     /* === Premium Gradients === */
-    --gradient-primary: linear-gradient(135deg, #f5a623 0%, #f7931e 50%, #e8760a 100%);
+    --gradient-primary: linear-gradient(135deg, #c97d0a 0%, #b86f08 50%, #a56006 100%);
     --gradient-secondary: linear-gradient(135deg, #0099cc 0%, #0077b6 50%, #005f8a 100%);
     --gradient-accent: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
     --gradient-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
@@ -76,7 +76,7 @@
     --foreground: 40 20% 96%;
 
     --muted: 220 15% 15%;
-    --muted-foreground: 40 10% 60%;
+    --muted-foreground: 40 10% 70%;
 
     --popover: 220 20% 10%;
     --popover-foreground: 40 20% 96%;
@@ -87,8 +87,8 @@
     --border: 220 15% 20%;
     --input: 220 15% 20%;
 
-    --primary: 38 92% 55%;
-    --primary-foreground: 220 20% 8%;
+    --primary: 38 92% 48%;
+    --primary-foreground: 20 14% 8%;
 
     --secondary: 199 89% 55%;
     --secondary-foreground: 220 20% 8%;

@@ -37,7 +37,7 @@ const currentYear = new Date().getFullYear().toString();
  */
 export const salarySearchParams = {
     // Primary params
-    salary: parseAsInteger.withDefault(36000),
+    salary: parseAsInteger.withDefault(25000),
     year: parseAsString.withDefault(currentYear),
     taxType: parseAsStringLiteral(taxRateTypes).withDefault("single"),
     childCount: parseAsInteger.withDefault(0),  // Çocuk sayısı (0, 1, 2) - 2026+ için etkili

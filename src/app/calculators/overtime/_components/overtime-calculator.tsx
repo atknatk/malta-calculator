@@ -55,7 +55,7 @@ function ToggleGroup<T extends string>({
 export function OvertimeCalculator() {
     const [inputType, setInputType] = useState<"hourly" | "annual">("hourly");
     const [hourlyRate, setHourlyRate] = useState(15);
-    const [annualSalary, setAnnualSalary] = useState(36000);
+    const [annualSalary, setAnnualSalary] = useState(25000);
     const [overtimeHours, setOvertimeHours] = useState(10);
     const [overtimeType, setOvertimeType] = useState<OvertimeType>("weekday");
 
