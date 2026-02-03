@@ -55,6 +55,27 @@ interface ChangelogEntry {
 
 const changelogEntries: ChangelogEntry[] = [
     {
+        version: "v3.2.0",
+        date: "February 4, 2026",
+        title: "Payslip System & Company Settings",
+        type: "major",
+        icon: <FileText className="w-5 h-5" />,
+        description: "Complete payslip verification system, company settings with logo management, and enhanced document generation.",
+        features: [
+            "👶 Malta Children's Allowance Calculator with means-tested rates",
+            "📝 Comprehensive Children's Allowance Guide blog post",
+            "✅ Payslip verification page with QR code support",
+            "🔗 Short URL verification links (/v/[token]) for easy sharing",
+            "📊 Year-to-date (YTD) totals on payslip documents",
+            "🏢 Company settings page for managing company details",
+            "🖼️ Company logo upload with S3 integration",
+            "📄 Enhanced payslip PDF generation with improved styling",
+            "🔓 Public access for verification pages without login",
+            "🤖 noindex meta tags to prevent search engine indexing",
+            "🔒 Enhanced middleware with explicit public route handling",
+        ],
+    },
+    {
         version: "v3.1.0",
         date: "February 2, 2026",
         title: "Immigration & Family Reunification",
