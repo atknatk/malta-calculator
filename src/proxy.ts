@@ -29,7 +29,7 @@ const isPublicRoute = createRouteMatcher([
     '/api/employee(.*)',
 ])
 
-export default clerkMiddleware(async (auth, req) => {
+export const proxy = clerkMiddleware(async (auth, req) => {
     // If it's a protected route and user is not signed in, redirect to sign-in
     if (isProtectedRoute(req)) {
         await auth.protect()
