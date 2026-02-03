@@ -55,6 +55,11 @@ export const defaultMetadata: Metadata = {
   publisher: SITE_NAME,
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   referrer: "origin-when-cross-origin",
   formatDetection: {
     email: false,
