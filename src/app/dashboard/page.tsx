@@ -88,6 +88,13 @@ export default async function DashboardPage() {
                                     <span>👥</span>
                                     Manage Employees
                                 </Link>
+                                <Link
+                                    href="/settings"
+                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+                                >
+                                    <span>⚙️</span>
+                                    Company Settings
+                                </Link>
                             </div>
                         </div>
 
