@@ -20,6 +20,9 @@ import SalaryPlaygroundCards from "./salary/_components/play-ground-cart";
 import { salaryParamsCache } from "./salary/search-params";
 import { CompactHero } from "@/components/marketing/compact-hero";
 
+// Performance: Enable ISR with 5-minute revalidation
+export const revalidate = 300;
+
 type PageProps = {
   searchParams: Promise<SearchParams>;
 };

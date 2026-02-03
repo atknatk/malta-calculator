@@ -5,7 +5,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { randomUUID } from "crypto";
+import { randomBytes } from "crypto";
+
+// Generate a short random token (6-8 chars, alphanumeric, URL-safe)
+function generateShortToken(length: number = 8): string {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; // No O/0/I/l/1 for clarity
+    const bytes = randomBytes(length);
+    let token = '';
+    for (let i = 0; i < length; i++) {
+        token += chars[bytes[i] % chars.length];
+    }
+    return token;
+}
 
 interface PayslipGenerateRequest {
     employeeId: string;
@@ -137,8 +148,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<PayslipGe
             );
         }
 
-        // Generate access token for payslip
-        const accessToken = randomUUID();
+        // Generate short access token for payslip verification (8 chars)
+        const accessToken = generateShortToken(8);
 
         // Create payslip
         const { data: payslip, error: createError } = await supabase

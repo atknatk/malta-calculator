@@ -60,6 +60,10 @@ const contactReasons = [
     },
 ];
 
+// Performance: Static page - no revalidation needed
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function ContactPage() {
     return (
         <MarketingLayout>

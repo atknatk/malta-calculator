@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { getPayslipById } from "@/app/actions/payslip-actions";
+import { getPayslipById, getYearToDateTotals } from "@/app/actions/payslip-actions";
 import PayslipDocument from "./_components/payslip-document";
 import PayslipActions from "./_components/payslip-actions";
 
@@ -29,13 +29,47 @@ export default async function PayslipViewPage({
         notFound();
     }
 
+    // Extract deductions and salary config from payslip
     const deductions = payslip.deductions as {
         incomeTax: number;
         sscEmployee: number;
+        cola?: number;
+        bonus?: number;
+        allowance?: number;
     };
 
-    // Generate payslip number from period
-    const payslipNumber = `${payslip.period_year}-${String(payslip.period_month).padStart(3, '0')}`;
+    // Get salary config if stored
+    const salaryConfig = (payslip as {
+        salary_config?: {
+            annualGross?: number;
+            taxType?: 'single' | 'married' | 'parent';
+            childCount?: number;
+            sscCategory?: string;
+            birthYear?: number;
+        }
+    }).salary_config;
+
+    // Get Year-to-Date totals
+    const ytdTotals = await getYearToDateTotals(
+        payslip.employee_id,
+        payslip.period_year,
+        payslip.period_month
+    );
+
+    // Generate unique payslip number with company prefix
+    const companyPrefix = payslip.company.name.substring(0, 3).toUpperCase();
+    const payslipNumber = `${companyPrefix}-${payslip.period_year}-${String(payslip.period_month).padStart(2, '0')}-${payslip.id.substring(0, 4).toUpperCase()}`;
+
+    // Calculate basic salary (gross minus extras)
+    const basicSalary = payslip.gross_salary - (deductions.cola || 0) - (deductions.bonus || 0) - (deductions.allowance || 0);
+
+    // Build earnings object
+    const earnings = {
+        basicSalary,
+        cola: deductions.cola || 0,
+        bonus: deductions.bonus || 0,
+        allowance: deductions.allowance || 0,
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -62,7 +96,10 @@ export default async function PayslipViewPage({
                         >
                             ← Back to Dashboard
                         </Link>
-                        <PayslipActions />
+                        <PayslipActions
+                            payslipNumber={payslipNumber}
+                            employeeName={payslip.employee.name}
+                        />
                     </div>
 
                     {/* Payslip Info Header */}
@@ -76,7 +113,14 @@ export default async function PayslipViewPage({
                     </div>
 
                     {/* Payslip Document */}
-                    <div className="rounded-xl shadow-xl print:rounded-none print:shadow-none">
+                    <div className="rounded-xl shadow-xl print:rounded-none print:shadow-none" style={{
+                        fontFamily: 'Arial, Helvetica, sans-serif',
+                        width: '210mm',
+                        minHeight: '297mm',
+                        boxSizing: 'border-box',
+                        fontSize: '10px',
+                        lineHeight: '1.4'
+                    }}>
                         <PayslipDocument
                             company={{
                                 name: payslip.company.name,
@@ -90,6 +134,13 @@ export default async function PayslipViewPage({
                                 position: payslip.employee.position,
                                 employee_code: payslip.employee.employee_code,
                                 email: payslip.employee.email,
+                                address: (payslip.employee as { address?: string | null }).address,
+                                id_number: (payslip.employee as { id_number?: string | null }).id_number,
+                                ss_number: (payslip.employee as { ss_number?: string | null }).ss_number,
+                                department: (payslip.employee as { department?: string | null }).department,
+                                section: (payslip.employee as { section?: string | null }).section,
+                                unit: (payslip.employee as { unit?: string | null }).unit,
+                                grade: (payslip.employee as { grade?: string | null }).grade,
                             }}
                             periodMonth={payslip.period_month}
                             periodYear={payslip.period_year}
@@ -99,6 +150,10 @@ export default async function PayslipViewPage({
                             sscEmployee={deductions.sscEmployee}
                             createdAt={payslip.created_at}
                             payslipNumber={payslipNumber}
+                            ytdTotals={ytdTotals}
+                            salaryConfig={salaryConfig}
+                            earnings={earnings}
+                            accessToken={payslip.access_token}
                         />
                     </div>
                 </div>

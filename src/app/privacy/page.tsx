@@ -40,6 +40,10 @@ export const metadata: Metadata = {
     },
 };
 
+// Performance: Static page - no revalidation needed
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function PrivacyPage() {
     return (
         <MarketingLayout>

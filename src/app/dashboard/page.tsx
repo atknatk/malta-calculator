@@ -5,8 +5,10 @@ import Link from "next/link";
 import { getCompany, getUsageLimits, getRecentPayslips } from "@/app/actions/payslip-actions";
 
 export default async function DashboardPage() {
-    const { userId } = await auth();
-    const user = await currentUser();
+    const [{ userId }, user] = await Promise.all([
+        auth(),
+        currentUser()
+    ]);
 
     if (!userId) {
         redirect('/sign-in');
@@ -19,9 +21,11 @@ export default async function DashboardPage() {
         redirect('/onboarding');
     }
 
-    // Get usage limits and recent payslips
-    const usage = await getUsageLimits();
-    const recentPayslips = await getRecentPayslips(5);
+    // Get usage limits and recent payslips in parallel
+    const [usage, recentPayslips] = await Promise.all([
+        getUsageLimits(),
+        getRecentPayslips(5)
+    ]);
 
     const planLabels: Record<string, string> = {
         free: 'Free Plan',

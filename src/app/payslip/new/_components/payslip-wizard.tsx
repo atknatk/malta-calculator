@@ -90,12 +90,40 @@ export default function PayslipWizard({ company, employees, selectedEmployeeId }
         setError(null)
 
         try {
+            // Validate salary
+            if (salaryDetails.annualGrossSalary < 0 || salaryDetails.annualGrossSalary > 10000000) {
+                setError('Annual salary must be between €0 and €10,000,000')
+                return
+            }
+
+            // Validate birth year
+            const currentYear = new Date().getFullYear()
+            if (salaryDetails.birthYear < 1900 || salaryDetails.birthYear > currentYear - 16) {
+                setError(`Birth year must be between 1900 and ${currentYear - 16}`)
+                return
+            }
+
+            // Validate period is not in the future
+            const now = new Date()
+            const selectedDate = new Date(salaryDetails.year, salaryDetails.month - 1)
+            if (selectedDate > now) {
+                setError('Cannot create payslip for future periods')
+                return
+            }
+
+            // Check for API token
+            const apiToken = process.env.NEXT_PUBLIC_SALARY_API_TOKEN
+            if (!apiToken) {
+                setError('API configuration error. Please contact support.')
+                return
+            }
+
             // Call the existing salary API with all parameters
             const response = await fetch('/api/salary/calculate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SALARY_API_TOKEN || 'malta-calc-secret-token-2025'}`
+                    'Authorization': `Bearer ${apiToken}`
                 },
                 body: JSON.stringify({
                     salary: salaryDetails.annualGrossSalary,
@@ -111,10 +139,17 @@ export default function PayslipWizard({ company, employees, selectedEmployeeId }
 
             if (data.success && data.data) {
                 const monthIndex = salaryDetails.month - 1
+
+                // Validate monthlyBreakdown exists and has the requested month
+                if (!data.data.monthlyBreakdown || !Array.isArray(data.data.monthlyBreakdown) || monthIndex >= data.data.monthlyBreakdown.length) {
+                    setError('Invalid salary calculation response. Please try again.')
+                    return
+                }
+
                 const monthlyData = data.data.monthlyBreakdown[monthIndex]
 
                 // Calculate total with bonus and allowance
-                const baseGross = monthlyData?.grossTotal || data.data.summary.monthly.gross
+                const baseGross = monthlyData?.grossTotal ?? data.data.summary.monthly.gross
                 const totalGross = baseGross + salaryDetails.bonus + salaryDetails.allowance
 
                 setCalculationResult({
@@ -133,8 +168,9 @@ export default function PayslipWizard({ company, employees, selectedEmployeeId }
             }
         } catch {
             setError('API error occurred')
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     const handleGenerate = async () => {
@@ -179,8 +215,9 @@ export default function PayslipWizard({ company, employees, selectedEmployeeId }
             }
         } catch {
             setError('An error occurred')
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     return (
@@ -305,7 +342,7 @@ export default function PayslipWizard({ company, employees, selectedEmployeeId }
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {[2024, 2025, 2026].map((y) => (
+                                                    {Array.from({ length: 3 }, (_, i) => currentDate.getFullYear() - 1 + i).map((y) => (
                                                         <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
                                                     ))}
                                                 </SelectContent>
@@ -434,14 +471,22 @@ export default function PayslipWizard({ company, employees, selectedEmployeeId }
                                 </div>
                             </div>
 
+                            {error && (
+                                <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                                    {error}
+                                </div>
+                            )}
+
                             <div className="mt-6 flex justify-between">
                                 <Button
+                                    type="button"
                                     variant="ghost"
                                     onClick={() => setStep(1)}
                                 >
                                     ← Back
                                 </Button>
                                 <Button
+                                    type="button"
                                     onClick={handleCalculate}
                                     disabled={loading}
                                     className="bg-amber-600 hover:bg-amber-700"

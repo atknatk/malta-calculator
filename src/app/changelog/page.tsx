@@ -246,6 +246,10 @@ function getTypeStyles(type: ChangelogEntry["type"]) {
     }
 }
 
+// Performance: Static page - no revalidation needed
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function ChangelogPage() {
     return (
         <MarketingLayout>

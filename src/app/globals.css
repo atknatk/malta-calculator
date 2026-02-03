@@ -526,3 +526,234 @@
     }
   }
 }
+
+/* ========================================
+   PRINT STYLES - PROFESSIONAL PAYSLIP A4
+   ======================================== */
+
+@media print {
+  /* A4 Page setup - portrait */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  /* Reset everything for print */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    background: white !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    overflow: visible !important;
+  }
+
+  /* Hide non-print elements */
+  .print\:hidden,
+  header:not([data-payslip-document] header),
+  nav,
+  footer:not([data-payslip-document] footer),
+  .no-print,
+  button,
+  main > div:not(:has([data-payslip-document])) {
+    display: none !important;
+  }
+
+  /* Reset all containers */
+  main,
+  main > div,
+  main > div > div {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+    background: white !important;
+  }
+
+  /* Show print elements */
+  .print\:block {
+    display: block !important;
+  }
+
+  /* Payslip document - A4 full page */
+  [data-payslip-document] {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-height: 297mm !important;
+    min-height: 297mm !important;
+    max-width: 210mm !important;
+    margin: 0 !important;
+    padding: 6mm !important;
+    box-sizing: border-box !important;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+    color: black !important;
+    background: white !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  /* All text black */
+  [data-payslip-document] *,
+  [data-payslip-document] div,
+  [data-payslip-document] span,
+  [data-payslip-document] td,
+  [data-payslip-document] th,
+  [data-payslip-document] p,
+  [data-payslip-document] h1,
+  [data-payslip-document] h2,
+  [data-payslip-document] h3 {
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Light gray background for headers and NET PAY */
+  [data-payslip-document] .bg-gray-50 {
+    background-color: #f8f8f8 !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  [data-payslip-document] .bg-gray-100 {
+    background-color: #f0f0f0 !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* Border colors */
+  [data-payslip-document] .border-black {
+    border-color: black !important;
+  }
+
+  [data-payslip-document] .border-gray-300 {
+    border-color: #ccc !important;
+  }
+
+  [data-payslip-document] .border-gray-400 {
+    border-color: #999 !important;
+  }
+
+  [data-payslip-document] .border-2 {
+    border-width: 2px !important;
+  }
+
+  [data-payslip-document] .border {
+    border-width: 1px !important;
+  }
+
+  [data-payslip-document] .border-t {
+    border-top-width: 1px !important;
+    border-right-width: 0 !important;
+    border-bottom-width: 0 !important;
+    border-left-width: 0 !important;
+  }
+
+  [data-payslip-document] .border-b {
+    border-top-width: 0 !important;
+    border-right-width: 0 !important;
+    border-bottom-width: 1px !important;
+    border-left-width: 0 !important;
+  }
+
+  /* Ensure borders print */
+  [data-payslip-document] table {
+    border-collapse: collapse !important;
+  }
+
+  /* Divide borders */
+  [data-payslip-document] .divide-x > * + * {
+    border-left-width: 1px !important;
+  }
+
+  [data-payslip-document] .divide-gray-300 > * + * {
+    border-color: #ccc !important;
+  }
+
+  [data-payslip-document] .divide-black > * + * {
+    border-color: black !important;
+  }
+
+  /* QR code must print correctly - preserve colors */
+  [data-payslip-document] svg {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* Logo should print if present */
+  [data-payslip-document] img {
+    max-width: 140px !important;
+    max-height: 64px !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* White background default */
+  [data-payslip-document] .bg-white {
+    background: white !important;
+  }
+
+  /* Font weights */
+  [data-payslip-document] .font-bold {
+    font-weight: 700 !important;
+  }
+
+  [data-payslip-document] .font-semibold {
+    font-weight: 600 !important;
+  }
+
+  [data-payslip-document] .font-medium {
+    font-weight: 500 !important;
+  }
+
+  /* Flex grow for footer spacing */
+  [data-payslip-document] .flex-grow {
+    flex-grow: 1 !important;
+  }
+
+  /* Grid layout */
+  [data-payslip-document] .grid-cols-2 {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  [data-payslip-document] .grid-cols-4 {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  /* Text sizes */
+  [data-payslip-document] .text-xs {
+    font-size: 10px !important;
+  }
+
+  [data-payslip-document] .text-sm {
+    font-size: 11px !important;
+  }
+
+  [data-payslip-document] .text-base {
+    font-size: 13px !important;
+  }
+
+  [data-payslip-document] .text-lg {
+    font-size: 15px !important;
+  }
+
+  [data-payslip-document] .text-xl {
+    font-size: 17px !important;
+  }
+
+  [data-payslip-document] .text-2xl {
+    font-size: 20px !important;
+  }
+
+  [data-payslip-document] .text-3xl {
+    font-size: 24px !important;
+  }
+}

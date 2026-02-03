@@ -32,6 +32,14 @@ interface Employee {
     date_of_birth: string | null
     pin_hash: string | null
     salary_details: Record<string, unknown> | null
+    // New fields for professional payslip
+    address: string | null
+    id_number: string | null
+    ss_number: string | null
+    department: string | null
+    section: string | null
+    unit: string | null
+    grade: string | null
     created_at: string
     updated_at: string
 }
@@ -184,6 +192,14 @@ export async function createEmployee(formData: FormData): Promise<{ success: boo
     const position = formData.get('position') as string | null
     const phone = formData.get('phone') as string | null
     const dateOfBirth = formData.get('dateOfBirth') as string | null
+    // New professional payslip fields
+    const address = formData.get('address') as string | null
+    const idNumber = formData.get('idNumber') as string | null
+    const ssNumber = formData.get('ssNumber') as string | null
+    const department = formData.get('department') as string | null
+    const section = formData.get('section') as string | null
+    const unit = formData.get('unit') as string | null
+    const grade = formData.get('grade') as string | null
 
     if (!name || name.trim().length < 2) {
         return { success: false, error: 'Employee name is required' }
@@ -199,6 +215,14 @@ export async function createEmployee(formData: FormData): Promise<{ success: boo
             position: position?.trim() || null,
             phone: phone?.trim() || null,
             date_of_birth: dateOfBirth || null,
+            // New fields
+            address: address?.trim() || null,
+            id_number: idNumber?.trim() || null,
+            ss_number: ssNumber?.trim() || null,
+            department: department?.trim() || null,
+            section: section?.trim() || null,
+            unit: unit?.trim() || null,
+            grade: grade?.trim() || null,
         })
         .select()
         .single()
@@ -336,6 +360,59 @@ export async function getRecentPayslips(limit = 5): Promise<(Payslip & { employe
     }
 
     return (data as (Payslip & { employee: Employee })[]) || []
+}
+
+export async function getYearToDateTotals(employeeId: string, year: number, upToMonth: number): Promise<{
+    grossTotal: number;
+    taxTotal: number;
+    sscTotal: number;
+    netTotal: number;
+}> {
+    const { userId } = await auth()
+    if (!userId) return { grossTotal: 0, taxTotal: 0, sscTotal: 0, netTotal: 0 }
+
+    const supabase = createAdminClient()
+
+    // Get company first to verify ownership
+    const { data: company } = await supabase
+        .from('companies')
+        .select('id')
+        .eq('clerk_user_id', userId)
+        .single()
+
+    if (!company) return { grossTotal: 0, taxTotal: 0, sscTotal: 0, netTotal: 0 }
+
+    // Get all payslips for this employee in this year up to the specified month
+    const { data: payslips, error } = await supabase
+        .from('payslips')
+        .select('gross_salary, net_salary, deductions')
+        .eq('employee_id', employeeId)
+        .eq('company_id', (company as { id: string }).id)
+        .eq('period_year', year)
+        .lte('period_month', upToMonth)
+
+    if (error || !payslips) {
+        console.error('Error fetching YTD totals:', error)
+        return { grossTotal: 0, taxTotal: 0, sscTotal: 0, netTotal: 0 }
+    }
+
+    // Sum up all the values
+    let grossTotal = 0
+    let taxTotal = 0
+    let sscTotal = 0
+    let netTotal = 0
+
+    for (const payslip of payslips) {
+        grossTotal += payslip.gross_salary || 0
+        netTotal += payslip.net_salary || 0
+        const deductions = payslip.deductions as { incomeTax?: number; sscEmployee?: number } | null
+        if (deductions) {
+            taxTotal += deductions.incomeTax || 0
+            sscTotal += deductions.sscEmployee || 0
+        }
+    }
+
+    return { grossTotal, taxTotal, sscTotal, netTotal }
 }
 
 export async function getPayslipById(payslipId: string): Promise<(Payslip & { employee: Employee; company: Company }) | null> {

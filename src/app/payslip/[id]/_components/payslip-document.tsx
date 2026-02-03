@@ -1,5 +1,7 @@
 'use client'
 
+import { QRCodeSVG } from 'qrcode.react'
+
 interface PayslipDocumentProps {
     company: {
         name: string;
@@ -13,6 +15,13 @@ interface PayslipDocumentProps {
         position: string | null;
         employee_code: string | null;
         email: string | null;
+        address?: string | null;
+        id_number?: string | null;
+        ss_number?: string | null;
+        department?: string | null;
+        section?: string | null;
+        unit?: string | null;
+        grade?: string | null;
     };
     periodMonth: number;
     periodYear: number;
@@ -22,12 +31,43 @@ interface PayslipDocumentProps {
     sscEmployee: number;
     createdAt: string;
     payslipNumber: string;
+    ytdTotals: {
+        grossTotal: number;
+        taxTotal: number;
+        sscTotal: number;
+        netTotal: number;
+    };
+    salaryConfig?: {
+        annualGross?: number;
+        taxType?: 'single' | 'married' | 'parent';
+        childCount?: number;
+        sscCategory?: string;
+        birthYear?: number;
+    };
+    earnings?: {
+        basicSalary: number;
+        cola?: number;
+        bonus?: number;
+        allowance?: number;
+        overtime?: number;
+        leavePay?: number;
+        fringeBenefits?: number;
+    };
+    sscWeeks?: number;
+    payslipUrl?: string;
+    accessToken?: string;
 }
 
 const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
 ];
+
+const TAX_TYPE_LABELS: Record<string, string> = {
+    single: 'Single Rates',
+    married: 'Married Rates',
+    parent: 'Parent Rates',
+};
 
 export default function PayslipDocument({
     company,
@@ -40,208 +80,338 @@ export default function PayslipDocument({
     sscEmployee,
     createdAt,
     payslipNumber,
+    ytdTotals,
+    salaryConfig,
+    earnings,
+    sscWeeks = 4,
+    payslipUrl,
+    accessToken,
 }: PayslipDocumentProps) {
-    const totalDeductions = incomeTax + sscEmployee;
-    const monthlyBasic = grossSalary;
     const period = `${months[periodMonth - 1]} ${periodYear}`;
+    const isPaidPlan = company.plan !== 'free';
 
-    // Calculate roll period dates
+    void createdAt;
+
+    // Calculate dates
     const startDate = new Date(periodYear, periodMonth - 1, 1);
     const endDate = new Date(periodYear, periodMonth, 0);
-    const rollPeriod = `${startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} - ${endDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+    const rollPeriod = `${startDate.toLocaleDateString('en-GB')} - ${endDate.toLocaleDateString('en-GB')}`;
+    const payDate = endDate.toLocaleDateString('en-GB');
+
+    // Printed timestamp
+    const printedDate = new Date().toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+    const printedTime = new Date().toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    // Earnings breakdown
+    const basicSalary = earnings?.basicSalary || grossSalary;
+    const cola = earnings?.cola || 0;
+    const bonus = earnings?.bonus || 0;
+    const allowance = earnings?.allowance || 0;
+
+    // Calculate hourly rate (173.33 standard hours)
+    const monthlyHours = 173.33;
+    const hourlyRate = basicSalary / monthlyHours;
+
+    // Tax type label
+    const taxTypeLabel = salaryConfig?.taxType
+        ? TAX_TYPE_LABELS[salaryConfig.taxType] || 'Single Rates'
+        : 'Single Rates';
+
+    // Total deductions
+    const totalDeductions = incomeTax + sscEmployee;
+
+    // QR Code URL - use short accessToken (8 chars), fallback to payslipNumber
+    const baseUrl = 'https://maltacalculator.com'
+    const verifyToken = accessToken || payslipNumber;
+    const qrUrl = payslipUrl || `${baseUrl}/v/${verifyToken}`;
+
+    // Format currency - all black, no color
+    const fmt = (amount: number) => {
+        return amount.toLocaleString('en-MT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
 
     return (
-        <div className="bg-white text-slate-900 print:text-black" style={{ fontFamily: 'Arial, sans-serif', fontSize: '11px' }}>
-            {/* Main Container */}
-            <div className="border border-slate-300 print:border-black">
-                {/* Header */}
-                <div className="flex items-start justify-between border-b border-slate-200 p-4 print:border-black">
-                    {/* Left - Logo (Whitelabel) */}
-                    <div className="flex-1">
-                        {company.logo_url && company.plan !== 'free' ? (
-                            <img
-                                src={company.logo_url}
-                                alt={company.name}
-                                className="h-12 object-contain"
-                            />
-                        ) : company.plan !== 'free' ? (
-                            <div className="text-lg font-bold text-slate-700">{company.name}</div>
-                        ) : null}
-                    </div>
+        <div
+            data-payslip-document
+            className="mx-auto bg-white text-black"
+            style={{
+                fontFamily: 'Arial, Helvetica, sans-serif',
+                width: '210mm',
+                minHeight: '297mm',
+                padding: '6mm',
+                boxSizing: 'border-box',
+                fontSize: '10px',
+                lineHeight: '1.4'
+            }}
+        >
+            {/* Main Container - fills A4 */}
+            <div className="flex flex-col h-full" style={{ minHeight: 'calc(297mm - 12mm)' }}>
 
-                    {/* Right - Employer Details */}
-                    <div className="text-right">
-                        <div className="font-bold">{company.name}</div>
-                        {company.address && <div className="text-slate-600">{company.address}</div>}
-                        {company.tax_number && <div className="text-slate-600">PE No.: {company.tax_number}</div>}
+                {/* ============ HEADER ============ */}
+                <div className="border-b-2 border-black pb-3 mb-3">
+                    <div className="flex justify-between items-start">
+                        {/* Left: Company Info */}
+                        <div className="flex items-start gap-3">
+                            {isPaidPlan && company.logo_url && (
+                                <img
+                                    src={company.logo_url}
+                                    alt={company.name}
+                                    className="h-14 max-w-[120px] object-contain"
+                                />
+                            )}
+                            <div>
+                                <h1 className="text-xl font-bold">{company.name}</h1>
+                                {company.address && (
+                                    <p className="text-xs mt-0.5 whitespace-pre-line">{company.address}</p>
+                                )}
+                                {company.tax_number && (
+                                    <p className="text-xs">PE Number: {company.tax_number}</p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Right: Title + QR */}
+                        <div className="text-right flex items-start gap-3">
+                            <div>
+                                <h2 className="text-2xl font-bold tracking-tight">PAYSLIP</h2>
+                                <p className="text-base font-semibold">{period}</p>
+                                <p className="text-[9px] font-mono">{payslipNumber}</p>
+                            </div>
+                            <div className="border border-black p-0.5 bg-white">
+                                <QRCodeSVG
+                                    value={qrUrl}
+                                    size={60}
+                                    level="M"
+                                    bgColor="#ffffff"
+                                    fgColor="#000000"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Two Column Layout */}
-                <div className="flex">
-                    {/* Left Column - Employee Info & Totals */}
-                    <div className="w-1/2 border-r border-slate-200 p-4 print:border-black">
-                        {/* Employee Details */}
-                        <div className="mb-4">
-                            <div className="mb-2 border-b border-slate-300 pb-1 text-xs font-bold uppercase tracking-wider text-slate-500">
-                                Employee Details
-                            </div>
-                            <table className="w-full text-xs">
-                                <tbody>
-                                    <tr>
-                                        <td className="py-0.5 text-slate-500">Name:</td>
-                                        <td className="py-0.5 font-medium">{employee.name}</td>
-                                    </tr>
-                                    {employee.employee_code && (
-                                        <tr>
-                                            <td className="py-0.5 text-slate-500">Employee No.:</td>
-                                            <td className="py-0.5 font-medium">{employee.employee_code}</td>
-                                        </tr>
-                                    )}
-                                    {employee.position && (
-                                        <tr>
-                                            <td className="py-0.5 text-slate-500">Occupation:</td>
-                                            <td className="py-0.5">{employee.position}</td>
-                                        </tr>
-                                    )}
-                                    {employee.email && (
-                                        <tr>
-                                            <td className="py-0.5 text-slate-500">Email:</td>
-                                            <td className="py-0.5">{employee.email}</td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                {/* ============ EMPLOYEE & PERIOD INFO ============ */}
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                    {/* Employee Details */}
+                    <div className="border border-gray-400">
+                        <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
+                            Employee Details
                         </div>
-
-                        {/* Pay Period Info */}
-                        <div className="mb-4">
-                            <div className="mb-2 border-b border-slate-300 pb-1 text-xs font-bold uppercase tracking-wider text-slate-500">
-                                Pay Period
-                            </div>
+                        <div className="p-2">
                             <table className="w-full text-xs">
                                 <tbody>
                                     <tr>
-                                        <td className="py-0.5 text-slate-500">Pay Date:</td>
-                                        <td className="py-0.5 font-medium">{endDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                                        <td className="py-1 font-semibold w-24">Name</td>
+                                        <td className="py-1">{employee.name}</td>
                                     </tr>
                                     <tr>
-                                        <td className="py-0.5 text-slate-500">Roll Period:</td>
-                                        <td className="py-0.5">{rollPeriod}</td>
+                                        <td className="py-1 font-semibold">Employee Code</td>
+                                        <td className="py-1">{employee.employee_code || '-'}</td>
                                     </tr>
                                     <tr>
-                                        <td className="py-0.5 text-slate-500">Payslip No.:</td>
-                                        <td className="py-0.5 font-medium">{payslipNumber}</td>
+                                        <td className="py-1 font-semibold">Position</td>
+                                        <td className="py-1">{employee.position || '-'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">ID Number</td>
+                                        <td className="py-1">{employee.id_number || '-'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">SS Number</td>
+                                        <td className="py-1">{employee.ss_number || '-'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">Department</td>
+                                        <td className="py-1">{employee.department || '-'}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
 
-                        {/* Totals to Date */}
+                    {/* Pay Period Details */}
+                    <div className="border border-gray-400">
+                        <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
+                            Pay Period Details
+                        </div>
+                        <div className="p-2">
+                            <table className="w-full text-xs">
+                                <tbody>
+                                    <tr>
+                                        <td className="py-1 font-semibold w-24">Period</td>
+                                        <td className="py-1">{period}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">Date Range</td>
+                                        <td className="py-1">{rollPeriod}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">Pay Date</td>
+                                        <td className="py-1">{payDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">Tax Status</td>
+                                        <td className="py-1">{taxTypeLabel}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">SSC Weeks</td>
+                                        <td className="py-1">{sscWeeks} weeks</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-1 font-semibold">SSC Category</td>
+                                        <td className="py-1">Category {salaryConfig?.sscCategory || 'C'}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ============ EARNINGS ============ */}
+                <div className="border border-gray-400 mb-4">
+                    <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
+                        Earnings
+                    </div>
+                    <table className="w-full text-xs">
+                        <thead>
+                            <tr className="border-b border-gray-300 bg-gray-50">
+                                <th className="py-1.5 px-2 text-left font-semibold">Description</th>
+                                <th className="py-1.5 px-2 text-right font-semibold w-20">Hours</th>
+                                <th className="py-1.5 px-2 text-right font-semibold w-24">Rate (€)</th>
+                                <th className="py-1.5 px-2 text-right font-semibold w-28">Amount (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="border-b border-gray-400">
+                                <td className="py-1.5 px-2">Basic Salary</td>
+                                <td className="py-1.5 px-2 text-right">{monthlyHours.toFixed(2)}</td>
+                                <td className="py-1.5 px-2 text-right">{hourlyRate.toFixed(4)}</td>
+                                <td className="py-1.5 px-2 text-right font-medium">{fmt(basicSalary)}</td>
+                            </tr>
+                            {cola > 0 && (
+                                <tr className="border-b border-gray-400">
+                                    <td className="py-1.5 px-2">Cost of Living Adjustment (COLA)</td>
+                                    <td className="py-1.5 px-2 text-right">-</td>
+                                    <td className="py-1.5 px-2 text-right">-</td>
+                                    <td className="py-1.5 px-2 text-right font-medium">{fmt(cola)}</td>
+                                </tr>
+                            )}
+                            {allowance > 0 && (
+                                <tr className="border-b border-gray-400">
+                                    <td className="py-1.5 px-2">Allowance</td>
+                                    <td className="py-1.5 px-2 text-right">-</td>
+                                    <td className="py-1.5 px-2 text-right">-</td>
+                                    <td className="py-1.5 px-2 text-right font-medium">{fmt(allowance)}</td>
+                                </tr>
+                            )}
+                            {bonus > 0 && (
+                                <tr className="border-b border-gray-400">
+                                    <td className="py-1.5 px-2">Bonus</td>
+                                    <td className="py-1.5 px-2 text-right">-</td>
+                                    <td className="py-1.5 px-2 text-right">-</td>
+                                    <td className="py-1.5 px-2 text-right font-medium">{fmt(bonus)}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                        <tfoot>
+                            <tr className="border-t border-gray-400 bg-gray-50">
+                                <td colSpan={3} className="py-2 px-2 font-bold text-sm">GROSS PAY</td>
+                                <td className="py-2 px-2 text-right font-bold text-sm">€ {fmt(grossSalary)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                {/* ============ DEDUCTIONS ============ */}
+                <div className="border border-gray-400 mb-4">
+                    <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
+                        Deductions
+                    </div>
+                    <table className="w-full text-xs">
+                        <thead>
+                            <tr className="border-b border-gray-300 bg-gray-50">
+                                <th className="py-1.5 px-2 text-left font-semibold">Description</th>
+                                <th className="py-1.5 px-2 text-right font-semibold w-28">Amount (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="border-b border-gray-400">
+                                <td className="py-1.5 px-2">Income Tax (FSS - {taxTypeLabel})</td>
+                                <td className="py-1.5 px-2 text-right font-medium">{fmt(incomeTax)}</td>
+                            </tr>
+                            <tr className="border-b border-gray-400">
+                                <td className="py-1.5 px-2">Social Security Contribution ({sscWeeks} weeks)</td>
+                                <td className="py-1.5 px-2 text-right font-medium">{fmt(sscEmployee)}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr className="border-t border-gray-400 bg-gray-50">
+                                <td className="py-2 px-2 font-bold text-sm">TOTAL DEDUCTIONS</td>
+                                <td className="py-2 px-2 text-right font-bold text-sm">€ {fmt(totalDeductions)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                {/* ============ NET PAY ============ */}
+                <div className="border-2 border-black mb-4 bg-gray-100">
+                    <div className="flex justify-between items-center px-3 py-3">
+                        <span className="text-lg font-bold">NET PAY</span>
+                        <span className="text-2xl font-bold">€ {fmt(netSalary)}</span>
+                    </div>
+                </div>
+
+                {/* ============ YEAR TO DATE ============ */}
+                <div className="border border-gray-400 mb-4">
+                    <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
+                        Year to Date Summary ({periodYear})
+                    </div>
+                    <div className="grid grid-cols-4 divide-x divide-gray-300">
+                        <div className="p-2 text-center">
+                            <div className="text-[10px] font-semibold mb-0.5">Gross Earnings</div>
+                            <div className="text-sm font-bold">€ {fmt(ytdTotals.grossTotal)}</div>
+                        </div>
+                        <div className="p-2 text-center">
+                            <div className="text-[10px] font-semibold mb-0.5">Total Tax</div>
+                            <div className="text-sm font-bold">€ {fmt(ytdTotals.taxTotal)}</div>
+                        </div>
+                        <div className="p-2 text-center">
+                            <div className="text-[10px] font-semibold mb-0.5">Total SSC</div>
+                            <div className="text-sm font-bold">€ {fmt(ytdTotals.sscTotal)}</div>
+                        </div>
+                        <div className="p-2 text-center">
+                            <div className="text-[10px] font-semibold mb-0.5">Net to Date</div>
+                            <div className="text-sm font-bold">€ {fmt(ytdTotals.netTotal)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ============ SPACER - pushes footer down ============ */}
+                <div className="flex-grow"></div>
+
+                {/* ============ FOOTER ============ */}
+                <div className="border-t border-gray-400 pt-3 mt-3">
+                    <div className="flex justify-between items-end text-[10px]">
                         <div>
-                            <div className="mb-2 border-b border-slate-300 pb-1 text-xs font-bold uppercase tracking-wider text-slate-500">
-                                Totals to Date ({periodYear})
-                            </div>
-                            <table className="w-full text-xs">
-                                <tbody>
-                                    <tr>
-                                        <td className="py-0.5 text-slate-500">Gross:</td>
-                                        <td className="py-0.5 text-right font-medium">€{(grossSalary * periodMonth).toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="py-0.5 text-slate-500">Tax (FSS):</td>
-                                        <td className="py-0.5 text-right text-red-600">€{(incomeTax * periodMonth).toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="py-0.5 text-slate-500">Social Security:</td>
-                                        <td className="py-0.5 text-right text-red-600">€{(sscEmployee * periodMonth).toFixed(2)}</td>
-                                    </tr>
-                                    <tr className="border-t border-slate-200">
-                                        <td className="py-1 font-medium">Net to Date:</td>
-                                        <td className="py-1 text-right font-bold text-amber-600">€{(netSalary * periodMonth).toFixed(2)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    {/* Right Column - Current Month Breakdown */}
-                    <div className="w-1/2 p-4">
-                        {/* Basic Salary */}
-                        <div className="mb-4">
-                            <div className="mb-2 border-b border-slate-300 pb-1 text-xs font-bold uppercase tracking-wider text-slate-500">
-                                Basic ({period})
-                            </div>
-                            <table className="w-full text-xs">
-                                <thead>
-                                    <tr className="text-slate-500">
-                                        <th className="py-0.5 text-left font-normal">Description</th>
-                                        <th className="py-0.5 text-right font-normal">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="py-0.5">Monthly Salary</td>
-                                        <td className="py-0.5 text-right font-medium">€{monthlyBasic.toFixed(2)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* Gross Total */}
-                        <div className="mb-4 rounded bg-slate-100 p-2 print:bg-gray-100">
-                            <div className="flex justify-between text-xs font-bold">
-                                <span>Gross Total</span>
-                                <span>€{grossSalary.toFixed(2)}</span>
+                            {!isPaidPlan && (
+                                <div className="font-bold text-xs mb-0.5">Generated by Malta Calculator</div>
+                            )}
+                            <div>This payslip is computer generated and does not require a signature.</div>
+                            <div className="mt-0.5 font-mono text-[9px]">
+                                Verify: {qrUrl}
                             </div>
                         </div>
-
-                        {/* Deductions */}
-                        <div className="mb-4">
-                            <div className="mb-2 border-b border-slate-300 pb-1 text-xs font-bold uppercase tracking-wider text-slate-500">
-                                Deductions
-                            </div>
-                            <table className="w-full text-xs">
-                                <thead>
-                                    <tr className="text-slate-500">
-                                        <th className="py-0.5 text-left font-normal">Description</th>
-                                        <th className="py-0.5 text-right font-normal">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="py-0.5">Tax (FSS Main Method)</td>
-                                        <td className="py-0.5 text-right text-red-600">€{incomeTax.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="py-0.5">Social Security</td>
-                                        <td className="py-0.5 text-right text-red-600">€{sscEmployee.toFixed(2)}</td>
-                                    </tr>
-                                    <tr className="border-t border-slate-200">
-                                        <td className="py-1 font-medium">Total Deductions</td>
-                                        <td className="py-1 text-right font-bold text-red-600">€{totalDeductions.toFixed(2)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div className="text-right">
+                            <div>Document ID: {payslipNumber}</div>
+                            <div>Printed: {printedDate} at {printedTime}</div>
                         </div>
-
-                        {/* Net Pay */}
-                        <div className="rounded bg-amber-50 p-3 print:bg-green-50">
-                            <div className="flex justify-between">
-                                <span className="text-sm font-bold text-slate-900">Net Pay</span>
-                                <span className="text-xl font-bold text-amber-600">€{netSalary.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Footer */}
-                <div className="border-t border-slate-200 px-4 py-2 text-center text-xs text-slate-400 print:border-black">
-                    <div className="flex items-center justify-between">
-                        <span>Generated: {new Date(createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                        {company.plan === 'free' && (
-                            <span className="text-slate-500">Powered by Malta Calculator</span>
-                        )}
                     </div>
                 </div>
             </div>
