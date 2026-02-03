@@ -34,21 +34,25 @@ export default function PayslipActions({ payslipNumber, employeeName }: PayslipA
                 ? `Payslip-${payslipNumber}${employeeName ? `-${employeeName.replace(/\s+/g, '_')}` : ''}.pdf`
                 : 'Payslip.pdf'
 
-            // Configure PDF options
+            // Configure PDF options - no margins since document has internal padding
             const opt = {
-                margin: [5, 5, 5, 5] as [number, number, number, number],
+                margin: 0,
                 filename,
                 image: { type: 'jpeg' as const, quality: 0.98 },
                 html2canvas: {
                     scale: 2,
                     useCORS: true,
                     letterRendering: true,
+                    // A4 width at 96 DPI = 794px, ensures consistent rendering
+                    windowWidth: 794,
+                    windowHeight: 1123,
                 },
                 jsPDF: {
                     unit: 'mm' as const,
                     format: 'a4' as const,
                     orientation: 'portrait' as const,
                 },
+                pagebreak: { mode: 'avoid-all' as const },
             }
 
             // Generate and download PDF

@@ -144,15 +144,17 @@ export default function PayslipDocument({
             style={{
                 fontFamily: 'Arial, Helvetica, sans-serif',
                 width: '210mm',
-                minHeight: '297mm',
+                height: '297mm',
+                maxHeight: '297mm',
                 padding: '6mm',
                 boxSizing: 'border-box',
                 fontSize: '10px',
-                lineHeight: '1.4'
+                lineHeight: '1.4',
+                overflow: 'hidden'
             }}
         >
             {/* Main Container - fills A4 */}
-            <div className="flex flex-col h-full" style={{ minHeight: 'calc(297mm - 12mm)' }}>
+            <div className="flex flex-col" style={{ height: 'calc(297mm - 12mm)', maxHeight: 'calc(297mm - 12mm)' }}>
 
                 {/* ============ HEADER ============ */}
                 <div className="border-b-2 border-black pb-3 mb-3">
@@ -163,7 +165,7 @@ export default function PayslipDocument({
                                 <img
                                     src={company.logo_url}
                                     alt={company.name}
-                                    className="h-14 max-w-[120px] object-contain"
+                                    className="h-14 max-w-[240px] object-contain"
                                 />
                             )}
                             <div>

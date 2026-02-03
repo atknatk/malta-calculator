@@ -23,13 +23,20 @@ const isPublicRoute = createRouteMatcher([
     '/terms(.*)',
     '/pricing(.*)',
     '/view(.*)',
+    '/v/(.*)',
+    '/payslip/verify(.*)',
     '/api/salary(.*)',
     '/api/og(.*)',
     '/api/stripe/webhook(.*)',
     '/api/employee(.*)',
 ])
 
-export const proxy = clerkMiddleware(async (auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
+    // Skip protection for public routes (like /v/* and /payslip/verify/*)
+    if (isPublicRoute(req)) {
+        return
+    }
+
     // If it's a protected route and user is not signed in, redirect to sign-in
     if (isProtectedRoute(req)) {
         await auth.protect()
