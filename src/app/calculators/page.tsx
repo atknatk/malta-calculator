@@ -122,8 +122,8 @@ const categories: CalculatorCategory[] = [
             {
                 href: "/calculators/children-allowance",
                 title: "Children&apos;s Allowance",
-                description: "Monthly allowance per child",
-                available: false,
+                description: "Weekly allowance for children under 16",
+                available: true,
             },
             {
                 href: "/calculators/in-work-benefit",
@@ -392,11 +392,11 @@ export default function CalculatorsPage() {
                     <div className="mt-20 p-8 rounded-3xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                             <div>
-                                <div className="text-3xl font-bold text-gradient">14</div>
+                                <div className="text-3xl font-bold text-gradient">15</div>
                                 <div className="text-sm text-muted-foreground">Active Calculators</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-bold text-gradient-secondary">14</div>
+                                <div className="text-3xl font-bold text-gradient-secondary">13</div>
                                 <div className="text-sm text-muted-foreground">Coming Soon</div>
                             </div>
                             <div>

@@ -285,6 +285,15 @@ const blogPosts: BlogPost[] = [
         readTime: "10 min read",
         category: "Immigration",
     },
+    // Family benefits blog posts
+    {
+        slug: "malta-childrens-allowance-guide-2026",
+        title: "Malta Children's Allowance 2026: Complete Guide & Calculator",
+        description: "Complete guide to Malta Children's Allowance. Eligibility, calculation formula, rates (€8.66-€27.29/week), and child birth bonus.",
+        date: "February 2026",
+        readTime: "12 min read",
+        category: "Family",
+    },
 ];
 
 export default function BlogPage() {

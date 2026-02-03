@@ -49,6 +49,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${baseUrl}/blog/malta-mysocialsecurity-app-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
         // Immigration blog pages
         { url: `${baseUrl}/blog/malta-family-reunification-guide-2026`, priority: 0.9, changeFrequency: "yearly" as const },
+        // Family benefits blog pages
+        { url: `${baseUrl}/blog/malta-childrens-allowance-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
     ];
 
     // Company pages
@@ -63,7 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Calculator pages - active calculators with higher priority
     const activeCalculators = [
         "notice-period", "overtime", "stamp-duty", "retirement-age", "vacation",
-        "mortgage", "savings-interest", "personal-loan", "family-reunification",
+        "mortgage", "savings-interest", "personal-loan", "family-reunification", "children-allowance",
     ].map((slug) => ({
         url: `${baseUrl}/calculators/${slug}`,
         priority: 0.8,
@@ -73,7 +75,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Coming soon calculators
     const comingSoonCalculators = [
         "bonus-tax", "part-time", "expatriate-tax",
-        "childcare", "maternity", "children-allowance", "in-work-benefit",
+        "childcare", "maternity", "in-work-benefit",
         "rental-tax", "first-time-buyer",
         "pension", "self-employed-tax", "self-employed-ssc", "sick-leave",
     ].map((slug) => ({
