@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { LoanCalculator } from "./_components/loan-calculator";
@@ -22,6 +23,11 @@ export default function PersonalLoanPage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-5xl py-8">
                     <LoanCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-personal-loan-guide-2026"
+                        title="Malta Personal Loan Guide 2026"
+                        description="Everything about personal loans in Malta: rates, requirements, and bank comparisons."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

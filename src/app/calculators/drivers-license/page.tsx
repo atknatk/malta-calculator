@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { DriversLicenseCalculator } from "./_components/drivers-license-calculator";
@@ -21,6 +22,11 @@ export default function DriversLicensePage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-4xl py-8">
                     <DriversLicenseCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-drivers-license-guide-2026"
+                        title="Malta Driver's License Guide 2026"
+                        description="Complete guide to getting a driving license in Malta: fees, tests, and requirements."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

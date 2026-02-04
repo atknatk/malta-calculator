@@ -2,12 +2,14 @@ import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = "https://maltacalculator.com";
+    const lastUpdated = new Date("2026-02-04"); // Content last updated date
 
     // Main pages
     const mainPages = [
         { url: baseUrl, priority: 1, changeFrequency: "monthly" as const },
         { url: `${baseUrl}/salary`, priority: 0.9, changeFrequency: "yearly" as const },
         { url: `${baseUrl}/calculators`, priority: 0.9, changeFrequency: "monthly" as const },
+        { url: `${baseUrl}/timer`, priority: 0.7, changeFrequency: "monthly" as const },
     ];
 
     // Blog pages (SEO-rich content) - 18 articles
@@ -85,6 +87,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...activeCalculators,
     ].map((page) => ({
         ...page,
-        lastModified: new Date(),
+        lastModified: lastUpdated,
     }));
 }

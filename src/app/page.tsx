@@ -1,5 +1,6 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { MenuBox } from "@/components/marketing/menu-box";
+import { FeaturedGuides } from "@/components/marketing/featured-guides";
 import {
   FAQPageJsonLd,
   OrganizationJsonLd,
@@ -95,6 +96,9 @@ export default async function Home({ searchParams }: PageProps) {
 
         {/* Other Calculators */}
         <MenuBox />
+
+        {/* Featured Guides - SEO Internal Linking */}
+        <FeaturedGuides />
       </main>
     </MarketingLayout>
   );

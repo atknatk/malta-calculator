@@ -8,6 +8,7 @@ import {
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import { ChildrenAllowanceCalculator } from "./_components/children-allowance-calculator";
 import { BreadcrumbJsonLd, CalculatorJsonLd, CustomFAQJsonLd } from "@/components/json-ld";
 
@@ -98,6 +99,11 @@ export default function ChildrenAllowancePage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-4xl py-8">
                     <ChildrenAllowanceCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-childrens-allowance-guide-2026"
+                        title="Malta Children's Allowance Guide 2026"
+                        description="Complete guide to children's allowance eligibility, rates, and application process."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

@@ -55,6 +55,25 @@ interface ChangelogEntry {
 
 const changelogEntries: ChangelogEntry[] = [
     {
+        version: "v3.3.0",
+        date: "February 4, 2026",
+        title: "Countdown Timer & SEO Enhancements",
+        type: "feature",
+        icon: <Clock className="w-5 h-5" />,
+        description: "New shareable countdown timer tool and comprehensive SEO improvements for better discoverability.",
+        features: [
+            "⏱️ Shareable Countdown Timer with custom titles and durations",
+            "🔗 Dynamic Open Graph images for timer sharing",
+            "📚 Featured Guides section on homepage with 6 key articles",
+            "🔗 Related Guide links on 15+ calculator pages for cross-linking",
+            "📝 Enhanced footer with 8 blog guide links",
+            "🗺️ Updated sitemap with timer and 5 transport calculators",
+            "🚫 noindex meta tags for Coming Soon calculator pages",
+            "📊 Fixed lastModified dates in sitemap for consistency",
+            "🎨 Improved blog card layout with consistent heights",
+        ],
+    },
+    {
         version: "v3.2.0",
         date: "February 4, 2026",
         title: "Payslip System & Company Settings",

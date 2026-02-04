@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { SavingsCalculator } from "./_components/savings-calculator";
@@ -22,6 +23,11 @@ export default function SavingsInterestPage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-5xl py-8">
                     <SavingsCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-savings-interest-guide-2026"
+                        title="Malta Savings Interest Guide 2026"
+                        description="Learn about savings accounts, interest rates, and withholding tax in Malta."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

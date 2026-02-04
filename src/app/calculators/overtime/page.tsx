@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { OvertimeCalculator } from "./_components/overtime-calculator";
@@ -21,6 +22,11 @@ export default function OvertimePage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-4xl py-8">
                     <OvertimeCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-overtime-pay-rates-2026"
+                        title="Malta Overtime Pay Rates 2026"
+                        description="Complete guide to overtime regulations, pay rates, and compensation in Malta."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

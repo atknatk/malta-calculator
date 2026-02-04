@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { RetirementAgeCalculator } from "./_components/retirement-age-calculator";
@@ -21,6 +22,11 @@ export default function RetirementAgePage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-4xl py-8">
                     <RetirementAgeCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-retirement-age-guide-2026"
+                        title="Malta Retirement Age Guide 2026"
+                        description="Learn about statutory retirement ages, pension eligibility, and early retirement options in Malta."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

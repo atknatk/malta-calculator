@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { NoticePeriodCalculator } from "./_components/notice-period-calculator";
@@ -21,6 +22,11 @@ export default function NoticePeriodPage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-4xl py-8">
                     <NoticePeriodCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-notice-period-employment-guide-2026"
+                        title="Malta Notice Period Employment Guide 2026"
+                        description="Complete guide to notice periods in Malta based on years of service and employment law."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

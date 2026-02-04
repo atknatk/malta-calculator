@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { MortgageCalculator } from "./_components/mortgage-calculator";
@@ -22,6 +23,11 @@ export default function MortgagePage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-5xl py-8">
                     <MortgageCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-mortgage-guide-2026"
+                        title="Malta Mortgage Guide 2026"
+                        description="Complete guide to getting a mortgage in Malta, including rates, requirements, and tips for expats."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>

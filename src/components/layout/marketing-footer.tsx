@@ -35,6 +35,10 @@ export function MarketingFooter({ className }: Props) {
             <FooterLink href="/blog/malta-tax-rates-2026-complete-guide" label="Tax Rates 2026" />
             <FooterLink href="/blog/malta-ssc-contributions-2026-explained" label="SSC Guide" />
             <FooterLink href="/blog/understanding-cola-malta-2026" label="COLA Explained" />
+            <FooterLink href="/blog/malta-minimum-wage-2026-guide" label="Minimum Wage" />
+            <FooterLink href="/blog/malta-public-holidays-2026-complete-guide" label="Public Holidays" />
+            <FooterLink href="/blog/malta-expat-tax-hqp-scheme-guide" label="Expat Tax (HQP)" />
+            <FooterLink href="/blog/malta-pension-system-2026-guide" label="Pension System" />
           </div>
           <div className="order-2 flex flex-col gap-3 text-sm">
             <p className="font-semibold text-foreground">Company</p>
@@ -52,6 +56,7 @@ export function MarketingFooter({ className }: Props) {
             <FooterLink href="/calculators/pension" label="Pension Estimator" />
             <FooterLink href="/calculators/childcare" label="Childcare Subsidy" />
             <FooterLink href="/calculators/vacation" label="Vacation Days" />
+            <FooterLink href="/timer" label="Countdown Timer" />
           </div>
 
 

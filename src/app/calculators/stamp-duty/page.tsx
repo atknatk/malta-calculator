@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
 import { StampDutyCalculator } from "./_components/stamp-duty-calculator";
@@ -21,6 +22,11 @@ export default function StampDutyPage() {
                 <BackButton href="/calculators" />
                 <Shell className="max-w-4xl py-8">
                     <StampDutyCalculator />
+                    <RelatedGuide
+                        href="/blog/malta-stamp-duty-complete-guide-2026"
+                        title="Malta Stamp Duty Complete Guide 2026"
+                        description="Learn everything about property stamp duty in Malta, including rates, exemptions, and first-time buyer benefits."
+                    />
                 </Shell>
             </main>
         </MarketingLayout>
