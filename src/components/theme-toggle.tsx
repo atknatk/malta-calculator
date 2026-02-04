@@ -21,8 +21,16 @@ import { Palette, Check } from "lucide-react";
 type ColorTheme = "malta" | "fintech";
 
 const colorThemes: { id: ColorTheme; name: string; colors: string[] }[] = [
-  { id: "malta", name: "Malta Gold", colors: ["#f5a623", "#0099cc", "#e74c3c"] },
-  { id: "fintech", name: "Fintech Blue", colors: ["#667eea", "#764ba2", "#f093fb"] },
+  {
+    id: "malta",
+    name: "Malta Gold",
+    colors: ["#f5a623", "#0099cc", "#e74c3c"],
+  },
+  {
+    id: "fintech",
+    name: "Fintech Blue",
+    colors: ["#667eea", "#764ba2", "#f093fb"],
+  },
 ];
 
 export function ThemeToggle() {
@@ -34,7 +42,10 @@ export function ThemeToggle() {
     const saved = localStorage.getItem("color-theme") as ColorTheme;
     if (saved && colorThemes.find((t) => t.id === saved)) {
       setColorTheme(saved);
-      document.documentElement.setAttribute("data-theme", saved === "malta" ? "" : saved);
+      document.documentElement.setAttribute(
+        "data-theme",
+        saved === "malta" ? "" : saved,
+      );
     }
   }, []);
 
@@ -64,17 +75,23 @@ export function ThemeToggle() {
         <DropdownMenuItem onClick={() => setTheme("light")}>
           <Icons.sun className="mr-2 h-4 w-4" />
           <span>Light</span>
-          {theme === "light" && <Check className="ml-auto h-4 w-4 text-primary" />}
+          {theme === "light" && (
+            <Check className="ml-auto h-4 w-4 text-primary" />
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           <Icons.moon className="mr-2 h-4 w-4" />
           <span>Dark</span>
-          {theme === "dark" && <Check className="ml-auto h-4 w-4 text-primary" />}
+          {theme === "dark" && (
+            <Check className="ml-auto h-4 w-4 text-primary" />
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           <Icons.laptop className="mr-2 h-4 w-4" />
           <span>System</span>
-          {theme === "system" && <Check className="ml-auto h-4 w-4 text-primary" />}
+          {theme === "system" && (
+            <Check className="ml-auto h-4 w-4 text-primary" />
+          )}
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

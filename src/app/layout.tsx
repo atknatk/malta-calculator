@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { GoogleAnalytics } from '@next/third-parties/google'
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import LocalFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 import Background from "./_components/background";
@@ -45,9 +45,10 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <head />
         <body
-          className={`${inter.className
+          className={`${
+            inter.className
             // biome-ignore lint/nursery/useSortedClasses: <explanation>
-            } ${calSans.variable}`}
+          } ${calSans.variable}`}
         >
           <SpeedInsights />
           <Analytics />
@@ -64,4 +65,3 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-

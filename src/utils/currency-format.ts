@@ -1,4 +1,3 @@
-
 // utils/formatCurrency.js
 
 /**
@@ -8,9 +7,13 @@
  * @param {string} currency - Para birimi (varsayılan: 'TRY')
  * @returns {string} - Formatlanmış para değeri
  */
-export function FormatCurrency(amount: number, locale = 'mt-MT', currency = 'EUR') {
-    return new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency: currency
-    }).format(amount);
+export function FormatCurrency(
+  amount: number,
+  locale = "mt-MT",
+  currency = "EUR",
+) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(amount);
 }

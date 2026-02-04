@@ -29,41 +29,46 @@ You are a calculator development specialist for the Malta Calculator platform. Y
 ## Calculator Development Workflow
 
 ### Step 1: Utility Function
+
 Location: `src/utils/{name}-calculator.ts`
 
 ```typescript
 // Constants with year and source
 const CONSTANTS = {
-    RATE_2026: 0.15,  // Source: CFR Malta
+  RATE_2026: 0.15, // Source: CFR Malta
 } as const;
 
 export interface CalculatorInput {
-    value: number;
+  value: number;
 }
 
 export interface CalculatorResult {
-    total: number;
-    breakdown: Record<string, number>;
+  total: number;
+  breakdown: Record<string, number>;
 }
 
 export function calculate(input: CalculatorInput): CalculatorResult {
-    // Implementation
+  // Implementation
 }
 ```
 
 ### Step 2: Calculator Component
+
 Location: `src/app/calculators/{slug}/_components/{slug}-calculator.tsx`
 
 Use the established component structure:
+
 - Header with category badge
 - Two-column layout (inputs | results)
 - Motion animations
 - Gradient card styling
 
 ### Step 3: Page Component
+
 Location: `src/app/calculators/{slug}/page.tsx`
 
 Include:
+
 - MarketingLayout wrapper
 - BreadcrumbJsonLd
 - CalculatorJsonLd
@@ -71,6 +76,7 @@ Include:
 - Static export settings
 
 ### Step 4: Integration
+
 - Add to calculators list (`src/app/calculators/page.tsx`)
 - Add to sitemap (`src/app/sitemap.ts`)
 
@@ -85,6 +91,7 @@ Include:
 ## Malta-Specific Requirements
 
 Reference `src/config/malta-tax-config.ts` for:
+
 - Tax brackets (Single, Married, Parent)
 - SSC rates (Categories A, B, C, D)
 - COLA rates

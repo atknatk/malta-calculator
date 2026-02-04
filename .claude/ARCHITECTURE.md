@@ -31,43 +31,43 @@ Bu dosya, Claude Code'un Malta Calculator projesinde nasıl yapılandırıldığ
 
 ## Subagent'lar
 
-| Agent | Amaç | Tools |
-|-------|------|-------|
-| `nextjs-expert` | Next.js App Router, SSR, metadata | Read, Write, Edit, Bash, Glob, Grep |
-| `calculator-developer` | Yeni hesaplayıcı oluşturma | Read, Write, Edit, Bash, Glob, Grep |
-| `blog-writer` | Blog yazısı oluşturma | Read, Write, Edit, Glob, Grep |
-| `seo-specialist` | SEO optimizasyonu | Read, Edit, Glob, Grep, WebFetch |
-| `database-manager` | Supabase işlemleri | Read, Write, Bash |
-| `code-reviewer` | Kod kalitesi kontrolü | Read, Glob, Grep |
-| `git-guardian` | Git işlemleri | Bash |
+| Agent                  | Amaç                              | Tools                               |
+| ---------------------- | --------------------------------- | ----------------------------------- |
+| `nextjs-expert`        | Next.js App Router, SSR, metadata | Read, Write, Edit, Bash, Glob, Grep |
+| `calculator-developer` | Yeni hesaplayıcı oluşturma        | Read, Write, Edit, Bash, Glob, Grep |
+| `blog-writer`          | Blog yazısı oluşturma             | Read, Write, Edit, Glob, Grep       |
+| `seo-specialist`       | SEO optimizasyonu                 | Read, Edit, Glob, Grep, WebFetch    |
+| `database-manager`     | Supabase işlemleri                | Read, Write, Bash                   |
+| `code-reviewer`        | Kod kalitesi kontrolü             | Read, Glob, Grep                    |
+| `git-guardian`         | Git işlemleri                     | Bash                                |
 
 ## Skill'ler (Slash Commands)
 
-| Skill | Komut | Amaç |
-|-------|-------|------|
-| develop | `/develop <task>` | Tam geliştirme workflow'u |
-| new-calculator | `/new-calculator <name>` | Yeni hesaplayıcı oluştur |
-| new-blog | `/new-blog <title>` | Yeni blog yazısı oluştur |
-| build | `/build` | Build ve doğrula |
-| seo-check | `/seo-check <path>` | SEO kontrolü |
-| payroll | `/payroll` | Bordro kuralları referansı |
-| quick-ref | `/quick-ref` | Hızlı referans |
+| Skill          | Komut                    | Amaç                       |
+| -------------- | ------------------------ | -------------------------- |
+| develop        | `/develop <task>`        | Tam geliştirme workflow'u  |
+| new-calculator | `/new-calculator <name>` | Yeni hesaplayıcı oluştur   |
+| new-blog       | `/new-blog <title>`      | Yeni blog yazısı oluştur   |
+| build          | `/build`                 | Build ve doğrula           |
+| seo-check      | `/seo-check <path>`      | SEO kontrolü               |
+| payroll        | `/payroll`               | Bordro kuralları referansı |
+| quick-ref      | `/quick-ref`             | Hızlı referans             |
 
 ## MCP Sunucuları
 
 Proje aşağıdaki MCP sunucularını kullanır (`.mcp.json`):
 
-| Server | Amaç |
-|--------|------|
+| Server   | Amaç                 |
+| -------- | -------------------- |
 | supabase | Veritabanı işlemleri |
-| github | GitHub entegrasyonu |
+| github   | GitHub entegrasyonu  |
 
 ## Hook'lar
 
-| Event | Hook | Amaç |
-|-------|------|------|
-| PostToolUse | prettier | Edit/Write sonrası kod formatla |
-| PreToolUse | validate-command | Tehlikeli komutları engelle |
+| Event       | Hook             | Amaç                            |
+| ----------- | ---------------- | ------------------------------- |
+| PostToolUse | prettier         | Edit/Write sonrası kod formatla |
+| PreToolUse  | validate-command | Tehlikeli komutları engelle     |
 
 ## Geliştirme Workflow'u
 

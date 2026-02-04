@@ -7,26 +7,32 @@ description: how to write a new blog post with full SEO
 This workflow guides you through creating a new SEO-optimized blog post for the Malta Calculator website.
 
 ## Prerequisites
+
 - Understand the topic you're writing about
 - Research the subject using official Malta sources
 
 ## Steps
 
 ### 1. Research Existing Structure
+
 // turbo
 View the existing blog structure to understand the pattern:
+
 ```
 /src/app/blog/page.tsx          # Blog list with BlogPost[] array
 /src/app/blog/[existing-post]/   # Existing blog post examples
 ```
 
 ### 2. Create Blog Post Directory and Page
+
 Create a new directory and page.tsx file at:
+
 ```
 /src/app/blog/[slug]/page.tsx
 ```
 
 The page must include:
+
 - **Metadata**: title, description, keywords, canonical URL
 - **OpenGraph/Twitter**: Using `ogMetadata` and `twitterMetadata` from shared-metadata
 - **JSON-LD**: `ArticleJsonLd` and `BreadcrumbJsonLd` from `/src/components/json-ld`
@@ -38,7 +44,9 @@ The page must include:
   - CTA linking to relevant calculator
 
 ### 3. Update Blog List
+
 Add new entry to `blogPosts` array in `/src/app/blog/page.tsx`:
+
 ```typescript
 {
     slug: "malta-[topic]-guide-2026",
@@ -51,18 +59,23 @@ Add new entry to `blogPosts` array in `/src/app/blog/page.tsx`:
 ```
 
 ### 4. Update Sitemap
+
 Add blog URL to `/src/app/sitemap.ts` in the `blogPages` array:
+
 ```typescript
 { url: `${baseUrl}/blog/[slug]`, priority: 0.8, changeFrequency: "yearly" as const },
 ```
 
 ### 5. Verify
+
 // turbo
+
 ```bash
 npm run build
 ```
 
 Then verify in browser:
+
 - Blog list shows new post
 - Blog post page loads correctly
 - JSON-LD is present in page source
@@ -111,6 +124,7 @@ export const dynamic = 'force-static';
 ```
 
 ## SEO Checklist
+
 - [ ] Title tag < 60 characters
 - [ ] Meta description 150-160 characters
 - [ ] 5-10 relevant keywords

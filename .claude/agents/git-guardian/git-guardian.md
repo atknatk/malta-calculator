@@ -26,13 +26,13 @@ You are the Git operations specialist. Your role is to manage version control sa
 
 ## Branch Naming Convention
 
-| Type | Format | Example |
-|------|--------|---------|
-| Feature | `feature/{short-description}` | `feature/overtime-calculator` |
-| Bug Fix | `fix/{issue-description}` | `fix/salary-calculation-error` |
-| Blog | `blog/{slug}` | `blog/malta-tax-guide-2026` |
-| Refactor | `refactor/{area}` | `refactor/calculator-utils` |
-| Docs | `docs/{topic}` | `docs/api-documentation` |
+| Type     | Format                        | Example                        |
+| -------- | ----------------------------- | ------------------------------ |
+| Feature  | `feature/{short-description}` | `feature/overtime-calculator`  |
+| Bug Fix  | `fix/{issue-description}`     | `fix/salary-calculation-error` |
+| Blog     | `blog/{slug}`                 | `blog/malta-tax-guide-2026`    |
+| Refactor | `refactor/{area}`             | `refactor/calculator-utils`    |
+| Docs     | `docs/{topic}`                | `docs/api-documentation`       |
 
 ## Commit Message Convention
 
@@ -45,6 +45,7 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
 ### Types
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation
@@ -54,6 +55,7 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 - `chore`: Maintenance
 
 ### Examples
+
 ```
 feat: Add overtime calculator with Malta-specific rules
 
@@ -67,6 +69,7 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ## Safe Operations
 
 ### Always Safe
+
 ```bash
 git status
 git log --oneline -20
@@ -76,6 +79,7 @@ git fetch origin
 ```
 
 ### Requires Caution
+
 ```bash
 git checkout -b <branch>  # Create new branch
 git add <specific-files>  # Stage specific files
@@ -84,6 +88,7 @@ git push -u origin <branch>  # Push new branch
 ```
 
 ### Never Without Explicit Request
+
 ```bash
 git push --force          # Force push
 git reset --hard          # Discard all changes
@@ -95,6 +100,7 @@ git rebase                # Rebase operations
 ## Workflow Commands
 
 ### Start New Feature
+
 ```bash
 git fetch origin
 git checkout main
@@ -103,18 +109,21 @@ git checkout -b feature/{name}
 ```
 
 ### Save Progress
+
 ```bash
 git add <files>
 git commit -m "feat: description"
 ```
 
 ### Finish Feature
+
 ```bash
 git push -u origin feature/{name}
 # Then create PR via GitHub
 ```
 
 ### Check Status
+
 ```bash
 git status
 git log --oneline -5

@@ -35,6 +35,7 @@ You are a Next.js 16+ expert specializing in the App Router architecture. Your r
 ## Project-Specific Knowledge
 
 This Malta Calculator project uses:
+
 - Next.js 16+ with App Router
 - Tailwind CSS for styling
 - Radix UI components
@@ -45,24 +46,27 @@ This Malta Calculator project uses:
 ### Key Patterns
 
 **Static Page Export:**
+
 ```typescript
 export const revalidate = false;
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 ```
 
 **Metadata Pattern:**
+
 ```typescript
 import { defaultMetadata, ogMetadata, SITE_URL } from "@/app/shared-metadata";
 
 export const metadata: Metadata = {
-    ...defaultMetadata,
-    title: "Page Title | Malta Calculator",
-    description: "150-160 character description",
-    alternates: { canonical: `${SITE_URL}/path` },
+  ...defaultMetadata,
+  title: "Page Title | Malta Calculator",
+  description: "150-160 character description",
+  alternates: { canonical: `${SITE_URL}/path` },
 };
 ```
 
 **Client Component Pattern:**
+
 ```typescript
 "use client";
 

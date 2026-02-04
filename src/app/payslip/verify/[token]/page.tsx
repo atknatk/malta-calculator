@@ -1,34 +1,46 @@
-import { createAdminClient } from '@/lib/supabase/admin'
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import type { Metadata } from 'next'
+import { createAdminClient } from "@/lib/supabase/admin";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    robots: {
-        index: false,
-        follow: false,
-        googleBot: {
-            index: false,
-            follow: false,
-        },
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
     },
-}
+  },
+};
 
 const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-]
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 interface PayslipVerifyPageProps {
-    params: Promise<{ token: string }>
+  params: Promise<{ token: string }>;
 }
 
-export default async function PayslipVerifyPage({ params }: PayslipVerifyPageProps) {
-    const { token } = await params
+export default async function PayslipVerifyPage({
+  params,
+}: PayslipVerifyPageProps) {
+  const { token } = await params;
 
-    const supabase = createAdminClient()
+  const supabase = createAdminClient();
 
-    const selectQuery = `
+  const selectQuery = `
         id,
         period_month,
         period_year,
@@ -38,148 +50,206 @@ export default async function PayslipVerifyPage({ params }: PayslipVerifyPagePro
         access_token,
         employee:employees(name, employee_code, position),
         company:companies(name, address, tax_number, plan)
-    `
+    `;
 
-    // First try to find by access_token (8-char short token used in QR codes)
-    let { data: payslip, error } = await supabase
-        .from('payslips')
-        .select(selectQuery)
-        .eq('access_token', token)
-        .single()
+  // First try to find by access_token (8-char short token used in QR codes)
+  let { data: payslip, error } = await supabase
+    .from("payslips")
+    .select(selectQuery)
+    .eq("access_token", token)
+    .single();
 
-    // If not found, try by payslip ID (UUID - for backwards compatibility)
-    if (error || !payslip) {
-        const result = await supabase
-            .from('payslips')
-            .select(selectQuery)
-            .eq('id', token)
-            .single()
+  // If not found, try by payslip ID (UUID - for backwards compatibility)
+  if (error || !payslip) {
+    const result = await supabase
+      .from("payslips")
+      .select(selectQuery)
+      .eq("id", token)
+      .single();
 
-        payslip = result.data
-        error = result.error
-    }
+    payslip = result.data;
+    error = result.error;
+  }
 
-    if (error || !payslip) {
-        notFound()
-    }
+  if (error || !payslip) {
+    notFound();
+  }
 
-    // Supabase returns single relation as object, not array
-    const employeeData = payslip.employee as unknown
-    const companyData = payslip.company as unknown
+  // Supabase returns single relation as object, not array
+  const employeeData = payslip.employee as unknown;
+  const companyData = payslip.company as unknown;
 
-    const employee = (Array.isArray(employeeData) ? employeeData[0] : employeeData) as { name: string; employee_code: string | null; position: string | null }
-    const company = (Array.isArray(companyData) ? companyData[0] : companyData) as { name: string; address: string | null; tax_number: string | null; plan: string }
+  const employee = (
+    Array.isArray(employeeData) ? employeeData[0] : employeeData
+  ) as { name: string; employee_code: string | null; position: string | null };
+  const company = (
+    Array.isArray(companyData) ? companyData[0] : companyData
+  ) as {
+    name: string;
+    address: string | null;
+    tax_number: string | null;
+    plan: string;
+  };
 
-    if (!employee || !company) {
-        notFound()
-    }
+  if (!employee || !company) {
+    notFound();
+  }
 
-    const period = `${months[payslip.period_month - 1]} ${payslip.period_year}`
-    const createdDate = new Date(payslip.created_at).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    })
+  const period = `${months[payslip.period_month - 1]} ${payslip.period_year}`;
+  const createdDate = new Date(payslip.created_at).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-            <div className="container mx-auto px-4 py-12">
-                <div className="mx-auto max-w-lg">
-                    {/* Verification Badge */}
-                    <div className="mb-6 text-center">
-                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                            <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                        </div>
-                        <h1 className="text-2xl font-bold text-slate-900">Payslip Verified</h1>
-                        <p className="mt-1 text-slate-500">This payslip is authentic and was generated by Malta Calculator</p>
-                    </div>
-
-                    {/* Payslip Info Card */}
-                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
-                        {/* Company */}
-                        <div className="mb-4 border-b border-slate-100 pb-4">
-                            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Employer</p>
-                            <p className="text-lg font-bold text-slate-900">{company.name}</p>
-                            {company.tax_number && (
-                                <p className="text-sm text-slate-500">PE No. {company.tax_number}</p>
-                            )}
-                        </div>
-
-                        {/* Employee */}
-                        <div className="mb-4 border-b border-slate-100 pb-4">
-                            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Employee</p>
-                            <p className="text-lg font-semibold text-slate-900">
-                                {employee.name}
-                                {employee.employee_code && (
-                                    <span className="ml-2 text-sm font-normal text-slate-500">({employee.employee_code})</span>
-                                )}
-                            </p>
-                            {employee.position && (
-                                <p className="text-sm text-slate-500">{employee.position}</p>
-                            )}
-                        </div>
-
-                        {/* Period & Amounts */}
-                        <div className="mb-4 grid grid-cols-2 gap-4 border-b border-slate-100 pb-4">
-                            <div>
-                                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Period</p>
-                                <p className="font-semibold text-slate-900">{period}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Generated</p>
-                                <p className="font-semibold text-slate-900">{createdDate}</p>
-                            </div>
-                        </div>
-
-                        {/* Salary */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Gross Salary</p>
-                                <p className="text-xl font-bold text-slate-900">
-                                    €{payslip.gross_salary.toLocaleString('en-MT', { minimumFractionDigits: 2 })}
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Net Salary</p>
-                                <p className="text-xl font-bold text-green-600">
-                                    €{payslip.net_salary.toLocaleString('en-MT', { minimumFractionDigits: 2 })}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Security Note */}
-                    <div className="mt-6 rounded-lg bg-amber-50 p-4">
-                        <div className="flex gap-3">
-                            <svg className="h-5 w-5 flex-shrink-0 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <div>
-                                <p className="text-sm font-medium text-amber-800">Security Notice</p>
-                                <p className="mt-1 text-xs text-amber-700">
-                                    This verification confirms the payslip was generated through Malta Calculator.
-                                    For full payslip details, please contact the employer directly.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="mt-8 text-center">
-                        <Link
-                            href="/"
-                            className="text-sm text-amber-600 hover:text-amber-700"
-                        >
-                            Visit Malta Calculator →
-                        </Link>
-                        <p className="mt-2 text-xs text-slate-400">
-                            Payslip ID: {payslip.id.substring(0, 8)}...
-                        </p>
-                    </div>
-                </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="container mx-auto px-4 py-12">
+        <div className="mx-auto max-w-lg">
+          {/* Verification Badge */}
+          <div className="mb-6 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+              <svg
+                className="h-8 w-8 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
             </div>
+            <h1 className="text-2xl font-bold text-slate-900">
+              Payslip Verified
+            </h1>
+            <p className="mt-1 text-slate-500">
+              This payslip is authentic and was generated by Malta Calculator
+            </p>
+          </div>
+
+          {/* Payslip Info Card */}
+          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
+            {/* Company */}
+            <div className="mb-4 border-b border-slate-100 pb-4">
+              <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                Employer
+              </p>
+              <p className="text-lg font-bold text-slate-900">{company.name}</p>
+              {company.tax_number && (
+                <p className="text-sm text-slate-500">
+                  PE No. {company.tax_number}
+                </p>
+              )}
+            </div>
+
+            {/* Employee */}
+            <div className="mb-4 border-b border-slate-100 pb-4">
+              <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                Employee
+              </p>
+              <p className="text-lg font-semibold text-slate-900">
+                {employee.name}
+                {employee.employee_code && (
+                  <span className="ml-2 text-sm font-normal text-slate-500">
+                    ({employee.employee_code})
+                  </span>
+                )}
+              </p>
+              {employee.position && (
+                <p className="text-sm text-slate-500">{employee.position}</p>
+              )}
+            </div>
+
+            {/* Period & Amounts */}
+            <div className="mb-4 grid grid-cols-2 gap-4 border-b border-slate-100 pb-4">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                  Period
+                </p>
+                <p className="font-semibold text-slate-900">{period}</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                  Generated
+                </p>
+                <p className="font-semibold text-slate-900">{createdDate}</p>
+              </div>
+            </div>
+
+            {/* Salary */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                  Gross Salary
+                </p>
+                <p className="text-xl font-bold text-slate-900">
+                  €
+                  {payslip.gross_salary.toLocaleString("en-MT", {
+                    minimumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                  Net Salary
+                </p>
+                <p className="text-xl font-bold text-green-600">
+                  €
+                  {payslip.net_salary.toLocaleString("en-MT", {
+                    minimumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Security Note */}
+          <div className="mt-6 rounded-lg bg-amber-50 p-4">
+            <div className="flex gap-3">
+              <svg
+                className="h-5 w-5 flex-shrink-0 text-amber-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <div>
+                <p className="text-sm font-medium text-amber-800">
+                  Security Notice
+                </p>
+                <p className="mt-1 text-xs text-amber-700">
+                  This verification confirms the payslip was generated through
+                  Malta Calculator. For full payslip details, please contact the
+                  employer directly.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-8 text-center">
+            <Link
+              href="/"
+              className="text-sm text-amber-600 hover:text-amber-700"
+            >
+              Visit Malta Calculator →
+            </Link>
+            <p className="mt-2 text-xs text-slate-400">
+              Payslip ID: {payslip.id.substring(0, 8)}...
+            </p>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }

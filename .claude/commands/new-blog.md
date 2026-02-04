@@ -3,6 +3,7 @@
 Yeni bir blog yazısı oluşturmak için bu workflow'u takip et.
 
 ## Kullanıcıdan alınacak bilgiler:
+
 - Blog konusu
 - Hedef anahtar kelimeler
 - İlişkili hesaplayıcı (varsa)
@@ -10,6 +11,7 @@ Yeni bir blog yazısı oluşturmak için bu workflow'u takip et.
 ## Adımlar
 
 ### 1. Blog Post Sayfası Oluştur
+
 Dosya: `src/app/blog/{{slug}}/page.tsx`
 
 ```tsx
@@ -149,9 +151,11 @@ export const dynamic = 'force-static';
 ```
 
 ### 2. Blog Listesine Ekle
+
 Dosya: `src/app/blog/page.tsx`
 
 `blogPosts` array'ine ekle:
+
 ```typescript
 {
     slug: "{{slug}}",
@@ -164,14 +168,17 @@ Dosya: `src/app/blog/page.tsx`
 ```
 
 ### 3. Sitemap'e Ekle
+
 Dosya: `src/app/sitemap.ts`
 
 `blogPages` array'ine ekle:
+
 ```typescript
 { url: `${baseUrl}/blog/{{slug}}`, priority: 0.8, changeFrequency: "yearly" as const },
 ```
 
 ### 4. Build Kontrolü
+
 ```bash
 npm run build
 ```
@@ -179,6 +186,7 @@ npm run build
 ## İçerik Yapısı
 
 ### Standart Blog Bölümleri:
+
 1. **Header**: Badge, tarih, okuma süresi, başlık, lead
 2. **Table of Contents**: Anchor linkli içindekiler
 3. **Ana İçerik**: H2/H3 başlıklarla bölümler
@@ -188,6 +196,7 @@ npm run build
 7. **External Links**: Resmi kaynaklara (noopener noreferrer)
 
 ### İçerik Kuralları:
+
 - Tamamen İngilizce yaz
 - Malta odaklı içerik
 - 2026 güncel bilgiler
@@ -195,6 +204,7 @@ npm run build
 - İlgili hesaplayıcılara internal link ekle
 
 ## SEO Checklist
+
 - [ ] Title < 60 karakter
 - [ ] Description 150-160 karakter
 - [ ] 5-10 keyword

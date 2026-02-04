@@ -12,6 +12,7 @@ Create a new calculator: **$ARGUMENTS**
 ## Required Information
 
 Before starting, gather:
+
 1. Calculator name (English)
 2. Calculation logic and formulas
 3. Category (Financial, Property, Employment, Government Benefits, Vehicle)
@@ -62,6 +63,7 @@ export function formatCurrency(value: number): string {
 File: `src/app/calculators/{slug}/_components/{slug}-calculator.tsx`
 
 Follow the established pattern with:
+
 - "use client" directive
 - motion animations from framer-motion
 - Two-column layout (inputs | results)
@@ -73,6 +75,7 @@ Follow the established pattern with:
 File: `src/app/calculators/{slug}/page.tsx`
 
 Include:
+
 - Proper metadata (title < 60 chars, description 150-160 chars)
 - BreadcrumbJsonLd
 - CalculatorJsonLd (3-5 features)
@@ -84,6 +87,7 @@ Include:
 File: `src/app/calculators/page.tsx`
 
 Add to appropriate category:
+
 ```typescript
 {
     name: "{Title}",
@@ -99,6 +103,7 @@ Add to appropriate category:
 File: `src/app/sitemap.ts`
 
 Add to `activeCalculators` array:
+
 ```typescript
 "{slug}",
 ```

@@ -8,21 +8,21 @@ Malta Salary Calculator'ı küçük firmalar için uygun fiyatlı (€1/ay), kul
 
 ## ✅ Alınan Kararlar
 
-| Karar | Seçim |
-|-------|-------|
-| **Auth** | Clerk (basit, 100-1000 user için ideal) |
-| **Free Tier Watermark** | "Powered by Malta Calculator" |
-| **Fiyatlandırma** | €1/ay Basic, €5/ay Pro |
-| **Employee Erişimi** | Secure link + PIN (magic link değil) |
-| **Mobile App** | Web bittikten sonra |
+| Karar                   | Seçim                                   |
+| ----------------------- | --------------------------------------- |
+| **Auth**                | Clerk (basit, 100-1000 user için ideal) |
+| **Free Tier Watermark** | "Powered by Malta Calculator"           |
+| **Fiyatlandırma**       | €1/ay Basic, €5/ay Pro                  |
+| **Employee Erişimi**    | Secure link + PIN (magic link değil)    |
+| **Mobile App**          | Web bittikten sonra                     |
 
 ---
 
 ## 🎯 Hedef Kitle
 
-| Segment | Beklenti |
-|---------|----------|
-| **Firmalar** | 100-1000 kullanıcı |
+| Segment        | Beklenti                         |
+| -------------- | -------------------------------- |
+| **Firmalar**   | 100-1000 kullanıcı               |
 | **Çalışanlar** | Her firma ~5-50 çalışan (mobile) |
 
 ---
@@ -44,13 +44,13 @@ Malta Salary Calculator'ı küçük firmalar için uygun fiyatlı (€1/ay), kul
 
 ### Teknoloji Seçimleri
 
-| Kategori | Seçim | Neden |
-|----------|-------|-------|
-| **Auth** | **Clerk** | Google OAuth, Magic Link, güçlü free tier (10k MAU) |
-| **Database** | **Supabase** | PostgreSQL, Row Level Security, Real-time, Free tier |
-| **Payments** | **Stripe** | Subscription yönetimi, €1 micro-payments desteği |
-| **PDF Generation** | **@react-pdf/renderer** | Client-side PDF, server maliyeti yok |
-| **Mobile** | **Expo + React Native** | Web bilgisi ile hızlı geliştirme |
+| Kategori           | Seçim                   | Neden                                                |
+| ------------------ | ----------------------- | ---------------------------------------------------- |
+| **Auth**           | **Clerk**               | Google OAuth, Magic Link, güçlü free tier (10k MAU)  |
+| **Database**       | **Supabase**            | PostgreSQL, Row Level Security, Real-time, Free tier |
+| **Payments**       | **Stripe**              | Subscription yönetimi, €1 micro-payments desteği     |
+| **PDF Generation** | **@react-pdf/renderer** | Client-side PDF, server maliyeti yok                 |
+| **Mobile**         | **Expo + React Native** | Web bilgisi ile hızlı geliştirme                     |
 
 ---
 
@@ -92,9 +92,9 @@ payslips (
   deductions JSONB,
   pdf_url TEXT,
   created_at TIMESTAMP,
-  
+
   -- Rate limiting
-  CONSTRAINT unique_payslip_per_period 
+  CONSTRAINT unique_payslip_per_period
     UNIQUE (employee_id, period_month, period_year)
 )
 
@@ -104,7 +104,7 @@ daily_usage (
   company_id UUID REFERENCES companies,
   date DATE,
   payslips_generated INTEGER DEFAULT 0,
-  
+
   CONSTRAINT unique_daily_usage UNIQUE (company_id, date)
 )
 ```
@@ -113,28 +113,28 @@ daily_usage (
 
 ## 🚦 Rate Limiting & Subscription Tiers
 
-| Plan | Günlük Limit | Özellikler | Fiyat |
-|------|--------------|------------|-------|
-| **Free** | 2 payslip/gün | Temel payslip, watermark | €0 |
-| **Basic** | 10 payslip/gün | Watermark yok, custom logo | €1/ay |
-| **Pro** | Sınırsız | Branding, API access, export | €5/ay |
+| Plan      | Günlük Limit   | Özellikler                   | Fiyat |
+| --------- | -------------- | ---------------------------- | ----- |
+| **Free**  | 2 payslip/gün  | Temel payslip, watermark     | €0    |
+| **Basic** | 10 payslip/gün | Watermark yok, custom logo   | €1/ay |
+| **Pro**   | Sınırsız       | Branding, API access, export | €5/ay |
 
 ### Rate Limiting Mekanizması
 
 ```typescript
 // Supabase Function veya Next.js API Route
 async function canGeneratePayslip(companyId: string): Promise<boolean> {
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   const plan = await getCompanyPlan(companyId);
   const dailyLimit = PLAN_LIMITS[plan];
-  
+
   const { data: usage } = await supabase
-    .from('daily_usage')
-    .select('payslips_generated')
-    .eq('company_id', companyId)
-    .eq('date', today)
+    .from("daily_usage")
+    .select("payslips_generated")
+    .eq("company_id", companyId)
+    .eq("date", today)
     .single();
-  
+
   return (usage?.payslips_generated ?? 0) < dailyLimit;
 }
 ```
@@ -179,7 +179,7 @@ Klasik admin paneli yerine **task-focused, wizard-style** arayüz:
    │  veya                                │
    │  [+ Yeni Çalışan Ekle]               │
    └──────────────────────────────────────┘
-   
+
    ┌──────────────────────────────────────┐
    │  Step 2/3: Dönem & Maaş              │
    │  ────────────────────────────────    │
@@ -188,7 +188,7 @@ Klasik admin paneli yerine **task-focused, wizard-style** arayüz:
    │  ─ Salary Calculator Integration ─   │
    │  Net: €1,850  Tax: €450  SSC: €200   │
    └──────────────────────────────────────┘
-   
+
    ┌──────────────────────────────────────┐
    │  Step 3/3: Önizleme & İndir          │
    │  ────────────────────────────────    │
@@ -222,6 +222,7 @@ Mobile Stack:
 ## 📋 Implementation Phases
 
 ### Phase 1: Core Authentication + Database Setup (1-2 gün)
+
 - [ ] Clerk entegrasyonu
   - [ ] Google OAuth yapılandırması
   - [ ] Middleware setup
@@ -232,6 +233,7 @@ Mobile Stack:
   - [ ] TypeScript types oluşturma
 
 ### Phase 2: Company Onboarding + Dashboard (2-3 gün)
+
 - [ ] Onboarding wizard
   - [ ] Firma bilgileri formu
   - [ ] Logo upload (Supabase Storage)
@@ -241,6 +243,7 @@ Mobile Stack:
   - [ ] Quick actions
 
 ### Phase 3: Payslip Generation (2-3 gün)
+
 - [ ] Payslip wizard
   - [ ] Çalışan seçimi/ekleme
   - [ ] Salary Calculator entegrasyonu (mevcut engine)
@@ -251,18 +254,21 @@ Mobile Stack:
 - [ ] Rate limiting uygulaması
 
 ### Phase 4: Subscription & Payments (2-3 gün)
+
 - [ ] Stripe entegrasyonu
 - [ ] Subscription tiers UI
 - [ ] Upgrade/downgrade akışı
 - [ ] Billing history
 
 ### Phase 5: Employee Access Portal (1-2 gün)
+
 - [ ] Secure link generation (per employee)
 - [ ] PIN verification (son 4 hane tel veya doğum tarihi)
 - [ ] Payslip viewing
 - [ ] Download history
 
 ### Phase 6: Mobile App (Web bittikten sonra)
+
 - [ ] Expo project setup
 - [ ] Same secure link + PIN auth
 - [ ] Push notifications for new payslips
@@ -289,13 +295,13 @@ Mobile Stack:
 
 ### Alternatif Karşılaştırma
 
-| Aspect | Clerk + Supabase | Firebase + Auth | Auth.js + Prisma |
-|--------|------------------|-----------------|------------------|
-| **Setup Hızı** | ⭐⭐⭐ | ⭐⭐ | ⭐ |
-| **Free Tier** | 10k MAU | 50k MAU | Sınırsız |
-| **PostgreSQL** | ✅ Native | ❌ NoSQL | ✅ Prisma |
-| **RLS Support** | ✅ Native | ❌ Firestore Rules | ❌ App-level |
-| **Mobile Ready** | ✅ | ✅ | ❌ |
+| Aspect           | Clerk + Supabase | Firebase + Auth    | Auth.js + Prisma |
+| ---------------- | ---------------- | ------------------ | ---------------- |
+| **Setup Hızı**   | ⭐⭐⭐           | ⭐⭐               | ⭐               |
+| **Free Tier**    | 10k MAU          | 50k MAU            | Sınırsız         |
+| **PostgreSQL**   | ✅ Native        | ❌ NoSQL           | ✅ Prisma        |
+| **RLS Support**  | ✅ Native        | ❌ Firestore Rules | ❌ App-level     |
+| **Mobile Ready** | ✅               | ✅                 | ❌               |
 
 **Tercih: Clerk + Supabase** - En iyi developer experience ve mobile-ready yapı.
 
@@ -339,12 +345,13 @@ Mobile Stack:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-| Yöntem | Avantaj | Dezavantaj |
-|--------|---------|------------|
-| **Login** | Tüm payslip'lere tek yerden erişim | Hesap oluşturma gerekli |
-| **Link+PIN** | Anında erişim, hesap yok | Her payslip için ayrı link |
+| Yöntem       | Avantaj                            | Dezavantaj                 |
+| ------------ | ---------------------------------- | -------------------------- |
+| **Login**    | Tüm payslip'lere tek yerden erişim | Hesap oluşturma gerekli    |
+| **Link+PIN** | Anında erişim, hesap yok           | Her payslip için ayrı link |
 
 **Teknik:**
+
 - Login yapan çalışan → Clerk ile employee account
 - Link+PIN → Session-less, DB'de hashed PIN kontrolü
 - Mobile app → Her iki yöntemi de destekler

@@ -15,6 +15,7 @@ npm run build
 ## Step 2: Check for Errors
 
 If build fails:
+
 1. Read error messages carefully
 2. Identify the failing file and line
 3. Fix the issue
@@ -22,12 +23,12 @@ If build fails:
 
 ### Common Build Errors
 
-| Error | Likely Cause | Fix |
-|-------|--------------|-----|
-| Type error | Missing/wrong types | Add proper types |
-| Module not found | Wrong import path | Fix import path |
-| Export error | Missing export | Add export statement |
-| Metadata error | Invalid metadata | Check metadata format |
+| Error            | Likely Cause        | Fix                   |
+| ---------------- | ------------------- | --------------------- |
+| Type error       | Missing/wrong types | Add proper types      |
+| Module not found | Wrong import path   | Fix import path       |
+| Export error     | Missing export      | Add export statement  |
+| Metadata error   | Invalid metadata    | Check metadata format |
 
 ## Step 3: Run Lint
 
@@ -38,14 +39,16 @@ npm run lint
 ## Step 4: Verify Static Pages
 
 Check that public pages have:
+
 ```typescript
 export const revalidate = false;
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 ```
 
 ## Step 5: Report Results
 
 Report:
+
 - Build status (pass/fail)
 - Any warnings
 - Static pages generated

@@ -28,28 +28,31 @@ You are a database specialist for the Malta Calculator platform using Supabase (
 
 ### Tables
 
-| Table | Purpose | Key Fields |
-|-------|---------|------------|
-| companies | Company profiles | id, name, clerk_user_id, plan, s3_logo_url |
-| employees | Employee records | id, company_id, name, gross_salary, pin_hash |
-| payslips | Payslip documents | id, employee_id, period, data |
-| daily_usage | API usage tracking | id, company_id, date, count |
+| Table       | Purpose            | Key Fields                                   |
+| ----------- | ------------------ | -------------------------------------------- |
+| companies   | Company profiles   | id, name, clerk_user_id, plan, s3_logo_url   |
+| employees   | Employee records   | id, company_id, name, gross_salary, pin_hash |
+| payslips    | Payslip documents  | id, employee_id, period, data                |
+| daily_usage | API usage tracking | id, company_id, date, count                  |
 
 ### Supabase Clients
 
 **Browser Client** (`src/lib/supabase/client.ts`):
+
 ```typescript
 import { createClient } from "@/lib/supabase/client";
 const supabase = createClient();
 ```
 
 **Server Client** (`src/lib/supabase/server.ts`):
+
 ```typescript
 import { createClient } from "@/lib/supabase/server";
 const supabase = await createClient();
 ```
 
 **Admin Client** (`src/lib/supabase/admin.ts`):
+
 ```typescript
 import { createClient } from "@/lib/supabase/admin";
 const supabase = createClient();
@@ -58,48 +61,52 @@ const supabase = createClient();
 ## Common Patterns
 
 ### Query Pattern
+
 ```typescript
 const { data, error } = await supabase
-    .from("companies")
-    .select("*")
-    .eq("clerk_user_id", userId)
-    .single();
+  .from("companies")
+  .select("*")
+  .eq("clerk_user_id", userId)
+  .single();
 
 if (error) throw error;
 ```
 
 ### Insert Pattern
+
 ```typescript
 const { data, error } = await supabase
-    .from("employees")
-    .insert({
-        company_id: companyId,
-        name: employeeName,
-        gross_salary: salary,
-    })
-    .select()
-    .single();
+  .from("employees")
+  .insert({
+    company_id: companyId,
+    name: employeeName,
+    gross_salary: salary,
+  })
+  .select()
+  .single();
 ```
 
 ### Update Pattern
+
 ```typescript
 const { error } = await supabase
-    .from("companies")
-    .update({ s3_logo_url: logoUrl })
-    .eq("id", companyId);
+  .from("companies")
+  .update({ s3_logo_url: logoUrl })
+  .eq("id", companyId);
 ```
 
 ## Type Definitions
 
 Types are in `src/types/database.ts`:
+
 ```typescript
 export interface Company {
-    id: string;
-    name: string;
-    clerk_user_id: string;
-    plan: "free" | "basic" | "pro";
-    s3_logo_url: string | null;
-    created_at: string;
+  id: string;
+  name: string;
+  clerk_user_id: string;
+  plan: "free" | "basic" | "pro";
+  s3_logo_url: string | null;
+  created_at: string;
 }
 ```
 
@@ -113,6 +120,7 @@ export interface Company {
 ## MCP Integration
 
 When the Supabase MCP server is configured, you can:
+
 - Query tables directly
 - Run migrations
 - Inspect schema

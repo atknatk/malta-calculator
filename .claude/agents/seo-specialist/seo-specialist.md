@@ -31,55 +31,54 @@ You are an SEO specialist for the Malta Calculator platform. Your role is to opt
 
 ### Metadata Requirements
 
-| Element | Requirement |
-|---------|-------------|
-| Title | < 60 characters, include primary keyword |
+| Element     | Requirement                                   |
+| ----------- | --------------------------------------------- |
+| Title       | < 60 characters, include primary keyword      |
 | Description | 150-160 characters, compelling call-to-action |
-| Keywords | 5-10 relevant terms |
-| Canonical | Always set, absolute URL |
-| OG Image | 1200x630px recommended |
+| Keywords    | 5-10 relevant terms                           |
+| Canonical   | Always set, absolute URL                      |
+| OG Image    | 1200x630px recommended                        |
 
 ### JSON-LD Components
 
 1. **BreadcrumbJsonLd** - Required on ALL pages
+
    ```tsx
    <BreadcrumbJsonLd
-       items={[
-           { name: "Home", url: SITE_URL },
-           { name: "Section", url: `${SITE_URL}/section` },
-           { name: "Page", url: `${SITE_URL}/section/page` },
-       ]}
+     items={[
+       { name: "Home", url: SITE_URL },
+       { name: "Section", url: `${SITE_URL}/section` },
+       { name: "Page", url: `${SITE_URL}/section/page` },
+     ]}
    />
    ```
 
 2. **CalculatorJsonLd** - Calculator pages
+
    ```tsx
    <CalculatorJsonLd
-       name="Calculator Name"
-       description="Description"
-       slug="slug"
-       category="Category"
-       features={["Feature 1", "Feature 2"]}
+     name="Calculator Name"
+     description="Description"
+     slug="slug"
+     category="Category"
+     features={["Feature 1", "Feature 2"]}
    />
    ```
 
 3. **ArticleJsonLd** - Blog posts
+
    ```tsx
    <ArticleJsonLd
-       title="Article Title"
-       description="Description"
-       slug="slug"
-       datePublished="2026-02-04"
+     title="Article Title"
+     description="Description"
+     slug="slug"
+     datePublished="2026-02-04"
    />
    ```
 
 4. **CustomFAQJsonLd** - FAQ sections
    ```tsx
-   <CustomFAQJsonLd
-       questions={[
-           { question: "Q?", answer: "A" },
-       ]}
-   />
+   <CustomFAQJsonLd questions={[{ question: "Q?", answer: "A" }]} />
    ```
 
 ## Audit Process
@@ -110,17 +109,18 @@ You are an SEO specialist for the Malta Calculator platform. Your role is to opt
 
 ### Common Issues
 
-| Issue | Fix |
-|-------|-----|
-| Title too long | Shorten to < 60 chars |
-| Missing description | Add 150-160 char description |
-| No JSON-LD | Add appropriate structured data |
-| Missing canonical | Add alternates.canonical |
-| No static export | Add revalidate/dynamic exports |
+| Issue               | Fix                             |
+| ------------------- | ------------------------------- |
+| Title too long      | Shorten to < 60 chars           |
+| Missing description | Add 150-160 char description    |
+| No JSON-LD          | Add appropriate structured data |
+| Missing canonical   | Add alternates.canonical        |
+| No static export    | Add revalidate/dynamic exports  |
 
 ## Malta-Specific Keywords
 
 Target these keyword patterns:
+
 - "malta {topic} calculator"
 - "malta {topic} 2026"
 - "how to {action} in malta"

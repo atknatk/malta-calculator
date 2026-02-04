@@ -47,7 +47,8 @@ export async function GET(req: Request) {
     }
   }
 
-  const title = customTitle || (isExpired ? "Timer Finished" : "Countdown Timer");
+  const title =
+    customTitle || (isExpired ? "Timer Finished" : "Countdown Timer");
 
   return new ImageResponse(
     <div
@@ -58,7 +59,8 @@ export async function GET(req: Request) {
         justifyContent: "center",
         width: "100%",
         height: "100%",
-        background: "linear-gradient(135deg, #faf5eb 0%, #f5ead6 50%, #f0e6d3 100%)",
+        background:
+          "linear-gradient(135deg, #faf5eb 0%, #f5ead6 50%, #f0e6d3 100%)",
         fontFamily: "Inter, sans-serif",
       }}
     >
@@ -84,7 +86,8 @@ export async function GET(req: Request) {
           width: 100,
           height: 100,
           borderRadius: "50%",
-          background: "linear-gradient(135deg, rgba(201, 125, 10, 0.2) 0%, rgba(201, 125, 10, 0.1) 100%)",
+          background:
+            "linear-gradient(135deg, rgba(201, 125, 10, 0.2) 0%, rgba(201, 125, 10, 0.1) 100%)",
           marginBottom: 24,
         }}
       >
@@ -191,6 +194,6 @@ export async function GET(req: Request) {
     </div>,
     {
       ...SIZE,
-    }
+    },
   );
 }

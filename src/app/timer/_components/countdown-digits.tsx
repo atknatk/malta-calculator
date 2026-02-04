@@ -17,7 +17,7 @@ function DigitCard({ digit }: { digit: string; index: number }) {
         "relative w-12 h-16 md:w-16 md:h-20",
         "bg-gradient-to-br from-background to-muted/50",
         "rounded-lg border border-border/50",
-        "shadow-sm"
+        "shadow-sm",
       )}
     >
       <AnimatePresence mode="wait">
@@ -46,7 +46,11 @@ function TimeUnit({ value, label }: DigitProps) {
     <div className="flex flex-col items-center gap-2">
       <div className="flex gap-1">
         {digits.map((digit, index) => (
-          <DigitCard key={`${label}-${index}-${digit}`} digit={digit} index={index} />
+          <DigitCard
+            key={`${label}-${index}-${digit}`}
+            digit={digit}
+            index={index}
+          />
         ))}
       </div>
       <span className="text-xs md:text-sm font-medium text-muted-foreground uppercase tracking-widest">

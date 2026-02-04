@@ -63,21 +63,25 @@ malta-calculator/
 ## File Categories
 
 ### Configuration
+
 - `src/config/malta-tax-config.ts` - Tax rates, SSC, COLA
 - `src/app/shared-metadata.ts` - SEO metadata
 - `next.config.mjs` - Next.js configuration
 - `tailwind.config.ts` - Styling configuration
 
 ### Calculations
+
 - `src/utils/salary-calculator.ts` - Main salary engine
 - `src/utils/*-calculator.ts` - Various calculators
 
 ### Components
+
 - `src/components/ui/` - Base UI components
 - `src/components/layout/` - Layout wrappers
 - `src/components/json-ld.tsx` - Structured data
 
 ### API Routes
+
 - `/api/salary/calculate` - Salary calculation
 - `/api/payslip/generate` - PDF generation
 - `/api/stripe/` - Payment handling

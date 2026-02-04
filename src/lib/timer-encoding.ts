@@ -179,7 +179,7 @@ export function formatCreatedDate(timestamp: number): string {
 export function validateDuration(
   hours: number,
   minutes: number,
-  seconds: number
+  seconds: number,
 ): { valid: boolean; error?: string; totalSeconds: number } {
   const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 

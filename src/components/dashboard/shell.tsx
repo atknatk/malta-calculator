@@ -12,7 +12,7 @@ function Shell({ children, className, variant = "glass" }: ShellProps) {
         variant === "glass" && "glass border-border/50",
         variant === "solid" && "bg-card border border-border",
         variant === "default" && "border border-border backdrop-blur-[2px]",
-        className
+        className,
       )}
     >
       {children}

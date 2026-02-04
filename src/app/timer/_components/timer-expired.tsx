@@ -28,7 +28,8 @@ function Confetti() {
       rotation: Math.random() > 0.5 ? 360 : -360,
       duration: 3 + Math.random() * 2,
       delay: Math.random() * 2,
-      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      color:
+        CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
     }));
   }, [mounted]);
 
@@ -67,7 +68,11 @@ function Confetti() {
   );
 }
 
-export function TimerExpired({ duration, createdAt, title }: TimerExpiredProps) {
+export function TimerExpired({
+  duration,
+  createdAt,
+  title,
+}: TimerExpiredProps) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}

@@ -99,7 +99,13 @@ const calculators: CalculatorCard[] = [
   },
 ];
 
-function CalculatorCardComponent({ card, index }: { card: CalculatorCard; index: number }) {
+function CalculatorCardComponent({
+  card,
+  index,
+}: {
+  card: CalculatorCard;
+  index: number;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const isFirst = index === 0;
@@ -116,7 +122,7 @@ function CalculatorCardComponent({ card, index }: { card: CalculatorCard; index:
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (cardRef.current) {
@@ -137,32 +143,32 @@ function CalculatorCardComponent({ card, index }: { card: CalculatorCard; index:
           ? "cursor-pointer hover:scale-[1.02]"
           : "opacity-70 cursor-not-allowed",
         // Animation states
-        isVisible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-8"
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
       )}
     >
       {/* Gradient Background */}
       <div
         className={cn(
           "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-          card.gradient
+          card.gradient,
         )}
       />
 
       {/* Content */}
       <div className="relative z-10 p-6 md:p-8">
-        <div className={cn(
-          "flex gap-6",
-          isFirst ? "flex-col md:flex-row md:items-center" : "flex-col"
-        )}>
+        <div
+          className={cn(
+            "flex gap-6",
+            isFirst ? "flex-col md:flex-row md:items-center" : "flex-col",
+          )}
+        >
           {/* Icon */}
           <div
             className={cn(
               "flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center",
               "shadow-lg transition-all duration-300",
               "group-hover:scale-110 group-hover:shadow-xl",
-              card.iconBg
+              card.iconBg,
             )}
           >
             <card.icon className="h-8 w-8 text-white" />
@@ -180,7 +186,7 @@ function CalculatorCardComponent({ card, index }: { card: CalculatorCard; index:
                     "px-3 py-1 rounded-full text-xs font-semibold",
                     card.available
                       ? "bg-primary/10 text-primary"
-                      : "bg-muted text-muted-foreground"
+                      : "bg-muted text-muted-foreground",
                   )}
                 >
                   {card.badge}
@@ -207,7 +213,10 @@ function CalculatorCardComponent({ card, index }: { card: CalculatorCard; index:
 
   if (card.available) {
     return (
-      <Link href={card.href} className={cn(isFirst ? "sm:col-span-2 lg:col-span-3" : "")}>
+      <Link
+        href={card.href}
+        className={cn(isFirst ? "sm:col-span-2 lg:col-span-3" : "")}
+      >
         {CardContent}
       </Link>
     );
@@ -228,7 +237,7 @@ export function MenuBox() {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -246,10 +255,12 @@ export function MenuBox() {
       aria-label="Malta Financial Calculators - Professional tools for tax, salary and pension calculations"
     >
       {/* Section Header */}
-      <div className={cn(
-        "text-center mb-12 transition-all duration-700",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-      )}>
+      <div
+        className={cn(
+          "text-center mb-12 transition-all duration-700",
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
+        )}
+      >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 text-sm font-medium text-primary mb-4">
           <Sparkles className="h-4 w-4" />
           <span>Professional Tools</span>
@@ -258,7 +269,8 @@ export function MenuBox() {
           Financial Calculators
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Comprehensive tools designed specifically for Malta&apos;s tax and employment regulations.
+          Comprehensive tools designed specifically for Malta&apos;s tax and
+          employment regulations.
         </p>
       </div>
 

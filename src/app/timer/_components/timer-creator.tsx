@@ -48,7 +48,7 @@ function TimeInput({ value, onChange, max, label }: TimeInputProps) {
           "bg-background border-2 border-border",
           "focus:border-primary focus:ring-2 focus:ring-primary/20",
           "transition-all duration-200",
-          "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
         )}
       />
       <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
@@ -91,7 +91,9 @@ export function TimerCreator() {
     setError(null);
 
     const token = encodeTimer(validation.totalSeconds);
-    const titleParam = title.trim() ? `?title=${encodeURIComponent(title.trim())}` : "";
+    const titleParam = title.trim()
+      ? `?title=${encodeURIComponent(title.trim())}`
+      : "";
 
     router.push(`/timer/${token}${titleParam}`);
   }, [hours, minutes, seconds, title, router]);
@@ -112,7 +114,8 @@ export function TimerCreator() {
           Countdown Timer
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Create a countdown timer and share it with anyone. The timer starts when you create it.
+          Create a countdown timer and share it with anyone. The timer starts
+          when you create it.
         </p>
       </motion.div>
 
@@ -153,14 +156,18 @@ export function TimerCreator() {
               max={720}
               label="Hours"
             />
-            <span className="text-4xl font-bold text-muted-foreground mt-[-1.5rem]">:</span>
+            <span className="text-4xl font-bold text-muted-foreground mt-[-1.5rem]">
+              :
+            </span>
             <TimeInput
               value={minutes}
               onChange={setMinutes}
               max={59}
               label="Minutes"
             />
-            <span className="text-4xl font-bold text-muted-foreground mt-[-1.5rem]">:</span>
+            <span className="text-4xl font-bold text-muted-foreground mt-[-1.5rem]">
+              :
+            </span>
             <TimeInput
               value={seconds}
               onChange={setSeconds}
@@ -171,14 +178,19 @@ export function TimerCreator() {
 
           {totalSeconds > 0 && (
             <p className="text-center text-sm text-muted-foreground">
-              Duration: <span className="font-medium text-foreground">{formatDurationHuman(totalSeconds)}</span>
+              Duration:{" "}
+              <span className="font-medium text-foreground">
+                {formatDurationHuman(totalSeconds)}
+              </span>
             </p>
           )}
         </div>
 
         {/* Quick Presets */}
         <div className="space-y-3">
-          <p className="text-sm font-medium text-foreground/70">Quick Presets</p>
+          <p className="text-sm font-medium text-foreground/70">
+            Quick Presets
+          </p>
           <div className="flex flex-wrap gap-2 justify-center">
             {PRESETS.map((preset) => (
               <button
@@ -188,7 +200,7 @@ export function TimerCreator() {
                   "px-4 py-2 rounded-lg text-sm font-medium transition-all",
                   totalSeconds === preset.seconds
                     ? "bg-primary text-primary-foreground"
-                    : "bg-background border border-border hover:bg-muted"
+                    : "bg-background border border-border hover:bg-muted",
                 )}
               >
                 {preset.label}

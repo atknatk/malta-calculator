@@ -19,7 +19,7 @@ export function MarketingHeader({ className }: Props) {
     <header
       className={cn(
         "grid w-full grid-cols-2 gap-2 md:grid-cols-5 py-2",
-        className
+        className,
       )}
     >
       <div className="flex items-center md:col-span-1">
@@ -36,7 +36,9 @@ export function MarketingHeader({ className }: Props) {
               variant="link"
               className={cn(
                 "transition-colors",
-                isActive ? "font-semibold text-primary" : "text-muted-foreground hover:text-foreground"
+                isActive
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground hover:text-foreground",
               )}
               asChild
             >

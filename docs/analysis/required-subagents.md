@@ -13,6 +13,7 @@ Based on the project analysis, the following subagents are required:
 **Tools**: Read, Write, Edit, Bash, Glob, Grep
 
 **Use Cases**:
+
 - App Router patterns
 - Server/Client components
 - Metadata and SEO
@@ -27,6 +28,7 @@ Based on the project analysis, the following subagents are required:
 **Skills**: new-calculator
 
 **Use Cases**:
+
 - Calculator logic implementation
 - Malta-specific formulas
 - Interactive UI components
@@ -40,6 +42,7 @@ Based on the project analysis, the following subagents are required:
 **Skills**: new-blog
 
 **Use Cases**:
+
 - Malta financial guides
 - Tax and employment articles
 - SEO-optimized content
@@ -53,6 +56,7 @@ Based on the project analysis, the following subagents are required:
 **Skills**: seo-check
 
 **Use Cases**:
+
 - Metadata optimization
 - JSON-LD structured data
 - Content optimization
@@ -65,6 +69,7 @@ Based on the project analysis, the following subagents are required:
 **Tools**: Read, Write, Bash
 
 **Use Cases**:
+
 - Schema management
 - Query optimization
 - Data operations
@@ -77,6 +82,7 @@ Based on the project analysis, the following subagents are required:
 **Tools**: Read, Glob, Grep
 
 **Use Cases**:
+
 - Code review
 - Pattern validation
 - Security checks
@@ -89,6 +95,7 @@ Based on the project analysis, the following subagents are required:
 **Tools**: Bash
 
 **Use Cases**:
+
 - Branch management
 - Commit handling
 - Safety checks
@@ -96,12 +103,12 @@ Based on the project analysis, the following subagents are required:
 
 ## Agent Selection Matrix
 
-| Task Type | Primary Agent | Supporting |
-|-----------|--------------|------------|
-| New calculator | calculator-developer | seo-specialist |
-| New blog post | blog-writer | seo-specialist |
-| API development | nextjs-expert | database-manager |
-| SEO improvement | seo-specialist | - |
-| Database changes | database-manager | - |
-| Code review | code-reviewer | - |
-| Git operations | git-guardian | - |
+| Task Type        | Primary Agent        | Supporting       |
+| ---------------- | -------------------- | ---------------- |
+| New calculator   | calculator-developer | seo-specialist   |
+| New blog post    | blog-writer          | seo-specialist   |
+| API development  | nextjs-expert        | database-manager |
+| SEO improvement  | seo-specialist       | -                |
+| Database changes | database-manager     | -                |
+| Code review      | code-reviewer        | -                |
+| Git operations   | git-guardian         | -                |

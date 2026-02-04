@@ -3,8 +3,14 @@ import { ImageResponse } from "next/og";
 
 import { DESCRIPTION, TITLE } from "@/app/shared-metadata";
 import { Background } from "./_components/background";
-import { DEFAULT_URL, SIZE, calSemiBold, interLight, interMedium, interRegular } from "./utils";
-
+import {
+  DEFAULT_URL,
+  SIZE,
+  calSemiBold,
+  interLight,
+  interMedium,
+  interRegular,
+} from "./utils";
 
 export const runtime = "edge";
 

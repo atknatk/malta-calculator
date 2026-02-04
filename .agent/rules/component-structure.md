@@ -61,153 +61,157 @@ import { calculateXxx, formatCurrency } from "@/utils/xxx-calculator";
 
 // ToggleGroup bileşeni (seçenekler için)
 interface ToggleGroupProps<T extends string> {
-    value: T;
-    onChange: (value: T) => void;
-    options: { value: T; label: string }[];
-    className?: string;
+  value: T;
+  onChange: (value: T) => void;
+  options: { value: T; label: string }[];
+  className?: string;
 }
 
 function ToggleGroup<T extends string>({
-    value,
-    onChange,
-    options,
-    className,
+  value,
+  onChange,
+  options,
+  className,
 }: ToggleGroupProps<T>) {
-    return (
-        <div className={cn("flex flex-wrap gap-2", className)}>
-            {options.map((option) => (
-                <button
-                    key={option.value}
-                    onClick={() => onChange(option.value)}
-                    className={cn(
-                        "px-4 py-2 rounded-xl text-sm font-medium transition-all",
-                        value === option.value
-                            ? "bg-primary text-white shadow-lg"
-                            : "bg-muted hover:bg-muted/80 text-muted-foreground"
-                    )}
-                >
-                    {option.label}
-                </button>
-            ))}
-        </div>
-    );
+  return (
+    <div className={cn("flex flex-wrap gap-2", className)}>
+      {options.map((option) => (
+        <button
+          key={option.value}
+          onClick={() => onChange(option.value)}
+          className={cn(
+            "px-4 py-2 rounded-xl text-sm font-medium transition-all",
+            value === option.value
+              ? "bg-primary text-white shadow-lg"
+              : "bg-muted hover:bg-muted/80 text-muted-foreground",
+          )}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 export function XxxCalculator() {
-    // State tanımları
-    const [inputValue, setInputValue] = useState(50000);
-    const [option, setOption] = useState<"option1" | "option2">("option1");
+  // State tanımları
+  const [inputValue, setInputValue] = useState(50000);
+  const [option, setOption] = useState<"option1" | "option2">("option1");
 
-    // Memoized hesaplama
-    const result = useMemo(() => {
-        return calculateXxx({ value: inputValue, option });
-    }, [inputValue, option]);
+  // Memoized hesaplama
+  const result = useMemo(() => {
+    return calculateXxx({ value: inputValue, option });
+  }, [inputValue, option]);
 
-    return (
-        <div className="space-y-8">
-            {/* Header */}
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center space-y-4"
-            >
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                    <Calculator className="h-4 w-4" />
-                    Category Name
-                </div>
-                <h1 className="font-cal text-3xl md:text-4xl font-bold">
-                    [Calculator Name]
-                </h1>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                    [Kısa açıklama]
-                </p>
-            </motion.div>
-
-            <div className="grid lg:grid-cols-2 gap-8">
-                {/* Input Section */}
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="space-y-6"
-                >
-                    <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/5 via-background to-secondary/5 border border-border/50 space-y-6">
-                        {/* Input kontrolleri */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-muted-foreground">
-                                Input Label
-                            </label>
-                            <NumericInput
-                                value={inputValue}
-                                onValueChange={setInputValue}
-                                min={0}
-                                max={1000000}
-                                prefix="€"
-                            />
-                        </div>
-
-                        {/* Toggle seçenekleri */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-muted-foreground">
-                                Option Label
-                            </label>
-                            <ToggleGroup
-                                value={option}
-                                onChange={setOption}
-                                options={[
-                                    { value: "option1", label: "Option 1" },
-                                    { value: "option2", label: "Option 2" },
-                                ]}
-                            />
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Result Section */}
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="space-y-6"
-                >
-                    <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 space-y-6">
-                        {/* Ana sonuç */}
-                        <div className="text-center">
-                            <div className="text-sm text-muted-foreground mb-2">
-                                Result Label
-                            </div>
-                            <div className="text-4xl md:text-5xl font-bold text-gradient">
-                                {formatCurrency(result.total)}
-                            </div>
-                        </div>
-
-                        {/* Breakdown */}
-                        <div className="space-y-3 pt-4 border-t border-border/50">
-                            <div className="flex justify-between items-center">
-                                <span className="text-muted-foreground">Item 1</span>
-                                <span className="font-medium">{formatCurrency(result.breakdown.item1)}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-muted-foreground">Item 2</span>
-                                <span className="font-medium">{formatCurrency(result.breakdown.item2)}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Info box */}
-                    <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20">
-                        <div className="flex gap-3">
-                            <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                            <div className="text-sm text-muted-foreground">
-                                <strong className="text-foreground">Important Note:</strong>{" "}
-                                [Önemli bilgi veya açıklama]
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-            </div>
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center space-y-4"
+      >
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          <Calculator className="h-4 w-4" />
+          Category Name
         </div>
-    );
+        <h1 className="font-cal text-3xl md:text-4xl font-bold">
+          [Calculator Name]
+        </h1>
+        <p className="text-muted-foreground max-w-2xl mx-auto">
+          [Kısa açıklama]
+        </p>
+      </motion.div>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* Input Section */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+          className="space-y-6"
+        >
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/5 via-background to-secondary/5 border border-border/50 space-y-6">
+            {/* Input kontrolleri */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">
+                Input Label
+              </label>
+              <NumericInput
+                value={inputValue}
+                onValueChange={setInputValue}
+                min={0}
+                max={1000000}
+                prefix="€"
+              />
+            </div>
+
+            {/* Toggle seçenekleri */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">
+                Option Label
+              </label>
+              <ToggleGroup
+                value={option}
+                onChange={setOption}
+                options={[
+                  { value: "option1", label: "Option 1" },
+                  { value: "option2", label: "Option 2" },
+                ]}
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Result Section */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-6"
+        >
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 space-y-6">
+            {/* Ana sonuç */}
+            <div className="text-center">
+              <div className="text-sm text-muted-foreground mb-2">
+                Result Label
+              </div>
+              <div className="text-4xl md:text-5xl font-bold text-gradient">
+                {formatCurrency(result.total)}
+              </div>
+            </div>
+
+            {/* Breakdown */}
+            <div className="space-y-3 pt-4 border-t border-border/50">
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Item 1</span>
+                <span className="font-medium">
+                  {formatCurrency(result.breakdown.item1)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Item 2</span>
+                <span className="font-medium">
+                  {formatCurrency(result.breakdown.item2)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Info box */}
+          <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20">
+            <div className="flex gap-3">
+              <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Important Note:</strong>{" "}
+                [Önemli bilgi veya açıklama]
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
 }
 ```
 
@@ -356,55 +360,61 @@ export const dynamic = 'force-static';
 ### 4. Sık Kullanılan UI Pattern'leri
 
 #### Badge/Chip
+
 ```tsx
 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-    <Icon className="h-4 w-4" />
-    <span>Badge Text</span>
+  <Icon className="h-4 w-4" />
+  <span>Badge Text</span>
 </div>
 ```
 
 #### Card
+
 ```tsx
 <div className="p-6 rounded-2xl bg-card border border-border hover:border-primary hover:shadow-lg transition-all">
-    {/* Card içeriği */}
+  {/* Card içeriği */}
 </div>
 ```
 
 #### Gradient Card
+
 ```tsx
 <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/5 via-background to-secondary/5 border border-border/50">
-    {/* İçerik */}
+  {/* İçerik */}
 </div>
 ```
 
 #### Result Card (Calculator için)
+
 ```tsx
 <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 border border-primary/20">
-    {/* Sonuç içeriği */}
+  {/* Sonuç içeriği */}
 </div>
 ```
 
 #### Info Box
+
 ```tsx
 <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20">
-    <div className="flex gap-3">
-        <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
-        <div className="text-sm text-muted-foreground">
-            <strong className="text-foreground">Note:</strong> [Bilgi]
-        </div>
+  <div className="flex gap-3">
+    <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+    <div className="text-sm text-muted-foreground">
+      <strong className="text-foreground">Note:</strong> [Bilgi]
     </div>
+  </div>
 </div>
 ```
 
 #### Warning Box
+
 ```tsx
 <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-    <div className="flex gap-3">
-        <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
-        <div className="text-sm text-muted-foreground">
-            <strong className="text-foreground">Warning:</strong> [Uyarı]
-        </div>
+  <div className="flex gap-3">
+    <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+    <div className="text-sm text-muted-foreground">
+      <strong className="text-foreground">Warning:</strong> [Uyarı]
     </div>
+  </div>
 </div>
 ```
 
@@ -415,14 +425,13 @@ export const dynamic = 'force-static';
 ### 5. MarketingLayout
 
 Tüm public sayfalar `MarketingLayout` kullanır:
+
 - Header (navigasyon)
 - Footer
 - Tema desteği
 
 ```tsx
-<MarketingLayout>
-    {children}
-</MarketingLayout>
+<MarketingLayout>{children}</MarketingLayout>
 ```
 
 ### 6. Shell
@@ -442,7 +451,7 @@ Hesaplayıcılar için geri butonu:
 ```tsx
 import { BackButton } from "@/components/layout/back-button";
 
-<BackButton href="/calculators" />
+<BackButton href="/calculators" />;
 ```
 
 ---
@@ -493,34 +502,34 @@ import { BackButton } from "@/components/layout/back-button";
 import { NumericInput } from "@/components/ui/numeric-input";
 
 <NumericInput
-    value={value}
-    onValueChange={setValue}
-    min={0}
-    max={1000000}
-    prefix="€"           // veya suffix="%"
-/>
+  value={value}
+  onValueChange={setValue}
+  min={0}
+  max={1000000}
+  prefix="€" // veya suffix="%"
+/>;
 ```
 
 ### 10. Select
 
 ```tsx
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 
 <Select value={value} onValueChange={setValue}>
-    <SelectTrigger>
-        <SelectValue placeholder="Select..." />
-    </SelectTrigger>
-    <SelectContent>
-        <SelectItem value="option1">Option 1</SelectItem>
-        <SelectItem value="option2">Option 2</SelectItem>
-    </SelectContent>
-</Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+    <SelectItem value="option2">Option 2</SelectItem>
+  </SelectContent>
+</Select>;
 ```
 
 ---

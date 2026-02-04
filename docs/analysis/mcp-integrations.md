@@ -13,12 +13,14 @@ Model Context Protocol (MCP) servers extend Claude Code with additional capabili
 **Package**: `@supabase/mcp-server`
 
 **Features**:
+
 - Query tables directly
 - Run migrations
 - Inspect schema
 - Generate types
 
 **Configuration**:
+
 ```json
 {
   "supabase": {
@@ -40,6 +42,7 @@ Model Context Protocol (MCP) servers extend Claude Code with additional capabili
 **URL**: `https://api.githubcopilot.com/mcp/`
 
 **Features**:
+
 - Repository management
 - Issue tracking
 - Pull request operations
@@ -51,6 +54,7 @@ Model Context Protocol (MCP) servers extend Claude Code with additional capabili
 **Package**: `@modelcontextprotocol/server-filesystem`
 
 **Features**:
+
 - Advanced file operations
 - Directory management
 - File search
@@ -62,6 +66,7 @@ Model Context Protocol (MCP) servers extend Claude Code with additional capabili
 **URL**: `https://mcp.stripe.com`
 
 **Features**:
+
 - Subscription management
 - Payment processing
 - Invoice handling

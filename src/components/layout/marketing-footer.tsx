@@ -21,7 +21,10 @@ export function MarketingFooter({ className }: Props) {
             <div>
               <BrandName />
               <p className="mt-2 font-light text-muted-foreground text-sm">
-                A comprehensive calculation app that supports you at every stage of your professional life, ensuring accurate calculations and simplifying your work processes for greater efficiency and peace of mind!
+                A comprehensive calculation app that supports you at every stage
+                of your professional life, ensuring accurate calculations and
+                simplifying your work processes for greater efficiency and peace
+                of mind!
                 <br />
                 <span className="underline decoration-dotted underline-offset-2">
                   Salary Calculator
@@ -32,13 +35,34 @@ export function MarketingFooter({ className }: Props) {
           <div className="order-1 flex flex-col gap-3 text-sm">
             <p className="font-semibold text-foreground">Guides</p>
             <FooterLink href="/blog" label="All Articles" />
-            <FooterLink href="/blog/malta-tax-rates-2026-complete-guide" label="Tax Rates 2026" />
-            <FooterLink href="/blog/malta-ssc-contributions-2026-explained" label="SSC Guide" />
-            <FooterLink href="/blog/understanding-cola-malta-2026" label="COLA Explained" />
-            <FooterLink href="/blog/malta-minimum-wage-2026-guide" label="Minimum Wage" />
-            <FooterLink href="/blog/malta-public-holidays-2026-complete-guide" label="Public Holidays" />
-            <FooterLink href="/blog/malta-expat-tax-hqp-scheme-guide" label="Expat Tax (HQP)" />
-            <FooterLink href="/blog/malta-pension-system-2026-guide" label="Pension System" />
+            <FooterLink
+              href="/blog/malta-tax-rates-2026-complete-guide"
+              label="Tax Rates 2026"
+            />
+            <FooterLink
+              href="/blog/malta-ssc-contributions-2026-explained"
+              label="SSC Guide"
+            />
+            <FooterLink
+              href="/blog/understanding-cola-malta-2026"
+              label="COLA Explained"
+            />
+            <FooterLink
+              href="/blog/malta-minimum-wage-2026-guide"
+              label="Minimum Wage"
+            />
+            <FooterLink
+              href="/blog/malta-public-holidays-2026-complete-guide"
+              label="Public Holidays"
+            />
+            <FooterLink
+              href="/blog/malta-expat-tax-hqp-scheme-guide"
+              label="Expat Tax (HQP)"
+            />
+            <FooterLink
+              href="/blog/malta-pension-system-2026-guide"
+              label="Pension System"
+            />
           </div>
           <div className="order-2 flex flex-col gap-3 text-sm">
             <p className="font-semibold text-foreground">Company</p>
@@ -54,12 +78,13 @@ export function MarketingFooter({ className }: Props) {
             <FooterLink href="/calculators" label="All Calculators" />
             <FooterLink href="/salary" label="Salary Calculator" />
             <FooterLink href="/calculators/pension" label="Pension Estimator" />
-            <FooterLink href="/calculators/childcare" label="Childcare Subsidy" />
+            <FooterLink
+              href="/calculators/childcare"
+              label="Childcare Subsidy"
+            />
             <FooterLink href="/calculators/vacation" label="Vacation Days" />
             <FooterLink href="/timer" label="Countdown Timer" />
           </div>
-
-
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-wrap gap-2">
@@ -87,9 +112,9 @@ function FooterLink({ href, label, external = false }: FooterLinkProps) {
 
   const externalProps = isExternal
     ? {
-      target: "_blank",
-      rel: "noreferrer",
-    }
+        target: "_blank",
+        rel: "noreferrer",
+      }
     : {};
 
   return (

@@ -3,36 +3,55 @@ import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
-import { defaultMetadata, ogMetadata, twitterMetadata, SITE_URL } from "@/app/shared-metadata";
+import {
+  defaultMetadata,
+  ogMetadata,
+  twitterMetadata,
+  SITE_URL,
+} from "@/app/shared-metadata";
 import { SavingsCalculator } from "./_components/savings-calculator";
 
 export const metadata: Metadata = {
-    ...defaultMetadata,
+  ...defaultMetadata,
+  title: "Savings Interest Calculator | Malta Calculator",
+  description:
+    "Calculate compound interest on your savings in Malta. Including 15% withholding tax, monthly contributions, and yearly breakdown. Free savings calculator.",
+  keywords: [
+    "Malta savings calculator",
+    "Malta interest calculator",
+    "compound interest Malta",
+    "savings Malta",
+    "bank interest Malta",
+  ],
+  alternates: { canonical: `${SITE_URL}/calculators/savings-interest` },
+  openGraph: {
+    ...ogMetadata,
     title: "Savings Interest Calculator | Malta Calculator",
-    description: "Calculate compound interest on your savings in Malta. Including 15% withholding tax, monthly contributions, and yearly breakdown. Free savings calculator.",
-    keywords: ["Malta savings calculator", "Malta interest calculator", "compound interest Malta", "savings Malta", "bank interest Malta"],
-    alternates: { canonical: `${SITE_URL}/calculators/savings-interest` },
-    openGraph: { ...ogMetadata, title: "Savings Interest Calculator | Malta Calculator", url: `${SITE_URL}/calculators/savings-interest` },
-    twitter: { ...twitterMetadata, title: "Savings Interest Calculator | Malta Calculator" },
+    url: `${SITE_URL}/calculators/savings-interest`,
+  },
+  twitter: {
+    ...twitterMetadata,
+    title: "Savings Interest Calculator | Malta Calculator",
+  },
 };
 
 export default function SavingsInterestPage() {
-    return (
-        <MarketingLayout>
-            <main role="main" aria-label="Savings Interest Calculator">
-                <BackButton href="/calculators" />
-                <Shell className="max-w-5xl py-8">
-                    <SavingsCalculator />
-                    <RelatedGuide
-                        href="/blog/malta-savings-interest-guide-2026"
-                        title="Malta Savings Interest Guide 2026"
-                        description="Learn about savings accounts, interest rates, and withholding tax in Malta."
-                    />
-                </Shell>
-            </main>
-        </MarketingLayout>
-    );
+  return (
+    <MarketingLayout>
+      <main role="main" aria-label="Savings Interest Calculator">
+        <BackButton href="/calculators" />
+        <Shell className="max-w-5xl py-8">
+          <SavingsCalculator />
+          <RelatedGuide
+            href="/blog/malta-savings-interest-guide-2026"
+            title="Malta Savings Interest Guide 2026"
+            description="Learn about savings accounts, interest rates, and withholding tax in Malta."
+          />
+        </Shell>
+      </main>
+    </MarketingLayout>
+  );
 }
 
-export const revalidate = false;          // tamamen statik (build-time)
-export const dynamic = 'force-static';    // bu segmenti statik olmaya zorla
+export const revalidate = false; // tamamen statik (build-time)
+export const dynamic = "force-static"; // bu segmenti statik olmaya zorla

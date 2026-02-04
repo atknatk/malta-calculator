@@ -2,7 +2,15 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Copy, Check, Twitter, Share2, Volume2, VolumeX, Bell } from "lucide-react";
+import {
+  Copy,
+  Check,
+  Twitter,
+  Share2,
+  Volume2,
+  VolumeX,
+  Bell,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -79,7 +87,7 @@ export function ShareButtons({
             onClick={() => onSoundToggle(!soundEnabled)}
             className={cn(
               "gap-2",
-              soundEnabled && "border-primary/50 bg-primary/5"
+              soundEnabled && "border-primary/50 bg-primary/5",
             )}
           >
             {soundEnabled ? (

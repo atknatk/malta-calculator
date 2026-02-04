@@ -24,7 +24,10 @@ export function ProgressRing({
 
   return (
     <div
-      className={cn("relative inline-flex items-center justify-center", className)}
+      className={cn(
+        "relative inline-flex items-center justify-center",
+        className,
+      )}
       style={{ width: size, height: size }}
     >
       <svg
@@ -62,7 +65,13 @@ export function ProgressRing({
 
         {/* Gradient definition */}
         <defs>
-          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient
+            id="progressGradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
             <stop offset="0%" stopColor="#c97d0a" />
             <stop offset="50%" stopColor="#b86f08" />
             <stop offset="100%" stopColor="#a56006" />
