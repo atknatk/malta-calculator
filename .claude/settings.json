@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "commands": {
+    "new-calculator": {
+      "description": "Create a new calculator with full SEO setup",
+      "file": "commands/new-calculator.md"
+    },
+    "new-blog": {
+      "description": "Create a new blog post with full SEO setup",
+      "file": "commands/new-blog.md"
+    },
+    "build": {
+      "description": "Build and verify the project",
+      "file": "commands/build.md"
+    },
+    "seo-check": {
+      "description": "Check SEO optimization for a page",
+      "file": "commands/seo-check.md"
+    },
+    "payroll": {
+      "description": "Malta payroll calculation rules and formulas",
+      "file": "commands/payroll.md"
+    },
+    "quick-ref": {
+      "description": "Quick reference for files, imports and patterns",
+      "file": "commands/quick-ref.md"
+    }
+  }
+}
