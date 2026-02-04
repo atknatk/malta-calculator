@@ -32,13 +32,21 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
     {
+        slug: "malta-public-holidays-2026-complete-guide",
+        title: "Malta Public Holidays 2026: Complete List of 14 Official Holidays",
+        description: "All 14 public holidays in Malta for 2026 with dates, meanings, long weekends & employment rights. Plan your year!",
+        date: "February 2026",
+        readTime: "8 min read",
+        category: "Holidays",
+        featured: true,
+    },
+    {
         slug: "malta-tax-rates-2026-complete-guide",
         title: "Malta Tax Rates 2026: Complete Guide to Income Tax Brackets",
         description: "Everything you need to know about Malta's 2026 income tax rates. Comprehensive breakdown of tax brackets for single, married, and parent taxpayers.",
         date: "January 2026",
         readTime: "8 min read",
         category: "Tax Guide",
-        featured: true,
     },
     {
         slug: "malta-ssc-contributions-2026-explained",

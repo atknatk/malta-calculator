@@ -51,6 +51,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${baseUrl}/blog/malta-family-reunification-guide-2026`, priority: 0.9, changeFrequency: "yearly" as const },
         // Family benefits blog pages
         { url: `${baseUrl}/blog/malta-childrens-allowance-guide-2026`, priority: 0.8, changeFrequency: "yearly" as const },
+        // Public Holidays blog pages
+        { url: `${baseUrl}/blog/malta-public-holidays-2026-complete-guide`, priority: 0.9, changeFrequency: "yearly" as const },
     ];
 
     // Company pages
