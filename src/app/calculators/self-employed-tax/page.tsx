@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/self-employed-tax` },
     openGraph: { ...ogMetadata, title: "Self-Employed Tax Calculator | Malta Calculator", url: `${SITE_URL}/calculators/self-employed-tax` },
     twitter: { ...twitterMetadata, title: "Self-Employed Tax Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function SelfEmployedTaxPage() {

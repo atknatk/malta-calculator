@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/rental-tax` },
     openGraph: { ...ogMetadata, title: "Rental Tax Calculator | Malta Calculator", url: `${SITE_URL}/calculators/rental-tax` },
     twitter: { ...twitterMetadata, title: "Rental Tax Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function RentalTaxPage() {

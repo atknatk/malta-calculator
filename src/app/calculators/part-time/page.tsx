@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/part-time` },
     openGraph: { ...ogMetadata, title: "Part-Time Salary Calculator | Malta Calculator", url: `${SITE_URL}/calculators/part-time` },
     twitter: { ...twitterMetadata, title: "Part-Time Salary Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function PartTimePage() {

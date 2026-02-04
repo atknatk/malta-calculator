@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/bonus-tax` },
     openGraph: { ...ogMetadata, title: "Bonus Tax Calculator | Malta Calculator", url: `${SITE_URL}/calculators/bonus-tax` },
     twitter: { ...twitterMetadata, title: "Bonus Tax Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function BonusTaxPage() {

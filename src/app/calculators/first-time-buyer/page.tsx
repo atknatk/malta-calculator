@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/first-time-buyer` },
     openGraph: { ...ogMetadata, title: "First-Time Buyer Scheme Calculator | Malta Calculator", url: `${SITE_URL}/calculators/first-time-buyer` },
     twitter: { ...twitterMetadata, title: "First-Time Buyer Scheme Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function FirstTimeBuyerPage() {

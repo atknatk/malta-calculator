@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/pension` },
     openGraph: { ...ogMetadata, title: "Pension Estimator | Malta Calculator", url: `${SITE_URL}/calculators/pension` },
     twitter: { ...twitterMetadata, title: "Pension Estimator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function PensionPage() {

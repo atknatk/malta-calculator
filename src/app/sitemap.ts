@@ -68,30 +68,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const activeCalculators = [
         "notice-period", "overtime", "stamp-duty", "retirement-age", "vacation",
         "mortgage", "savings-interest", "personal-loan", "family-reunification", "children-allowance",
+        // Transport calculators
+        "vehicle-registration-tax", "road-license", "drivers-license", "import-vehicle", "vrt",
     ].map((slug) => ({
         url: `${baseUrl}/calculators/${slug}`,
         priority: 0.8,
         changeFrequency: "monthly" as const,
     }));
 
-    // Coming soon calculators
-    const comingSoonCalculators = [
-        "bonus-tax", "part-time", "expatriate-tax",
-        "childcare", "maternity", "in-work-benefit",
-        "rental-tax", "first-time-buyer",
-        "pension", "self-employed-tax", "self-employed-ssc", "sick-leave",
-    ].map((slug) => ({
-        url: `${baseUrl}/calculators/${slug}`,
-        priority: 0.5,
-        changeFrequency: "monthly" as const,
-    }));
+    // Note: Coming soon calculators are excluded from sitemap (they have noindex)
 
     return [
         ...mainPages,
         ...blogPages,
         ...companyPages,
         ...activeCalculators,
-        ...comingSoonCalculators,
     ].map((page) => ({
         ...page,
         lastModified: new Date(),

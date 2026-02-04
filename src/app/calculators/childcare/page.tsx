@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/childcare` },
     openGraph: { ...ogMetadata, title: "Childcare Subsidy Calculator | Malta Calculator", url: `${SITE_URL}/calculators/childcare` },
     twitter: { ...twitterMetadata, title: "Childcare Subsidy Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function ChildcarePage() {

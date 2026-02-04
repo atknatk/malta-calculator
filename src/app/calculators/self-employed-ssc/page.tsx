@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/self-employed-ssc` },
     openGraph: { ...ogMetadata, title: "Self-Employed SSC Calculator | Malta Calculator", url: `${SITE_URL}/calculators/self-employed-ssc` },
     twitter: { ...twitterMetadata, title: "Self-Employed SSC Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function SelfEmployedSSCPage() {

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/in-work-benefit` },
     openGraph: { ...ogMetadata, title: "In-Work Benefit Calculator | Malta Calculator", url: `${SITE_URL}/calculators/in-work-benefit` },
     twitter: { ...twitterMetadata, title: "In-Work Benefit Calculator | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function InWorkBenefitPage() {

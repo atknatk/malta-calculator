@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     alternates: { canonical: `${SITE_URL}/calculators/expatriate-tax` },
     openGraph: { ...ogMetadata, title: "Expatriate Tax Calculator (HQP) | Malta Calculator", url: `${SITE_URL}/calculators/expatriate-tax` },
     twitter: { ...twitterMetadata, title: "Expatriate Tax Calculator (HQP) | Malta Calculator" },
+    robots: { index: false, follow: true },
 };
 
 export default function ExpatriateTaxPage() {
