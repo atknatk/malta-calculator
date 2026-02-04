@@ -17,8 +17,6 @@ export default function SalaryPlaygroundCards() {
   );
 }
 
-
-
 const playgrounds: CardProps[] = [
   // {
   //   href: "/play/checker",

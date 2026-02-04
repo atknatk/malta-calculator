@@ -28,8 +28,14 @@ function useAlarmSound() {
   const playAlarm = useCallback(() => {
     try {
       if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext ||
-          (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
+        audioContextRef.current = new (
+          window.AudioContext ||
+          (
+            window as typeof window & {
+              webkitAudioContext?: typeof AudioContext;
+            }
+          ).webkitAudioContext
+        )();
       }
 
       const ctx = audioContextRef.current;
@@ -165,8 +171,11 @@ export function CountdownDisplay({
                 minWidth: "200px",
               }}
             >
-              {String(timeDisplay.hours + timeDisplay.days * 24).padStart(2, "0")}:
-              {String(timeDisplay.minutes).padStart(2, "0")}:
+              {String(timeDisplay.hours + timeDisplay.days * 24).padStart(
+                2,
+                "0",
+              )}
+              :{String(timeDisplay.minutes).padStart(2, "0")}:
               {String(timeDisplay.seconds).padStart(2, "0")}
             </p>
             {showDays && timeDisplay.days > 0 && (

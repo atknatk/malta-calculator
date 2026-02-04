@@ -7,14 +7,17 @@ description: how to create a new calculator with full SEO
 This workflow guides you through creating a new calculator for the Malta Calculator website.
 
 ## Prerequisites
+
 - Understand the calculation logic and formulas
 - Research official Malta sources for accurate data
 
 ## Steps
 
 ### 1. Research Existing Structure
+
 // turbo
 View existing calculator structure to understand the pattern:
+
 ```
 /src/app/calculators/page.tsx                    # Calculator categories list
 /src/app/calculators/[calculator]/_components/   # Calculator component
@@ -24,7 +27,9 @@ View existing calculator structure to understand the pattern:
 ```
 
 ### 2. Create Utility Function
+
 Create calculation utility at `/src/utils/[name]-calculator.ts`:
+
 ```typescript
 // Input/Output interfaces
 // Main calculation function
@@ -33,7 +38,9 @@ Create calculation utility at `/src/utils/[name]-calculator.ts`:
 ```
 
 ### 3. Create Calculator Component
+
 Create component at `/src/app/calculators/[name]/_components/[name]-calculator.tsx`:
+
 ```typescript
 "use client";
 
@@ -47,7 +54,9 @@ Create component at `/src/app/calculators/[name]/_components/[name]-calculator.t
 ```
 
 ### 4. Create Calculator Page
+
 Create page at `/src/app/calculators/[name]/page.tsx`:
+
 ```typescript
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
@@ -103,13 +112,17 @@ export const dynamic = 'force-static';
 ```
 
 ### 5. Add to Calculators List
+
 Update `/src/app/calculators/page.tsx`:
+
 - Add to existing category or create new category
 - Set `available: true`
 - Import any needed icons from lucide-react
 
 ### 6. Add to Homepage (Optional)
+
 If featured, update `/src/components/marketing/menu-box.tsx`:
+
 ```typescript
 {
     href: "/calculators/[slug]",
@@ -124,19 +137,25 @@ If featured, update `/src/components/marketing/menu-box.tsx`:
 ```
 
 ### 7. Update Sitemap
+
 Update `/src/app/sitemap.ts`:
+
 - Add to `activeCalculators` array
 
 ### 8. Create Blog Post (Optional)
+
 Follow `/new-blog-post` workflow to create companion blog post.
 
 ### 9. Verify
+
 // turbo
+
 ```bash
 npm run build
 ```
 
 Then verify in browser:
+
 - Calculator page loads
 - Calculations are correct
 - Appears in /calculators list
@@ -146,6 +165,7 @@ Then verify in browser:
 ## Component Structure
 
 ### Calculator Component Template
+
 ```tsx
 "use client";
 
@@ -162,11 +182,11 @@ function ToggleGroup<T extends string>({...}) { ... }
 export function XxxCalculator() {
     const [inputValue, setInputValue] = useState(defaultValue);
     const [option, setOption] = useState<OptionType>("default");
-    
+
     const result = useMemo(() => {
         return calculateXxx({ inputValue, option });
     }, [inputValue, option]);
-    
+
     return (
         <div className="space-y-8">
             {/* Header */}
@@ -200,6 +220,7 @@ export function XxxCalculator() {
 ```
 
 ## SEO Checklist
+
 - [ ] Title tag < 60 characters
 - [ ] Meta description 150-160 characters
 - [ ] 5-10 relevant keywords

@@ -1,6 +1,5 @@
 import { ValidIcon } from "@/components/icons";
 
-
 export type Page = {
   title: string;
   description: string;

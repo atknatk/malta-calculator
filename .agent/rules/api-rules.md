@@ -40,48 +40,47 @@ import { NextRequest, NextResponse } from "next/server";
 
 // POST endpoint
 export async function POST(request: NextRequest) {
-    try {
-        // 1. Request body'yi parse et
-        const body = await request.json();
+  try {
+    // 1. Request body'yi parse et
+    const body = await request.json();
 
-        // 2. Validation
-        if (!body.requiredField) {
-            return NextResponse.json(
-                { error: "Missing required field: requiredField" },
-                { status: 400 }
-            );
-        }
-
-        // 3. İşlemi gerçekleştir
-        const result = await processData(body);
-
-        // 4. Başarılı response
-        return NextResponse.json(result);
-
-    } catch (error) {
-        // 5. Hata yönetimi
-        console.error("API Error:", error);
-        return NextResponse.json(
-            { error: "Internal server error" },
-            { status: 500 }
-        );
+    // 2. Validation
+    if (!body.requiredField) {
+      return NextResponse.json(
+        { error: "Missing required field: requiredField" },
+        { status: 400 },
+      );
     }
+
+    // 3. İşlemi gerçekleştir
+    const result = await processData(body);
+
+    // 4. Başarılı response
+    return NextResponse.json(result);
+  } catch (error) {
+    // 5. Hata yönetimi
+    console.error("API Error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
+  }
 }
 
 // GET endpoint (opsiyonel - dokümantasyon için)
 export async function GET() {
-    return NextResponse.json({
-        endpoint: "/api/[endpoint]",
-        method: "POST",
-        description: "Endpoint açıklaması",
-        body: {
-            requiredField: "string - açıklama",
-            optionalField: "number - (optional) açıklama",
-        },
-        response: {
-            result: "type - açıklama",
-        },
-    });
+  return NextResponse.json({
+    endpoint: "/api/[endpoint]",
+    method: "POST",
+    description: "Endpoint açıklaması",
+    body: {
+      requiredField: "string - açıklama",
+      optionalField: "number - (optional) açıklama",
+    },
+    response: {
+      result: "type - açıklama",
+    },
+  });
 }
 ```
 
@@ -95,18 +94,15 @@ Public API endpoint'leri için token doğrulama:
 
 ```typescript
 export async function POST(request: NextRequest) {
-    // Token kontrolü
-    const authHeader = request.headers.get("authorization");
-    const token = authHeader?.replace("Bearer ", "");
+  // Token kontrolü
+  const authHeader = request.headers.get("authorization");
+  const token = authHeader?.replace("Bearer ", "");
 
-    if (token !== process.env.SALARY_API_TOKEN) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
-    }
+  if (token !== process.env.SALARY_API_TOKEN) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-    // İşleme devam et...
+  // İşleme devam et...
 }
 ```
 
@@ -118,18 +114,15 @@ Kullanıcı kimlik doğrulaması gerektiren endpoint'ler için:
 import { auth } from "@clerk/nextjs/server";
 
 export async function POST(request: NextRequest) {
-    // Clerk auth kontrolü
-    const { userId } = await auth();
+  // Clerk auth kontrolü
+  const { userId } = await auth();
 
-    if (!userId) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
-    }
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-    // Kullanıcı bilgilerini al
-    // ...
+  // Kullanıcı bilgilerini al
+  // ...
 }
 ```
 
@@ -141,37 +134,37 @@ export async function POST(request: NextRequest) {
 
 ```typescript
 interface RequestBody {
-    grossSalary: number;
-    year: number;
-    taxType: string;
+  grossSalary: number;
+  year: number;
+  taxType: string;
 }
 
 function validateRequest(body: unknown): body is RequestBody {
-    if (!body || typeof body !== "object") return false;
+  if (!body || typeof body !== "object") return false;
 
-    const b = body as Record<string, unknown>;
+  const b = body as Record<string, unknown>;
 
-    return (
-        typeof b.grossSalary === "number" &&
-        b.grossSalary > 0 &&
-        typeof b.year === "number" &&
-        b.year >= 2020 &&
-        b.year <= 2030 &&
-        typeof b.taxType === "string"
-    );
+  return (
+    typeof b.grossSalary === "number" &&
+    b.grossSalary > 0 &&
+    typeof b.year === "number" &&
+    b.year >= 2020 &&
+    b.year <= 2030 &&
+    typeof b.taxType === "string"
+  );
 }
 
 export async function POST(request: NextRequest) {
-    const body = await request.json();
+  const body = await request.json();
 
-    if (!validateRequest(body)) {
-        return NextResponse.json(
-            { error: "Invalid request body" },
-            { status: 400 }
-        );
-    }
+  if (!validateRequest(body)) {
+    return NextResponse.json(
+      { error: "Invalid request body" },
+      { status: 400 },
+    );
+  }
 
-    // body artık RequestBody tipinde
+  // body artık RequestBody tipinde
 }
 ```
 
@@ -184,46 +177,49 @@ export async function POST(request: NextRequest) {
 ```typescript
 import { createClient } from "@/lib/supabase/server";
 
-async function checkRateLimit(companyId: string, plan: string): Promise<boolean> {
-    const supabase = await createClient();
+async function checkRateLimit(
+  companyId: string,
+  plan: string,
+): Promise<boolean> {
+  const supabase = await createClient();
 
-    // Bugünün kullanımını kontrol et
-    const today = new Date().toISOString().split("T")[0];
+  // Bugünün kullanımını kontrol et
+  const today = new Date().toISOString().split("T")[0];
 
-    const { data } = await supabase
-        .from("daily_usage")
-        .select("payslips_generated")
-        .eq("company_id", companyId)
-        .eq("date", today)
-        .single();
+  const { data } = await supabase
+    .from("daily_usage")
+    .select("payslips_generated")
+    .eq("company_id", companyId)
+    .eq("date", today)
+    .single();
 
-    const used = data?.payslips_generated || 0;
+  const used = data?.payslips_generated || 0;
 
-    // Plan limitleri
-    const limits = {
-        free: 2,
-        basic: 10,
-        pro: 100,
-    };
+  // Plan limitleri
+  const limits = {
+    free: 2,
+    basic: 10,
+    pro: 100,
+  };
 
-    const limit = limits[plan as keyof typeof limits] || 2;
+  const limit = limits[plan as keyof typeof limits] || 2;
 
-    return used < limit;
+  return used < limit;
 }
 
 export async function POST(request: NextRequest) {
-    // ...auth checks...
+  // ...auth checks...
 
-    const canProceed = await checkRateLimit(companyId, plan);
+  const canProceed = await checkRateLimit(companyId, plan);
 
-    if (!canProceed) {
-        return NextResponse.json(
-            { error: "Rate limit exceeded for your plan" },
-            { status: 429 }
-        );
-    }
+  if (!canProceed) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded for your plan" },
+      { status: 429 },
+    );
+  }
 
-    // İşleme devam et...
+  // İşleme devam et...
 }
 ```
 
@@ -234,6 +230,7 @@ export async function POST(request: NextRequest) {
 ### 7. Standart Response Yapıları
 
 #### Başarılı Response
+
 ```typescript
 // 200 OK
 return NextResponse.json({
@@ -251,42 +248,25 @@ return NextResponse.json({
 ```
 
 #### Hata Response'ları
+
 ```typescript
 // 400 Bad Request - Validation hatası
-return NextResponse.json(
-    { error: "Invalid salary value" },
-    { status: 400 }
-);
+return NextResponse.json({ error: "Invalid salary value" }, { status: 400 });
 
 // 401 Unauthorized - Auth hatası
-return NextResponse.json(
-    { error: "Unauthorized" },
-    { status: 401 }
-);
+return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
 // 403 Forbidden - Yetki hatası
-return NextResponse.json(
-    { error: "Forbidden" },
-    { status: 403 }
-);
+return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
 // 404 Not Found
-return NextResponse.json(
-    { error: "Resource not found" },
-    { status: 404 }
-);
+return NextResponse.json({ error: "Resource not found" }, { status: 404 });
 
 // 429 Too Many Requests - Rate limit
-return NextResponse.json(
-    { error: "Rate limit exceeded" },
-    { status: 429 }
-);
+return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
 
 // 500 Internal Server Error
-return NextResponse.json(
-    { error: "Internal server error" },
-    { status: 500 }
-);
+return NextResponse.json({ error: "Internal server error" }, { status: 500 });
 ```
 
 ---
@@ -299,40 +279,37 @@ return NextResponse.json(
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: NextRequest) {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    // SELECT
-    const { data: records, error: selectError } = await supabase
-        .from("table_name")
-        .select("*")
-        .eq("column", value);
+  // SELECT
+  const { data: records, error: selectError } = await supabase
+    .from("table_name")
+    .select("*")
+    .eq("column", value);
 
-    if (selectError) {
-        console.error("Database error:", selectError);
-        return NextResponse.json(
-            { error: "Database error" },
-            { status: 500 }
-        );
-    }
+  if (selectError) {
+    console.error("Database error:", selectError);
+    return NextResponse.json({ error: "Database error" }, { status: 500 });
+  }
 
-    // INSERT
-    const { data: newRecord, error: insertError } = await supabase
-        .from("table_name")
-        .insert({ column: value })
-        .select()
-        .single();
+  // INSERT
+  const { data: newRecord, error: insertError } = await supabase
+    .from("table_name")
+    .insert({ column: value })
+    .select()
+    .single();
 
-    // UPDATE
-    const { error: updateError } = await supabase
-        .from("table_name")
-        .update({ column: newValue })
-        .eq("id", recordId);
+  // UPDATE
+  const { error: updateError } = await supabase
+    .from("table_name")
+    .update({ column: newValue })
+    .eq("id", recordId);
 
-    // DELETE
-    const { error: deleteError } = await supabase
-        .from("table_name")
-        .delete()
-        .eq("id", recordId);
+  // DELETE
+  const { error: deleteError } = await supabase
+    .from("table_name")
+    .delete()
+    .eq("id", recordId);
 }
 ```
 
@@ -349,39 +326,36 @@ import { headers } from "next/headers";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request: NextRequest) {
-    const body = await request.text();
-    const headersList = headers();
-    const signature = headersList.get("stripe-signature")!;
+  const body = await request.text();
+  const headersList = headers();
+  const signature = headersList.get("stripe-signature")!;
 
-    let event: Stripe.Event;
+  let event: Stripe.Event;
 
-    try {
-        event = stripe.webhooks.constructEvent(
-            body,
-            signature,
-            process.env.STRIPE_WEBHOOK_SECRET!
-        );
-    } catch (err) {
-        console.error("Webhook signature verification failed");
-        return NextResponse.json(
-            { error: "Invalid signature" },
-            { status: 400 }
-        );
-    }
+  try {
+    event = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!,
+    );
+  } catch (err) {
+    console.error("Webhook signature verification failed");
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+  }
 
-    // Event handling
-    switch (event.type) {
-        case "checkout.session.completed":
-            // Handle successful checkout
-            break;
-        case "customer.subscription.updated":
-            // Handle subscription update
-            break;
-        default:
-            console.log(`Unhandled event type: ${event.type}`);
-    }
+  // Event handling
+  switch (event.type) {
+    case "checkout.session.completed":
+      // Handle successful checkout
+      break;
+    case "customer.subscription.updated":
+      // Handle subscription update
+      break;
+    default:
+      console.log(`Unhandled event type: ${event.type}`);
+  }
 
-    return NextResponse.json({ received: true });
+  return NextResponse.json({ received: true });
 }
 ```
 
@@ -393,23 +367,23 @@ export async function POST(request: NextRequest) {
 
 ```typescript
 export async function POST(request: NextRequest) {
-    try {
-        // İşlemler...
-        return NextResponse.json(result);
-    } catch (error) {
-        // Hata loglama
-        console.error("API Error:", {
-            endpoint: "/api/endpoint",
-            error: error instanceof Error ? error.message : "Unknown error",
-            stack: error instanceof Error ? error.stack : undefined,
-        });
+  try {
+    // İşlemler...
+    return NextResponse.json(result);
+  } catch (error) {
+    // Hata loglama
+    console.error("API Error:", {
+      endpoint: "/api/endpoint",
+      error: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+    });
 
-        // Kullanıcıya genel hata mesajı
-        return NextResponse.json(
-            { error: "An unexpected error occurred" },
-            { status: 500 }
-        );
-    }
+    // Kullanıcıya genel hata mesajı
+    return NextResponse.json(
+      { error: "An unexpected error occurred" },
+      { status: 500 },
+    );
+  }
 }
 ```
 
@@ -421,24 +395,24 @@ export async function POST(request: NextRequest) {
 
 ```typescript
 export async function OPTIONS() {
-    return new NextResponse(null, {
-        status: 204,
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        },
-    });
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
 }
 
 export async function POST(request: NextRequest) {
-    // ... işlem ...
+  // ... işlem ...
 
-    return NextResponse.json(result, {
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-        },
-    });
+  return NextResponse.json(result, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
 }
 ```
 
@@ -448,14 +422,14 @@ export async function POST(request: NextRequest) {
 
 ### 12. Mevcut Endpoint'ler
 
-| Endpoint | Method | Auth | Açıklama |
-|----------|--------|------|----------|
-| `/api/salary/calculate` | POST | Token | Maaş hesaplama |
-| `/api/payslip/generate` | POST | Clerk | Bordro oluşturma |
-| `/api/employee/verify-pin` | POST | None | Çalışan PIN doğrulama |
-| `/api/stripe/checkout` | POST | Clerk | Stripe checkout session |
-| `/api/stripe/webhook` | POST | Stripe Signature | Stripe webhook |
-| `/api/og` | GET | None | OG image oluşturma |
+| Endpoint                   | Method | Auth             | Açıklama                |
+| -------------------------- | ------ | ---------------- | ----------------------- |
+| `/api/salary/calculate`    | POST   | Token            | Maaş hesaplama          |
+| `/api/payslip/generate`    | POST   | Clerk            | Bordro oluşturma        |
+| `/api/employee/verify-pin` | POST   | None             | Çalışan PIN doğrulama   |
+| `/api/stripe/checkout`     | POST   | Clerk            | Stripe checkout session |
+| `/api/stripe/webhook`      | POST   | Stripe Signature | Stripe webhook          |
+| `/api/og`                  | GET    | None             | OG image oluşturma      |
 
 ---
 

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,18 +11,18 @@ import {
   getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
-  RowData
-} from "@tanstack/react-table"
-import { ChevronDown } from "lucide-react"
+  RowData,
+} from "@tanstack/react-table";
+import { ChevronDown } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -30,25 +30,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Month, MonthlySalaryOutput } from "@/types/salary-calculator-type"
-import { formatMoney } from "@/utils/money-format"
-declare module '@tanstack/react-table' {
+} from "@/components/ui/table";
+import { Month, MonthlySalaryOutput } from "@/types/salary-calculator-type";
+import { formatMoney } from "@/utils/money-format";
+declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
-    updateData: (rowIndex: number, columnId: string, value: unknown) => void
-    onBonusChange?: (month: Month, value: number) => void
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+    onBonusChange?: (month: Month, value: number) => void;
   }
 }
 
 // Give our default column cell renderer editing superpowers!
 const salaryDefaultColumn: Partial<ColumnDef<MonthlySalaryOutput>> = {
-
   accessorKey: "grossWage",
   header: "Gross Wage",
-  cell: ({ getValue, row: { index }, column: { id }, table }) => {
-
-  },
-}
+  cell: ({ getValue, row: { index }, column: { id }, table }) => {},
+};
 
 const EditableCell = ({
   getValue,
@@ -62,21 +59,21 @@ const EditableCell = ({
   table: any;
 }) => {
   const initialValue = getValue();
-  const [value, setValue] = React.useState(initialValue)
+  const [value, setValue] = React.useState(initialValue);
   const onBlur = () => {
     // String değeri number'a çevir ve NaN kontrolü yap
     const numericValue = parseFloat(value as string);
     const finalValue = isNaN(numericValue) ? 0 : numericValue;
-    table.options.meta?.updateData(index, id, finalValue)
-  }
+    table.options.meta?.updateData(index, id, finalValue);
+  };
   const handleKeyPress = (event: any) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onBlur();
     }
   };
   React.useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
+    setValue(initialValue);
+  }, [initialValue]);
   return (
     <Input
       value={value as string}
@@ -84,13 +81,15 @@ const EditableCell = ({
       type="number"
       step={50}
       aria-label={`Gross Wage input`}
-      onFocus={e => { e.target.select() }}
-      onChange={e => setValue(e.target.value)}
+      onFocus={(e) => {
+        e.target.select();
+      }}
+      onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
       onKeyUp={handleKeyPress}
-      onWheel={e => e.currentTarget.blur()}
+      onWheel={(e) => e.currentTarget.blur()}
     />
-  )
+  );
 };
 
 // Special Editable Cell for Bonus that triggers onBonusChange callback
@@ -104,24 +103,24 @@ const BonusEditableCell = ({
   table: any;
 }) => {
   const initialValue = getValue();
-  const [value, setValue] = React.useState(initialValue)
+  const [value, setValue] = React.useState(initialValue);
 
   const onBlur = () => {
     const numericValue = parseFloat(value as string);
     const finalValue = isNaN(numericValue) ? 0 : numericValue;
     // Trigger the callback to update URL state
     table.options.meta?.onBonusChange?.(row.original.month, finalValue);
-  }
+  };
 
   const handleKeyPress = (event: any) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onBlur();
     }
   };
 
   React.useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
+    setValue(initialValue);
+  }, [initialValue]);
 
   return (
     <Input
@@ -130,16 +129,24 @@ const BonusEditableCell = ({
       type="number"
       step={100}
       aria-label={`Bonus input for ${row.original.month}`}
-      onFocus={e => { e.target.select() }}
-      onChange={e => setValue(e.target.value)}
+      onFocus={(e) => {
+        e.target.select();
+      }}
+      onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
       onKeyUp={handleKeyPress}
-      onWheel={e => e.currentTarget.blur()}
+      onWheel={(e) => e.currentTarget.blur()}
     />
-  )
+  );
 };
 
-const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryOutput, value: string) => void): ColumnDef<MonthlySalaryOutput>[] => [
+const getColumns = (
+  handleInputChange: (
+    index: number,
+    key: keyof MonthlySalaryOutput,
+    value: string,
+  ) => void,
+): ColumnDef<MonthlySalaryOutput>[] => [
   {
     accessorKey: "month",
     header: "Month",
@@ -195,7 +202,9 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
   {
     accessorKey: "cumulativeIncomeBase",
     header: "Cumulative Income Base",
-    cell: ({ row }) => <div>{formatMoney(row.getValue("cumulativeIncomeBase"))}</div>,
+    cell: ({ row }) => (
+      <div>{formatMoney(row.getValue("cumulativeIncomeBase"))}</div>
+    ),
   },
   {
     accessorKey: "incomeTax",
@@ -205,7 +214,9 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
   {
     accessorKey: "governmentBonus",
     header: "Government Bonus",
-    cell: ({ row }) => <div>{formatMoney(row.getValue("governmentBonus"))}</div>,
+    cell: ({ row }) => (
+      <div>{formatMoney(row.getValue("governmentBonus"))}</div>
+    ),
   },
   {
     accessorKey: "net",
@@ -222,19 +233,21 @@ const getColumns = (handleInputChange: (index: number, key: keyof MonthlySalaryO
     header: "Discretionary",
     cell: ({ row }) => <div>{formatMoney(row.getValue("discr"))}</div>,
   },
-]
+];
 
-export function SalaryTable({ data, setData, onBonusChange }:
-  {
-    data: MonthlySalaryOutput[],
-    setData: React.Dispatch<React.SetStateAction<MonthlySalaryOutput[]>>,
-    onBonusChange?: (month: Month, value: number) => void
-  }
-) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+export function SalaryTable({
+  data,
+  setData,
+  onBonusChange,
+}: {
+  data: MonthlySalaryOutput[];
+  setData: React.Dispatch<React.SetStateAction<MonthlySalaryOutput[]>>;
+  onBonusChange?: (month: Month, value: number) => void;
+}) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+    [],
+  );
   // Default column visibility settings
   const defaultColumnVisibility: VisibilityState = {
     // Hide less important columns by default
@@ -249,47 +262,54 @@ export function SalaryTable({ data, setData, onBonusChange }:
   };
 
   // localStorage key for column visibility
-  const STORAGE_KEY = 'salary-table-column-visibility';
+  const STORAGE_KEY = "salary-table-column-visibility";
 
   // Initialize column visibility from localStorage or use defaults
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') return defaultColumnVisibility;
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>(() => {
+      // Only run on client side
+      if (typeof window === "undefined") return defaultColumnVisibility;
 
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved) as VisibilityState;
-        // Merge with defaults to handle new columns
-        return { ...defaultColumnVisibility, ...parsed };
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved) as VisibilityState;
+          // Merge with defaults to handle new columns
+          return { ...defaultColumnVisibility, ...parsed };
+        }
+      } catch (e) {
+        console.warn("Failed to load column visibility from localStorage:", e);
       }
-    } catch (e) {
-      console.warn('Failed to load column visibility from localStorage:', e);
-    }
-    return defaultColumnVisibility;
-  });
+      return defaultColumnVisibility;
+    });
 
   // Save column visibility to localStorage when it changes
   React.useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(columnVisibility));
     } catch (e) {
-      console.warn('Failed to save column visibility to localStorage:', e);
+      console.warn("Failed to save column visibility to localStorage:", e);
     }
   }, [columnVisibility]);
-  const [rowSelection, setRowSelection] = React.useState({})
-  const handleInputChange = React.useCallback((index: number, key: keyof MonthlySalaryOutput, value: string) => {
-    setData((prevData) => {
-      const updatedData = [...prevData] as any;
-      updatedData[index][key] = value;
-      return updatedData;
-    });
-  }, [setData]);
+  const [rowSelection, setRowSelection] = React.useState({});
+  const handleInputChange = React.useCallback(
+    (index: number, key: keyof MonthlySalaryOutput, value: string) => {
+      setData((prevData) => {
+        const updatedData = [...prevData] as any;
+        updatedData[index][key] = value;
+        return updatedData;
+      });
+    },
+    [setData],
+  );
 
-  const columns = React.useMemo(() => getColumns(handleInputChange), [handleInputChange]);
-  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
+  const columns = React.useMemo(
+    () => getColumns(handleInputChange),
+    [handleInputChange],
+  );
+  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
   const table = useReactTable({
     data,
@@ -304,18 +324,18 @@ export function SalaryTable({ data, setData, onBonusChange }:
     autoResetPageIndex,
     meta: {
       updateData: (rowIndex, columnId, value) => {
-        skipAutoResetPageIndex()
-        setData(old =>
+        skipAutoResetPageIndex();
+        setData((old) =>
           old.map((row, index) => {
             if (index === rowIndex) {
               return {
                 ...old[rowIndex]!,
                 [columnId]: value,
-              }
+              };
             }
-            return row
-          })
-        )
+            return row;
+          }),
+        );
       },
       onBonusChange,
     },
@@ -325,14 +345,12 @@ export function SalaryTable({ data, setData, onBonusChange }:
       columnVisibility,
       rowSelection,
       pagination: { pageIndex: 0, pageSize: data.length },
-    }
-  })
-
+    },
+  });
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -355,14 +373,17 @@ export function SalaryTable({ data, setData, onBonusChange }:
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
         <Table>
-          <caption className="sr-only">Monthly salary breakdown showing gross wage, taxes, social security contributions, and net pay for each month</caption>
+          <caption className="sr-only">
+            Monthly salary breakdown showing gross wage, taxes, social security
+            contributions, and net pay for each month
+          </caption>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -370,16 +391,16 @@ export function SalaryTable({ data, setData, onBonusChange }:
                   return (
                     <TableHead
                       key={header.id}
-                      className={`${index === 0 ? 'sticky left-0 bg-background z-10' : ''} ${header.isPlaceholder ? '' : 'top-0 z-10'}`}
+                      className={`${index === 0 ? "sticky left-0 bg-background z-10" : ""} ${header.isPlaceholder ? "" : "top-0 z-10"}`}
                     >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -393,12 +414,12 @@ export function SalaryTable({ data, setData, onBonusChange }:
                 >
                   {row.getVisibleCells().map((cell, index) => (
                     <TableCell
-                      className={`${index === 0 ? 'sticky left-0 bg-background p-1' : 'p-1'}`}
+                      className={`${index === 0 ? "sticky left-0 bg-background p-1" : "p-1"}`}
                       key={cell.id}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -418,22 +439,21 @@ export function SalaryTable({ data, setData, onBonusChange }:
         </Table>
       </div>
     </div>
-  )
+  );
 }
 
-
 function useSkipper() {
-  const shouldSkipRef = React.useRef(true)
-  const shouldSkip = shouldSkipRef.current
+  const shouldSkipRef = React.useRef(true);
+  const shouldSkip = shouldSkipRef.current;
 
   // Wrap a function with this to skip a pagination reset temporarily
   const skip = React.useCallback(() => {
-    shouldSkipRef.current = false
-  }, [])
+    shouldSkipRef.current = false;
+  }, []);
 
   React.useEffect(() => {
-    shouldSkipRef.current = true
-  })
+    shouldSkipRef.current = true;
+  });
 
-  return [shouldSkip, skip] as const
+  return [shouldSkip, skip] as const;
 }

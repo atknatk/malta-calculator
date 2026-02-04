@@ -9,7 +9,7 @@ type PageProps = {
 /**
  * /salary page now redirects to homepage (/) since the salary calculator
  * is the main content of the homepage.
- * 
+ *
  * URL parameters are preserved during redirect.
  */
 export default async function SalaryCalculatorPage({

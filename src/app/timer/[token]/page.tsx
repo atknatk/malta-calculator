@@ -2,10 +2,7 @@ import { notFound } from "next/navigation";
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import type { Metadata } from "next";
-import {
-  SITE_URL,
-  SITE_NAME,
-} from "@/app/shared-metadata";
+import { SITE_URL, SITE_NAME } from "@/app/shared-metadata";
 import { CountdownDisplay } from "../_components/countdown-display";
 import {
   decodeTimer,
@@ -54,7 +51,9 @@ export async function generateMetadata({
     ? `This ${durationStr} countdown timer has finished. Create your own shareable countdown timer for free.`
     : `Watch this ${durationStr} countdown timer. ${formatDurationHuman(remaining)} remaining. Create and share your own timers for free.`;
 
-  const titleParam = customTitle ? `&title=${encodeURIComponent(customTitle)}` : "";
+  const titleParam = customTitle
+    ? `&title=${encodeURIComponent(customTitle)}`
+    : "";
   const ogImageUrl = `${SITE_URL}/api/og/timer?token=${token}${titleParam}`;
 
   return {
@@ -104,7 +103,8 @@ function TimerJsonLd({
 }) {
   const endTime = new Date((createdAt + duration) * 1000).toISOString();
   const startTime = new Date(createdAt * 1000).toISOString();
-  const timerName = title || `Countdown Timer - ${formatDurationHuman(duration)}`;
+  const timerName =
+    title || `Countdown Timer - ${formatDurationHuman(duration)}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -163,11 +163,7 @@ export default async function TimerDisplayPage({
       />
       <main role="main" aria-label="Countdown Timer">
         <Shell className="max-w-2xl py-8">
-          <CountdownDisplay
-            timerData={timerData}
-            title={title}
-            url={fullUrl}
-          />
+          <CountdownDisplay timerData={timerData} title={title} url={fullUrl} />
         </Shell>
       </main>
     </MarketingLayout>

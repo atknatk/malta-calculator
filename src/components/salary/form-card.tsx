@@ -24,8 +24,9 @@ export function SalaryFormCard({
       className={cn(
         "group flex flex-col gap-4 transition-all duration-300",
         "hover:shadow-xl hover:shadow-primary/5",
-        variant === "primary" && "border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5",
-        className
+        variant === "primary" &&
+          "border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5",
+        className,
       )}
       {...props}
     >
@@ -38,7 +39,7 @@ export function SalaryFormCard({
               "group-hover:scale-105",
               variant === "primary"
                 ? "bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg shadow-primary/20"
-                : "bg-gradient-to-br from-secondary to-secondary/80 text-white shadow-lg shadow-secondary/20"
+                : "bg-gradient-to-br from-secondary to-secondary/80 text-white shadow-lg shadow-secondary/20",
             )}
           >
             <Icon className="h-5 w-5" />
@@ -47,7 +48,7 @@ export function SalaryFormCard({
         <h2
           className={cn(
             "font-cal text-xl font-bold",
-            variant === "primary" ? "text-gradient" : "text-foreground"
+            variant === "primary" ? "text-gradient" : "text-foreground",
           )}
         >
           {title}

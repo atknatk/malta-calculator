@@ -3,11 +3,11 @@
  * SSR için createSearchParamsCache, client için useQueryStates kullanılır
  */
 import {
-    parseAsInteger,
-    parseAsString,
-    parseAsStringLiteral,
-    createSearchParamsCache,
-    createSerializer,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringLiteral,
+  createSearchParamsCache,
+  createSerializer,
 } from "nuqs/server";
 
 // Tax Rate Types
@@ -20,8 +20,18 @@ type SSCCategory = (typeof sscCategories)[number];
 
 // Month values for start/end month selection
 const monthValues = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ] as const;
 type MonthValue = (typeof monthValues)[number];
 
@@ -36,25 +46,25 @@ const currentYear = new Date().getFullYear().toString();
  * Search params parsers - server ve client componenlerde ortak kullanılır
  */
 export const salarySearchParams = {
-    // Primary params
-    salary: parseAsInteger.withDefault(25000),
-    year: parseAsString.withDefault(currentYear),
-    taxType: parseAsStringLiteral(taxRateTypes).withDefault("single"),
-    childCount: parseAsInteger.withDefault(0),  // Çocuk sayısı (0, 1, 2) - 2026+ için etkili
-    sscCategory: parseAsStringLiteral(sscCategories).withDefault("C"),
+  // Primary params
+  salary: parseAsInteger.withDefault(25000),
+  year: parseAsString.withDefault(currentYear),
+  taxType: parseAsStringLiteral(taxRateTypes).withDefault("single"),
+  childCount: parseAsInteger.withDefault(0), // Çocuk sayısı (0, 1, 2) - 2026+ için etkili
+  sscCategory: parseAsStringLiteral(sscCategories).withDefault("C"),
 
-    // Period params
-    startOfMonth: parseAsStringLiteral(monthValues).withDefault("January"),
-    endOfMonth: parseAsStringLiteral(monthValues).withDefault("December"),
+  // Period params
+  startOfMonth: parseAsStringLiteral(monthValues).withDefault("January"),
+  endOfMonth: parseAsStringLiteral(monthValues).withDefault("December"),
 
-    // Advanced params
-    birthYear: parseAsInteger.withDefault(1990),
-    yearlyNonTaxBenefit: parseAsInteger.withDefault(0),
-    yearlyTaxableBenefit: parseAsInteger.withDefault(0),
-    monthlyBonus: parseAsInteger.withDefault(0),
-    allowanceBonus: parseAsInteger.withDefault(0),
-    // Per-month bonuses (JSON string: {"January": 500, "December": 1000})
-    monthlyBonuses: parseAsString.withDefault(""),
+  // Advanced params
+  birthYear: parseAsInteger.withDefault(1990),
+  yearlyNonTaxBenefit: parseAsInteger.withDefault(0),
+  yearlyTaxableBenefit: parseAsInteger.withDefault(0),
+  monthlyBonus: parseAsInteger.withDefault(0),
+  allowanceBonus: parseAsInteger.withDefault(0),
+  // Per-month bonuses (JSON string: {"January": 500, "December": 1000})
+  monthlyBonuses: parseAsString.withDefault(""),
 };
 
 /**
@@ -71,17 +81,17 @@ export const serializeSalaryParams = createSerializer(salarySearchParams);
  * Type for parsed search params
  */
 export type SalarySearchParams = {
-    salary: number;
-    year: string;
-    taxType: TaxRateType;
-    childCount: number;
-    sscCategory: SSCCategory;
-    startOfMonth: MonthValue;
-    endOfMonth: MonthValue;
-    birthYear: number;
-    yearlyNonTaxBenefit: number;
-    yearlyTaxableBenefit: number;
-    monthlyBonus: number;
-    allowanceBonus: number;
-    monthlyBonuses: string;  // JSON string for per-month bonuses
+  salary: number;
+  year: string;
+  taxType: TaxRateType;
+  childCount: number;
+  sscCategory: SSCCategory;
+  startOfMonth: MonthValue;
+  endOfMonth: MonthValue;
+  birthYear: number;
+  yearlyNonTaxBenefit: number;
+  yearlyTaxableBenefit: number;
+  monthlyBonus: number;
+  allowanceBonus: number;
+  monthlyBonuses: string; // JSON string for per-month bonuses
 };

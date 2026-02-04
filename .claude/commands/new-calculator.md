@@ -3,6 +3,7 @@
 Yeni bir hesaplayıcı oluşturmak için bu workflow'u takip et.
 
 ## Kullanıcıdan alınacak bilgiler:
+
 - Hesaplayıcı adı (İngilizce)
 - Hesaplama mantığı ve formüller
 - Hangi kategoriye ait (Financial, Property, Employment, Government Benefits, Vehicle)
@@ -10,6 +11,7 @@ Yeni bir hesaplayıcı oluşturmak için bu workflow'u takip et.
 ## Adımlar
 
 ### 1. Utility Fonksiyonu Oluştur
+
 Dosya: `src/utils/{{name}}-calculator.ts`
 
 ```typescript
@@ -49,6 +51,7 @@ export function formatCurrency(value: number): string {
 ```
 
 ### 2. Calculator Component Oluştur
+
 Dosya: `src/app/calculators/{{slug}}/_components/{{slug}}-calculator.tsx`
 
 ```tsx
@@ -114,6 +117,7 @@ export function {{Name}}Calculator() {
 ```
 
 ### 3. Calculator Page Oluştur
+
 Dosya: `src/app/calculators/{{slug}}/page.tsx`
 
 ```tsx
@@ -180,9 +184,11 @@ export const dynamic = 'force-static';
 ```
 
 ### 4. Calculators Listesine Ekle
+
 Dosya: `src/app/calculators/page.tsx`
 
 İlgili kategoriye ekle:
+
 ```typescript
 {
     name: "{{Title}}",
@@ -194,19 +200,23 @@ Dosya: `src/app/calculators/page.tsx`
 ```
 
 ### 5. Sitemap'e Ekle
+
 Dosya: `src/app/sitemap.ts`
 
 `activeCalculators` array'ine ekle:
+
 ```typescript
 "{{slug}}",
 ```
 
 ### 6. Build Kontrolü
+
 ```bash
 npm run build
 ```
 
 ## SEO Checklist
+
 - [ ] Title < 60 karakter
 - [ ] Description 150-160 karakter
 - [ ] 5-10 keyword

@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-
 import type { Social } from "@/config/socials";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";

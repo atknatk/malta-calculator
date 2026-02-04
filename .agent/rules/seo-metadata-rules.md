@@ -12,11 +12,11 @@ Her sayfa `src/app/shared-metadata.ts` dosyasındaki sabitleri kullanmalıdır:
 
 ```typescript
 import {
-    defaultMetadata,
-    ogMetadata,
-    twitterMetadata,
-    SITE_URL,
-    SITE_NAME,
+  defaultMetadata,
+  ogMetadata,
+  twitterMetadata,
+  SITE_URL,
+  SITE_NAME,
 } from "@/app/shared-metadata";
 ```
 
@@ -52,26 +52,26 @@ export const metadata: Metadata = {
 
 Tüm JSON-LD bileşenleri `src/components/json-ld.tsx` dosyasındadır:
 
-| Bileşen | Kullanım Alanı |
-|---------|----------------|
-| `ArticleJsonLd` | Blog yazıları |
-| `BreadcrumbJsonLd` | Tüm sayfalar (navigasyon) |
-| `CalculatorJsonLd` | Hesaplayıcı sayfaları |
-| `CustomFAQJsonLd` | FAQ içeren sayfalar |
+| Bileşen                | Kullanım Alanı                        |
+| ---------------------- | ------------------------------------- |
+| `ArticleJsonLd`        | Blog yazıları                         |
+| `BreadcrumbJsonLd`     | Tüm sayfalar (navigasyon)             |
+| `CalculatorJsonLd`     | Hesaplayıcı sayfaları                 |
+| `CustomFAQJsonLd`      | FAQ içeren sayfalar                   |
 | `CollectionPageJsonLd` | Liste sayfaları (/calculators, /blog) |
-| `WebApplicationJsonLd` | Ana sayfa |
-| `OrganizationJsonLd` | Hakkımızda sayfası |
-| `WebsiteJsonLd` | Ana layout |
+| `WebApplicationJsonLd` | Ana sayfa                             |
+| `OrganizationJsonLd`   | Hakkımızda sayfası                    |
+| `WebsiteJsonLd`        | Ana layout                            |
 
 ### 4. BreadcrumbJsonLd (Her Sayfada Zorunlu)
 
 ```tsx
 <BreadcrumbJsonLd
-    items={[
-        { name: "Home", url: SITE_URL },
-        { name: "Calculators", url: `${SITE_URL}/calculators` },
-        { name: "[Calculator Name]", url: `${SITE_URL}/calculators/[slug]` },
-    ]}
+  items={[
+    { name: "Home", url: SITE_URL },
+    { name: "Calculators", url: `${SITE_URL}/calculators` },
+    { name: "[Calculator Name]", url: `${SITE_URL}/calculators/[slug]` },
+  ]}
 />
 ```
 
@@ -79,15 +79,11 @@ Tüm JSON-LD bileşenleri `src/components/json-ld.tsx` dosyasındadır:
 
 ```tsx
 <CalculatorJsonLd
-    name="[Calculator Name] Malta"
-    description="[Açıklama]"
-    slug="[slug]"
-    category="[Kategori] Calculator"
-    features={[
-        "Feature 1",
-        "Feature 2",
-        "Feature 3",
-    ]}
+  name="[Calculator Name] Malta"
+  description="[Açıklama]"
+  slug="[slug]"
+  category="[Kategori] Calculator"
+  features={["Feature 1", "Feature 2", "Feature 3"]}
 />
 ```
 
@@ -95,11 +91,11 @@ Tüm JSON-LD bileşenleri `src/components/json-ld.tsx` dosyasındadır:
 
 ```tsx
 <ArticleJsonLd
-    title="[Başlık]"
-    description="[Açıklama]"
-    slug="[slug]"
-    datePublished="YYYY-MM-DD"
-    dateModified="YYYY-MM-DD" // opsiyonel
+  title="[Başlık]"
+  description="[Açıklama]"
+  slug="[slug]"
+  datePublished="YYYY-MM-DD"
+  dateModified="YYYY-MM-DD" // opsiyonel
 />
 ```
 
@@ -107,16 +103,16 @@ Tüm JSON-LD bileşenleri `src/components/json-ld.tsx` dosyasındadır:
 
 ```tsx
 <CustomFAQJsonLd
-    questions={[
-        {
-            question: "Soru 1?",
-            answer: "Cevap 1"
-        },
-        {
-            question: "Soru 2?",
-            answer: "Cevap 2"
-        },
-    ]}
+  questions={[
+    {
+      question: "Soru 1?",
+      answer: "Cevap 1",
+    },
+    {
+      question: "Soru 2?",
+      answer: "Cevap 2",
+    },
+  ]}
 />
 ```
 
@@ -171,15 +167,15 @@ Yeni sayfa eklendiğinde `src/app/sitemap.ts` dosyası güncellenmelidir:
 
 ### 12. Priority Değerleri
 
-| Sayfa Tipi | Priority |
-|------------|----------|
-| Ana sayfa | 1.0 |
-| Salary calculator | 0.9 |
-| Calculators index | 0.9 |
-| Aktif hesaplayıcılar | 0.8 |
-| Blog yazıları | 0.8-0.9 |
-| Company sayfaları | 0.3-0.6 |
-| Coming soon | 0.5 |
+| Sayfa Tipi           | Priority |
+| -------------------- | -------- |
+| Ana sayfa            | 1.0      |
+| Salary calculator    | 0.9      |
+| Calculators index    | 0.9      |
+| Aktif hesaplayıcılar | 0.8      |
+| Blog yazıları        | 0.8-0.9  |
+| Company sayfaları    | 0.3-0.6  |
+| Coming soon          | 0.5      |
 
 ---
 
@@ -219,8 +215,8 @@ malta-[konu]-guide-2026        # Blog slug örneği
 Her sayfa dosyasının sonuna ekle:
 
 ```typescript
-export const revalidate = false;          // Tamamen statik (build-time)
-export const dynamic = 'force-static';    // Bu segmenti statik olmaya zorla
+export const revalidate = false; // Tamamen statik (build-time)
+export const dynamic = "force-static"; // Bu segmenti statik olmaya zorla
 ```
 
 ---
@@ -230,17 +226,20 @@ export const dynamic = 'force-static';    // Bu segmenti statik olmaya zorla
 ### 16. Anahtar Kelime Kategorileri
 
 **Ana Anahtar Kelimeler:**
+
 - Malta salary calculator
 - Malta tax calculator
 - Malta net salary
 - Malta SSC calculator
 
 **Hesaplayıcı Anahtar Kelimeleri:**
+
 - Malta [calculator-name] calculator
 - Malta [topic] 2026
 - [topic] Malta
 
 **Blog Anahtar Kelimeleri:**
+
 - Malta [topic] guide
 - Malta [topic] 2026
 - How to [action] in Malta
@@ -248,6 +247,7 @@ export const dynamic = 'force-static';    // Bu segmenti statik olmaya zorla
 ### 17. Long-tail Anahtar Kelimeler
 
 Her sayfa için 3-5 long-tail anahtar kelime hedefle:
+
 ```
 "Malta gross to net salary calculator"
 "How to calculate tax in Malta 2026"

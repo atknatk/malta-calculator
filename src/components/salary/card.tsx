@@ -33,7 +33,7 @@ export function Card({
           "group relative overflow-hidden rounded-2xl transition-all duration-500",
           "premium-card hover:scale-[1.02]",
           variant === "primary" && "border-2 border-primary/20",
-          className
+          className,
         )}
         {...props}
       >
@@ -43,7 +43,7 @@ export function Card({
             "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500",
             variant === "primary"
               ? "from-primary/20 via-primary/10 to-transparent"
-              : "from-secondary/20 via-secondary/10 to-transparent"
+              : "from-secondary/20 via-secondary/10 to-transparent",
           )}
         />
 
@@ -72,7 +72,7 @@ export function Card({
                     "group-hover:scale-110 group-hover:rotate-[-8deg]",
                     variant === "primary"
                       ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/20"
-                      : "bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground shadow-lg shadow-secondary/20"
+                      : "bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground shadow-lg shadow-secondary/20",
                   )}
                 >
                   <Icon className="h-6 w-6" />

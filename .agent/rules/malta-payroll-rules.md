@@ -7,14 +7,14 @@ Bu kurallar `src/utils/salary-calculator.ts` dosyasında uygulanmalıdır.
 
 ## Giriş Parametreleri (Input Parameters)
 
-| Parametre | Açıklama | Örnek Değer |
-|-----------|----------|-------------|
-| `grossSalary` | Yıllık brüt maaş (€) | 36,000 |
-| `yearlyNonTaxBenefit` | Yıllık vergi dışı yan hak (€) | 1,170 (aylık €97.50) |
+| Parametre              | Açıklama                        | Örnek Değer          |
+| ---------------------- | ------------------------------- | -------------------- |
+| `grossSalary`          | Yıllık brüt maaş (€)            | 36,000               |
+| `yearlyNonTaxBenefit`  | Yıllık vergi dışı yan hak (€)   | 1,170 (aylık €97.50) |
 | `yearlyTaxableBenefit` | Yıllık vergiye tabi yan hak (€) | 1,170 (aylık €97.50) |
-| `birthDate` | Doğum tarihi | 1990-01-15 |
-| `sscCategory` | SSC Kategorisi | "A", "B", "C", "D" |
-| `weeksInMonth` | Ay içindeki hafta sayısı | 4 veya 5 |
+| `birthDate`            | Doğum tarihi                    | 1990-01-15           |
+| `sscCategory`          | SSC Kategorisi                  | "A", "B", "C", "D"   |
+| `weeksInMonth`         | Ay içindeki hafta sayısı        | 4 veya 5             |
 
 ---
 
@@ -56,12 +56,12 @@ ELSE:
 
 SSC vergisi, çalışanın kategorisine göre hesaplanır:
 
-| Kategori | Açıklama | Formül |
-|----------|----------|--------|
-| **A** | Pensioner (Emekli) | `6.62 * weeksInMonth` |
-| **B** | Part-time | `MIN(22.94 * weeksInMonth, sscBase * 0.10)` |
-| **C** | Full-time (Standart) | Doğum tarihine bağlı (aşağıya bakın) |
-| **D** | Self-employed | Doğum tarihine bağlı (aşağıya bakın) |
+| Kategori | Açıklama             | Formül                                      |
+| -------- | -------------------- | ------------------------------------------- |
+| **A**    | Pensioner (Emekli)   | `6.62 * weeksInMonth`                       |
+| **B**    | Part-time            | `MIN(22.94 * weeksInMonth, sscBase * 0.10)` |
+| **C**    | Full-time (Standart) | Doğum tarihine bağlı (aşağıya bakın)        |
+| **D**    | Self-employed        | Doğum tarihine bağlı (aşağıya bakın)        |
 
 #### Kategori C ve D için Doğum Tarihi Kontrolü:
 
@@ -99,12 +99,12 @@ cumulativeIncomeBase = previousCumulativeIncomeBase + incomeBase
 Malta'da kümülatif vergilendirme sistemi kullanılır. Aylık vergi, yıllık projeksiyon üzerinden hesaplanır:
 
 | Yıllık Gelir (€) | Vergi Oranı | Yıllık Kesinti (€) |
-|------------------|-------------|-------------------|
-| 0 - 9,100 | 0% | 0 |
-| 9,101 - 14,500 | 15% | 1,365 |
-| 14,501 - 19,500 | 25% | 2,815 |
-| 19,501 - 60,000 | 25% | 2,725 |
-| 60,001+ | 35% | 8,725 |
+| ---------------- | ----------- | ------------------ |
+| 0 - 9,100        | 0%          | 0                  |
+| 9,101 - 14,500   | 15%         | 1,365              |
+| 14,501 - 19,500  | 25%         | 2,815              |
+| 19,501 - 60,000  | 25%         | 2,725              |
+| 60,001+          | 35%         | 8,725              |
 
 **Not:** Bu dilimler Malta CFR (Commissioner for Revenue) resmi oranlarıdır.
 Evli (married) ve ebeveyn (parent) için farklı dilimler mevcuttur.
@@ -112,6 +112,7 @@ Evli (married) ve ebeveyn (parent) için farklı dilimler mevcuttur.
 ### 8. Aylık Income Tax Formülü
 
 **İlk ay için:**
+
 ```
 IF annualGross <= 12000:
     incomeTax = 0
@@ -124,6 +125,7 @@ ELSE:
 ```
 
 **Sonraki aylar için (kümülatif hesaplama):**
+
 ```
 IF annualGross <= 12000:
     incomeTax = 0
@@ -149,27 +151,29 @@ net = grossTotal - sscTax - incomeTax
 
 ## Haftalık Sabitler (2024)
 
-| Sabit | Değer (€) | Açıklama |
-|-------|-----------|----------|
-| `WEEKLY_SSC_CAP` | 559.31 | SSC Base haftalık tavan |
-| `SSC_RATE_A` | 6.62 | Kategori A haftalık SSC |
-| `SSC_RATE_B` | 22.94 | Kategori B haftalık SSC max |
-| `SSC_RATE_C_OLD` | 49.04 | Kategori C (doğum <1962) haftalık SSC max |
-| `SSC_RATE_C_NEW` | 55.93 | Kategori C (doğum >=1962) haftalık SSC max |
-| `SSC_RATE_D_OLD` | 49.04 | Kategori D (doğum <1962) sabit haftalık SSC |
-| `SSC_RATE_D_NEW` | 55.93 | Kategori D (doğum >=1962) sabit haftalık SSC |
+| Sabit            | Değer (€) | Açıklama                                     |
+| ---------------- | --------- | -------------------------------------------- |
+| `WEEKLY_SSC_CAP` | 559.31    | SSC Base haftalık tavan                      |
+| `SSC_RATE_A`     | 6.62      | Kategori A haftalık SSC                      |
+| `SSC_RATE_B`     | 22.94     | Kategori B haftalık SSC max                  |
+| `SSC_RATE_C_OLD` | 49.04     | Kategori C (doğum <1962) haftalık SSC max    |
+| `SSC_RATE_C_NEW` | 55.93     | Kategori C (doğum >=1962) haftalık SSC max   |
+| `SSC_RATE_D_OLD` | 49.04     | Kategori D (doğum <1962) sabit haftalık SSC  |
+| `SSC_RATE_D_NEW` | 55.93     | Kategori D (doğum >=1962) sabit haftalık SSC |
 
 ---
 
 ## Örnek Hesaplama
 
 **Girişler:**
+
 - Yıllık Brüt: €36,000
 - SSC Kategorisi: C
 - Doğum Tarihi: 1990-01-15
 - Ayda 4 hafta
 
 **Hesaplama:**
+
 ```
 basicSalary = 36000 / 12 = 3000
 weeklyEquivalent = (3000 * 12) / 52 = 692.31

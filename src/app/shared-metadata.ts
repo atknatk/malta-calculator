@@ -13,7 +13,8 @@ export const OG_IMAGE = {
   type: "image/png",
 };
 
-export const TITLE = "Malta Salary Calculator 2026 | Free Tax, SSC & Net Pay Calculator";
+export const TITLE =
+  "Malta Salary Calculator 2026 | Free Tax, SSC & Net Pay Calculator";
 export const TITLE_SHORT = "Malta Salary Calculator";
 export const DESCRIPTION =
   "Calculate your Malta net salary with accurate 2024-2026 tax brackets, SSC contributions, and COLA. Free instant results for single, married, and parent taxpayers. The #1 Malta salary calculator.";
@@ -72,7 +73,7 @@ export const defaultMetadata: Metadata = {
     canonical: "/",
     languages: {
       "en-MT": "/",
-      "en": "/",
+      en: "/",
     },
   },
   robots: {
