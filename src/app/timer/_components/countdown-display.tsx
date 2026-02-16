@@ -21,24 +21,26 @@ interface CountdownDisplayProps {
   url: string;
 }
 
+// Get or create a shared AudioContext
+function getAudioContext() {
+  if (typeof window === "undefined") return null;
+  const W = window as typeof window & {
+    webkitAudioContext?: typeof AudioContext;
+    __timerAudioCtx?: AudioContext;
+  };
+  if (!W.__timerAudioCtx) {
+    W.__timerAudioCtx = new (W.AudioContext || W.webkitAudioContext)();
+  }
+  return W.__timerAudioCtx;
+}
+
 // Alarm sound (simple beep using Web Audio API)
 function useAlarmSound() {
-  const audioContextRef = useRef<AudioContext | null>(null);
-
   const playAlarm = useCallback(() => {
     try {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (
-          window.AudioContext ||
-          (
-            window as typeof window & {
-              webkitAudioContext?: typeof AudioContext;
-            }
-          ).webkitAudioContext
-        )();
-      }
+      const ctx = getAudioContext();
+      if (!ctx) return;
 
-      const ctx = audioContextRef.current;
       const oscillator = ctx.createOscillator();
       const gainNode = ctx.createGain();
 
@@ -86,6 +88,76 @@ function useAlarmSound() {
   return { playAlarm };
 }
 
+// Tick-tock sound using Web Audio API
+function useTickSound(enabled: boolean, isExpired: boolean) {
+  const isTickRef = useRef(true); // alternates between tick and tock
+
+  useEffect(() => {
+    if (!enabled || isExpired) return;
+
+    const interval = setInterval(() => {
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        const isTick = isTickRef.current;
+        isTickRef.current = !isTickRef.current;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        // Tick = higher pitch, Tock = lower pitch
+        osc.frequency.value = isTick ? 1200 : 800;
+        osc.type = "sine";
+
+        const now = ctx.currentTime;
+        gain.gain.setValueAtTime(isTick ? 0.08 : 0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+        osc.start(now);
+        osc.stop(now + 0.06);
+      } catch {
+        // Audio not supported
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [enabled, isExpired]);
+}
+
+// Update document.title with remaining time
+function useDocumentTitle(
+  remaining: number,
+  isExpired: boolean,
+  title?: string,
+) {
+  const originalTitleRef = useRef<string>("");
+
+  useEffect(() => {
+    originalTitleRef.current = document.title;
+    return () => {
+      document.title = originalTitleRef.current;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isExpired) {
+      document.title = title ? `⏰ Time's Up! - ${title}` : "⏰ Time's Up!";
+      return;
+    }
+
+    const t = formatTimeDisplay(remaining);
+    const timeStr =
+      t.days > 0
+        ? `${t.days}d ${String(t.hours).padStart(2, "0")}:${String(t.minutes).padStart(2, "0")}:${String(t.seconds).padStart(2, "0")}`
+        : `${String(t.hours + t.days * 24).padStart(2, "0")}:${String(t.minutes).padStart(2, "0")}:${String(t.seconds).padStart(2, "0")}`;
+
+    document.title = title ? `${timeStr} - ${title}` : `${timeStr} - Timer`;
+  }, [remaining, isExpired, title]);
+}
+
 export function CountdownDisplay({
   timerData,
   title,
@@ -100,6 +172,12 @@ export function CountdownDisplay({
   const progress = getProgressPercentage(timerData);
   const timeDisplay = formatTimeDisplay(remaining);
   const showDays = timerData.duration >= 86400; // Show days if duration >= 1 day
+
+  // Document title countdown
+  useDocumentTitle(remaining, isExpired, title);
+
+  // Tick-tock sound
+  useTickSound(soundEnabled, isExpired);
 
   useEffect(() => {
     if (isExpired) {
