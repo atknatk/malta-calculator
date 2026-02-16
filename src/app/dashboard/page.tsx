@@ -7,6 +7,7 @@ import {
   getUsageLimits,
   getRecentPayslips,
 } from "@/app/actions/payslip-actions";
+import ManageSubscriptionButton from "./_components/manage-subscription-button";
 
 export default async function DashboardPage() {
   const [{ userId }, user] = await Promise.all([auth(), currentUser()]);
@@ -96,6 +97,7 @@ export default async function DashboardPage() {
                   <span>⚙️</span>
                   Company Settings
                 </Link>
+                {company.plan !== "free" && <ManageSubscriptionButton />}
               </div>
             </div>
 

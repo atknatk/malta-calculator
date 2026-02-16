@@ -223,6 +223,13 @@ export const marketingPagesConfig = [
     icon: "book",
   },
   {
+    href: "/pricing",
+    title: "Pricing",
+    description: "Simple, transparent pricing for payslip generation",
+    segment: "pricing",
+    icon: "credit-card",
+  },
+  {
     href: "/about",
     title: "About",
     description: "About Malta Calculator",

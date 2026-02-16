@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { marketingPagesConfig } from "@/config/pages";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -50,6 +51,26 @@ export function MarketingHeader({ className }: Props) {
         })}
       </nav>
       <div className="flex items-center justify-end gap-3 md:col-span-1">
+        <div className="hidden md:flex md:items-center md:gap-2">
+          <SignedOut>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/sign-in">Sign In</Link>
+            </Button>
+            <Button
+              size="sm"
+              className="rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md hover:from-amber-600 hover:to-orange-700"
+              asChild
+            >
+              <Link href="/sign-up">Start Free</Link>
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+        </div>
         <div className="block md:hidden">
           <MarketingMenu />
         </div>

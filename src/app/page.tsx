@@ -1,5 +1,6 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { MenuBox } from "@/components/marketing/menu-box";
+import { PayslipCTA } from "@/components/marketing/payslip-cta";
 import { FeaturedGuides } from "@/components/marketing/featured-guides";
 import {
   FAQPageJsonLd,
@@ -70,6 +71,9 @@ export default function Home() {
 
         {/* Other Calculators */}
         <MenuBox />
+
+        {/* B2B Payslip CTA */}
+        <PayslipCTA />
 
         {/* Featured Guides - SEO Internal Linking */}
         <FeaturedGuides />

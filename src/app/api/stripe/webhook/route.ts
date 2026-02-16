@@ -94,6 +94,50 @@ export async function POST(request: NextRequest) {
 
           console.log(`🔄 Updated company ${companyId} subscription`);
         }
+
+        // Handle past_due or unpaid - downgrade to free
+        if (
+          companyId &&
+          (subscription.status === "past_due" ||
+            subscription.status === "unpaid")
+        ) {
+          await supabase
+            .from("companies")
+            .update({
+              plan: "free",
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", companyId);
+
+          console.log(
+            `⚠️ Company ${companyId} subscription ${subscription.status}, downgraded to free`,
+          );
+        }
+        break;
+      }
+
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as Stripe.Invoice;
+        const subscriptionRef =
+          invoice.parent?.subscription_details?.subscription;
+        const subscriptionId =
+          typeof subscriptionRef === "string"
+            ? subscriptionRef
+            : subscriptionRef?.id;
+
+        if (subscriptionId) {
+          const { data: company } = await supabase
+            .from("companies")
+            .select("id")
+            .eq("stripe_subscription_id", subscriptionId)
+            .single();
+
+          if (company) {
+            console.log(
+              `❌ Payment failed for company ${company.id}, invoice ${invoice.id}`,
+            );
+          }
+        }
         break;
       }
 

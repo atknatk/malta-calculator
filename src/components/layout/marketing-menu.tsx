@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import * as React from "react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 import {
   Sheet,
@@ -17,9 +19,6 @@ import { socialsConfig } from "@/config/socials";
 import { Button } from "../ui/button";
 import { AppLink } from "./app-link";
 import { SocialIconButton } from "./social-icon-button";
-// import { AppLink } from "./app-link";
-// import { LoginButton } from "./login-button";
-// import { SocialIconButton } from "./social-icon-button";
 
 export function MarketingMenu() {
   const [open, setOpen] = React.useState(false);
@@ -64,15 +63,37 @@ export function MarketingMenu() {
               );
             })}
           </ul>
-          <div className="flex justify-between gap-2">
-            <ul className="flex flex-wrap gap-2">
-              {socialsConfig.map((props, _i) => (
-                <li key={props.title}>
-                  <SocialIconButton {...props} />
-                </li>
-              ))}
-            </ul>
-            {/* <LoginButton variant="outline" /> */}
+          <div className="flex flex-col gap-3">
+            <SignedOut>
+              <div className="flex gap-2">
+                <Button variant="outline" className="flex-1" asChild>
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+                <Button
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700"
+                  asChild
+                >
+                  <Link href="/sign-up">Start Free</Link>
+                </Button>
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <div className="flex items-center justify-between">
+                <Button variant="outline" asChild>
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button>
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            </SignedIn>
+            <div className="flex justify-between gap-2">
+              <ul className="flex flex-wrap gap-2">
+                {socialsConfig.map((props, _i) => (
+                  <li key={props.title}>
+                    <SocialIconButton {...props} />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </SheetContent>
