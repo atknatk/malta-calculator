@@ -154,6 +154,32 @@ export interface Database {
           created_at?: string;
         };
       };
+      saved_calculations: {
+        Row: {
+          id: string;
+          token: string;
+          params: Json;
+          created_at: string;
+          expires_at: string;
+          view_count: number;
+        };
+        Insert: {
+          id?: string;
+          token: string;
+          params: Json;
+          created_at?: string;
+          expires_at?: string;
+          view_count?: number;
+        };
+        Update: {
+          id?: string;
+          token?: string;
+          params?: Json;
+          created_at?: string;
+          expires_at?: string;
+          view_count?: number;
+        };
+      };
     };
     Views: {
       [_ in never]: never;
@@ -177,3 +203,7 @@ export type CompanyInsert = Database["public"]["Tables"]["companies"]["Insert"];
 export type EmployeeInsert =
   Database["public"]["Tables"]["employees"]["Insert"];
 export type PayslipInsert = Database["public"]["Tables"]["payslips"]["Insert"];
+export type SavedCalculation =
+  Database["public"]["Tables"]["saved_calculations"]["Row"];
+export type SavedCalculationInsert =
+  Database["public"]["Tables"]["saved_calculations"]["Insert"];

@@ -1,5 +1,13 @@
 "use client";
-import { Gauge, TrendingUp, Coins, Receipt, Wallet } from "lucide-react";
+import Link from "next/link";
+import {
+  Gauge,
+  TrendingUp,
+  Coins,
+  Receipt,
+  Wallet,
+  FileText,
+} from "lucide-react";
 import * as React from "react";
 import { useState, useMemo, useEffect } from "react";
 import {
@@ -28,8 +36,7 @@ import {
   ChildCount,
 } from "@/config/malta-tax-config";
 import { cn } from "@/lib/utils";
-import { useQueryStates } from "nuqs";
-import { salarySearchParams, type SalarySearchParams } from "../search-params";
+import type { SalarySearchParams } from "../search-params";
 
 // Hook to detect mobile viewport
 function useIsMobile(breakpoint = 768) {
@@ -191,11 +198,9 @@ export function SalaryCalculatorClient({
   initialSummary,
   initialParams,
 }: SalaryCalculatorClientProps) {
-  // nuqs ile URL state yönetimi
-  const [queryParams, setQueryParams] = useQueryStates(salarySearchParams, {
-    shallow: true, // Client-side only URL update - hesaplama zaten useEffect'te yapılıyor
-    throttleMs: 100, // Fast updates for responsive counter
-  });
+  // Local state - URL sync yok, aninda guncelleme
+  const [localParams, setLocalParams] =
+    useState<SalarySearchParams>(initialParams);
 
   const [data, setData] = useState<MonthlySalaryOutput[]>(initialData);
   const [isSalaryInputFocused, setIsSalaryInputFocused] = useState(false);
@@ -230,32 +235,32 @@ export function SalaryCalculatorClient({
 
   // Parse monthlyBonuses from JSON string
   const parsedMonthlyBonuses = useMemo((): MonthlyBonuses => {
-    if (!queryParams.monthlyBonuses) return {};
+    if (!localParams.monthlyBonuses) return {};
     try {
-      return JSON.parse(queryParams.monthlyBonuses) as MonthlyBonuses;
+      return JSON.parse(localParams.monthlyBonuses) as MonthlyBonuses;
     } catch {
       return {};
     }
-  }, [queryParams.monthlyBonuses]);
+  }, [localParams.monthlyBonuses]);
 
-  // Mevcut form değerlerini URL params'tan al
+  // Mevcut form degerlerini local params'tan al
   const formValues = useMemo(
     () => ({
-      grossSalary: queryParams.salary,
-      year: queryParams.year,
-      taxRateType: queryParams.taxType,
-      childCount: (queryParams.childCount ?? 0) as 0 | 1 | 2,
-      sscCategory: queryParams.sscCategory,
-      birthYear: queryParams.birthYear,
-      startOfMonth: queryParams.startOfMonth as Month,
-      endOfMonth: queryParams.endOfMonth as Month,
-      yearlyNonTaxBenefit: queryParams.yearlyNonTaxBenefit,
-      yearlyTaxableBenefit: queryParams.yearlyTaxableBenefit,
-      monthlyBonus: queryParams.monthlyBonus,
-      allowanceBonus: queryParams.allowanceBonus,
+      grossSalary: localParams.salary,
+      year: localParams.year,
+      taxRateType: localParams.taxType,
+      childCount: (localParams.childCount ?? 0) as 0 | 1 | 2,
+      sscCategory: localParams.sscCategory,
+      birthYear: localParams.birthYear,
+      startOfMonth: localParams.startOfMonth as Month,
+      endOfMonth: localParams.endOfMonth as Month,
+      yearlyNonTaxBenefit: localParams.yearlyNonTaxBenefit,
+      yearlyTaxableBenefit: localParams.yearlyTaxableBenefit,
+      monthlyBonus: localParams.monthlyBonus,
+      allowanceBonus: localParams.allowanceBonus,
       monthlyBonuses: parsedMonthlyBonuses,
     }),
-    [queryParams, parsedMonthlyBonuses],
+    [localParams, parsedMonthlyBonuses],
   );
 
   // Form değerlerinden config oluştur
@@ -370,32 +375,43 @@ export function SalaryCalculatorClient({
     };
   }, [data]);
 
-  // Form value update handler - URL'i günceller
+  // Form value update handler - local state gunceller (URL sync yok, aninda)
   const handleValuesChange = (values: Partial<typeof formValues>) => {
-    // Mark that user has made changes
     setHasUserMadeChanges(true);
 
-    // Serialize monthlyBonuses to JSON string for URL
     const monthlyBonusesJson =
       values.monthlyBonuses && Object.keys(values.monthlyBonuses).length > 0
         ? JSON.stringify(values.monthlyBonuses)
         : "";
 
-    setQueryParams({
-      salary: values.grossSalary,
-      year: values.year,
-      taxType: values.taxRateType as any,
-      childCount: values.childCount,
-      sscCategory: values.sscCategory as any,
-      birthYear: values.birthYear,
-      startOfMonth: values.startOfMonth as any,
-      endOfMonth: values.endOfMonth as any,
-      yearlyNonTaxBenefit: values.yearlyNonTaxBenefit,
-      yearlyTaxableBenefit: values.yearlyTaxableBenefit,
-      monthlyBonus: values.monthlyBonus,
-      allowanceBonus: values.allowanceBonus,
-      monthlyBonuses: monthlyBonusesJson,
-    });
+    setLocalParams((prev) => ({
+      ...prev,
+      salary: values.grossSalary ?? prev.salary,
+      year: values.year ?? prev.year,
+      taxType:
+        (values.taxRateType as SalarySearchParams["taxType"]) ?? prev.taxType,
+      childCount: values.childCount ?? prev.childCount,
+      sscCategory:
+        (values.sscCategory as SalarySearchParams["sscCategory"]) ??
+        prev.sscCategory,
+      birthYear: values.birthYear ?? prev.birthYear,
+      startOfMonth:
+        (values.startOfMonth as SalarySearchParams["startOfMonth"]) ??
+        prev.startOfMonth,
+      endOfMonth:
+        (values.endOfMonth as SalarySearchParams["endOfMonth"]) ??
+        prev.endOfMonth,
+      yearlyNonTaxBenefit:
+        values.yearlyNonTaxBenefit ?? prev.yearlyNonTaxBenefit,
+      yearlyTaxableBenefit:
+        values.yearlyTaxableBenefit ?? prev.yearlyTaxableBenefit,
+      monthlyBonus: values.monthlyBonus ?? prev.monthlyBonus,
+      allowanceBonus: values.allowanceBonus ?? prev.allowanceBonus,
+      monthlyBonuses:
+        monthlyBonusesJson !== undefined
+          ? monthlyBonusesJson
+          : prev.monthlyBonuses,
+    }));
   };
 
   return (
@@ -461,10 +477,20 @@ export function SalaryCalculatorClient({
                 </div>
               </div>
 
+              {/* Generate Payslip CTA */}
+              <Link
+                href="/sign-up"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:from-amber-600 hover:to-orange-700 hover:shadow-lg"
+              >
+                <FileText className="h-4 w-4" />
+                Generate Payslip for Your Team
+              </Link>
+
               {/* Share Buttons */}
               <SalaryShareButtons
                 monthlyNet={summary.monthly.net}
                 annualNet={summary.annual.net}
+                calculatorParams={localParams}
               />
             </SalaryFormCard>
           </div>

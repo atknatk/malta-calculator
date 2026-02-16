@@ -1,71 +1,123 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { Copy, Check, Twitter, Share2 } from "lucide-react";
+import { useState, useCallback, useRef } from "react";
+import { Copy, Check, Twitter, Share2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import type { SalarySearchParams } from "../search-params";
 
 interface SalaryShareButtonsProps {
   monthlyNet: number;
   annualNet: number;
+  calculatorParams: SalarySearchParams;
 }
 
 export function SalaryShareButtons({
   monthlyNet,
   annualNet,
+  calculatorParams,
 }: SalaryShareButtonsProps) {
   const [copied, setCopied] = useState(false);
-
-  const getUrl = () =>
-    typeof window !== "undefined" ? window.location.href : "";
+  const [isGenerating, setIsGenerating] = useState(false);
+  // Cache: ayni params icin tekrar API cagirmamak
+  const cachedUrlRef = useRef<{ params: string; url: string } | null>(null);
 
   const getShareText = () =>
     `My Malta net salary: €${Math.round(monthlyNet).toLocaleString()}/month (€${Math.round(annualNet).toLocaleString()}/year) - Calculate yours free:`;
 
+  const generateShareUrl = useCallback(async (): Promise<string> => {
+    const paramsKey = JSON.stringify(calculatorParams);
+
+    // Cache hit - ayni parametreler icin tekrar istek atma
+    if (cachedUrlRef.current?.params === paramsKey) {
+      return cachedUrlRef.current.url;
+    }
+
+    setIsGenerating(true);
+    try {
+      const response = await fetch("/api/calculator/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ params: calculatorParams }),
+      });
+
+      if (!response.ok) throw new Error("Failed to generate share link");
+
+      const data = await response.json();
+      const fullUrl = `${window.location.origin}${data.shortUrl}`;
+      cachedUrlRef.current = { params: paramsKey, url: fullUrl };
+      return fullUrl;
+    } catch {
+      // Fallback: site URL (paramlar olmadan)
+      toast.error("Failed to generate share link");
+      return window.location.origin;
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [calculatorParams]);
+
   const handleCopy = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(getUrl());
+      const url = await generateShareUrl();
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       toast.success("Link copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error("Failed to copy link");
     }
-  }, []);
+  }, [generateShareUrl]);
 
-  const handleFacebookShare = useCallback(() => {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getUrl())}`;
-    window.open(url, "_blank", "noopener,noreferrer,width=600,height=400");
-  }, []);
+  const handleFacebookShare = useCallback(async () => {
+    const url = await generateShareUrl();
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+      "_blank",
+      "noopener,noreferrer,width=600,height=400",
+    );
+  }, [generateShareUrl]);
 
-  const handleTwitterShare = useCallback(() => {
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(getShareText())}&url=${encodeURIComponent(getUrl())}`;
-    window.open(url, "_blank", "noopener,noreferrer,width=600,height=400");
-  }, [monthlyNet, annualNet]);
+  const handleTwitterShare = useCallback(async () => {
+    const url = await generateShareUrl();
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(getShareText())}&url=${encodeURIComponent(url)}`,
+      "_blank",
+      "noopener,noreferrer,width=600,height=400",
+    );
+  }, [generateShareUrl, monthlyNet, annualNet]);
 
-  const handleLinkedInShare = useCallback(() => {
-    const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getUrl())}`;
-    window.open(url, "_blank", "noopener,noreferrer,width=600,height=400");
-  }, []);
+  const handleLinkedInShare = useCallback(async () => {
+    const url = await generateShareUrl();
+    window.open(
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+      "_blank",
+      "noopener,noreferrer,width=600,height=400",
+    );
+  }, [generateShareUrl]);
 
-  const handleWhatsAppShare = useCallback(() => {
-    const url = `https://wa.me/?text=${encodeURIComponent(`${getShareText()} ${getUrl()}`)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-  }, [monthlyNet, annualNet]);
+  const handleWhatsAppShare = useCallback(async () => {
+    const url = await generateShareUrl();
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(`${getShareText()} ${url}`)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  }, [generateShareUrl, monthlyNet, annualNet]);
 
   const handleNativeShare = useCallback(async () => {
     if (navigator.share) {
       try {
+        const url = await generateShareUrl();
         await navigator.share({
           title: "Malta Salary Calculator",
           text: getShareText(),
-          url: getUrl(),
+          url,
         });
       } catch {
         // User cancelled
       }
     }
-  }, [monthlyNet, annualNet]);
+  }, [generateShareUrl, monthlyNet, annualNet]);
 
   const hasNativeShare = typeof navigator !== "undefined" && !!navigator.share;
 
@@ -133,10 +185,13 @@ export function SalaryShareButtons({
           variant="ghost"
           size="icon"
           onClick={handleCopy}
+          disabled={isGenerating}
           className="h-8 w-8 rounded-lg"
           title="Copy link"
         >
-          {copied ? (
+          {isGenerating ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : copied ? (
             <Check className="h-4 w-4 text-green-500" />
           ) : (
             <Copy className="h-4 w-4" />

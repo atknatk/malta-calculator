@@ -187,3 +187,27 @@ CREATE TRIGGER companies_updated_at
 CREATE TRIGGER employees_updated_at
   BEFORE UPDATE ON employees
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- Saved calculations for short URL sharing
+CREATE TABLE saved_calculations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  token TEXT UNIQUE NOT NULL,
+  params JSONB NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  expires_at TIMESTAMPTZ DEFAULT NOW() + INTERVAL '90 days',
+  view_count INTEGER DEFAULT 0
+);
+
+CREATE INDEX idx_saved_calculations_token ON saved_calculations(token);
+
+-- Public access - no RLS needed (anonymous read/write)
+ALTER TABLE saved_calculations ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can insert calculations" ON saved_calculations
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Anyone can view calculations by token" ON saved_calculations
+  FOR SELECT USING (true);
+
+CREATE POLICY "Anyone can update view count" ON saved_calculations
+  FOR UPDATE USING (true);
