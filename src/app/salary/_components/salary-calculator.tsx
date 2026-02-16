@@ -100,32 +100,6 @@ function AnimatedCounter({
   );
 }
 
-// Animated counter for integers (no decimals)
-function AnimatedCounterInt({
-  value,
-  className,
-  prefix = "",
-  suffix = "",
-}: {
-  value: number;
-  className?: string;
-  prefix?: string;
-  suffix?: string;
-}) {
-  const animatedValue = useAnimatedNumber(value);
-  const displayValue = useTransform(animatedValue, (v) =>
-    Math.round(v).toLocaleString("en-US"),
-  );
-
-  return (
-    <motion.span className={className}>
-      {prefix}
-      <motion.span>{displayValue}</motion.span>
-      {suffix}
-    </motion.span>
-  );
-}
-
 // Summary type
 interface Summary {
   annual: {
@@ -300,13 +274,21 @@ export function SalaryCalculatorClient({
 
   // Form degisikliginde data'yi senkron guncelle (derived state pattern)
   const prevCalcRef = React.useRef(calculatedData);
+  const isFormDrivenUpdate = React.useRef(false);
   if (prevCalcRef.current !== calculatedData) {
     prevCalcRef.current = calculatedData;
+    isFormDrivenUpdate.current = true;
     setData(calculatedData);
   }
 
-  // Tablo içinden değer değiştiğinde güncelle (grossWage değiştiğinde fill-down)
+  // Tablo icinden deger degistiginde guncelle (grossWage fill-down)
+  // Sadece tablo-driven degisikliklerde calisir, form-driven'da skip eder
   useEffect(() => {
+    if (isFormDrivenUpdate.current) {
+      isFormDrivenUpdate.current = false;
+      previousDataRef.current = data;
+      return;
+    }
     if (isUpdatingRef.current) {
       isUpdatingRef.current = false;
       previousDataRef.current = data;
@@ -314,12 +296,11 @@ export function SalaryCalculatorClient({
     }
     if (data.length === 0) return;
 
-    // Check for grossWage changes
+    // Check for grossWage changes (only from table edits)
     const lastChangedGrossIndex = data.findIndex((item, index) => {
       return item.grossWage !== previousDataRef.current[index]?.grossWage;
     });
 
-    // Handle grossWage propagation (fill down behavior)
     if (
       lastChangedGrossIndex !== -1 &&
       lastChangedGrossIndex !== data.length - 1
@@ -344,11 +325,7 @@ export function SalaryCalculatorClient({
           grossWage: safeGrossWage,
         });
       }
-      const calculatedData = calculateMonthlyDeductions(
-        monthlySalaries,
-        config,
-      );
-      setData(calculatedData);
+      setData(calculateMonthlyDeductions(monthlySalaries, config));
     }
 
     previousDataRef.current = data;
@@ -538,73 +515,47 @@ export function SalaryCalculatorClient({
         )}
       </SalaryFormCard>
 
-      {/* Mobile Floating Net Salary Card - iOS Liquid Glass Effect - Positioned at TOP */}
+      {/* Mobile Floating Net Salary Card - Positioned at TOP */}
       <AnimatePresence>
         {isMobile &&
           hasUserMadeChanges &&
           (isSalaryInputFocused || !isSummaryVisible) &&
           summary && (
             <motion.div
-              initial={{ y: -100, opacity: 0, scale: 0.9 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: -100, opacity: 0, scale: 0.9 }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 25,
-                mass: 0.8,
-              }}
+              initial={{ y: -80, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -80, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="fixed top-0 left-0 right-0 z-50 p-3 pt-[max(0.75rem,env(safe-area-inset-top))]"
             >
-              <div className="relative overflow-hidden rounded-3xl shadow-2xl">
-                {/* iOS Liquid Glass Base - Multiple translucent layers */}
-                <div className="absolute inset-0 bg-white/70 dark:bg-gray-900/70" />
-
-                {/* Frosted glass blur layer */}
-                <div className="absolute inset-0 backdrop-blur-2xl backdrop-saturate-150" />
-
-                {/* Subtle gradient overlay for depth */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-white/20 dark:from-white/10 dark:to-white/5" />
-
-                {/* Top highlight edge - liquid glass reflection */}
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/30" />
-
-                {/* Subtle inner glow */}
-                <div className="absolute inset-0 rounded-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]" />
-
-                {/* Border */}
-                <div className="absolute inset-0 rounded-3xl border border-white/50 dark:border-white/20" />
-
-                {/* Content */}
-                <div className="relative px-5 py-4">
+              <div className="relative overflow-hidden rounded-2xl shadow-lg bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border border-white/50 dark:border-white/20">
+                <div className="px-4 py-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      {/* Icon with frosted background */}
-                      <div className="p-2.5 rounded-2xl bg-green-500/15 dark:bg-green-400/20 backdrop-blur-sm border border-green-500/20">
-                        <Wallet className="h-5 w-5 text-green-700 dark:text-green-400" />
+                      <div className="p-2 rounded-xl bg-green-500/15 border border-green-500/20">
+                        <Wallet className="h-4 w-4 text-green-700 dark:text-green-400" />
                       </div>
                       <div>
                         <span className="text-gray-600 dark:text-gray-300 text-xs font-semibold uppercase tracking-wider block">
                           Monthly Net
                         </span>
-                        <span className="text-gray-600 dark:text-gray-400 text-[10px]">
+                        <span className="text-gray-500 dark:text-gray-400 text-[10px]">
                           After tax & SSC
                         </span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <AnimatedCounter
-                        value={summary.monthly.net}
-                        className="text-2xl sm:text-3xl font-bold text-green-700 dark:text-green-400 block"
-                        prefix="€"
-                        decimals={2}
-                      />
-                      <span className="text-gray-600 dark:text-gray-300 text-xs font-medium">
-                        <AnimatedCounterInt
-                          value={summary.annual.net}
-                          prefix="€"
-                          suffix="/year"
-                        />
+                      <span className="text-2xl font-bold text-green-700 dark:text-green-400 block">
+                        €
+                        {summary.monthly.net.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
+                      <span className="text-gray-500 dark:text-gray-400 text-xs font-medium">
+                        €
+                        {Math.round(summary.annual.net).toLocaleString("en-US")}
+                        /year
                       </span>
                     </div>
                   </div>

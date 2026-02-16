@@ -1,7 +1,6 @@
 "use client";
-import { z } from "zod";
 import { Month } from "@/types/salary-calculator-type";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import {
   getAvailableYears,
   isChildCountEffective,
@@ -18,9 +17,7 @@ import {
   Wallet,
   Sparkles,
   Baby,
-  Plus,
   X,
-  Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -103,12 +100,7 @@ function PremiumInput({
   };
 
   return (
-    <motion.div
-      className="space-y-2"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className="space-y-2">
       <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
         {Icon && <Icon className="h-4 w-4 text-primary/70" />}
         {label}
@@ -150,7 +142,7 @@ function PremiumInput({
       {description && (
         <p className="text-xs text-muted-foreground pl-1">{description}</p>
       )}
-    </motion.div>
+    </div>
   );
 }
 
@@ -212,20 +204,13 @@ function GlassSection({
   icon: Icon,
   title,
   children,
-  delay = 0,
 }: {
   icon: typeof Settings2;
   title: string;
   children: React.ReactNode;
-  delay?: number;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4, ease: "easeOut" }}
-      className="space-y-4"
-    >
+    <div className="space-y-4">
       <div className="flex items-center gap-3">
         <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/25 via-primary/15 to-secondary/10 border border-primary/20 shadow-lg shadow-primary/10">
           <Icon className="h-4 w-4 text-primary" />
@@ -235,7 +220,7 @@ function GlassSection({
         </span>
       </div>
       <div className="space-y-4 pl-1">{children}</div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -339,12 +324,7 @@ export function SalaryCalculatorForm({
   return (
     <div className="space-y-8">
       {/* Hero Section - Gross Salary */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="relative"
-      >
+      <div className="relative">
         {/* Gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/10 to-secondary/10 rounded-3xl" />
 
@@ -368,11 +348,11 @@ export function SalaryCalculatorForm({
             onFocusChange={onFocusChange}
           />
         </div>
-      </motion.div>
+      </div>
 
       {/* Primary Settings */}
       <div className="space-y-6">
-        <GlassSection icon={Calendar} title="Tax Year" delay={0.1}>
+        <GlassSection icon={Calendar} title="Tax Year">
           <PremiumToggleGroup
             options={availableYears}
             value={formValues.year}
@@ -381,7 +361,7 @@ export function SalaryCalculatorForm({
           />
         </GlassSection>
 
-        <GlassSection icon={Users} title="Tax Rate Type" delay={0.15}>
+        <GlassSection icon={Users} title="Tax Rate Type">
           <PremiumToggleGroup
             options={["single", "married", "parent"] as const}
             value={formValues.taxRateType}
@@ -407,38 +387,38 @@ export function SalaryCalculatorForm({
         </GlassSection>
 
         {/* Çocuk Sayısı - 2026+ için ve married/parent seçildiğinde göster */}
-        <AnimatePresence>
-          {showChildCount && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <GlassSection icon={Baby} title="Number of Children" delay={0.18}>
-                <PremiumToggleGroup
-                  options={["0", "1", "2"] as const}
-                  value={formValues.childCount.toString() as "0" | "1" | "2"}
-                  onChange={(v) =>
-                    updateValue("childCount", parseInt(v) as 0 | 1 | 2)
-                  }
-                  labels={{
-                    "0": "No children",
-                    "1": "1 child",
-                    "2": "2+ children",
-                  }}
-                  size="default"
-                />
-                <p className="text-xs text-muted-foreground mt-2">
-                  From 2026, tax rates vary based on the number of children.
-                  This affects your tax deductions.
-                </p>
-              </GlassSection>
-            </motion.div>
+        <div
+          className={cn(
+            "grid transition-[grid-template-rows,opacity] duration-150 ease-out",
+            showChildCount
+              ? "grid-rows-[1fr] opacity-100"
+              : "grid-rows-[0fr] opacity-0",
           )}
-        </AnimatePresence>
+        >
+          <div className="overflow-hidden">
+            <GlassSection icon={Baby} title="Number of Children">
+              <PremiumToggleGroup
+                options={["0", "1", "2"] as const}
+                value={formValues.childCount.toString() as "0" | "1" | "2"}
+                onChange={(v) =>
+                  updateValue("childCount", parseInt(v) as 0 | 1 | 2)
+                }
+                labels={{
+                  "0": "No children",
+                  "1": "1 child",
+                  "2": "2+ children",
+                }}
+                size="default"
+              />
+              <p className="text-xs text-muted-foreground mt-2">
+                From 2026, tax rates vary based on the number of children. This
+                affects your tax deductions.
+              </p>
+            </GlassSection>
+          </div>
+        </div>
 
-        <GlassSection icon={Shield} title="SSC Category" delay={0.2}>
+        <GlassSection icon={Shield} title="SSC Category">
           <PremiumToggleGroup
             options={["A", "B", "C"] as const}
             value={formValues.sscCategory}
@@ -532,7 +512,7 @@ export function SalaryCalculatorForm({
         </div>
 
         {/* Benefits Section */}
-        <GlassSection icon={Gift} title="Benefits" delay={0}>
+        <GlassSection icon={Gift} title="Benefits">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <PremiumInput
               label="Yearly Non-Tax Benefit"
@@ -554,7 +534,7 @@ export function SalaryCalculatorForm({
         </GlassSection>
 
         {/* Bonus Section - Per-Month Bonus Editor */}
-        <GlassSection icon={Wallet} title="Bonuses" delay={0}>
+        <GlassSection icon={Wallet} title="Bonuses">
           <p className="text-xs text-muted-foreground mb-3">
             Add bonuses for specific months (e.g., 13th month salary in
             December, performance bonus in March)
