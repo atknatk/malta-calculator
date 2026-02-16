@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -41,6 +43,11 @@ export const metadata: Metadata = {
     title: "Understanding COLA in Malta 2026: Cost of Living Adjustment Guide",
     url: `${SITE_URL}/blog/understanding-cola-malta-2026`,
     type: "article",
+    images: [
+      getBlogOgImage(
+        "Understanding COLA in Malta 2026: Cost of Living Adjustment Guide",
+      ),
+    ],
   },
   twitter: {
     ...twitterMetadata,
@@ -381,23 +388,12 @@ export default function MaltaCOLAPage() {
               </p>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                See COLA in Your Salary Breakdown
-              </h2>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Our Malta Salary Calculator shows exactly how COLA affects your
-                net salary, with a detailed breakdown of all components.
-              </p>
-              <Link
-                href="/salary"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Calculate Now
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="understanding-cola-malta-2026"
+              title="Understanding COLA in Malta 2026: Cost of Living Adjustment Guide"
+              ctaTitle="See COLA in Your Salary Breakdown"
+              ctaDescription="Our Malta Salary Calculator shows exactly how COLA affects your net salary, with a detailed breakdown of all components."
+            />
           </article>
         </Shell>
       </main>

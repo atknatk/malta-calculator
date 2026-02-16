@@ -1,112 +1,162 @@
-/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
-
-import { DESCRIPTION, TITLE } from "@/app/shared-metadata";
-import { Background } from "./_components/background";
-import {
-  DEFAULT_URL,
-  SIZE,
-  calSemiBold,
-  interLight,
-  interMedium,
-  interRegular,
-} from "./utils";
+import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-// const TITLE = "A better way to monitor your services.";
-// const DESCRIPTION = "Reduce alert fatigue by triggering only relevant alerts when your services experience downtime.";
-const IMAGE = "assets/og/dashboard.png";
-const FOOTER = "maltacalculator.com";
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const title = searchParams.get("title") || "Malta Calculator";
 
-export async function GET(req: Request) {
-  // const [interRegularData, interLightData, calSemiBoldData, interMediumData] =
-  //   await Promise.all([interRegular, interLight, calSemiBold, interMedium]);
-
-  const { searchParams } = new URL(req.url);
-
-  const title =
-    (searchParams.has("title") && searchParams.get("title")) || TITLE;
-
-  const description =
-    (searchParams.has("description") && searchParams.get("description")) ||
-    DESCRIPTION;
-
-  const image =
-    (searchParams.has("image") && searchParams.get("image")) || IMAGE;
-
-  const footer =
-    (searchParams.has("footer") && searchParams.get("footer")) || FOOTER;
+  const fontData = await fetch(
+    new URL("../../../../public/fonts/CalSans-SemiBold.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
-    <Background tw="justify-start items-start">
-      <div
-        style={{ clipPath: "polygon(90% 0%, 200% 0%, 200% 200%, -30% 200%)" }}
-        tw="flex absolute h-full w-full bg-slate-200"
-      >
-        <img
-          alt=""
-          style={{ objectFit: "cover" }}
-          tw="flex w-full h-full"
-          src={new URL(image, DEFAULT_URL).toString()}
-        />
-      </div>
-      {/* adds a border to the mask element */}
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#1a1a2e",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Background gradient */}
       <div
         style={{
-          clipPath: "polygon(90% 0%, 170% 0%, -30% 200%, -29% 200%)",
-          // from-slate-100 to-slate-300
-          backgroundImage: "linear-gradient(to bottom left, #f1f5f9, #cbd5e1)",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background:
+            "radial-gradient(ellipse at 20% 50%, rgba(245, 158, 11, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)",
+          display: "flex",
         }}
-        tw="flex absolute h-full w-full" // bg-slate-200
       />
-      <div tw="flex flex-col justify-between h-full flex-1 py-24 px-24">
-        <div tw="flex flex-col h-full flex-1 justify-center">
+
+      {/* Content */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "100%",
+          padding: "60px 70px",
+          position: "relative",
+        }}
+      >
+        {/* Top: Logo + Site Name */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+          }}
+        >
+          <div
+            style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "12px",
+              background: "linear-gradient(135deg, #f59e0b, #d97706)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "24px",
+            }}
+          >
+            🇲🇹
+          </div>
+          <span
+            style={{
+              fontSize: "24px",
+              color: "rgba(255,255,255,0.7)",
+              fontFamily: "CalSans",
+            }}
+          >
+            Malta Calculator
+          </span>
+        </div>
+
+        {/* Center: Title */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
           <h1
-            style={{ fontFamily: "Cal", width: 700 }}
-            tw="text-6xl text-black"
+            style={{
+              fontSize: title.length > 60 ? "42px" : "52px",
+              fontFamily: "CalSans",
+              color: "white",
+              lineHeight: 1.2,
+              margin: 0,
+              maxWidth: "900px",
+            }}
           >
             {title}
           </h1>
-          <p style={{ width: 580 }} tw="text-4xl text-slate-700">
-            {description}
-          </p>
+          <div
+            style={{
+              width: "80px",
+              height: "4px",
+              background: "linear-gradient(90deg, #f59e0b, #d97706)",
+              borderRadius: "2px",
+              display: "flex",
+            }}
+          />
         </div>
-        <div tw="flex w-full">
-          <p style={{ width: 450 }} tw="font-medium text-xl">
-            {footer}
-          </p>
+
+        {/* Bottom: URL */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "20px",
+              color: "rgba(255,255,255,0.5)",
+            }}
+          >
+            maltacalculator.com/blog
+          </span>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 20px",
+              borderRadius: "20px",
+              border: "1px solid rgba(245, 158, 11, 0.3)",
+              background: "rgba(245, 158, 11, 0.1)",
+            }}
+          >
+            <span style={{ fontSize: "16px", color: "#f59e0b" }}>
+              Read Article →
+            </span>
+          </div>
         </div>
       </div>
-    </Background>,
+    </div>,
     {
-      ...SIZE,
-      // fonts: [
-      //   {
-      //     name: "Inter",
-      //     data: interMediumData,
-      //     style: "normal",
-      //     weight: 500,
-      //   },
-      //   {
-      //     name: "Inter",
-      //     data: interRegularData,
-      //     style: "normal",
-      //     weight: 400,
-      //   },
-      //   {
-      //     name: "Inter",
-      //     data: interLightData,
-      //     style: "normal",
-      //     weight: 300,
-      //   },
-      //   {
-      //     name: "Cal",
-      //     data: calSemiBoldData,
-      //     style: "normal",
-      //     weight: 600,
-      //   },
-      // ],
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: "CalSans",
+          data: fontData,
+          style: "normal",
+          weight: 600,
+        },
+      ],
     },
   );
 }

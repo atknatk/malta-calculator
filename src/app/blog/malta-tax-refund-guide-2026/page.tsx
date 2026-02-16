@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import {
   Calculator,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -36,6 +38,7 @@ export const metadata: Metadata = {
     title: "Malta Tax Refund 2026: How to Claim Back",
     url: `${SITE_URL}/blog/malta-tax-refund-guide-2026`,
     type: "article",
+    images: [getBlogOgImage("Malta Tax Refund 2026: How to Claim Back")],
   },
   twitter: {
     ...twitterMetadata,
@@ -147,18 +150,12 @@ export default function MaltaTaxRefundPage() {
               </div>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Check Your Tax Liability
-              </h2>
-              <Link
-                href="/salary"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Try Salary Calculator <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-tax-refund-guide-2026"
+              title="Malta Tax Refund 2026: How to Claim Back"
+              ctaTitle="Check Your Tax Liability"
+              ctaLinkText="Try Salary Calculator"
+            />
           </article>
         </Shell>
       </main>

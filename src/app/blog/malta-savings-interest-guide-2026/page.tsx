@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import {
   PiggyBank,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -39,6 +41,7 @@ export const metadata: Metadata = {
     title: "Malta Savings Interest Guide 2026",
     url: `${SITE_URL}/blog/malta-savings-interest-guide-2026`,
     type: "article",
+    images: [getBlogOgImage("Malta Savings Interest Guide 2026")],
   },
   twitter: { ...twitterMetadata, title: "Malta Savings Interest Guide 2026" },
 };
@@ -199,6 +202,10 @@ export default function MaltaSavingsInterestGuidePage() {
                 Try Savings Calculator <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
+            <BlogArticleFooter
+              slug="malta-savings-interest-guide-2026"
+              title="Malta Savings Interest Guide 2026"
+            />
           </article>
         </Shell>
       </main>

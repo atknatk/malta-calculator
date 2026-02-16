@@ -19,6 +19,7 @@ import { SalaryFormCard } from "@/components/salary/form-card";
 import { SalaryCalculatorForm, type MonthlyBonuses } from "./salary-input-form";
 import { SalaryTable } from "./salary-table";
 import { MobileMonthlyCards } from "./mobile-monthly-cards";
+import { SalaryShareButtons } from "./salary-share-buttons";
 import { calculateMonthlyDeductions } from "@/utils/salary-calculator";
 import {
   SSCCategory,
@@ -192,7 +193,7 @@ export function SalaryCalculatorClient({
 }: SalaryCalculatorClientProps) {
   // nuqs ile URL state yönetimi
   const [queryParams, setQueryParams] = useQueryStates(salarySearchParams, {
-    shallow: false, // Server'a bildir, SSR güncelle
+    shallow: true, // Client-side only URL update - hesaplama zaten useEffect'te yapılıyor
     throttleMs: 100, // Fast updates for responsive counter
   });
 
@@ -459,6 +460,12 @@ export function SalaryCalculatorClient({
                   />
                 </div>
               </div>
+
+              {/* Share Buttons */}
+              <SalaryShareButtons
+                monthlyNet={summary.monthly.net}
+                annualNet={summary.annual.net}
+              />
             </SalaryFormCard>
           </div>
         )}

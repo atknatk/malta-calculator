@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import {
   Calculator,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -41,6 +43,11 @@ export const metadata: Metadata = {
     title: "Malta SSC Contributions 2026: Rates, Caps & Categories Explained",
     url: `${SITE_URL}/blog/malta-ssc-contributions-2026-explained`,
     type: "article",
+    images: [
+      getBlogOgImage(
+        "Malta SSC Contributions 2026: Rates, Caps & Categories Explained",
+      ),
+    ],
   },
   twitter: {
     ...twitterMetadata,
@@ -452,23 +459,12 @@ export default function MaltaSSCPage() {
               </div>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Calculate Your SSC Automatically
-              </h2>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Our Malta Salary Calculator automatically determines your SSC
-                category and calculates your exact contributions for 2026.
-              </p>
-              <Link
-                href="/salary"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Calculate Now
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-ssc-contributions-2026-explained"
+              title="Malta SSC Contributions 2026: Rates, Caps & Categories Explained"
+              ctaTitle="Calculate Your SSC Automatically"
+              ctaDescription="Our Malta Salary Calculator automatically determines your SSC category and calculates your exact contributions for 2026."
+            />
           </article>
         </Shell>
       </main>

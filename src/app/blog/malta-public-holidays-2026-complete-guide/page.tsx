@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -21,6 +22,7 @@ import {
   PartyPopper,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -46,6 +48,9 @@ export const metadata: Metadata = {
     title: "Malta Public Holidays 2026: All 14 Official Dates",
     url: `${SITE_URL}/blog/malta-public-holidays-2026-complete-guide`,
     type: "article",
+    images: [
+      getBlogOgImage("Malta Public Holidays 2026: All 14 Official Dates"),
+    ],
   },
   twitter: {
     ...twitterMetadata,
@@ -685,23 +690,14 @@ export default function MaltaPublicHolidays2026GuidePage() {
               </ul>
             </section>
 
-            {/* CTA */}
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Calculate Your Vacation Days
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Use our vacation calculator to see your total 2026 leave
-                entitlement including public holiday additions.
-              </p>
-              <Link
-                href="/calculators/vacation"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Try Vacation Calculator <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-public-holidays-2026-complete-guide"
+              title="Malta Public Holidays 2026: All 14 Official Dates"
+              ctaTitle="Calculate Your Vacation Days"
+              ctaDescription="Use our vacation calculator to see your total 2026 leave entitlement including public holiday additions."
+              ctaLink="/calculators/vacation"
+              ctaLinkText="Try Vacation Calculator"
+            />
 
             {/* Sources */}
             <section className="mt-12 pt-8 border-t border-border">

@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -18,6 +19,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -44,6 +46,11 @@ export const metadata: Metadata = {
       "Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide",
     url: `${SITE_URL}/blog/malta-expat-tax-hqp-scheme-guide`,
     type: "article",
+    images: [
+      getBlogOgImage(
+        "Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide",
+      ),
+    ],
   },
   twitter: {
     ...twitterMetadata,
@@ -461,23 +468,14 @@ export default function MaltaHQPPage() {
               </p>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Compare Your Tax Options
-              </h2>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Use our Expatriate Tax Calculator to see the difference between
-                standard tax rates and what you&apos;d pay under the HQP scheme.
-              </p>
-              <Link
-                href="/calculators/expatriate-tax"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Try Expatriate Tax Calculator
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-expat-tax-hqp-scheme-guide"
+              title="Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide"
+              ctaTitle="Compare Your Tax Options"
+              ctaDescription="Use our Expatriate Tax Calculator to see the difference between standard tax rates and what you'd pay under the HQP scheme."
+              ctaLink="/calculators/expatriate-tax"
+              ctaLinkText="Try Expatriate Tax Calculator"
+            />
           </article>
         </Shell>
       </main>

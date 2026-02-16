@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -20,6 +21,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -41,6 +43,7 @@ export const metadata: Metadata = {
     title: "Malta Expat Mortgage Guide 2026",
     url: `${SITE_URL}/blog/malta-expat-mortgage-guide-2026`,
     type: "article",
+    images: [getBlogOgImage("Malta Expat Mortgage Guide 2026")],
   },
   twitter: { ...twitterMetadata, title: "Malta Expat Mortgage Guide 2026" },
 };
@@ -378,6 +381,10 @@ export default function MaltaExpatMortgageGuidePage() {
                 </Link>
               </div>
             </div>
+            <BlogArticleFooter
+              slug="malta-expat-mortgage-guide-2026"
+              title="Malta Expat Mortgage Guide 2026"
+            />
           </article>
         </Shell>
       </main>

@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -30,6 +31,7 @@ import {
   BreadcrumbJsonLd,
   CustomFAQJsonLd,
 } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -57,6 +59,9 @@ export const metadata: Metadata = {
     title: "Malta Budget 2026: New Family Tax Savings & Key Changes",
     url: `${SITE_URL}/blog/malta-budget-2026-family-tax-savings-guide`,
     type: "article",
+    images: [
+      getBlogOgImage("Malta Budget 2026: New Family Tax Savings & Key Changes"),
+    ],
   },
   twitter: {
     ...twitterMetadata,
@@ -1088,6 +1093,10 @@ export default function MaltaBudget2026GuidePage() {
                 </li>
               </ul>
             </section>
+            <BlogArticleFooter
+              slug="malta-budget-2026-family-tax-savings-guide"
+              title="Malta Budget 2026: New Family Tax Savings & Key Changes"
+            />
           </article>
         </Shell>
       </main>

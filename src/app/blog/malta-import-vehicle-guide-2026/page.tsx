@@ -5,11 +5,13 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Ship } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
     title: "Malta Vehicle Import 2026 Guide",
     url: `${SITE_URL}/blog/malta-import-vehicle-guide-2026`,
     type: "article",
+    images: [getBlogOgImage("Malta Vehicle Import 2026 Guide")],
   },
   twitter: { ...twitterMetadata, title: "Malta Vehicle Import 2026 Guide" },
 };
@@ -172,18 +175,13 @@ export default function ImportVehicleGuidePage() {
               </ul>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Ship className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Calculate Import Costs
-              </h2>
-              <Link
-                href="/calculators/import-vehicle"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90"
-              >
-                Try Calculator <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-import-vehicle-guide-2026"
+              title="Malta Vehicle Import 2026 Guide"
+              ctaTitle="Calculate Import Costs"
+              ctaLink="/calculators/import-vehicle"
+              ctaLinkText="Try Calculator"
+            />
           </article>
         </Shell>
       </main>

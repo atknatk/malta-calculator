@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -23,6 +24,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -50,6 +52,11 @@ export const metadata: Metadata = {
     title: "Malta Work Permit 2026: Complete Guide for EU & Non-EU Workers",
     url: `${SITE_URL}/blog/malta-work-permit-employment-guide-2026`,
     type: "article",
+    images: [
+      getBlogOgImage(
+        "Malta Work Permit 2026: Complete Guide for EU & Non-EU Workers",
+      ),
+    ],
   },
   twitter: {
     ...twitterMetadata,
@@ -655,24 +662,12 @@ export default function MaltaWorkPermitGuidePage() {
               </div>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Calculate Your Malta Salary
-              </h2>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Planning to work in Malta? Use our salary calculator to
-                understand your net salary, tax obligations, and social security
-                contributions.
-              </p>
-              <Link
-                href="/salary"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Calculate Now
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-work-permit-employment-guide-2026"
+              title="Malta Work Permit 2026: Complete Guide for EU & Non-EU Workers"
+              ctaTitle="Calculate Your Malta Salary"
+              ctaDescription="Planning to work in Malta? Use our salary calculator to understand your net salary, tax obligations, and social security contributions."
+            />
           </article>
         </Shell>
       </main>

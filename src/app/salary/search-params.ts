@@ -95,3 +95,22 @@ export type SalarySearchParams = {
   allowanceBonus: number;
   monthlyBonuses: string; // JSON string for per-month bonuses
 };
+
+/**
+ * Default params - static page generation için kullanılır
+ */
+export const defaultSalaryParams: SalarySearchParams = {
+  salary: 25000,
+  year: currentYear,
+  taxType: "single",
+  childCount: 0,
+  sscCategory: "C",
+  startOfMonth: "January",
+  endOfMonth: "December",
+  birthYear: 1990,
+  yearlyNonTaxBenefit: 0,
+  yearlyTaxableBenefit: 0,
+  monthlyBonus: 0,
+  allowanceBonus: 0,
+  monthlyBonuses: "",
+};

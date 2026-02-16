@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import {
   Calculator,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -34,6 +36,7 @@ export const metadata: Metadata = {
     title: "Malta Minimum Wage 2026: Complete Guide",
     url: `${SITE_URL}/blog/malta-minimum-wage-2026-guide`,
     type: "article",
+    images: [getBlogOgImage("Malta Minimum Wage 2026: Complete Guide")],
   },
   twitter: {
     ...twitterMetadata,
@@ -173,21 +176,13 @@ export default function MaltaMinimumWagePage() {
               </div>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Calculate Your Net Salary
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                See how much you take home after tax and SSC deductions.
-              </p>
-              <Link
-                href="/salary"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Try Salary Calculator <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-minimum-wage-2026-guide"
+              title="Malta Minimum Wage 2026: Complete Guide"
+              ctaTitle="Calculate Your Net Salary"
+              ctaDescription="See how much you take home after tax and SSC deductions."
+              ctaLinkText="Try Salary Calculator"
+            />
           </article>
         </Shell>
       </main>

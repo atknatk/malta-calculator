@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -23,6 +24,7 @@ import {
   FileText,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -50,6 +52,7 @@ export const metadata: Metadata = {
     title: "Malta Children's Allowance 2026: Complete Guide",
     url: `${SITE_URL}/blog/malta-childrens-allowance-guide-2026`,
     type: "article",
+    images: [getBlogOgImage("Malta Children")],
   },
   twitter: {
     ...twitterMetadata,
@@ -770,6 +773,10 @@ export default function ChildrensAllowanceGuidePage() {
                 </li>
               </ul>
             </section>
+            <BlogArticleFooter
+              slug="malta-childrens-allowance-guide-2026"
+              title="Malta Children"
+            />
           </article>
         </Shell>
       </main>

@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import {
   ClipboardCheck,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -35,6 +37,7 @@ export const metadata: Metadata = {
     title: "Malta VRT 2026 Guide",
     url: `${SITE_URL}/blog/malta-vrt-guide-2026`,
     type: "article",
+    images: [getBlogOgImage("Malta VRT 2026 Guide")],
   },
   twitter: { ...twitterMetadata, title: "Malta VRT 2026 Guide" },
 };
@@ -177,18 +180,13 @@ export default function VRTGuidePage() {
               </ul>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <ClipboardCheck className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Calculate VRT Fees
-              </h2>
-              <Link
-                href="/calculators/vrt"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90"
-              >
-                Try Calculator <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-vrt-guide-2026"
+              title="Malta VRT 2026 Guide"
+              ctaTitle="Calculate VRT Fees"
+              ctaLink="/calculators/vrt"
+              ctaLinkText="Try Calculator"
+            />
           </article>
         </Shell>
       </main>

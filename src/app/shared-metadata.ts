@@ -136,6 +136,63 @@ export const viewportConfig: Viewport = {
   colorScheme: "light dark",
 };
 
+// Helper to generate dynamic OG image URL for blog posts
+export function getBlogOgImage(title: string) {
+  return {
+    url: `${SITE_URL}/api/og?title=${encodeURIComponent(title)}`,
+    secureUrl: `${SITE_URL}/api/og?title=${encodeURIComponent(title)}`,
+    width: 1200,
+    height: 630,
+    alt: title,
+    type: "image/png",
+  };
+}
+
+// Helper function to generate blog article metadata
+export function generateBlogMetadata({
+  title,
+  description,
+  slug,
+  keywords,
+  datePublished,
+  dateModified,
+}: {
+  title: string;
+  description: string;
+  slug: string;
+  keywords: string[];
+  datePublished: string;
+  dateModified?: string;
+}): Metadata {
+  const ogTitle = title.replace(/ \| Malta Calculator$/, "");
+  const blogImage = getBlogOgImage(ogTitle);
+
+  return {
+    ...defaultMetadata,
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical: `${SITE_URL}/blog/${slug}`,
+    },
+    openGraph: {
+      ...ogMetadata,
+      title: ogTitle,
+      url: `${SITE_URL}/blog/${slug}`,
+      type: "article",
+      images: [blogImage],
+      publishedTime: datePublished,
+      modifiedTime: dateModified || datePublished,
+      authors: [SITE_NAME],
+    },
+    twitter: {
+      ...twitterMetadata,
+      title: ogTitle,
+      images: [blogImage],
+    },
+  };
+}
+
 // Helper function to generate page-specific metadata
 export function generatePageMetadata({
   title,

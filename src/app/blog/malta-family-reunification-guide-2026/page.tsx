@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -22,6 +23,7 @@ import {
   Globe,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -49,6 +51,9 @@ export const metadata: Metadata = {
     title: "Malta Family Reunification 2026: Complete Salary Guide",
     url: `${SITE_URL}/blog/malta-family-reunification-guide-2026`,
     type: "article",
+    images: [
+      getBlogOgImage("Malta Family Reunification 2026: Complete Salary Guide"),
+    ],
   },
   twitter: {
     ...twitterMetadata,
@@ -562,6 +567,10 @@ export default function FamilyReunificationGuidePage() {
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
+            <BlogArticleFooter
+              slug="malta-family-reunification-guide-2026"
+              title="Malta Family Reunification 2026: Complete Salary Guide"
+            />
           </article>
         </Shell>
       </main>

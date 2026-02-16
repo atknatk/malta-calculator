@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  getBlogOgImage,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -24,6 +25,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -49,6 +51,7 @@ export const metadata: Metadata = {
     title: "mySocialSecurity Malta App 2026: Complete Guide",
     url: `${SITE_URL}/blog/malta-mysocialsecurity-app-guide-2026`,
     type: "article",
+    images: [getBlogOgImage("mySocialSecurity Malta App 2026: Complete Guide")],
   },
   twitter: {
     ...twitterMetadata,
@@ -590,23 +593,12 @@ export default function MySocialSecurityGuidePage() {
               </ul>
             </section>
 
-            <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
-              <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h2 className="text-2xl font-cal font-bold mb-4">
-                Understand Your SSC Deductions
-              </h2>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Use our salary calculator to see exactly how much SSC is
-                deducted from your salary and how it affects your net pay.
-              </p>
-              <Link
-                href="/salary"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-              >
-                Calculate Now
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+            <BlogArticleFooter
+              slug="malta-mysocialsecurity-app-guide-2026"
+              title="mySocialSecurity Malta App 2026: Complete Guide"
+              ctaTitle="Understand Your SSC Deductions"
+              ctaDescription="Use our salary calculator to see exactly how much SSC is deducted from your salary and how it affects your net pay."
+            />
           </article>
         </Shell>
       </main>
