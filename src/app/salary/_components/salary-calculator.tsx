@@ -192,7 +192,7 @@ export function SalaryCalculatorClient({
 }: SalaryCalculatorClientProps) {
   // nuqs ile URL state yönetimi
   const [queryParams, setQueryParams] = useQueryStates(salarySearchParams, {
-    shallow: false, // Server'a bildir, SSR güncelle
+    shallow: true, // Client-only URL updates - page is static, no server re-render needed
     throttleMs: 100, // Fast updates for responsive counter
   });
 

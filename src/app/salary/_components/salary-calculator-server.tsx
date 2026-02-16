@@ -18,8 +18,24 @@ import {
 import { SalaryCalculatorClient } from "./salary-calculator";
 import type { SalarySearchParams } from "../search-params";
 
+const defaultParams: SalarySearchParams = {
+  salary: 25000,
+  year: new Date().getFullYear().toString(),
+  taxType: "single",
+  childCount: 0,
+  sscCategory: "C",
+  startOfMonth: "January",
+  endOfMonth: "December",
+  birthYear: 1990,
+  yearlyNonTaxBenefit: 0,
+  yearlyTaxableBenefit: 0,
+  monthlyBonus: 0,
+  allowanceBonus: 0,
+  monthlyBonuses: "",
+};
+
 interface SalaryCalculatorServerProps {
-  initialParams: SalarySearchParams;
+  initialParams?: SalarySearchParams;
   children: React.ReactNode;
 }
 
@@ -93,9 +109,9 @@ export function SalaryCalculatorServer({
   initialParams,
   children,
 }: SalaryCalculatorServerProps) {
-  // Server-side hesaplama
-  const config = buildConfig(initialParams);
-  const monthlySalaries = buildMonthlySalaries(initialParams);
+  const params = initialParams ?? defaultParams;
+  const config = buildConfig(params);
+  const monthlySalaries = buildMonthlySalaries(params);
   const calculatedData = calculateMonthlyDeductions(monthlySalaries, config);
   const summary = calculateSummary(calculatedData);
 
@@ -103,7 +119,7 @@ export function SalaryCalculatorServer({
     <SalaryCalculatorClient
       initialData={calculatedData}
       initialSummary={summary}
-      initialParams={initialParams}
+      initialParams={params}
     >
       {children}
     </SalaryCalculatorClient>

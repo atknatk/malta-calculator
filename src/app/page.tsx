@@ -9,7 +9,6 @@ import {
   WebsiteJsonLd,
 } from "@/components/json-ld";
 import type { Metadata } from "next";
-import type { SearchParams } from "nuqs/server";
 import {
   defaultMetadata,
   ogMetadata,
@@ -18,62 +17,37 @@ import {
 } from "./shared-metadata";
 import { SalaryCalculatorServer } from "./salary/_components/salary-calculator-server";
 import SalaryPlaygroundCards from "./salary/_components/play-ground-cart";
-import { salaryParamsCache } from "./salary/search-params";
 import { CompactHero } from "@/components/marketing/compact-hero";
 
-// Performance: Enable ISR with 5-minute revalidation
-export const revalidate = 300;
+// Fully static page - served from CDN edge
+export const revalidate = false;
+export const dynamic = "force-static";
 
-type PageProps = {
-  searchParams: Promise<SearchParams>;
-};
+const title = "Malta Salary Calculator 2026 | Free Tax & Net Pay Calculator";
+const description =
+  "Calculate your Malta net salary for 2026. Accurate tax deductions, SSC contributions, and COLA. Malta's #1 free salary calculator with monthly breakdown.";
 
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const params = await salaryParamsCache.parse(searchParams);
-  const salary = params.salary;
-  const formattedSalary = new Intl.NumberFormat("en-MT", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(salary);
-
-  const taxTypeLabel =
-    params.taxType === "single"
-      ? "Single"
-      : params.taxType === "married"
-        ? "Married"
-        : "Parent";
-
-  const title = `Malta Salary Calculator 2026 | Free Tax & Net Pay Calculator`;
-  const description = `Calculate your Malta net salary for ${params.year}. Gross salary: ${formattedSalary}, Tax status: ${taxTypeLabel}. Accurate tax deductions, SSC contributions, and COLA. Malta's #1 salary calculator.`;
-
-  return {
-    ...defaultMetadata,
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  title,
+  description,
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    ...ogMetadata,
     title,
     description,
-    alternates: {
-      canonical: SITE_URL,
-    },
-    openGraph: {
-      ...ogMetadata,
-      title,
-      description,
-      url: SITE_URL,
-    },
-    twitter: {
-      ...twitterMetadata,
-      title,
-      description,
-    },
-  };
-}
+    url: SITE_URL,
+  },
+  twitter: {
+    ...twitterMetadata,
+    title,
+    description,
+  },
+};
 
-export default async function Home({ searchParams }: PageProps) {
-  // Parse URL params server-side for SSR
-  const params = await salaryParamsCache.parse(searchParams);
-
+export default function Home() {
   return (
     <MarketingLayout>
       {/* Structured Data for SEO */}
@@ -89,7 +63,7 @@ export default async function Home({ searchParams }: PageProps) {
 
         {/* Salary Calculator */}
         <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
-          <SalaryCalculatorServer initialParams={params}>
+          <SalaryCalculatorServer>
             <SalaryPlaygroundCards />
           </SalaryCalculatorServer>
         </div>
