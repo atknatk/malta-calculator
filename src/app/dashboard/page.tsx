@@ -98,6 +98,15 @@ export default async function DashboardPage() {
                   Company Settings
                 </Link>
                 {company.plan !== "free" && <ManageSubscriptionButton />}
+                {company.plan === "free" && (
+                  <Link
+                    href="/pricing"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 font-medium text-amber-700 transition hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-300 dark:hover:bg-amber-900"
+                  >
+                    <span>⬆️</span>
+                    Upgrade Plan
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -133,9 +142,17 @@ export default async function DashboardPage() {
               {company.plan === "free" && (
                 <Link
                   href="/pricing"
-                  className="mt-4 block text-center text-sm font-medium text-amber-600 hover:text-amber-700"
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-amber-600 hover:to-orange-700"
                 >
-                  ⬆️ Upgrade to increase limits
+                  Upgrade to Basic — €4.99/mo
+                </Link>
+              )}
+              {company.plan === "basic" && (
+                <Link
+                  href="/pricing"
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-violet-600 hover:to-purple-700"
+                >
+                  Upgrade to Pro — €29.99/mo
                 </Link>
               )}
             </div>
