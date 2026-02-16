@@ -182,10 +182,11 @@ export default function MaltaSelfEmploymentTaxPage() {
                 Calculate Your Tax Liability
               </h2>
               <Link
-                href="/salary"
+                href="/calculators/self-employed-tax"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
               >
-                Try Salary Calculator <ArrowRight className="h-5 w-5" />
+                Try Self-Employment Tax Calculator{" "}
+                <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
           </article>

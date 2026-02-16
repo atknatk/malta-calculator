@@ -173,13 +173,13 @@ export default function MaltaRentalIncomeTaxPage() {
             <div className="mt-16 p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 not-prose text-center">
               <Calculator className="h-12 w-12 mx-auto mb-4 text-primary" />
               <h2 className="text-2xl font-cal font-bold mb-4">
-                Calculate Your Tax
+                Calculate Rental Income Tax
               </h2>
               <Link
-                href="/salary"
+                href="/calculators/rental-tax"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
               >
-                Try Salary Calculator <ArrowRight className="h-5 w-5" />
+                Try Rental Tax Calculator <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
           </article>

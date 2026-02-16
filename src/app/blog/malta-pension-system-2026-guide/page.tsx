@@ -191,10 +191,10 @@ export default function MaltaPensionSystemPage() {
                 Plan Your Retirement
               </h2>
               <Link
-                href="/salary"
+                href="/calculators/pension"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
               >
-                Try Salary Calculator <ArrowRight className="h-5 w-5" />
+                Try Pension Calculator <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
           </article>

@@ -467,14 +467,14 @@ export default function MaltaHQPPage() {
                 Compare Your Tax Options
               </h2>
               <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Use our Malta Salary Calculator to see the difference between
+                Use our Expatriate Tax Calculator to see the difference between
                 standard tax rates and what you&apos;d pay under the HQP scheme.
               </p>
               <Link
-                href="/salary"
+                href="/calculators/expatriate-tax"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
               >
-                Calculate Now
+                Try Expatriate Tax Calculator
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
