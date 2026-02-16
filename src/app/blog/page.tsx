@@ -32,6 +32,16 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-property-transfer-tax-guide-2026",
+    title: "Malta Property Transfer Tax Guide 2026: Complete Cost Breakdown",
+    description:
+      "Complete guide to Malta property transfer tax 2026. Stamp duty rates (5%, 3.5%), notarial fees, capital gains tax, and all costs when buying property.",
+    date: "February 2026",
+    readTime: "10 min read",
+    category: "Tax Guide",
+    featured: true,
+  },
+  {
     slug: "malta-budget-2026-family-tax-savings-guide",
     title: "Malta Budget 2026: New Family Tax Savings & Key Changes",
     description:
