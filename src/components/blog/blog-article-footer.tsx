@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight, Calculator, Share2 } from "lucide-react";
 import { SITE_URL } from "@/app/shared-metadata";
 import { BlogShareButtons } from "./blog-share-buttons";
+import { BlogComments } from "./blog-comments";
+import { getApprovedComments } from "@/lib/blog/get-comments";
 
 interface BlogArticleFooterProps {
   slug: string;
@@ -12,7 +14,7 @@ interface BlogArticleFooterProps {
   ctaLinkText?: string;
 }
 
-export function BlogArticleFooter({
+export async function BlogArticleFooter({
   slug,
   title,
   ctaTitle = "Calculate Your Exact Tax",
@@ -21,6 +23,7 @@ export function BlogArticleFooter({
   ctaLinkText = "Calculate Now",
 }: BlogArticleFooterProps) {
   const articleUrl = `${SITE_URL}/blog/${slug}`;
+  const initialComments = await getApprovedComments(slug);
 
   return (
     <div className="mt-16 space-y-8 not-prose">
@@ -32,6 +35,9 @@ export function BlogArticleFooter({
         </div>
         <BlogShareButtons url={articleUrl} title={title} />
       </div>
+
+      {/* Comments Section */}
+      <BlogComments slug={slug} initialComments={initialComments} />
 
       {/* CTA Section */}
       <div className="p-8 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-3xl border border-border/50 text-center">

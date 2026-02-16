@@ -180,6 +180,64 @@ export interface Database {
           view_count?: number;
         };
       };
+      blog_comments: {
+        Row: {
+          id: string;
+          blog_slug: string;
+          parent_id: string | null;
+          author_name: string;
+          content: string;
+          is_approved: boolean;
+          likes: number;
+          dislikes: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          blog_slug: string;
+          parent_id?: string | null;
+          author_name: string;
+          content: string;
+          is_approved?: boolean;
+          likes?: number;
+          dislikes?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          blog_slug?: string;
+          parent_id?: string | null;
+          author_name?: string;
+          content?: string;
+          is_approved?: boolean;
+          likes?: number;
+          dislikes?: number;
+          created_at?: string;
+        };
+      };
+      blog_comment_votes: {
+        Row: {
+          id: string;
+          comment_id: string;
+          voter_id: string;
+          vote_type: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          comment_id: string;
+          voter_id: string;
+          vote_type: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          comment_id?: string;
+          voter_id?: string;
+          vote_type?: string;
+          created_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;
@@ -207,3 +265,13 @@ export type SavedCalculation =
   Database["public"]["Tables"]["saved_calculations"]["Row"];
 export type SavedCalculationInsert =
   Database["public"]["Tables"]["saved_calculations"]["Insert"];
+
+export type BlogComment = Database["public"]["Tables"]["blog_comments"]["Row"];
+export type BlogCommentInsert =
+  Database["public"]["Tables"]["blog_comments"]["Insert"];
+export type BlogCommentVote =
+  Database["public"]["Tables"]["blog_comment_votes"]["Row"];
+
+export interface BlogCommentWithReplies extends BlogComment {
+  replies: BlogComment[];
+}

@@ -1,0 +1,54 @@
+name: Blog Comment & Vote Generation (2x/week)
+
+on:
+  schedule:
+    # Wednesday and Saturday at 14:00 UTC (15:00 CET)
+    # Offset from blog generation (Mon/Thu 09:00) for natural activity spread
+    - cron: "0 14 * * 3,6"
+  workflow_dispatch:
+    inputs:
+      target_slug:
+        description: "Specific blog slug to comment on (leave empty for auto-selection)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  generate-comments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Generate comments and votes
+        env:
+          CLAUDE_CODE_USE_BEDROCK: "1"
+          ANTHROPIC_MODEL: us.anthropic.claude-sonnet-4-5-20250929-v1:0
+          ANTHROPIC_SMALL_FAST_MODEL: us.anthropic.claude-haiku-4-5-20251001-v1:0
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          DISABLE_PROMPT_CACHING: "1"
+        run: |
+          PROMPT=$(cat .github/prompts/weekly-comments.md)
+
+          # If a specific slug was provided, append it
+          if [ -n "${{ github.event.inputs.target_slug }}" ]; then
+            PROMPT="$PROMPT
+
+          TARGET SLUG OVERRIDE: ${{ github.event.inputs.target_slug }}"
+          fi
+
+          claude -p "$PROMPT" \
+            --model us.anthropic.claude-sonnet-4-5-20250929-v1:0 \
+            --allowedTools "Read,Glob,Grep,Bash(curl *)" \
+            --max-turns 25 \
+            --verbose
