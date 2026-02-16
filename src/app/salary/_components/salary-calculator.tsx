@@ -11,13 +11,6 @@ import {
 import * as React from "react";
 import { useState, useMemo, useEffect } from "react";
 import {
-  motion,
-  AnimatePresence,
-  useSpring,
-  useTransform,
-  useMotionValue,
-} from "framer-motion";
-import {
   Month,
   MonthlySalaryInput,
   MonthlySalaryOutput,
@@ -35,10 +28,15 @@ import {
   SimpleTaxType,
   ChildCount,
 } from "@/config/malta-tax-config";
-import { cn } from "@/lib/utils";
 import type { SalarySearchParams } from "../search-params";
+import { AnimatedCounter } from "./animated-counter";
+import { SummaryCard, type Summary } from "./summary-card";
+import { FloatingNetCard } from "./floating-net-card";
 
-// Hook to detect mobile viewport
+// ---------------------------------------------------------------------------
+// Hooks
+// ---------------------------------------------------------------------------
+
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -52,162 +50,85 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
-// Hook for animated counting number - ultra fast tween animation
-function useAnimatedNumber(value: number) {
-  const motionValue = useMotionValue(value);
+function useSummaryVisibility(ref: React.RefObject<HTMLDivElement | null>) {
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const controls = motionValue.set(value);
-  }, [motionValue, value]);
-
-  // Use animate for fast duration-based transition
-  const animatedValue = useSpring(motionValue, {
-    duration: 250, // 150ms - very fast
-    bounce: 0,
-  });
-
-  return animatedValue;
-}
-
-// Animated counter component - fast counting effect
-function AnimatedCounter({
-  value,
-  className,
-  prefix = "",
-  suffix = "",
-  decimals = 2,
-}: {
-  value: number;
-  className?: string;
-  prefix?: string;
-  suffix?: string;
-  decimals?: number;
-}) {
-  const animatedValue = useAnimatedNumber(value);
-  const displayValue = useTransform(animatedValue, (v) =>
-    v.toLocaleString("en-US", {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    }),
-  );
-
-  return (
-    <motion.span className={className}>
-      {prefix}
-      <motion.span>{displayValue}</motion.span>
-      {suffix}
-    </motion.span>
-  );
-}
-
-// Summary type
-interface Summary {
-  annual: {
-    gross: number;
-    ssc: number;
-    tax: number;
-    net: number;
-  };
-  monthly: {
-    gross: number;
-    ssc: number;
-    tax: number;
-    net: number;
-  };
-}
-
-// Summary Card
-function SummaryCard({
-  icon: Icon,
-  label,
-  value,
-  variant = "default",
-}: {
-  icon: typeof TrendingUp;
-  label: string;
-  value: string;
-  variant?: "default" | "success" | "warning" | "danger";
-}) {
-  const variantStyles = {
-    default: "bg-muted",
-    success: "bg-green-500/10 text-green-700 dark:text-green-400",
-    warning: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
-    danger: "bg-red-500/10 text-red-700 dark:text-red-400",
-  };
-
-  return (
-    <div
-      className={cn(
-        "p-3 rounded-xl transition-all duration-300 hover:scale-[1.02]",
-        variantStyles[variant],
-      )}
-    >
-      <div className="flex items-center gap-1.5 mb-1">
-        <Icon className="h-3.5 w-3.5 opacity-70 flex-shrink-0" />
-        <span className="text-xs text-muted-foreground">{label}</span>
-      </div>
-      <div
-        className={cn(
-          "text-sm sm:text-base font-bold",
-          variant !== "default" &&
-            variantStyles[variant].split(" ").slice(1).join(" "),
-        )}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
-interface SalaryCalculatorClientProps {
-  children: React.ReactNode;
-  initialData: MonthlySalaryOutput[];
-  initialSummary: Summary | null;
-  initialParams: SalarySearchParams;
-}
-
-export function SalaryCalculatorClient({
-  children,
-  initialData,
-  initialSummary,
-  initialParams,
-}: SalaryCalculatorClientProps) {
-  // Local state - URL sync yok, aninda guncelleme
-  const [localParams, setLocalParams] =
-    useState<SalarySearchParams>(initialParams);
-
-  const [data, setData] = useState<MonthlySalaryOutput[]>(initialData);
-  const [isSalaryInputFocused, setIsSalaryInputFocused] = useState(false);
-  const [isSummaryVisible, setIsSummaryVisible] = useState(true);
-  const [hasUserMadeChanges, setHasUserMadeChanges] = useState(false);
-  const isUpdatingRef = React.useRef(false);
-  const previousDataRef = React.useRef<MonthlySalaryOutput[]>(data);
-  const summaryCardRef = React.useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
-
-  // Track Summary card visibility with IntersectionObserver
-  useEffect(() => {
-    if (!summaryCardRef.current) return;
+    if (!ref.current) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsSummaryVisible(entry.isIntersecting);
-      },
-      {
-        root: null, // viewport
-        rootMargin: "0px",
-        threshold: 0.1, // Trigger when 10% of the element is visible
-      },
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 },
     );
 
-    observer.observe(summaryCardRef.current);
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [ref]);
 
-    return () => {
-      observer.disconnect();
-    };
-  }, []); // Only run once on mount
+  return isVisible;
+}
 
-  // Parse monthlyBonuses from JSON string
+// ---------------------------------------------------------------------------
+// Salary calculation helpers
+// ---------------------------------------------------------------------------
+
+function buildMonthlySalaries(
+  formValues: ReturnType<typeof useFormValues>,
+): MonthlySalaryInput[] {
+  const grossSalary = formValues.grossSalary ?? 25000;
+  const allowanceBonus = formValues.allowanceBonus || 0;
+  const monthlyGross =
+    grossSalary > 0 ? Number((grossSalary / 12).toFixed(2)) : 0;
+
+  return Object.values(Month).map((month) => ({
+    month,
+    allowanceBonus,
+    bonus: formValues.monthlyBonuses[month] || 0,
+    grossWage: monthlyGross,
+  }));
+}
+
+function buildConfig(
+  formValues: ReturnType<typeof useFormValues>,
+): SalaryCalculatorConfig {
+  return {
+    year: parseInt(formValues.year),
+    taxRateType: formValues.taxRateType as TaxRateType,
+    simpleTaxType: formValues.taxRateType as SimpleTaxType,
+    childCount: formValues.childCount as ChildCount,
+    sscCategory: formValues.sscCategory as SSCCategory,
+    birthDate: new Date(formValues.birthYear, 0, 1),
+    yearlyNonTaxBenefit: formValues.yearlyNonTaxBenefit,
+    yearlyTaxableBenefit: formValues.yearlyTaxableBenefit,
+    monthlyBonus: formValues.monthlyBonus,
+    enableCOLA: true,
+  };
+}
+
+function calculateSummary(data: MonthlySalaryOutput[]): Summary | null {
+  if (data.length === 0) return null;
+
+  const totalGross = data.reduce((sum, d) => sum + d.grossTotal, 0);
+  const totalSSC = data.reduce((sum, d) => sum + d.sscTax, 0);
+  const totalTax = data.reduce((sum, d) => sum + d.incomeTax, 0);
+  const totalNet = data.reduce((sum, d) => sum + d.net, 0);
+
+  return {
+    annual: { gross: totalGross, ssc: totalSSC, tax: totalTax, net: totalNet },
+    monthly: {
+      gross: totalGross / 12,
+      ssc: totalSSC / 12,
+      tax: totalTax / 12,
+      net: totalNet / 12,
+    },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Form values hook - localParams → form field mapping
+// ---------------------------------------------------------------------------
+
+function useFormValues(localParams: SalarySearchParams) {
   const parsedMonthlyBonuses = useMemo((): MonthlyBonuses => {
     if (!localParams.monthlyBonuses) return {};
     try {
@@ -217,8 +138,7 @@ export function SalaryCalculatorClient({
     }
   }, [localParams.monthlyBonuses]);
 
-  // Mevcut form degerlerini local params'tan al
-  const formValues = useMemo(
+  return useMemo(
     () => ({
       grossSalary: localParams.salary,
       year: localParams.year,
@@ -236,43 +156,51 @@ export function SalaryCalculatorClient({
     }),
     [localParams, parsedMonthlyBonuses],
   );
+}
 
-  // Form değerlerinden config oluştur
-  const config: SalaryCalculatorConfig = useMemo(() => {
-    return {
-      year: parseInt(formValues.year),
-      taxRateType: formValues.taxRateType as TaxRateType,
-      simpleTaxType: formValues.taxRateType as SimpleTaxType,
-      childCount: formValues.childCount as ChildCount,
-      sscCategory: formValues.sscCategory as SSCCategory,
-      birthDate: new Date(formValues.birthYear, 0, 1),
-      yearlyNonTaxBenefit: formValues.yearlyNonTaxBenefit,
-      yearlyTaxableBenefit: formValues.yearlyTaxableBenefit,
-      monthlyBonus: formValues.monthlyBonus,
-      enableCOLA: true,
-    };
-  }, [formValues]);
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
 
-  // Hesaplama useMemo ile senkron yapilir (useEffect'teki double render kalkar)
-  const calculatedData = useMemo(() => {
-    const grossSalary = formValues.grossSalary ?? 25000;
-    const allowanceBonus = formValues.allowanceBonus || 0;
+interface SalaryCalculatorClientProps {
+  children: React.ReactNode;
+  initialData: MonthlySalaryOutput[];
+  initialSummary: Summary | null;
+  initialParams: SalarySearchParams;
+}
 
-    const monthlySalaries: MonthlySalaryInput[] = [];
-    for (const month of Object.values(Month)) {
-      const monthBonus = formValues.monthlyBonuses[month] || 0;
-      monthlySalaries.push({
-        month,
-        allowanceBonus,
-        bonus: monthBonus,
-        grossWage: grossSalary > 0 ? Number((grossSalary / 12).toFixed(2)) : 0,
-      });
-    }
+export function SalaryCalculatorClient({
+  children,
+  initialData,
+  initialSummary,
+  initialParams,
+}: SalaryCalculatorClientProps) {
+  // --- State ---
+  const [localParams, setLocalParams] =
+    useState<SalarySearchParams>(initialParams);
+  const [data, setData] = useState<MonthlySalaryOutput[]>(initialData);
+  const [isSalaryInputFocused, setIsSalaryInputFocused] = useState(false);
+  const [hasUserMadeChanges, setHasUserMadeChanges] = useState(false);
 
-    return calculateMonthlyDeductions(monthlySalaries, config);
-  }, [formValues, config]);
+  // --- Refs ---
+  const isUpdatingRef = React.useRef(false);
+  const previousDataRef = React.useRef<MonthlySalaryOutput[]>(data);
+  const summaryCardRef = React.useRef<HTMLDivElement>(null);
 
-  // Form degisikliginde data'yi senkron guncelle (derived state pattern)
+  // --- Hooks ---
+  const isMobile = useIsMobile();
+  const isSummaryVisible = useSummaryVisibility(summaryCardRef);
+  const formValues = useFormValues(localParams);
+
+  // --- Derived calculations ---
+  const config = useMemo(() => buildConfig(formValues), [formValues]);
+
+  const calculatedData = useMemo(
+    () => calculateMonthlyDeductions(buildMonthlySalaries(formValues), config),
+    [formValues, config],
+  );
+
+  // Sync calculated data → state (derived state pattern)
   const prevCalcRef = React.useRef(calculatedData);
   const isFormDrivenUpdate = React.useRef(false);
   if (prevCalcRef.current !== calculatedData) {
@@ -281,8 +209,7 @@ export function SalaryCalculatorClient({
     setData(calculatedData);
   }
 
-  // Tablo icinden deger degistiginde guncelle (grossWage fill-down)
-  // Sadece tablo-driven degisikliklerde calisir, form-driven'da skip eder
+  // Table-driven grossWage fill-down
   useEffect(() => {
     if (isFormDrivenUpdate.current) {
       isFormDrivenUpdate.current = false;
@@ -296,67 +223,37 @@ export function SalaryCalculatorClient({
     }
     if (data.length === 0) return;
 
-    // Check for grossWage changes (only from table edits)
-    const lastChangedGrossIndex = data.findIndex((item, index) => {
-      return item.grossWage !== previousDataRef.current[index]?.grossWage;
-    });
+    const lastChangedGrossIndex = data.findIndex(
+      (item, index) =>
+        item.grossWage !== previousDataRef.current[index]?.grossWage,
+    );
 
     if (
       lastChangedGrossIndex !== -1 &&
       lastChangedGrossIndex !== data.length - 1
     ) {
-      const updatedData = data.map((item, index) => {
-        if (index > lastChangedGrossIndex) {
-          return { ...item, grossWage: data[lastChangedGrossIndex].grossWage };
-        }
-        return item;
-      });
+      const updatedData = data.map((item, index) =>
+        index > lastChangedGrossIndex
+          ? { ...item, grossWage: data[lastChangedGrossIndex].grossWage }
+          : item,
+      );
 
       isUpdatingRef.current = true;
-      const monthlySalaries: MonthlySalaryInput[] = [];
-      for (const line of updatedData) {
-        const safeGrossWage = isNaN(Number(line.grossWage))
-          ? 0
-          : Number(line.grossWage);
-        monthlySalaries.push({
-          month: line.month,
-          allowanceBonus: formValues.allowanceBonus || 0,
-          bonus: formValues.monthlyBonuses[line.month] || 0,
-          grossWage: safeGrossWage,
-        });
-      }
+      const monthlySalaries: MonthlySalaryInput[] = updatedData.map((line) => ({
+        month: line.month,
+        allowanceBonus: formValues.allowanceBonus || 0,
+        bonus: formValues.monthlyBonuses[line.month] || 0,
+        grossWage: isNaN(Number(line.grossWage)) ? 0 : Number(line.grossWage),
+      }));
       setData(calculateMonthlyDeductions(monthlySalaries, config));
     }
 
     previousDataRef.current = data;
   }, [data, config, formValues.allowanceBonus, formValues.monthlyBonuses]);
 
-  // Özet hesapla
-  const summary = useMemo(() => {
-    if (data.length === 0) return null;
+  const summary = useMemo(() => calculateSummary(data), [data]);
 
-    const totalGross = data.reduce((sum, d) => sum + d.grossTotal, 0);
-    const totalSSC = data.reduce((sum, d) => sum + d.sscTax, 0);
-    const totalTax = data.reduce((sum, d) => sum + d.incomeTax, 0);
-    const totalNet = data.reduce((sum, d) => sum + d.net, 0);
-
-    return {
-      annual: {
-        gross: totalGross,
-        ssc: totalSSC,
-        tax: totalTax,
-        net: totalNet,
-      },
-      monthly: {
-        gross: totalGross / 12,
-        ssc: totalSSC / 12,
-        tax: totalTax / 12,
-        net: totalNet / 12,
-      },
-    };
-  }, [data]);
-
-  // Form value update handler - local state gunceller (URL sync yok, aninda)
+  // --- Handlers ---
   const handleValuesChange = (values: Partial<typeof formValues>) => {
     setHasUserMadeChanges(true);
 
@@ -395,6 +292,24 @@ export function SalaryCalculatorClient({
     }));
   };
 
+  const handleBonusChange = (month: string, value: number) => {
+    const newBonuses = { ...formValues.monthlyBonuses };
+    if (value > 0) {
+      newBonuses[month as Month] = value;
+    } else {
+      delete newBonuses[month as Month];
+    }
+    handleValuesChange({ ...formValues, monthlyBonuses: newBonuses });
+  };
+
+  // --- Floating card visibility ---
+  const showFloatingCard =
+    isMobile &&
+    hasUserMadeChanges &&
+    (isSalaryInputFocused || !isSummaryVisible) &&
+    !!summary;
+
+  // --- Render ---
   return (
     <div className="space-y-6">
       {/* Two Column Layout: Form + Summary */}
@@ -416,7 +331,6 @@ export function SalaryCalculatorClient({
         {summary && (
           <div ref={summaryCardRef}>
             <SalaryFormCard title="Summary" icon={Wallet}>
-              {/* Annual Summary Cards - 2x2 grid */}
               <div className="grid grid-cols-2 gap-2">
                 <SummaryCard
                   icon={TrendingUp}
@@ -486,84 +400,21 @@ export function SalaryCalculatorClient({
           <MobileMonthlyCards
             data={data}
             setData={setData}
-            onBonusChange={(month, value) => {
-              // Update URL state with new bonus value
-              const newBonuses = { ...formValues.monthlyBonuses };
-              if (value > 0) {
-                newBonuses[month as Month] = value;
-              } else {
-                delete newBonuses[month as Month];
-              }
-              handleValuesChange({ ...formValues, monthlyBonuses: newBonuses });
-            }}
+            onBonusChange={handleBonusChange}
           />
         ) : (
           <SalaryTable
             data={data}
             setData={setData}
-            onBonusChange={(month, value) => {
-              // Update URL state with new bonus value
-              const newBonuses = { ...formValues.monthlyBonuses };
-              if (value > 0) {
-                newBonuses[month] = value;
-              } else {
-                delete newBonuses[month];
-              }
-              handleValuesChange({ ...formValues, monthlyBonuses: newBonuses });
-            }}
+            onBonusChange={handleBonusChange}
           />
         )}
       </SalaryFormCard>
 
-      {/* Mobile Floating Net Salary Card - Positioned at TOP */}
-      <AnimatePresence>
-        {isMobile &&
-          hasUserMadeChanges &&
-          (isSalaryInputFocused || !isSummaryVisible) &&
-          summary && (
-            <motion.div
-              initial={{ y: -80, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -80, opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="fixed top-0 left-0 right-0 z-50 p-3 pt-[max(0.75rem,env(safe-area-inset-top))]"
-            >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border border-white/50 dark:border-white/20">
-                <div className="px-4 py-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-xl bg-green-500/15 border border-green-500/20">
-                        <Wallet className="h-4 w-4 text-green-700 dark:text-green-400" />
-                      </div>
-                      <div>
-                        <span className="text-gray-600 dark:text-gray-300 text-xs font-semibold uppercase tracking-wider block">
-                          Monthly Net
-                        </span>
-                        <span className="text-gray-500 dark:text-gray-400 text-[10px]">
-                          After tax & SSC
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-2xl font-bold text-green-700 dark:text-green-400 block">
-                        €
-                        {summary.monthly.net.toLocaleString("en-US", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </span>
-                      <span className="text-gray-500 dark:text-gray-400 text-xs font-medium">
-                        €
-                        {Math.round(summary.annual.net).toLocaleString("en-US")}
-                        /year
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-      </AnimatePresence>
+      {/* Mobile Floating Net Salary Card */}
+      {summary && (
+        <FloatingNetCard visible={showFloatingCard} summary={summary} />
+      )}
     </div>
   );
 }
