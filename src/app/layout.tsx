@@ -16,7 +16,6 @@ import {
   twitterMetadata,
   viewportConfig,
 } from "@/app/shared-metadata";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const inter = Inter({ subsets: ["latin"] });
 const calSans = LocalFont({
@@ -52,13 +51,11 @@ export default function RootLayout({
         >
           <SpeedInsights />
           <Analytics />
-          <NuqsAdapter>
-            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-              <Background>{children}</Background>
-              <Toaster richColors />
-              <TailwindIndicator />
-            </ThemeProvider>
-          </NuqsAdapter>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <Background>{children}</Background>
+            <Toaster richColors />
+            <TailwindIndicator />
+          </ThemeProvider>
         </body>
         <GoogleAnalytics gaId="G-LCNYBX78G0" />
       </html>

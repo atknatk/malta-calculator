@@ -279,27 +279,31 @@ export function SalaryCalculatorClient({
     };
   }, [formValues]);
 
-  // URL params değiştiğinde hesapla
-  useEffect(() => {
+  // Hesaplama useMemo ile senkron yapilir (useEffect'teki double render kalkar)
+  const calculatedData = useMemo(() => {
     const grossSalary = formValues.grossSalary ?? 25000;
     const allowanceBonus = formValues.allowanceBonus || 0;
 
     const monthlySalaries: MonthlySalaryInput[] = [];
     for (const month of Object.values(Month)) {
-      // Per-month bonus: check if this month has a specific bonus
       const monthBonus = formValues.monthlyBonuses[month] || 0;
-
       monthlySalaries.push({
         month,
         allowanceBonus,
-        bonus: monthBonus, // Per-month bonus
+        bonus: monthBonus,
         grossWage: grossSalary > 0 ? Number((grossSalary / 12).toFixed(2)) : 0,
       });
     }
 
-    const calculatedData = calculateMonthlyDeductions(monthlySalaries, config);
-    setData(calculatedData);
+    return calculateMonthlyDeductions(monthlySalaries, config);
   }, [formValues, config]);
+
+  // Form degisikliginde data'yi senkron guncelle (derived state pattern)
+  const prevCalcRef = React.useRef(calculatedData);
+  if (prevCalcRef.current !== calculatedData) {
+    prevCalcRef.current = calculatedData;
+    setData(calculatedData);
+  }
 
   // Tablo içinden değer değiştiğinde güncelle (grossWage değiştiğinde fill-down)
   useEffect(() => {
