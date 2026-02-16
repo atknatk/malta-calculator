@@ -209,6 +209,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       changeFrequency: "yearly" as const,
     },
+    // Property Transfer Tax blog page
+    {
+      url: `${baseUrl}/blog/malta-property-transfer-tax-guide-2026`,
+      priority: 0.8,
+      changeFrequency: "yearly" as const,
+    },
   ];
 
   // Company pages
