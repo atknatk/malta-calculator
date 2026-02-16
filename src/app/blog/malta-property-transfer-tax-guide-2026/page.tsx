@@ -17,7 +17,7 @@ import {
   AlertTriangle,
   CheckCircle,
   FileText,
-  Euro,
+  ExternalLink,
 } from "lucide-react";
 import {
   ArticleJsonLd,
@@ -27,8 +27,7 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title:
-    "Malta Property Transfer Tax Guide 2026: Complete Cost Breakdown | Malta Calculator",
+  title: "Malta Property Transfer Tax Guide 2026 | Malta Calculator",
   description:
     "Complete guide to Malta property transfer tax 2026. Stamp duty rates (5%, 3.5%), notarial fees, capital gains tax, and all costs when buying property in Malta.",
   keywords: [
@@ -59,7 +58,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
   return (
     <MarketingLayout>
       <ArticleJsonLd
-        title="Malta Property Transfer Tax Guide 2026: Complete Cost Breakdown"
+        title="Malta Property Transfer Tax Guide 2026"
         description="Complete guide to all taxes and fees involved in property transfers in Malta."
         slug="malta-property-transfer-tax-guide-2026"
         datePublished="2026-02-16"
@@ -96,7 +95,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
           {
             question: "What is capital gains tax on property sales in Malta?",
             answer:
-              "Malta applies an 8% final withholding tax (capital gains tax) on property sales. This tax is calculated on the transfer value and is typically deducted by the notary at the time of sale. However, properties held for more than 5 years may benefit from exemptions or reduced rates. The seller is responsible for this tax, not the buyer.",
+              "Malta applies an 8% final withholding tax on the selling price of property. This is not a tax on the profit but on the full transfer value, and it is typically deducted by the notary at the time of sale. Alternatively, sellers can elect to be taxed on the actual gain at progressive income tax rates (12%-35%). The seller is responsible for this tax, not the buyer.",
           },
           {
             question:
@@ -106,7 +105,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
           },
         ]}
       />
-      <main role="main">
+      <main role="main" aria-label="Malta Property Transfer Tax Guide">
         <Shell className="max-w-4xl py-12">
           <Link
             href="/blog"
@@ -374,12 +373,21 @@ export default function MaltaPropertyTransferTaxGuidePage() {
               <div className="p-6 bg-blue-500/10 rounded-xl not-prose my-6 border border-blue-500/20">
                 <FileText className="h-8 w-8 text-blue-500 mb-4" />
                 <h4 className="font-semibold text-lg mb-2">
-                  Source: Malta Tax and Customs Administration
+                  Source: Duty on Documents and Transfers Act
                 </h4>
                 <p className="text-sm text-muted-foreground">
                   Stamp duty rates are regulated by Malta&apos;s Duty on
-                  Documents and Transfers Act. Rates referenced from existing
-                  Malta Calculator stamp duty implementation (2026 rates).
+                  Documents and Transfers Act (Chapter 364 of the Laws of
+                  Malta). See the{" "}
+                  <a
+                    href="https://legislation.mt/eli/cap/364/eng"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    official legislation
+                  </a>{" "}
+                  for the full legal text.
                 </p>
               </div>
             </section>
@@ -583,15 +591,22 @@ export default function MaltaPropertyTransferTaxGuidePage() {
               <h2>Capital Gains Tax (Seller&apos;s Responsibility)</h2>
               <p>
                 While buyers pay stamp duty, sellers must pay capital gains tax
-                on property sales. This is an{" "}
-                <strong>8% final withholding tax</strong> calculated on the
-                transfer value.
+                on property sales. Malta offers two options: an{" "}
+                <strong>8% final withholding tax</strong> on the selling price,
+                or taxation on the actual gain at progressive income tax rates.
+                Most sellers opt for the 8% final withholding tax for
+                simplicity.
               </p>
 
               <h3>Capital Gains Tax Details</h3>
               <ul>
                 <li>
-                  <strong>Rate:</strong> 8% of transfer value
+                  <strong>Rate:</strong> 8% final withholding tax on the selling
+                  price (not the profit)
+                </li>
+                <li>
+                  <strong>Alternative:</strong> Sellers may elect to be taxed on
+                  the actual gain at progressive rates (12%-35%)
                 </li>
                 <li>
                   <strong>Who Pays:</strong> Seller (not buyer)
@@ -599,10 +614,6 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                 <li>
                   <strong>Collection:</strong> Deducted by notary at time of
                   sale
-                </li>
-                <li>
-                  <strong>Exemptions:</strong> Properties held for 5+ years may
-                  qualify for reduced rates
                 </li>
               </ul>
 
@@ -615,7 +626,8 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                     • Sale Price: <strong>€300,000</strong>
                   </li>
                   <li>
-                    • Capital Gains Tax (8%): <strong>€24,000</strong>
+                    • Final Withholding Tax (8% of selling price):{" "}
+                    <strong>€24,000</strong>
                   </li>
                   <li>
                     • Net to Seller: <strong>€276,000</strong> (minus other
@@ -625,9 +637,18 @@ export default function MaltaPropertyTransferTaxGuidePage() {
               </div>
 
               <p>
-                <strong>Important:</strong> Capital gains tax is separate from
-                income tax. It&apos;s a final tax, meaning no further tax is due
-                on the sale proceeds.
+                <strong>Important:</strong> The 8% final withholding tax is
+                calculated on the full selling price, not on the profit. It is a
+                final tax, meaning no further tax is due on the sale proceeds.
+                This is governed by{" "}
+                <a
+                  href="https://legislation.mt/eli/cap/123/eng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  the Income Tax Act (Chapter 123)
+                </a>
+                .
               </p>
             </section>
 
@@ -1014,12 +1035,13 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                 <div>
                   <h3>What is capital gains tax on property sales in Malta?</h3>
                   <p>
-                    Malta applies an 8% final withholding tax (capital gains
-                    tax) on property sales. This tax is calculated on the
-                    transfer value and is typically deducted by the notary at
-                    the time of sale. However, properties held for more than 5
-                    years may benefit from exemptions or reduced rates. The
-                    seller is responsible for this tax, not the buyer.
+                    Malta applies an 8% final withholding tax on the full
+                    selling price of property. This is not a tax on the profit
+                    but on the transfer value, and it is typically deducted by
+                    the notary at the time of sale. Alternatively, sellers can
+                    elect to be taxed on the actual gain at progressive income
+                    tax rates (12%-35%). The seller is responsible for this tax,
+                    not the buyer.
                   </p>
                 </div>
 
@@ -1091,6 +1113,79 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                     Home loan essentials, LTV ratios, and monthly payments
                   </p>
                 </Link>
+              </div>
+            </section>
+
+            {/* Official Sources */}
+            <section className="mt-16 not-prose">
+              <h2 className="text-2xl font-cal font-bold mb-6">
+                Official Sources & References
+              </h2>
+              <div className="space-y-3">
+                <a
+                  href="https://legislation.mt/eli/cap/364/eng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 border border-border/50 hover:border-primary/50 transition-colors text-sm"
+                >
+                  <ExternalLink className="h-4 w-4 text-primary flex-shrink-0" />
+                  <div>
+                    <span className="font-semibold">
+                      Duty on Documents and Transfers Act (Cap. 364)
+                    </span>
+                    <span className="text-muted-foreground ml-2">
+                      - legislation.mt
+                    </span>
+                  </div>
+                </a>
+                <a
+                  href="https://legislation.mt/eli/cap/123/eng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 border border-border/50 hover:border-primary/50 transition-colors text-sm"
+                >
+                  <ExternalLink className="h-4 w-4 text-primary flex-shrink-0" />
+                  <div>
+                    <span className="font-semibold">
+                      Income Tax Act (Cap. 123) - Capital Gains Rules
+                    </span>
+                    <span className="text-muted-foreground ml-2">
+                      - legislation.mt
+                    </span>
+                  </div>
+                </a>
+                <a
+                  href="https://cfr.gov.mt/en/inlandrevenue/Pages/Duty-on-Documents-and-Transfers.aspx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 border border-border/50 hover:border-primary/50 transition-colors text-sm"
+                >
+                  <ExternalLink className="h-4 w-4 text-primary flex-shrink-0" />
+                  <div>
+                    <span className="font-semibold">
+                      Commissioner for Revenue - Duty on Documents
+                    </span>
+                    <span className="text-muted-foreground ml-2">
+                      - cfr.gov.mt
+                    </span>
+                  </div>
+                </a>
+                <a
+                  href="https://cfr.gov.mt/en/inlandrevenue/Pages/Property-Transfers.aspx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 border border-border/50 hover:border-primary/50 transition-colors text-sm"
+                >
+                  <ExternalLink className="h-4 w-4 text-primary flex-shrink-0" />
+                  <div>
+                    <span className="font-semibold">
+                      Commissioner for Revenue - Property Transfers
+                    </span>
+                    <span className="text-muted-foreground ml-2">
+                      - cfr.gov.mt
+                    </span>
+                  </div>
+                </a>
               </div>
             </section>
 
