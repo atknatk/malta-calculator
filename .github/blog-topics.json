@@ -1,29 +1,6 @@
 {
-  "description": "Blog topics queue for weekly auto-generation. All topics MUST be Malta tax, financial calculation, or calculator-related. Topics are picked in order. Add new topics at the bottom.",
+  "description": "Blog topics queue for automated generation (2x/week). Topics MUST be Malta tax, financial calculation, or calculator-related. Topics are picked in order. Add new topics at the bottom. Each topic should target a unique search intent cluster.",
   "topics": [
-    {
-      "title": "Malta Property Transfer Tax Guide 2026",
-      "slug": "malta-property-transfer-tax-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "malta property tax",
-        "property transfer tax malta",
-        "immovable property tax",
-        "duty on documents"
-      ],
-      "relatedCalculator": "stamp-duty"
-    },
-    {
-      "title": "Malta Freelancer Tax & SSC Calculator Guide",
-      "slug": "malta-freelancer-tax-ssc-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "freelancer tax malta",
-        "self-employed tax calculation",
-        "freelance SSC malta"
-      ],
-      "relatedCalculator": "self-employed-tax"
-    },
     {
       "title": "Malta Crypto & Digital Asset Tax Guide 2026",
       "slug": "malta-crypto-digital-asset-tax-guide-2026",
@@ -31,10 +8,26 @@
       "keywords": [
         "crypto tax malta",
         "bitcoin tax malta",
-        "digital asset taxation",
-        "capital gains crypto"
+        "digital asset taxation malta",
+        "capital gains crypto malta",
+        "cryptocurrency tax rate malta 2026",
+        "NFT tax malta"
       ],
       "relatedCalculator": null
+    },
+    {
+      "title": "How to Calculate Your Net Salary in Malta (2026 Guide)",
+      "slug": "how-to-calculate-net-salary-malta-2026",
+      "category": "Calculator Guide",
+      "keywords": [
+        "calculate net salary malta",
+        "malta take home pay",
+        "gross to net salary malta",
+        "malta salary after tax",
+        "net pay calculator malta 2026",
+        "how much tax on salary malta"
+      ],
+      "relatedCalculator": "salary"
     },
     {
       "title": "Malta Double Taxation Treaty Guide 2026",
@@ -43,8 +36,10 @@
       "keywords": [
         "double taxation malta",
         "tax treaty malta",
-        "DTA relief",
-        "foreign tax credit"
+        "DTA relief malta",
+        "foreign tax credit malta",
+        "avoid double taxation malta",
+        "bilateral tax agreement malta"
       ],
       "relatedCalculator": null
     },
@@ -53,22 +48,54 @@
       "slug": "malta-vat-rates-registration-guide-2026",
       "category": "Tax Guide",
       "keywords": [
-        "VAT malta",
-        "VAT rates 2026",
-        "VAT registration threshold",
-        "eco contribution"
+        "VAT rates malta 2026",
+        "VAT registration threshold malta",
+        "eco contribution malta",
+        "18% VAT malta",
+        "reduced VAT rate malta",
+        "VAT return filing malta"
       ],
       "relatedCalculator": null
     },
     {
-      "title": "Malta Corporate Tax & Refund System Guide",
+      "title": "How Much Tax Do You Pay on a €30,000 Salary in Malta?",
+      "slug": "how-much-tax-30000-salary-malta-2026",
+      "category": "Tax Breakdown",
+      "keywords": [
+        "tax on 30000 salary malta",
+        "€30000 take home pay malta",
+        "malta tax calculation example",
+        "income tax example malta",
+        "salary tax breakdown malta",
+        "30k salary after tax malta"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta Corporate Tax & Refund System Guide 2026",
       "slug": "malta-corporate-tax-refund-system-guide-2026",
-      "category": "Tax Guide",
+      "category": "Business Tax",
       "keywords": [
         "corporate tax malta",
-        "tax refund system",
-        "6/7 refund",
-        "company tax rate"
+        "6/7 tax refund malta",
+        "company tax rate malta 2026",
+        "malta imputation system",
+        "shareholder tax refund malta",
+        "35% corporate tax malta"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Malta Tax Deadlines 2026: Key Dates You Must Know",
+      "slug": "malta-tax-deadlines-key-dates-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "malta tax deadline 2026",
+        "TA24 filing deadline",
+        "tax return due date malta",
+        "provisional tax payment dates",
+        "SSC payment deadline malta",
+        "FSS final settlement malta"
       ],
       "relatedCalculator": null
     },
@@ -78,167 +105,307 @@
       "category": "Tax Guide",
       "keywords": [
         "inheritance tax malta",
-        "duty on documents",
-        "causa mortis",
-        "donation tax"
+        "duty on documents malta",
+        "causa mortis transfer malta",
+        "donation tax rate malta",
+        "property transfer on death malta",
+        "gift tax malta 2026"
       ],
       "relatedCalculator": "stamp-duty"
     },
     {
-      "title": "Malta Rental Income Tax: 15% vs Progressive",
-      "slug": "malta-rental-income-tax-comparison-guide-2026",
-      "category": "Tax Guide",
+      "title": "Is Malta Tax-Friendly for Expats? Complete 2026 Analysis",
+      "slug": "is-malta-tax-friendly-expats-2026-analysis",
+      "category": "Expat Guide",
       "keywords": [
-        "rental tax comparison",
-        "15% flat rate malta",
-        "rental income calculation",
-        "property rental tax"
-      ],
-      "relatedCalculator": "rental-tax"
-    },
-    {
-      "title": "Malta Part-Time Tax & SSC Calculation Guide",
-      "slug": "malta-part-time-tax-ssc-calculation-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "part-time tax malta",
-        "part-time SSC",
-        "secondary employment tax",
-        "Class B SSC"
-      ],
-      "relatedCalculator": "part-time"
-    },
-    {
-      "title": "Malta Expatriate Tax Schemes: HHQP & HQP",
-      "slug": "malta-expatriate-tax-schemes-hhqp-hqp-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "HHQP malta",
-        "HQP scheme",
-        "expatriate tax rate",
-        "15% flat tax expat"
+        "is malta tax friendly",
+        "malta expat tax advantages",
+        "living in malta tax benefits",
+        "malta tax for foreigners",
+        "low tax countries europe malta",
+        "expat tax rate malta 2026"
       ],
       "relatedCalculator": "expatriate-tax"
     },
     {
-      "title": "Malta Bonus Tax Calculation Guide 2026",
-      "slug": "malta-bonus-tax-calculation-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "bonus tax malta",
-        "13th month salary tax",
-        "government bonus malta",
-        "bonus calculation"
-      ],
-      "relatedCalculator": "bonus-tax"
-    },
-    {
-      "title": "Malta Capital Gains Tax on Property Guide",
+      "title": "Malta Capital Gains Tax on Property: Complete Guide",
       "slug": "malta-capital-gains-tax-property-guide-2026",
-      "category": "Tax Guide",
+      "category": "Property Tax",
       "keywords": [
-        "capital gains tax malta",
-        "property sale tax",
-        "final withholding tax property",
-        "8% property tax"
+        "capital gains tax malta property",
+        "property sale tax malta",
+        "8% final withholding tax malta",
+        "selling property tax malta",
+        "real estate capital gains malta",
+        "CGT exemptions malta 2026"
       ],
       "relatedCalculator": "stamp-duty"
     },
     {
-      "title": "Malta SSC Calculation: All Classes Explained",
-      "slug": "malta-ssc-all-classes-calculation-guide-2026",
-      "category": "Tax Guide",
+      "title": "Malta Digital Nomad Visa: Tax & SSC Implications 2026",
+      "slug": "malta-digital-nomad-visa-tax-guide-2026",
+      "category": "Expat Guide",
       "keywords": [
-        "SSC classes malta",
-        "Class A B C D",
-        "social security calculation",
-        "weekly SSC cap"
+        "malta digital nomad visa",
+        "nomad residence permit malta",
+        "remote worker tax malta",
+        "digital nomad tax obligations malta",
+        "work remotely in malta",
+        "nomad visa tax rate malta"
       ],
-      "relatedCalculator": "self-employed-ssc"
+      "relatedCalculator": "expatriate-tax"
     },
     {
-      "title": "Malta Pension Tax & Calculation Guide 2026",
-      "slug": "malta-pension-tax-calculation-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "pension tax malta",
-        "retirement pension calculation",
-        "two-thirds pension",
-        "pension calculator"
-      ],
-      "relatedCalculator": "pension"
-    },
-    {
-      "title": "Malta Stamp Duty Complete Calculation Guide",
-      "slug": "malta-stamp-duty-calculation-rates-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "stamp duty rates malta",
-        "duty on documents calculation",
-        "AIP stamp duty",
-        "property stamp duty"
-      ],
-      "relatedCalculator": "stamp-duty"
-    },
-    {
-      "title": "Malta Vehicle Registration Tax (VRT) How It Works",
-      "slug": "malta-vrt-calculation-how-it-works-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "VRT calculation malta",
-        "vehicle registration tax",
-        "CO2 emissions tax",
-        "car import tax"
-      ],
-      "relatedCalculator": "vrt"
-    },
-    {
-      "title": "Malta Savings Interest Tax Guide 2026",
-      "slug": "malta-savings-interest-tax-calculation-guide-2026",
-      "category": "Tax Guide",
-      "keywords": [
-        "savings interest tax malta",
-        "withholding tax interest",
-        "15% interest tax",
-        "bank interest tax"
-      ],
-      "relatedCalculator": "savings-interest"
-    },
-    {
-      "title": "Malta Mortgage Affordability Calculator Guide",
-      "slug": "malta-mortgage-affordability-calculation-guide-2026",
-      "category": "Finance",
-      "keywords": [
-        "mortgage calculation malta",
-        "home loan affordability",
-        "mortgage interest rates",
-        "LTV ratio malta"
-      ],
-      "relatedCalculator": "mortgage"
-    },
-    {
-      "title": "Malta In-Work Benefit Calculation Guide 2026",
+      "title": "Malta In-Work Benefit: Who Qualifies & How to Calculate",
       "slug": "malta-in-work-benefit-calculation-guide-2026",
       "category": "Social Security",
       "keywords": [
-        "in-work benefit malta",
-        "IWB calculation",
-        "tapering rate",
-        "working family benefit"
+        "in-work benefit malta 2026",
+        "IWB calculation malta",
+        "tapering rate in-work benefit",
+        "working family benefit malta",
+        "who qualifies in-work benefit malta",
+        "IWB income threshold malta"
       ],
       "relatedCalculator": "in-work-benefit"
     },
     {
-      "title": "Malta Sick Leave Benefit Calculation Guide",
+      "title": "Malta vs Cyprus: Tax Comparison for Expats 2026",
+      "slug": "malta-vs-cyprus-tax-comparison-expats-2026",
+      "category": "Comparison",
+      "keywords": [
+        "malta vs cyprus tax",
+        "best tax country europe expats",
+        "cyprus tax rate vs malta",
+        "expat tax comparison mediterranean",
+        "relocate malta or cyprus",
+        "corporate tax malta vs cyprus"
+      ],
+      "relatedCalculator": "expatriate-tax"
+    },
+    {
+      "title": "Understanding Your Malta Payslip: Complete Breakdown",
+      "slug": "understanding-malta-payslip-breakdown-2026",
+      "category": "Employment",
+      "keywords": [
+        "malta payslip explained",
+        "reading payslip malta",
+        "payslip deductions malta",
+        "FSS on payslip malta",
+        "SSC deduction payslip",
+        "gross vs net payslip malta"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta Sick Leave Benefit: Rates & Calculation Guide",
       "slug": "malta-sick-leave-benefit-calculation-guide-2026",
       "category": "Employment",
       "keywords": [
-        "sick leave calculation malta",
-        "sickness benefit rate",
-        "injury benefit",
-        "sick pay entitlement"
+        "sick leave malta 2026",
+        "sickness benefit rate malta",
+        "injury benefit malta",
+        "sick pay entitlement malta",
+        "how much sick pay malta",
+        "sick leave days malta"
       ],
       "relatedCalculator": "sick-leave"
+    },
+    {
+      "title": "How to File Your Malta Tax Return Online (TA24 Guide)",
+      "slug": "how-to-file-malta-tax-return-ta24-guide-2026",
+      "category": "How-To",
+      "keywords": [
+        "file tax return malta online",
+        "TA24 form malta",
+        "cfr online services malta",
+        "malta tax return guide",
+        "how to submit tax return malta",
+        "TA24 step by step malta"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Malta Employer Cost: True Cost of Hiring in 2026",
+      "slug": "malta-employer-cost-hiring-guide-2026",
+      "category": "Business",
+      "keywords": [
+        "employer cost malta",
+        "cost of hiring malta",
+        "employer SSC contribution malta",
+        "total employment cost malta",
+        "hiring an employee malta 2026",
+        "employer obligations malta"
+      ],
+      "relatedCalculator": "employer-cost"
+    },
+    {
+      "title": "Malta Tax Residency: 183-Day Rule Explained",
+      "slug": "malta-tax-residency-183-day-rule-explained-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "malta tax residency rules",
+        "183 day rule malta",
+        "tax resident malta",
+        "ordinarily resident malta",
+        "domicile vs residence malta",
+        "remittance basis malta tax"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Moving to Malta: Complete Financial Checklist 2026",
+      "slug": "moving-to-malta-financial-checklist-2026",
+      "category": "Expat Guide",
+      "keywords": [
+        "moving to malta checklist",
+        "relocating to malta costs",
+        "malta cost of living 2026",
+        "what to know before moving malta",
+        "financial planning malta relocation",
+        "expat guide malta 2026"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta Marriage Tax Benefits: How Much Can Couples Save?",
+      "slug": "malta-marriage-tax-benefits-savings-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "marriage tax benefit malta",
+        "married tax rate malta",
+        "couples tax savings malta",
+        "joint tax computation malta",
+        "married vs single tax malta",
+        "spouse tax deduction malta"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta iGaming Sector: Employee Tax & Benefits Guide",
+      "slug": "malta-igaming-employee-tax-benefits-guide-2026",
+      "category": "Industry Guide",
+      "keywords": [
+        "igaming tax malta",
+        "gaming industry salary malta",
+        "igaming employee benefits malta",
+        "online gambling tax malta",
+        "gaming sector malta tax 2026",
+        "MGA licensed company tax"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta Childcare Benefits & Tax Deductions 2026",
+      "slug": "malta-childcare-benefits-tax-deductions-2026",
+      "category": "Family Finance",
+      "keywords": [
+        "childcare tax deduction malta",
+        "free childcare malta",
+        "child tax benefit malta 2026",
+        "working parent benefits malta",
+        "children allowance tax malta",
+        "school transport benefit malta"
+      ],
+      "relatedCalculator": "in-work-benefit"
+    },
+    {
+      "title": "Malta Net Salary vs EU Average: How Do You Compare?",
+      "slug": "malta-net-salary-vs-eu-average-comparison-2026",
+      "category": "Comparison",
+      "keywords": [
+        "malta salary vs eu average",
+        "average salary malta 2026",
+        "malta wages compared europe",
+        "purchasing power malta vs eu",
+        "net salary comparison europe",
+        "malta income vs eu countries"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta Eco-Contribution & Environmental Taxes Guide",
+      "slug": "malta-eco-contribution-environmental-taxes-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "eco contribution malta",
+        "environmental tax malta",
+        "eco tax rates malta 2026",
+        "packaging waste tax malta",
+        "carbon tax malta",
+        "green tax malta"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "How to Reduce Your Tax Bill in Malta Legally (2026)",
+      "slug": "reduce-tax-bill-malta-legally-2026",
+      "category": "Tax Planning",
+      "keywords": [
+        "reduce tax malta",
+        "tax savings tips malta",
+        "legal tax deductions malta",
+        "tax planning malta 2026",
+        "lower income tax malta",
+        "tax efficient strategies malta"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta Startup Tax Incentives & Business Benefits 2026",
+      "slug": "malta-startup-tax-incentives-benefits-2026",
+      "category": "Business Tax",
+      "keywords": [
+        "startup tax incentives malta",
+        "malta enterprise support",
+        "business tax benefits malta",
+        "SME tax malta 2026",
+        "new business tax relief malta",
+        "microinvest tax credit malta"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Malta vs Portugal: Tax Comparison for Retirees & Expats",
+      "slug": "malta-vs-portugal-tax-comparison-2026",
+      "category": "Comparison",
+      "keywords": [
+        "malta vs portugal tax",
+        "retirement tax comparison europe",
+        "NHR portugal vs malta expat",
+        "best country retire tax europe",
+        "pension tax malta vs portugal",
+        "expat tax portugal vs malta"
+      ],
+      "relatedCalculator": "pension"
+    },
+    {
+      "title": "Malta Garnishee Orders: Salary Deduction Rules Explained",
+      "slug": "malta-garnishee-orders-salary-deduction-rules-2026",
+      "category": "Employment",
+      "keywords": [
+        "garnishee order malta",
+        "salary deduction malta",
+        "court order salary malta",
+        "wage garnishment malta",
+        "protected salary malta",
+        "garnishee calculation malta"
+      ],
+      "relatedCalculator": "salary"
+    },
+    {
+      "title": "Malta Night Shift & Shift Allowance Tax Treatment",
+      "slug": "malta-night-shift-allowance-tax-treatment-2026",
+      "category": "Employment",
+      "keywords": [
+        "night shift allowance malta",
+        "shift work tax malta",
+        "overtime night rate malta",
+        "unsocial hours pay malta",
+        "shift premium tax malta",
+        "night work rules malta"
+      ],
+      "relatedCalculator": "salary"
     }
   ]
 }

@@ -117,9 +117,21 @@ Content requirements:
 - Professional, informative tone
 - 1500-2500 words of actual content
 - Include practical calculation examples (step-by-step with real numbers)
-- At least 3 FAQ items with proper JSON-LD matching the CustomFAQJsonLd component
+- At least 5 FAQ items with proper JSON-LD matching the CustomFAQJsonLd component (target People Also Ask)
 - Use today's date for datePublished
 - Every tax rate, threshold, and calculation must have a cited source
+
+SEO content optimization:
+
+- Use the primary keyword naturally in the first 100 words of the article
+- Include ALL keywords from blog-topics.json for the chosen topic throughout the content
+- Use H2 headings that contain target keywords (question-format preferred, e.g. "How Is Malta Income Tax Calculated?")
+- Include a comparison table or summary table in every post (tables rank well in featured snippets)
+- Write the meta description as a compelling call-to-action that includes the primary keyword
+- Add "Key Takeaways" or "Quick Summary" box near the top (improves time on page)
+- Internal link to at least 3 other blog posts and 2 calculators on the site
+- Use numbered lists and bullet points for scannable content (improves featured snippet chances)
+- Include a "Related Guides" section at the bottom with links to 3-4 existing blog posts
 
 ### 3c. Add to Blog Index
 
