@@ -1,0 +1,244 @@
+{
+  "description": "Blog topics queue for weekly auto-generation. All topics MUST be Malta tax, financial calculation, or calculator-related. Topics are picked in order. Add new topics at the bottom.",
+  "topics": [
+    {
+      "title": "Malta Property Transfer Tax Guide 2026",
+      "slug": "malta-property-transfer-tax-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "malta property tax",
+        "property transfer tax malta",
+        "immovable property tax",
+        "duty on documents"
+      ],
+      "relatedCalculator": "stamp-duty"
+    },
+    {
+      "title": "Malta Freelancer Tax & SSC Calculator Guide",
+      "slug": "malta-freelancer-tax-ssc-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "freelancer tax malta",
+        "self-employed tax calculation",
+        "freelance SSC malta"
+      ],
+      "relatedCalculator": "self-employed-tax"
+    },
+    {
+      "title": "Malta Crypto & Digital Asset Tax Guide 2026",
+      "slug": "malta-crypto-digital-asset-tax-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "crypto tax malta",
+        "bitcoin tax malta",
+        "digital asset taxation",
+        "capital gains crypto"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Malta Double Taxation Treaty Guide 2026",
+      "slug": "malta-double-taxation-treaty-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "double taxation malta",
+        "tax treaty malta",
+        "DTA relief",
+        "foreign tax credit"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Malta VAT Rates and Registration Guide 2026",
+      "slug": "malta-vat-rates-registration-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "VAT malta",
+        "VAT rates 2026",
+        "VAT registration threshold",
+        "eco contribution"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Malta Corporate Tax & Refund System Guide",
+      "slug": "malta-corporate-tax-refund-system-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "corporate tax malta",
+        "tax refund system",
+        "6/7 refund",
+        "company tax rate"
+      ],
+      "relatedCalculator": null
+    },
+    {
+      "title": "Malta Inheritance & Donation Tax Guide 2026",
+      "slug": "malta-inheritance-donation-tax-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "inheritance tax malta",
+        "duty on documents",
+        "causa mortis",
+        "donation tax"
+      ],
+      "relatedCalculator": "stamp-duty"
+    },
+    {
+      "title": "Malta Rental Income Tax: 15% vs Progressive",
+      "slug": "malta-rental-income-tax-comparison-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "rental tax comparison",
+        "15% flat rate malta",
+        "rental income calculation",
+        "property rental tax"
+      ],
+      "relatedCalculator": "rental-tax"
+    },
+    {
+      "title": "Malta Part-Time Tax & SSC Calculation Guide",
+      "slug": "malta-part-time-tax-ssc-calculation-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "part-time tax malta",
+        "part-time SSC",
+        "secondary employment tax",
+        "Class B SSC"
+      ],
+      "relatedCalculator": "part-time"
+    },
+    {
+      "title": "Malta Expatriate Tax Schemes: HHQP & HQP",
+      "slug": "malta-expatriate-tax-schemes-hhqp-hqp-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "HHQP malta",
+        "HQP scheme",
+        "expatriate tax rate",
+        "15% flat tax expat"
+      ],
+      "relatedCalculator": "expatriate-tax"
+    },
+    {
+      "title": "Malta Bonus Tax Calculation Guide 2026",
+      "slug": "malta-bonus-tax-calculation-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "bonus tax malta",
+        "13th month salary tax",
+        "government bonus malta",
+        "bonus calculation"
+      ],
+      "relatedCalculator": "bonus-tax"
+    },
+    {
+      "title": "Malta Capital Gains Tax on Property Guide",
+      "slug": "malta-capital-gains-tax-property-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "capital gains tax malta",
+        "property sale tax",
+        "final withholding tax property",
+        "8% property tax"
+      ],
+      "relatedCalculator": "stamp-duty"
+    },
+    {
+      "title": "Malta SSC Calculation: All Classes Explained",
+      "slug": "malta-ssc-all-classes-calculation-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "SSC classes malta",
+        "Class A B C D",
+        "social security calculation",
+        "weekly SSC cap"
+      ],
+      "relatedCalculator": "self-employed-ssc"
+    },
+    {
+      "title": "Malta Pension Tax & Calculation Guide 2026",
+      "slug": "malta-pension-tax-calculation-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "pension tax malta",
+        "retirement pension calculation",
+        "two-thirds pension",
+        "pension calculator"
+      ],
+      "relatedCalculator": "pension"
+    },
+    {
+      "title": "Malta Stamp Duty Complete Calculation Guide",
+      "slug": "malta-stamp-duty-calculation-rates-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "stamp duty rates malta",
+        "duty on documents calculation",
+        "AIP stamp duty",
+        "property stamp duty"
+      ],
+      "relatedCalculator": "stamp-duty"
+    },
+    {
+      "title": "Malta Vehicle Registration Tax (VRT) How It Works",
+      "slug": "malta-vrt-calculation-how-it-works-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "VRT calculation malta",
+        "vehicle registration tax",
+        "CO2 emissions tax",
+        "car import tax"
+      ],
+      "relatedCalculator": "vrt"
+    },
+    {
+      "title": "Malta Savings Interest Tax Guide 2026",
+      "slug": "malta-savings-interest-tax-calculation-guide-2026",
+      "category": "Tax Guide",
+      "keywords": [
+        "savings interest tax malta",
+        "withholding tax interest",
+        "15% interest tax",
+        "bank interest tax"
+      ],
+      "relatedCalculator": "savings-interest"
+    },
+    {
+      "title": "Malta Mortgage Affordability Calculator Guide",
+      "slug": "malta-mortgage-affordability-calculation-guide-2026",
+      "category": "Finance",
+      "keywords": [
+        "mortgage calculation malta",
+        "home loan affordability",
+        "mortgage interest rates",
+        "LTV ratio malta"
+      ],
+      "relatedCalculator": "mortgage"
+    },
+    {
+      "title": "Malta In-Work Benefit Calculation Guide 2026",
+      "slug": "malta-in-work-benefit-calculation-guide-2026",
+      "category": "Social Security",
+      "keywords": [
+        "in-work benefit malta",
+        "IWB calculation",
+        "tapering rate",
+        "working family benefit"
+      ],
+      "relatedCalculator": "in-work-benefit"
+    },
+    {
+      "title": "Malta Sick Leave Benefit Calculation Guide",
+      "slug": "malta-sick-leave-benefit-calculation-guide-2026",
+      "category": "Employment",
+      "keywords": [
+        "sick leave calculation malta",
+        "sickness benefit rate",
+        "injury benefit",
+        "sick pay entitlement"
+      ],
+      "relatedCalculator": "sick-leave"
+    }
+  ]
+}
