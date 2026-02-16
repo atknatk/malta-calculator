@@ -32,6 +32,16 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-budget-2026-family-tax-savings-guide",
+    title: "Malta Budget 2026: New Family Tax Savings & Key Changes",
+    description:
+      "Complete guide to Malta Budget 2026 changes. New tax brackets for families save up to \u20AC1,625/year. Pension exemptions, property relief & business incentives.",
+    date: "February 2026",
+    readTime: "12 min read",
+    category: "Budget Guide",
+    featured: true,
+  },
+  {
     slug: "malta-public-holidays-2026-complete-guide",
     title: "Malta Public Holidays 2026: Complete List of 14 Official Holidays",
     description:

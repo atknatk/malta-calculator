@@ -197,6 +197,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       changeFrequency: "yearly" as const,
     },
+    // Budget 2026 blog page
+    {
+      url: `${baseUrl}/blog/malta-budget-2026-family-tax-savings-guide`,
+      priority: 0.9,
+      changeFrequency: "yearly" as const,
+    },
     // Public Holidays blog pages
     {
       url: `${baseUrl}/blog/malta-public-holidays-2026-complete-guide`,
