@@ -60,7 +60,7 @@ jobs:
           # Run Claude Code via Amazon Bedrock
           claude -p "$PROMPT" \
             --model us.anthropic.claude-sonnet-4-5-20250929-v1:0 \
-            --allowedTools "WebSearch,Write,Edit,Read,Glob,Grep,Bash(npm run build)" \
+            --allowedTools "WebSearch,WebFetch,Write,Edit,Read,Glob,Grep,Bash(npm run build)" \
             --max-turns 50 \
             --verbose
 

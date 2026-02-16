@@ -16,17 +16,20 @@ IMPORTANT CONSTRAINTS:
 1. Read the file `.github/blog-topics.json` to get the list of candidate topics
 2. Read `src/app/blog/page.tsx` to see ALL existing blog posts (check the `blogPosts` array)
 3. List ALL existing blog post directories under `src/app/blog/` to get every slug
-4. For the candidate topic, perform these duplicate checks:
-   a. **Exact slug match**: Does the slug already exist as a directory?
-   b. **Title similarity**: Is there an existing post with a very similar title?
-   c. **Content overlap**: Does an existing blog post already cover 70%+ of the same content?
-   - Read the existing post's page.tsx to verify content scope
-     d. **Keyword overlap**: Do the target keywords overlap significantly with an existing post?
-5. Pick the FIRST topic from the candidate list that passes ALL duplicate checks
-6. If a SPECIFIC TOPIC was provided at the end of this prompt, use that instead (but still run duplicate checks)
-7. If the topic is a duplicate, SKIP it and move to the next topic in the list
+4. For the candidate topic, check ONLY for **exact duplicates**:
+   a. **Exact slug match**: Does the exact same slug already exist as a directory?
+   b. **Same primary topic**: Is there an existing post with an almost identical title covering the exact same subject?
+5. Pick the FIRST topic that does NOT have an exact slug match or identical title
+6. If a SPECIFIC TOPIC was provided at the end of this prompt, use that instead
 
-**If ALL topics are duplicates, output "NO_NEW_TOPIC_AVAILABLE" and stop.**
+IMPORTANT DUPLICATE RULES:
+
+- Related topics are NOT duplicates. Example: "Stamp Duty Guide" and "Property Transfer Tax Guide" are DIFFERENT topics even though they overlap.
+- A topic that covers a SPECIFIC ANGLE of a broader existing topic is NOT a duplicate. Example: "Rental Income Tax: 15% vs Progressive comparison" is NOT a duplicate of a general "Tax Rates" guide.
+- Only skip a topic if the EXACT SAME subject is already covered with the SAME depth and angle.
+- When in doubt, DO NOT skip the topic. Write the blog post.
+
+**If ALL topics have exact slug matches, output "NO_NEW_TOPIC_AVAILABLE" and stop.**
 
 ---
 
