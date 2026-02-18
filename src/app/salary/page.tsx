@@ -1,4 +1,3 @@
-import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { SalaryCalculatorServer } from "./_components/salary-calculator-server";
 import SalaryPlaygroundCards from "./_components/play-ground-cart";
 import { salaryParamsCache } from "./search-params";
@@ -28,14 +27,12 @@ export default async function SalaryCalculatorPage({
   const params = await salaryParamsCache.parse(searchParams);
 
   return (
-    <MarketingLayout>
-      <main role="main" aria-label="Malta Salary Calculator">
-        <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
-          <SalaryCalculatorServer initialParams={params}>
-            <SalaryPlaygroundCards />
-          </SalaryCalculatorServer>
-        </div>
-      </main>
-    </MarketingLayout>
+    <main role="main" aria-label="Malta Salary Calculator">
+      <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
+        <SalaryCalculatorServer initialParams={params}>
+          <SalaryPlaygroundCards />
+        </SalaryCalculatorServer>
+      </div>
+    </main>
   );
 }
