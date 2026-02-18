@@ -45,11 +45,6 @@ export default function AboutPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Malta Calculator, Malta&apos;da yaşayan ve çalışan herkes için
-                ücretsiz, doğru ve kullanımı kolay finansal hesaplama araçları
-                sunmayı amaçlayan bağımsız bir platformdur.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mt-4">
                 Malta Calculator is an independent platform dedicated to
                 providing free, accurate, and easy-to-use financial calculation
                 tools for everyone living and working in Malta.
@@ -84,13 +79,6 @@ export default function AboutPage() {
                 Accuracy Guarantee
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Hesaplamalarımız, Malta Gelir İdaresi (IRD) ve Sosyal Güvenlik
-                Departmanı tarafından yayınlanan resmi vergi tablolarına ve SSC
-                oranlarına dayanmaktadır. Yıllık güncellemeler, her yıl Ocak
-                ayında yeni bütçe değişikliklerini yansıtacak şekilde
-                yapılmaktadır.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mt-4">
                 Our calculations are based on official tax tables and SSC rates
                 published by the Malta Inland Revenue Department (IRD) and
                 Social Security Department. Annual updates are made every
@@ -101,12 +89,6 @@ export default function AboutPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-4">Disclaimer</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Malta Calculator yalnızca bilgilendirme amaçlıdır. Sonuçlar
-                tahmini olup, resmi mali veya vergi tavsiyesi yerine geçmez.
-                Önemli finansal kararlar için lütfen nitelikli bir muhasebeci
-                veya vergi danışmanına başvurun.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mt-4">
                 Malta Calculator is for informational purposes only. Results are
                 estimates and do not constitute official financial or tax
                 advice. Please consult a qualified accountant or tax advisor for
@@ -117,8 +99,7 @@ export default function AboutPage() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">Contact</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Sorularınız veya geri bildirimleriniz için bizimle iletişime
-                geçebilirsiniz. For questions or feedback, please use our{" "}
+                For questions or feedback, please use our{" "}
                 <a
                   href="/contact"
                   className="text-primary hover:underline font-medium"
