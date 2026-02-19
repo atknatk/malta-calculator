@@ -32,6 +32,16 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-crypto-digital-asset-tax-guide-2026",
+    title: "Malta Crypto & Digital Asset Tax Guide 2026",
+    description:
+      "Complete guide to cryptocurrency taxation in Malta. Learn about crypto income tax rates, capital gains, VFA framework, NFT taxation, and Bitcoin reporting.",
+    date: "February 2026",
+    readTime: "12 min read",
+    category: "Tax Guide",
+    featured: true,
+  },
+  {
     slug: "malta-property-transfer-tax-guide-2026",
     title: "Malta Property Transfer Tax Guide 2026",
     description:

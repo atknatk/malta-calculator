@@ -24,12 +24,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Blog pages (SEO-rich content) - 18 articles
+  // Blog pages (SEO-rich content) - 36 articles
   const blogPages = [
     {
       url: `${baseUrl}/blog`,
       priority: 0.8,
       changeFrequency: "weekly" as const,
+    },
+    {
+      url: `${baseUrl}/blog/malta-crypto-digital-asset-tax-guide-2026`,
+      priority: 0.9,
+      changeFrequency: "yearly" as const,
     },
     {
       url: `${baseUrl}/blog/malta-tax-rates-2026-complete-guide`,
