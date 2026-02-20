@@ -37,7 +37,6 @@ jobs:
           AWS_REGION: us-east-1
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          DISABLE_PROMPT_CACHING: "1"
         run: |
           PROMPT=$(cat .github/prompts/weekly-comments.md)
 

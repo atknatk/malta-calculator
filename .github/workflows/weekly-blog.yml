@@ -45,7 +45,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1
-          DISABLE_PROMPT_CACHING: "1"
         run: |
           # Read the prompt template
           PROMPT=$(cat .github/prompts/weekly-blog.md)
@@ -60,8 +59,8 @@ jobs:
           # Run Claude Code via Amazon Bedrock
           claude -p "$PROMPT" \
             --model us.anthropic.claude-sonnet-4-5-20250929-v1:0 \
-            --allowedTools "WebSearch,WebFetch,Write,Edit,Read,Glob,Grep,Bash(npm run build)" \
-            --max-turns 50 \
+            --allowedTools "WebSearch,WebFetch,Write,Edit,Read,Glob,Grep,Bash(npm run build 2>&1 | tail -50)" \
+            --max-turns 25 \
             --verbose
 
       - name: Check for changes
