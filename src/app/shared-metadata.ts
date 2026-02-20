@@ -45,10 +45,7 @@ export const KEYWORDS = [
 ];
 
 export const defaultMetadata: Metadata = {
-  title: {
-    template: `%s | ${SITE_NAME}`,
-    default: TITLE,
-  },
+  title: TITLE,
   description: DESCRIPTION,
   keywords: KEYWORDS,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
