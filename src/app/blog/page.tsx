@@ -42,6 +42,16 @@ const blogPosts: BlogPost[] = [
     featured: true,
   },
   {
+    slug: "how-to-calculate-net-salary-malta-2026",
+    title: "How to Calculate Your Net Salary in Malta (2026 Guide)",
+    description:
+      "Step-by-step guide to calculating your Malta net salary in 2026. Income tax brackets, SSC contributions, COLA, and worked examples for single, married, and parent taxpayers.",
+    date: "March 2026",
+    readTime: "10 min read",
+    category: "Calculator Guide",
+    featured: true,
+  },
+  {
     slug: "malta-property-transfer-tax-guide-2026",
     title: "Malta Property Transfer Tax Guide 2026",
     description:

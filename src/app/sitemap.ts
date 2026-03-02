@@ -220,6 +220,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       changeFrequency: "yearly" as const,
     },
+    // Net Salary Calculation guide
+    {
+      url: `${baseUrl}/blog/how-to-calculate-net-salary-malta-2026`,
+      priority: 0.9,
+      changeFrequency: "yearly" as const,
+    },
   ];
 
   // Company pages
