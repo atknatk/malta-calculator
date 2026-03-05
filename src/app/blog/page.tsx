@@ -32,6 +32,16 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-double-taxation-treaty-guide-2026",
+    title: "Malta Double Taxation Treaty Guide 2026",
+    description:
+      "Complete guide to Malta's 80+ double taxation treaties. DTA relief mechanisms, foreign tax credits, unilateral relief, FRFTC, and withholding tax rates explained.",
+    date: "March 2026",
+    readTime: "11 min read",
+    category: "Tax Guide",
+    featured: true,
+  },
+  {
     slug: "malta-crypto-digital-asset-tax-guide-2026",
     title: "Malta Crypto & Digital Asset Tax Guide 2026",
     description:

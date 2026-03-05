@@ -226,6 +226,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       changeFrequency: "yearly" as const,
     },
+    // Double Taxation Treaty guide
+    {
+      url: `${baseUrl}/blog/malta-double-taxation-treaty-guide-2026`,
+      priority: 0.8,
+      changeFrequency: "yearly" as const,
+    },
   ];
 
   // Company pages
