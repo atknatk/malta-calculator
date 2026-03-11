@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -60,6 +61,13 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Department of Social Security - Children's Allowance",
+    url: "https://socialsecurity.gov.mt/en/information-and-applications-for-benefits-and-services/family-benefits/childrens-allowance-annual-income-less-than-threshold/",
+  },
+];
+
 export default function ChildrensAllowanceGuidePage() {
   return (
     <MarketingLayout>
@@ -68,6 +76,7 @@ export default function ChildrensAllowanceGuidePage() {
         description="Complete guide to Malta Children's Allowance including eligibility, calculation formula, and rates."
         slug="malta-childrens-allowance-guide-2026"
         datePublished="2026-02-03"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -773,6 +782,10 @@ export default function ChildrensAllowanceGuidePage() {
                 </li>
               </ul>
             </section>
+            <BlogArticleAuthor
+              datePublished="2026-02-03"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-childrens-allowance-guide-2026"
               title="Malta Children"

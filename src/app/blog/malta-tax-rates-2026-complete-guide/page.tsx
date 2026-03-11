@@ -16,8 +16,28 @@ import {
   Clock,
   Calculator,
 } from "lucide-react";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import {
+  ArticleJsonLd,
+  BreadcrumbJsonLd,
+  HowToJsonLd,
+} from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue - Tax Rates 2026",
+    url: "https://cfr.gov.mt/en/Tax-Encyclopaedia/Pages/Tax-Rates.aspx",
+  },
+  {
+    name: "Malta Tax & Customs Administration (MTCA)",
+    url: "https://mtca.gov.mt/personal-tax/tax-rates/tax-ratesindividuals",
+  },
+  {
+    name: "Department of Social Security Malta",
+    url: "https://socialsecurity.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -63,6 +83,34 @@ export default function MaltaTaxRates2026Page() {
         description="Complete guide to Malta income tax rates for 2026 including brackets for single, married, and parent taxpayers."
         slug="malta-tax-rates-2026-complete-guide"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
+      />
+      <HowToJsonLd
+        name="How to Calculate Income Tax in Malta"
+        description="Step-by-step guide to calculating your Malta income tax based on your tax status and income level."
+        totalTime="PT2M"
+        steps={[
+          {
+            name: "Determine your tax status",
+            text: "Identify whether you file as Single, Married, or Parent. For 2026, married and parent categories have sub-categories based on number of children (0, 1, or 2+).",
+          },
+          {
+            name: "Find your gross annual income",
+            text: "Calculate your total annual gross salary including any bonuses, but excluding COLA and statutory government bonuses which are tax-exempt.",
+          },
+          {
+            name: "Apply the tax brackets",
+            text: "Use Malta's progressive tax brackets for your status. For example, a single taxpayer pays 0% on the first €9,100, 15% on €9,101-€14,500, 25% on €14,501-€60,000, and 35% above €60,000.",
+          },
+          {
+            name: "Calculate using the formula",
+            text: "Apply the formula: Tax = (Gross Income × Rate) − Deduction. The deduction amount is pre-calculated for each bracket to simplify computation.",
+          },
+          {
+            name: "Deduct SSC and add COLA",
+            text: "Subtract Social Security Contributions (10% of basic weekly wage, capped at €55.93/week for 2026) and add COLA (€512.52 annually for 2026) to determine your final net salary.",
+          },
+        ]}
       />
       <BreadcrumbJsonLd
         items={[
@@ -478,6 +526,11 @@ export default function MaltaTaxRates2026Page() {
                 </li>
               </ul>
             </section>
+
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
 
             <BlogArticleFooter
               slug="malta-tax-rates-2026-complete-guide"

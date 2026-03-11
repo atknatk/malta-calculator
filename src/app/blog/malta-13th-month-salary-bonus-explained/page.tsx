@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Industrial & Employment Relations (DIER)",
+    url: "https://dier.gov.mt",
+  },
+  {
+    name: "Commissioner for Revenue (CFR) - Employment Income",
+    url: "https://cfr.gov.mt/en/individuals/Pages/Employment-Income.aspx",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -54,6 +66,7 @@ export default function Malta13thMonthSalaryPage() {
         description="Complete guide to Malta's statutory bonuses and 13th month salary payments."
         slug="malta-13th-month-salary-bonus-explained"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -202,6 +215,10 @@ export default function Malta13thMonthSalaryPage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-13th-month-salary-bonus-explained"
               title="Malta 13th Month Salary (Bonus) Explained"

@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Industrial and Employment Relations (DIER) - Malta",
+    url: "https://dier.gov.mt",
+  },
+  {
+    name: "Employment and Industrial Relations Act (EIRA) - legislation.mt",
+    url: "https://legislation.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -54,6 +66,7 @@ export default function MaltaPartTimeEmploymentPage() {
         description="Complete guide to part-time employment rights in Malta including pro-rata calculations and benefits."
         slug="malta-part-time-employment-rights"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -157,6 +170,10 @@ export default function MaltaPartTimeEmploymentPage() {
               </p>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-part-time-employment-rights"
               title="Malta Part-Time Employment Rights 2026"

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -46,6 +47,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Rental Income",
+    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Rental-Income.aspx",
+  },
+  {
+    name: "Malta Tax Compliance Authority (MTCA)",
+    url: "https://mtca.gov.mt",
+  },
+];
+
 export default function MaltaRentalIncomeTaxPage() {
   return (
     <MarketingLayout>
@@ -54,6 +66,7 @@ export default function MaltaRentalIncomeTaxPage() {
         description="Complete guide to Malta's rental income tax including the 15% flat rate option."
         slug="malta-rental-income-tax-15-percent-guide"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -173,6 +186,10 @@ export default function MaltaRentalIncomeTaxPage() {
               </div>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-rental-income-tax-15-percent-guide"
               title="Malta Rental Income Tax 2026: 15% Guide"

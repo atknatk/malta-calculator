@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Industrial and Employment Relations (DIER) - Malta",
+    url: "https://dier.gov.mt",
+  },
+  {
+    name: "Department of Social Security - Malta",
+    url: "https://socialsecurity.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -55,6 +67,7 @@ export default function MaltaMaternityLeavePage() {
         description="Complete guide to maternity and paternity leave entitlements in Malta for 2026."
         slug="malta-maternity-leave-2026-guide"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -175,6 +188,10 @@ export default function MaltaMaternityLeavePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-maternity-leave-2026-guide"
               title="Malta Maternity Leave 2026: Complete Guide"

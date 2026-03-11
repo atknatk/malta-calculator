@@ -26,6 +26,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Social Security - mySocialSecurity Portal",
+    url: "https://mysocialsecurity.gov.mt",
+  },
+  {
+    name: "Department of Social Security - Benefits & Services",
+    url: "https://socialsecurity.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -67,6 +79,7 @@ export default function MySocialSecurityGuidePage() {
         description="Complete guide to the mySocialSecurity Malta app for managing social security online."
         slug="malta-mysocialsecurity-app-guide-2026"
         datePublished="2026-02-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -593,6 +606,10 @@ export default function MySocialSecurityGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-02-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-mysocialsecurity-app-guide-2026"
               title="mySocialSecurity Malta App 2026: Complete Guide"

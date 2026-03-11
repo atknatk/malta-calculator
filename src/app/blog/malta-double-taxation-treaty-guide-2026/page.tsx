@@ -24,6 +24,7 @@ import {
   CustomFAQJsonLd,
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -56,6 +57,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Double Taxation Relief",
+    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Double-Taxation-Relief.aspx",
+  },
+  {
+    name: "Ministry for Foreign and European Affairs Malta - Tax Treaties",
+    url: "https://foreignaffairs.gov.mt",
+  },
+];
+
 export default function MaltaDoubleTaxationTreatyGuidePage() {
   return (
     <MarketingLayout>
@@ -64,6 +76,7 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
         description="Complete guide to Malta's double taxation agreements, DTA relief mechanisms, foreign tax credits, and unilateral relief provisions for 2026."
         slug="malta-double-taxation-treaty-guide-2026"
         datePublished="2026-03-05"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -1365,6 +1378,10 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
               </div>
             </div>
 
+            <BlogArticleAuthor
+              datePublished="2026-03-05"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-double-taxation-treaty-guide-2026"
               title="Malta Double Taxation Treaty Guide 2026"

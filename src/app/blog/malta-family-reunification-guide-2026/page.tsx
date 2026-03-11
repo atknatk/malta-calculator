@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -61,6 +62,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Identità Malta - Family Reunification",
+    url: "https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/non-employment-permits/family-reunification/",
+  },
+  {
+    name: "Identità Malta - Family Members Policy",
+    url: "https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/non-employment-permits/family-members-policy/",
+  },
+];
+
 export default function FamilyReunificationGuidePage() {
   return (
     <MarketingLayout>
@@ -69,6 +81,7 @@ export default function FamilyReunificationGuidePage() {
         description="Complete guide to family reunification salary requirements in Malta."
         slug="malta-family-reunification-guide-2026"
         datePublished="2026-02-02"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -567,6 +580,10 @@ export default function FamilyReunificationGuidePage() {
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
+            <BlogArticleAuthor
+              datePublished="2026-02-02"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-family-reunification-guide-2026"
               title="Malta Family Reunification 2026: Complete Salary Guide"

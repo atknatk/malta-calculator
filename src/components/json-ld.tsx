@@ -1,11 +1,33 @@
 import { SITE_NAME, SITE_URL } from "@/app/shared-metadata";
 
+// Shared author entity for E-E-A-T signals
+const AUTHOR_PERSON = {
+  "@type": "Person" as const,
+  name: "Malta Calculator Editorial Team",
+  url: `${SITE_URL}/about`,
+  jobTitle: "Financial Content Specialists",
+  worksFor: {
+    "@type": "Organization" as const,
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+  knowsAbout: [
+    "Malta Income Tax",
+    "Malta Social Security Contributions",
+    "Malta Employment Law",
+    "Malta Financial Regulations",
+    "Malta COLA",
+    "Malta Payroll",
+  ],
+};
+
 interface ArticleJsonLdProps {
   title: string;
   description: string;
   slug: string;
   datePublished: string;
   dateModified?: string;
+  sources?: Array<{ name: string; url: string }>;
 }
 
 export function ArticleJsonLd({
@@ -14,6 +36,7 @@ export function ArticleJsonLd({
   slug,
   datePublished,
   dateModified,
+  sources,
 }: ArticleJsonLdProps) {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -23,11 +46,7 @@ export function ArticleJsonLd({
     url: `${SITE_URL}/blog/${slug}`,
     datePublished: datePublished,
     dateModified: dateModified || datePublished,
-    author: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
+    author: AUTHOR_PERSON,
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -41,6 +60,58 @@ export function ArticleJsonLd({
       "@type": "WebPage",
       "@id": `${SITE_URL}/blog/${slug}`,
     },
+    inLanguage: "en",
+    isAccessibleForFree: true,
+    ...(sources && sources.length > 0
+      ? {
+          citation: sources.map((s) => ({
+            "@type": "CreativeWork",
+            name: s.name,
+            url: s.url,
+          })),
+        }
+      : {}),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+// HowTo schema for step-by-step calculation guides
+interface HowToStep {
+  name: string;
+  text: string;
+}
+
+interface HowToJsonLdProps {
+  name: string;
+  description: string;
+  steps: HowToStep[];
+  totalTime?: string; // ISO 8601 duration, e.g., "PT2M"
+}
+
+export function HowToJsonLd({
+  name,
+  description,
+  steps,
+  totalTime,
+}: HowToJsonLdProps) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name,
+    description,
+    ...(totalTime ? { totalTime } : {}),
+    step: steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+    })),
   };
 
   return (
@@ -181,10 +252,17 @@ export function OrganizationJsonLd() {
       "Salary Calculator",
     ],
     sameAs: [
-      // Add your social media profiles here when available
-      // "https://twitter.com/maltacalculator",
-      // "https://www.facebook.com/maltacalculator",
-      // "https://www.linkedin.com/company/maltacalculator",
+      "https://twitter.com/maltacalculator",
+      "https://www.facebook.com/maltacalculator",
+      "https://www.linkedin.com/company/maltacalculator",
+    ],
+    knowsAbout: [
+      "Malta Income Tax",
+      "Malta Social Security Contributions",
+      "Malta COLA",
+      "Malta Employment Law",
+      "Malta Payroll",
+      "Malta Financial Regulations",
     ],
     contactPoint: {
       "@type": "ContactPoint",

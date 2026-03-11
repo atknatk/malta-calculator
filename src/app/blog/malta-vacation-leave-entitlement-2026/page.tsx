@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Industrial and Employment Relations (DIER) - Malta",
+    url: "https://dier.gov.mt",
+  },
+  {
+    name: "Employment and Industrial Relations Act (EIRA) - legislation.mt",
+    url: "https://legislation.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -55,6 +67,7 @@ export default function MaltaVacationLeaveGuidePage() {
         description="Complete guide to annual vacation leave entitlement in Malta."
         slug="malta-vacation-leave-entitlement-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -199,6 +212,10 @@ export default function MaltaVacationLeaveGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-vacation-leave-entitlement-2026"
               title="Malta Vacation Leave 2026: Complete Guide"

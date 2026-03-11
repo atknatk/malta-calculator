@@ -23,6 +23,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Industrial & Employment Relations (DIER)",
+    url: "https://dier.gov.mt",
+  },
+  {
+    name: "Government of Malta - Public Holidays",
+    url: "https://www.gov.mt/en/About%20Malta/Pages/Public%20Holidays.aspx",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -184,6 +196,7 @@ export default function MaltaPublicHolidays2026GuidePage() {
         description="Complete guide to Malta's 14 public holidays in 2026 with dates, meanings, and long weekend opportunities."
         slug="malta-public-holidays-2026-complete-guide"
         datePublished="2026-02-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -690,6 +703,10 @@ export default function MaltaPublicHolidays2026GuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-02-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-public-holidays-2026-complete-guide"
               title="Malta Public Holidays 2026: All 14 Official Dates"

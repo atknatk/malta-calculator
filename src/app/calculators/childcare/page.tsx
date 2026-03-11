@@ -7,6 +7,11 @@ import {
   SITE_URL,
 } from "@/app/shared-metadata";
 import { Baby } from "lucide-react";
+import {
+  BreadcrumbJsonLd,
+  CalculatorJsonLd,
+  CustomFAQJsonLd,
+} from "@/components/json-ld";
 
 export const metadata: Metadata = {
   ...defaultMetadata,

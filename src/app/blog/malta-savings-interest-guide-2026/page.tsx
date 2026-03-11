@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -46,6 +47,17 @@ export const metadata: Metadata = {
   twitter: { ...twitterMetadata, title: "Malta Savings Interest Guide 2026" },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Withholding Tax",
+    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Withholding-Tax.aspx",
+  },
+  {
+    name: "Central Bank of Malta - Interest Rates",
+    url: "https://www.centralbankmalta.org/interest-rates",
+  },
+];
+
 export default function MaltaSavingsInterestGuidePage() {
   return (
     <MarketingLayout>
@@ -54,6 +66,7 @@ export default function MaltaSavingsInterestGuidePage() {
         description="Complete guide to savings interest and tax in Malta."
         slug="malta-savings-interest-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -202,6 +215,10 @@ export default function MaltaSavingsInterestGuidePage() {
                 Try Savings Calculator <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-savings-interest-guide-2026"
               title="Malta Savings Interest Guide 2026"

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -46,6 +47,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Self-Employment",
+    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Self-Employment.aspx",
+  },
+  {
+    name: "Department of Social Security Malta - Class 2 Contributions",
+    url: "https://socialsecurity.gov.mt/self-employed",
+  },
+];
+
 export default function MaltaSelfEmploymentTaxPage() {
   return (
     <MarketingLayout>
@@ -54,6 +66,7 @@ export default function MaltaSelfEmploymentTaxPage() {
         description="Complete tax guide for self-employed individuals and freelancers in Malta."
         slug="malta-self-employment-tax-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -179,6 +192,10 @@ export default function MaltaSelfEmploymentTaxPage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-self-employment-tax-guide-2026"
               title="Malta Self-Employment Tax Guide 2026"

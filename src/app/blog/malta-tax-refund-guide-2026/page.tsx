@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Commissioner for Revenue (CFR) - Income Tax Returns",
+    url: "https://cfr.gov.mt/en/individuals/Pages/Income-Tax-Returns.aspx",
+  },
+  {
+    name: "Malta Tax Compliance Authority (MTCA)",
+    url: "https://mtca.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -54,6 +66,7 @@ export default function MaltaTaxRefundPage() {
         description="Complete guide to claiming tax refunds in Malta including FS3 forms and IRD process."
         slug="malta-tax-refund-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -150,6 +163,10 @@ export default function MaltaTaxRefundPage() {
               </div>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-tax-refund-guide-2026"
               title="Malta Tax Refund 2026: How to Claim Back"

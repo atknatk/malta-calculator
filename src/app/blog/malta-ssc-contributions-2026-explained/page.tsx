@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Social Security - Malta",
+    url: "https://socialsecurity.gov.mt",
+  },
+  {
+    name: "Commissioner for Revenue (CFR) - Malta",
+    url: "https://cfr.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -63,6 +75,7 @@ export default function MaltaSSCPage() {
         description="Complete guide to Malta Social Security Contributions (SSC) for 2026 including Class 1 rates and categories."
         slug="malta-ssc-contributions-2026-explained"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -459,6 +472,10 @@ export default function MaltaSSCPage() {
               </div>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-ssc-contributions-2026-explained"
               title="Malta SSC Contributions 2026: Rates, Caps & Categories Explained"

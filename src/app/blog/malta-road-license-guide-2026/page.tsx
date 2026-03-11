@@ -12,6 +12,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Car } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -36,6 +37,13 @@ export const metadata: Metadata = {
   twitter: { ...twitterMetadata, title: "Malta Road License 2026 Guide" },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Transport Malta - Road Licence (Circulation Tax)",
+    url: "https://transport.gov.mt/land-transport/vehicles/road-licence",
+  },
+];
+
 export default function RoadLicenseGuidePage() {
   return (
     <MarketingLayout>
@@ -44,6 +52,7 @@ export default function RoadLicenseGuidePage() {
         description="Complete guide to annual road license in Malta."
         slug="malta-road-license-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -177,6 +186,10 @@ export default function RoadLicenseGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-road-license-guide-2026"
               title="Malta Road License 2026 Guide"

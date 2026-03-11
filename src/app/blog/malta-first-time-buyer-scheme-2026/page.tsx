@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -44,6 +45,17 @@ export const metadata: Metadata = {
   twitter: { ...twitterMetadata, title: "Malta First-Time Buyer Scheme 2026" },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - First-Time Buyers",
+    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Duty-on-Documents-and-Transfers.aspx",
+  },
+  {
+    name: "Housing Authority Malta",
+    url: "https://housingauthority.gov.mt",
+  },
+];
+
 export default function MaltaFirstTimeBuyerPage() {
   return (
     <MarketingLayout>
@@ -52,6 +64,7 @@ export default function MaltaFirstTimeBuyerPage() {
         description="Complete guide to first-time property buyer benefits in Malta including reduced stamp duty."
         slug="malta-first-time-buyer-scheme-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -166,6 +179,10 @@ export default function MaltaFirstTimeBuyerPage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-first-time-buyer-scheme-2026"
               title="Malta First-Time Buyer Scheme 2026"

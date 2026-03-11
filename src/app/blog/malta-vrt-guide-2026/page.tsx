@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -42,6 +43,13 @@ export const metadata: Metadata = {
   twitter: { ...twitterMetadata, title: "Malta VRT 2026 Guide" },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Transport Malta - Vehicle Roadworthiness Test (VRT)",
+    url: "https://transport.gov.mt/land-transport/vehicles/vehicle-technical-inspection",
+  },
+];
+
 export default function VRTGuidePage() {
   return (
     <MarketingLayout>
@@ -50,6 +58,7 @@ export default function VRTGuidePage() {
         description="Complete guide to vehicle roadworthiness test in Malta."
         slug="malta-vrt-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -180,6 +189,10 @@ export default function VRTGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-vrt-guide-2026"
               title="Malta VRT 2026 Guide"

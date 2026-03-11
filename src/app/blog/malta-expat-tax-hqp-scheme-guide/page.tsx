@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -59,6 +60,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Highly Qualified Persons Rules",
+    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Highly-Qualified-Persons.aspx",
+  },
+  {
+    name: "Malta Enterprise - Highly Qualified Persons Scheme",
+    url: "https://maltaenterprise.com/support/highly-qualified-persons/",
+  },
+];
+
 export default function MaltaHQPPage() {
   return (
     <MarketingLayout>
@@ -67,6 +79,7 @@ export default function MaltaHQPPage() {
         description="Complete guide to Malta's HQP tax scheme with 15% flat tax rate for expats in iGaming, finance, and aviation."
         slug="malta-expat-tax-hqp-scheme-guide"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -468,6 +481,10 @@ export default function MaltaHQPPage() {
               </p>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-expat-tax-hqp-scheme-guide"
               title="Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide"

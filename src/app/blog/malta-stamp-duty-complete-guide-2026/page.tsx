@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -47,6 +48,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Stamp Duty",
+    url: "https://cfr.gov.mt/en/rates/Pages/Duty-on-Documents-and-Transfers.aspx",
+  },
+  {
+    name: "Malta Tax Compliance Authority (MTCA)",
+    url: "https://mtca.gov.mt",
+  },
+];
+
 export default function MaltaStampDutyGuidePage() {
   return (
     <MarketingLayout>
@@ -55,6 +67,7 @@ export default function MaltaStampDutyGuidePage() {
         description="Complete guide to stamp duty on property purchases in Malta."
         slug="malta-stamp-duty-complete-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -187,6 +200,10 @@ export default function MaltaStampDutyGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-stamp-duty-complete-guide-2026"
               title="Malta Stamp Duty 2026: Complete Guide"

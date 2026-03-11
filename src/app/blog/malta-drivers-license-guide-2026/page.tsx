@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -44,6 +45,13 @@ export const metadata: Metadata = {
   twitter: { ...twitterMetadata, title: "Malta Driving License 2026 Guide" },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Transport Malta - Driving Licences",
+    url: "https://transport.gov.mt/land-transport/driving-licences",
+  },
+];
+
 export default function DriversLicenseGuidePage() {
   return (
     <MarketingLayout>
@@ -52,6 +60,7 @@ export default function DriversLicenseGuidePage() {
         description="Complete guide to driving license in Malta."
         slug="malta-drivers-license-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -221,6 +230,10 @@ export default function DriversLicenseGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-drivers-license-guide-2026"
               title="Malta Driving License 2026 Guide"

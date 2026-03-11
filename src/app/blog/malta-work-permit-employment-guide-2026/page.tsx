@@ -25,6 +25,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Identità Malta - Residence & Work Permits",
+    url: "https://identita.gov.mt",
+  },
+  {
+    name: "Department of Industrial & Employment Relations (DIER)",
+    url: "https://dier.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -72,6 +84,7 @@ export default function MaltaWorkPermitGuidePage() {
         description="Complete guide to working in Malta including work permits, employment licenses, and worker rights."
         slug="malta-work-permit-employment-guide-2026"
         datePublished="2026-02-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -662,6 +675,10 @@ export default function MaltaWorkPermitGuidePage() {
               </div>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-02-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-work-permit-employment-guide-2026"
               title="Malta Work Permit 2026: Complete Guide for EU & Non-EU Workers"

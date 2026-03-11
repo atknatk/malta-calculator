@@ -23,6 +23,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Social Security - SSN Application",
+    url: "https://socialsecurity.gov.mt/en/ssnen/",
+  },
+  {
+    name: "Identità Malta - Residence Documentation",
+    url: "https://identita.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -67,6 +79,7 @@ export default function MaltaSSNGuidePage() {
         description="Complete guide to Malta Social Security Number (SSN) including application process, eligibility, and required documents."
         slug="malta-social-security-number-guide-2026"
         datePublished="2026-02-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -519,6 +532,10 @@ export default function MaltaSSNGuidePage() {
               </div>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-02-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-social-security-number-guide-2026"
               title="Malta Social Security Number 2026: Complete SSN Guide"

@@ -26,6 +26,7 @@ import {
   CustomFAQJsonLd,
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -58,6 +59,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Tax on Cryptocurrency",
+    url: "https://cfr.gov.mt",
+  },
+  {
+    name: "Malta Financial Services Authority (MFSA) - Virtual Financial Assets",
+    url: "https://www.mfsa.mt/financial-services-acts/virtual-financial-assets-act/",
+  },
+];
+
 export default function MaltaCryptoTaxGuidePage() {
   return (
     <MarketingLayout>
@@ -66,6 +78,7 @@ export default function MaltaCryptoTaxGuidePage() {
         description="Complete guide to cryptocurrency and digital asset taxation in Malta for 2026, including Bitcoin, NFTs, and the VFA framework."
         slug="malta-crypto-digital-asset-tax-guide-2026"
         datePublished="2026-02-19"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -1129,6 +1142,10 @@ export default function MaltaCryptoTaxGuidePage() {
               </div>
             </div>
 
+            <BlogArticleAuthor
+              datePublished="2026-02-19"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-crypto-digital-asset-tax-guide-2026"
               title="Malta Crypto & Digital Asset Tax Guide 2026"

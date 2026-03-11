@@ -32,6 +32,22 @@ import {
   CustomFAQJsonLd,
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Commissioner for Revenue (CFR) - Tax Rates & Thresholds",
+    url: "https://cfr.gov.mt/en/individuals/Pages/Tax-Rates.aspx",
+  },
+  {
+    name: "Malta Tax Compliance Authority (MTCA)",
+    url: "https://mtca.gov.mt",
+  },
+  {
+    name: "Malta Ministry for Finance - Budget 2026",
+    url: "https://finance.gov.mt/en/Government-Finance/Pages/Budget.aspx",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -77,6 +93,7 @@ export default function MaltaBudget2026GuidePage() {
         description="Complete guide to Malta Budget 2026 tax changes including new family tax brackets, pension exemptions, and business incentives."
         slug="malta-budget-2026-family-tax-savings-guide"
         datePublished="2026-02-16"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -1093,6 +1110,10 @@ export default function MaltaBudget2026GuidePage() {
                 </li>
               </ul>
             </section>
+            <BlogArticleAuthor
+              datePublished="2026-02-16"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-budget-2026-family-tax-savings-guide"
               title="Malta Budget 2026: New Family Tax Savings & Key Changes"

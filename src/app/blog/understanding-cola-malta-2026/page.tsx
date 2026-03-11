@@ -19,6 +19,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Social Security - Malta",
+    url: "https://socialsecurity.gov.mt",
+  },
+  {
+    name: "Commissioner for Revenue (CFR) - Malta",
+    url: "https://cfr.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -63,6 +75,7 @@ export default function MaltaCOLAPage() {
         description="What is COLA in Malta and how does it affect your salary? Complete guide to the Cost of Living Adjustment."
         slug="understanding-cola-malta-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -388,6 +401,10 @@ export default function MaltaCOLAPage() {
               </p>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="understanding-cola-malta-2026"
               title="Understanding COLA in Malta 2026: Cost of Living Adjustment Guide"

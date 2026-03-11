@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -48,6 +49,17 @@ export const metadata: Metadata = {
   twitter: { ...twitterMetadata, title: "Malta Expat Mortgage Guide 2026" },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Central Bank of Malta - Financial Stability",
+    url: "https://www.centralbankmalta.org/financial-stability",
+  },
+  {
+    name: "Malta Financial Services Authority (MFSA)",
+    url: "https://www.mfsa.mt",
+  },
+];
+
 export default function MaltaExpatMortgageGuidePage() {
   return (
     <MarketingLayout>
@@ -56,6 +68,7 @@ export default function MaltaExpatMortgageGuidePage() {
         description="Complete guide for expats buying property in Malta."
         slug="malta-expat-mortgage-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -381,6 +394,10 @@ export default function MaltaExpatMortgageGuidePage() {
                 </Link>
               </div>
             </div>
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-expat-mortgage-guide-2026"
               title="Malta Expat Mortgage Guide 2026"

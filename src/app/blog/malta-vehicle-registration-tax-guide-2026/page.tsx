@@ -12,6 +12,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Car } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -41,6 +42,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Transport Malta - Vehicle Registration Tax",
+    url: "https://transport.gov.mt/land-transport/vehicles/vehicle-registration-tax",
+  },
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Vehicle Registration Tax",
+    url: "https://cfr.gov.mt/en/customs/Pages/VehicleRegistrationTax.aspx",
+  },
+];
+
 export default function VehicleRegistrationTaxGuidePage() {
   return (
     <MarketingLayout>
@@ -49,6 +61,7 @@ export default function VehicleRegistrationTaxGuidePage() {
         description="Complete guide to vehicle registration tax in Malta."
         slug="malta-vehicle-registration-tax-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -198,6 +211,10 @@ export default function VehicleRegistrationTaxGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-vehicle-registration-tax-guide-2026"
               title="Malta Vehicle Registration Tax 2026 Guide"

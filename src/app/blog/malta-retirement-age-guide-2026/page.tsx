@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Social Security - Retirement Pension",
+    url: "https://socialsecurity.gov.mt/en/pensions/retirement-pension/",
+  },
+  {
+    name: "Department of Social Security - Early Retirement",
+    url: "https://socialsecurity.gov.mt/en/pensions/early-retirement/",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -53,6 +65,7 @@ export default function MaltaRetirementAgeGuidePage() {
         description="Complete guide to statutory retirement age in Malta based on birth year."
         slug="malta-retirement-age-guide-2026"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -189,6 +202,10 @@ export default function MaltaRetirementAgeGuidePage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-retirement-age-guide-2026"
               title="Malta Retirement Age 2026: Complete Guide"

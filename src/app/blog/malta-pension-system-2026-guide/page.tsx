@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Social Security - Pensions",
+    url: "https://socialsecurity.gov.mt/en/pensions/",
+  },
+  {
+    name: "Commissioner for Revenue (CFR) - Pension Income",
+    url: "https://cfr.gov.mt/en/individuals/Pages/Pension-Income.aspx",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -53,6 +65,7 @@ export default function MaltaPensionSystemPage() {
         description="Complete guide to Malta's state pension system, eligibility, and contribution requirements."
         slug="malta-pension-system-2026-guide"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -188,6 +201,10 @@ export default function MaltaPensionSystemPage() {
               </ul>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-pension-system-2026-guide"
               title="Malta Pension System 2026: Complete Guide"

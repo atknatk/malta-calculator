@@ -23,8 +23,25 @@ import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
   CustomFAQJsonLd,
+  HowToJsonLd,
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Tax Rates",
+    url: "https://cfr.gov.mt/en/Tax-Encyclopaedia/Pages/Tax-Rates.aspx",
+  },
+  {
+    name: "Department of Social Security - SSC Rates",
+    url: "https://socialsecurity.gov.mt",
+  },
+  {
+    name: "MTCA - Personal Tax Rates",
+    url: "https://mtca.gov.mt/personal-tax/tax-rates/tax-ratesindividuals",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -67,6 +84,42 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
         description="Complete step-by-step guide to calculating your net salary in Malta for 2026, including income tax brackets, SSC contributions, and COLA adjustments."
         slug="how-to-calculate-net-salary-malta-2026"
         datePublished="2026-03-02"
+        sources={ARTICLE_SOURCES}
+      />
+      <HowToJsonLd
+        name="How to Calculate Net Salary in Malta"
+        description="Step-by-step guide to calculating your take-home pay in Malta after tax, SSC, and COLA for 2026."
+        totalTime="PT3M"
+        steps={[
+          {
+            name: "Start with your gross annual salary",
+            text: "Take your total agreed annual salary before any deductions. This is the amount stated in your employment contract.",
+          },
+          {
+            name: "Calculate weekly wage",
+            text: "Divide your gross annual salary by 52 weeks to get your basic weekly wage. This is used for SSC calculations.",
+          },
+          {
+            name: "Deduct Social Security Contributions (SSC)",
+            text: "SSC is 10% of your basic weekly wage, capped at €55.93 per week (Category C, born after 1962) for 2026. Multiply weekly SSC by 52 for annual SSC.",
+          },
+          {
+            name: "Determine your tax status",
+            text: "Choose Single, Married, or Parent. For 2026, married and parent categories have sub-rates based on number of children (0, 1, or 2+).",
+          },
+          {
+            name: "Calculate income tax",
+            text: "Apply Malta's progressive tax brackets to your gross salary. Use the formula: Tax = (Income × Rate) − Deduction for each bracket.",
+          },
+          {
+            name: "Add COLA (Cost of Living Adjustment)",
+            text: "Add the quarterly government bonus (COLA): €121.16 in March & September, €135.10 in June & December. Annual total: €512.52. COLA is tax-free.",
+          },
+          {
+            name: "Calculate net salary",
+            text: "Net Salary = Gross Salary − Income Tax − SSC + COLA. Divide by 12 for monthly take-home pay.",
+          },
+        ]}
       />
       <BreadcrumbJsonLd
         items={[
@@ -1269,6 +1322,11 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 ))}
               </div>
             </section>
+
+            <BlogArticleAuthor
+              datePublished="2026-03-02"
+              sources={ARTICLE_SOURCES}
+            />
 
             <BlogArticleFooter
               slug="how-to-calculate-net-salary-malta-2026"

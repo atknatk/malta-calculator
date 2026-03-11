@@ -18,6 +18,18 @@ import {
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+
+const ARTICLE_SOURCES = [
+  {
+    name: "Department of Industrial and Employment Relations (DIER) - Malta",
+    url: "https://dier.gov.mt",
+  },
+  {
+    name: "Department of Social Security - Malta",
+    url: "https://socialsecurity.gov.mt",
+  },
+];
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -52,6 +64,7 @@ export default function MaltaMinimumWagePage() {
         description="Complete guide to Malta's National Minimum Wage for 2026. Learn about current rates, annual increases, and comparisons."
         slug="malta-minimum-wage-2026-guide"
         datePublished="2026-01-01"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -176,6 +189,10 @@ export default function MaltaMinimumWagePage() {
               </div>
             </section>
 
+            <BlogArticleAuthor
+              datePublished="2026-01-01"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-minimum-wage-2026-guide"
               title="Malta Minimum Wage 2026: Complete Guide"

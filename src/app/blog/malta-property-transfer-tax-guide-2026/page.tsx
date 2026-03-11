@@ -26,6 +26,7 @@ import {
   CustomFAQJsonLd,
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -57,6 +58,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLE_SOURCES = [
+  {
+    name: "Malta Commissioner for Revenue (CFR) - Duty on Documents",
+    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Duty-on-Documents-and-Transfers.aspx",
+  },
+  {
+    name: "Malta Tax Compliance Authority (MTCA)",
+    url: "https://mtca.gov.mt",
+  },
+];
+
 export default function MaltaPropertyTransferTaxGuidePage() {
   return (
     <MarketingLayout>
@@ -65,6 +77,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
         description="Complete guide to all taxes and fees involved in property transfers in Malta."
         slug="malta-property-transfer-tax-guide-2026"
         datePublished="2026-02-16"
+        sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
         items={[
@@ -1193,6 +1206,10 @@ export default function MaltaPropertyTransferTaxGuidePage() {
             </section>
 
             {/* CTA Box */}
+            <BlogArticleAuthor
+              datePublished="2026-02-16"
+              sources={ARTICLE_SOURCES}
+            />
             <BlogArticleFooter
               slug="malta-property-transfer-tax-guide-2026"
               title="Malta Property Transfer Tax Guide 2026"
