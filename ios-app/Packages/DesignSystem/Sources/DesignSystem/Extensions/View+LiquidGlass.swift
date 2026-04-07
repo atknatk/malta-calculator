@@ -16,6 +16,18 @@ public enum LiquidGlassStrength: Sendable {
     /// Thick/prominent glass effect.
     case thick
 
+    #if os(iOS)
+    /// The native `GlassEffect` for iOS 26+.
+    @available(iOS 26.0, *)
+    var glassEffect: GlassEffect {
+        switch self {
+        case .thin: return .regular.interactive
+        case .regular: return .regular
+        case .thick: return .regular
+        }
+    }
+    #endif
+
     /// The `Material` equivalent for the iOS 18 fallback path.
     var material: Material {
         switch self {
@@ -72,12 +84,19 @@ struct LiquidGlassViewModifier<S: InsettableShape>: ViewModifier {
 
     @ViewBuilder
     private func glassContent(_ content: Content) -> some View {
-        // iOS 26+ uses native Liquid Glass; iOS 18 uses Material fallback
-        // NOTE: When Xcode 26 SDK is available, add:
-        // if #available(iOS 26.0, *) {
-        //     content.glassEffect(strength.glassEffect.tint(tint ?? .clear), in: shape)
-        // } else { ... }
-        // For now we ship the fallback path since the iOS 26 SDK is not yet GA.
+        #if os(iOS)
+        if #available(iOS 26.0, *) {
+            content.glassEffect(strength.glassEffect.tint(tint ?? .clear), in: shape)
+        } else {
+            materialFallback(content)
+        }
+        #else
+        materialFallback(content)
+        #endif
+    }
+
+    @ViewBuilder
+    private func materialFallback(_ content: Content) -> some View {
         content
             .background(strength.material, in: shape)
             .overlay(
