@@ -13,12 +13,21 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
+  Award,
   BadgeCheck,
   Calendar,
   CheckCircle,
   Clock,
+  CreditCard,
+  Crown,
+  Euro,
+  ExternalLink,
   FileText,
+  GraduationCap,
   Info,
+  Megaphone,
+  Rocket,
+  Timer,
 } from "lucide-react";
 import {
   ArticleJsonLd,
@@ -29,6 +38,7 @@ import {
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { CompanySizeRulesChecker } from "@/app/blog/_shared/company-size-rules-checker";
+import { PolicyTimeline } from "@/app/blog/_shared/policy-timeline";
 
 // All facts in this article are cited against primary sources from
 // Malta's identity, employment and skills authorities. Whenever a
@@ -214,6 +224,17 @@ export default function MaltaSinglePermitGuide2026Page() {
             answer:
               "Identità publishes a checklist that includes the applicant's passport (valid for at least 8 months) plus a full PDF copy, a signed Europass CV, a health insurance policy with at least €100,000 of coverage, a signed employment contract, a Position Description form, a Jobsplus Declaration of Suitability, proof of advertisement, qualification certificates with MQRIC recognition, an accommodation agreement plus Lease Agreement Attestation, and a signed Privacy Policy. Additional documents may be requested depending on the role.",
           },
+          {
+            question:
+              "When did Malta's new Single Permit rules come into force?",
+            answer:
+              "Malta's 2025 Labour Migration Policy rolls out in four phases. The first wave came into force on 1 August 2025 (new fees of €600 / €150, termination rate thresholds, the extended 30-day grace period, KEI €45,000 / SEI €30,000 salary thresholds, and the 4-day Jobsplus form rule). A second wave landed on 1 October 2025 (no in-country applications from tourist visas, mandatory salary payment via licensed financial institutions, fixed renewal periods, and the 60-day interim permit for visa-waiver countries). A third wave is expected from January 2026 (First Employment Rule, mandatory Pre-Departure Course, suitability check). The fourth wave — the Register of Exemplary Employers, occupation-specific salary study, and high-risk country list — runs from October 2026 onwards.",
+          },
+          {
+            question: "What is the First Employment Rule for Malta employers?",
+            answer:
+              "Expected from January 2026, the First Employment Rule requires employers to already employ a minimum number of Maltese, EU/EEA, Swiss or long-term-resident workers before applying for foreign hires. The minimums are: Micro (1–9 employees) → 2 such workers; Small (10–49) → 4; Medium (50–249) → 20; Large (250+) → 40. Companies whose workforce is more than 80% foreign will additionally face enhanced labour market needs testing. KEI applications, sports, students and healthcare are exempt from this rule.",
+          },
         ]}
       />
       <main role="main" aria-label="Malta Single Permit Guide 2026">
@@ -384,31 +405,36 @@ export default function MaltaSinglePermitGuide2026Page() {
                   </a>
                 </li>
                 <li>
+                  <a href="#timeline" className="text-primary hover:underline">
+                    2. What Changes, When — The 2025–2026 Timeline
+                  </a>
+                </li>
+                <li>
                   <a
                     href="#who-is-eligible"
                     className="text-primary hover:underline"
                   >
-                    2. Who Is Eligible (and Who Is Not)?
+                    3. Who Is Eligible (and Who Is Not)?
                   </a>
                 </li>
                 <li>
                   <a href="#cost" className="text-primary hover:underline">
-                    3. How Much Does the Single Permit Cost in 2026?
+                    4. How Much Does the Single Permit Cost in 2026?
                   </a>
                 </li>
                 <li>
                   <a href="#documents" className="text-primary hover:underline">
-                    4. What Documents Are Required?
+                    5. What Documents Are Required?
                   </a>
                 </li>
                 <li>
                   <a href="#process" className="text-primary hover:underline">
-                    5. How the Application Works (Step by Step)
+                    6. How the Application Works (Step by Step)
                   </a>
                 </li>
                 <li>
                   <a href="#kei-sei" className="text-primary hover:underline">
-                    6. KEI and SEI: The Fast-Track Routes
+                    7. KEI and SEI: The Fast-Track Routes
                   </a>
                 </li>
                 <li>
@@ -416,7 +442,7 @@ export default function MaltaSinglePermitGuide2026Page() {
                     href="#skills-pass"
                     className="text-primary hover:underline"
                   >
-                    7. The Pre-Departure Course (Skills Pass)
+                    8. The Pre-Departure Course (Skills Pass)
                   </a>
                 </li>
                 <li>
@@ -424,7 +450,7 @@ export default function MaltaSinglePermitGuide2026Page() {
                     href="#processing-time"
                     className="text-primary hover:underline"
                   >
-                    8. How Long Does Processing Take?
+                    9. How Long Does Processing Take?
                   </a>
                 </li>
                 <li>
@@ -432,7 +458,7 @@ export default function MaltaSinglePermitGuide2026Page() {
                     href="#change-employer"
                     className="text-primary hover:underline"
                   >
-                    9. Changing Employer on a Single Permit
+                    10. Changing Employer on a Single Permit
                   </a>
                 </li>
                 <li>
@@ -440,12 +466,12 @@ export default function MaltaSinglePermitGuide2026Page() {
                     href="#after-termination"
                     className="text-primary hover:underline"
                   >
-                    10. What Happens After Termination
+                    11. What Happens After Termination
                   </a>
                 </li>
                 <li>
                   <a href="#tax-link" className="text-primary hover:underline">
-                    11. Net Pay, SSC and Tax for Permit Holders
+                    12. Net Pay, SSC and Tax for Permit Holders
                   </a>
                 </li>
                 <li>
@@ -453,12 +479,12 @@ export default function MaltaSinglePermitGuide2026Page() {
                     href="#employer-rules"
                     className="text-primary hover:underline"
                   >
-                    12. Employer Compliance Rules at a Glance
+                    13. Employer Compliance Rules at a Glance
                   </a>
                 </li>
                 <li>
                   <a href="#faq" className="text-primary hover:underline">
-                    13. Frequently Asked Questions
+                    14. Frequently Asked Questions
                   </a>
                 </li>
               </ol>
@@ -518,9 +544,34 @@ export default function MaltaSinglePermitGuide2026Page() {
               </p>
             </section>
 
-            {/* Section 2 */}
+            {/* Section 2 — POLICY TIMELINE (NEW) */}
+            <section id="timeline" className="mt-12">
+              <h2>2. What Changes, When — The 2025–2026 Timeline</h2>
+              <p>
+                Malta&apos;s 2025 Labour Migration Policy introduces 32
+                recommendations that roll out in four phases between August 2025
+                and late 2026. Some are already in force (new fees, termination
+                thresholds, the 30-day grace period). Others are expected to
+                land formally in January 2026 (the First Employment Rule, the
+                suitability check, the mandatory Pre-Departure Course). And a
+                third wave — the Register of Exemplary Employers,
+                occupation-specific salary studies, and high-risk country lists
+                — kicks in from October 2026 onwards.
+              </p>
+              <p>
+                The visual timeline below shows every major rule, sorted by
+                effective date, with a status badge so you can see at a glance
+                what is live today versus what is still expected. Every entry is
+                sourced from the Identità Labour Migration Policy Fact Sheet
+                (July 2025).
+              </p>
+
+              <PolicyTimeline />
+            </section>
+
+            {/* Section 3 */}
             <section id="who-is-eligible" className="mt-12">
-              <h2>2. Who Is Eligible (and Who Is Not)?</h2>
+              <h2>3. Who Is Eligible (and Who Is Not)?</h2>
               <p>
                 Any third-country national with a job offer from a
                 Malta-registered company can apply, provided that the employer
@@ -581,7 +632,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 3 — COST */}
             <section id="cost" className="mt-12">
-              <h2>3. How Much Does the Single Permit Cost in 2026?</h2>
+              <h2>4. How Much Does the Single Permit Cost in 2026?</h2>
               <p>
                 In 2026 the Malta Single Permit costs{" "}
                 <strong>€600 for a first-time application</strong> and{" "}
@@ -816,7 +867,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 4 — DOCUMENTS */}
             <section id="documents" className="mt-12">
-              <h2>4. What Documents Are Required?</h2>
+              <h2>5. What Documents Are Required?</h2>
               <p>
                 Identità publishes a single canonical checklist for all Single
                 Permit applications, including renewals and change of employer.
@@ -963,7 +1014,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 5 — PROCESS */}
             <section id="process" className="mt-12">
-              <h2>5. How the Application Works (Step by Step)</h2>
+              <h2>6. How the Application Works (Step by Step)</h2>
               <p>
                 The Single Permit is filed online through the Identità
                 Expatriates Portal at{" "}
@@ -1024,7 +1075,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 6 — KEI/SEI */}
             <section id="kei-sei" className="mt-12">
-              <h2>6. KEI and SEI: The Fast-Track Routes</h2>
+              <h2>7. KEI and SEI: The Fast-Track Routes</h2>
               <p>
                 Malta runs two fast-track routes for highly qualified
                 third-country nationals. The{" "}
@@ -1035,6 +1086,125 @@ export default function MaltaSinglePermitGuide2026Page() {
                 for KEI but earn at least €30,000 and hold the right academic,
                 vocational or technical credentials.
               </p>
+
+              {/* KEI / SEI explainer cards */}
+              <div className="not-prose my-8 grid gap-5 md:grid-cols-2">
+                {/* KEI */}
+                <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-background to-emerald-500/5 p-6 md:p-7">
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
+                      Fast-track · Managerial &amp; Highly Technical
+                    </span>
+                    <Crown className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <h3 className="!mt-0 mb-2 text-2xl font-bold">
+                    Key Employee Initiative
+                  </h3>
+                  <p className="mb-5 text-sm text-muted-foreground">
+                    For senior managers and highly technical specialists. The
+                    premium fast-track route under S.L. 217.17.
+                  </p>
+                  <dl className="space-y-2.5 text-sm">
+                    <KeiSeiFact
+                      icon={<Euro className="h-4 w-4" />}
+                      label="Salary threshold"
+                      value="€45,000 / yr (was €35,000)"
+                    />
+                    <KeiSeiFact
+                      icon={<GraduationCap className="h-4 w-4" />}
+                      label="Qualifications"
+                      value="Certified qualifications, warrants or proof of experience"
+                    />
+                    <KeiSeiFact
+                      icon={<Megaphone className="h-4 w-4" />}
+                      label="Job advert"
+                      value="2 weeks on local media"
+                    />
+                    <KeiSeiFact
+                      icon={<Rocket className="h-4 w-4" />}
+                      label="Start-up route"
+                      value="Open to Malta Enterprise–endorsed innovators"
+                    />
+                    <KeiSeiFact
+                      icon={<Calendar className="h-4 w-4" />}
+                      label="Duration"
+                      value="1 yr initial · up to 3 yrs renewal"
+                    />
+                    <KeiSeiFact
+                      icon={<CreditCard className="h-4 w-4" />}
+                      label="Fee"
+                      value="€600 first-time · €150 / yr renewal"
+                    />
+                  </dl>
+                  <a
+                    href="https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/employment-related-permits/highly-qualified-individuals/key-employee-initiative/who-is-eligible/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 hover:underline dark:text-emerald-400"
+                  >
+                    Official Identità KEI page
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+
+                {/* SEI */}
+                <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/10 via-background to-primary/5 p-6 md:p-7">
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="rounded-full bg-primary/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                      Alternative Fast-track · Skilled Specialists
+                    </span>
+                    <Award className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="!mt-0 mb-2 text-2xl font-bold">
+                    Specialist Employee Initiative
+                  </h3>
+                  <p className="mb-5 text-sm text-muted-foreground">
+                    For skilled specialists who do not qualify for KEI but have
+                    strong academic, vocational or technical credentials.
+                  </p>
+                  <dl className="space-y-2.5 text-sm">
+                    <KeiSeiFact
+                      icon={<Euro className="h-4 w-4" />}
+                      label="Salary threshold"
+                      value="€30,000 / yr (was €25,000)"
+                    />
+                    <KeiSeiFact
+                      icon={<GraduationCap className="h-4 w-4" />}
+                      label="Qualifications"
+                      value="MQF Level 6+ OR 3+ years certified experience"
+                    />
+                    <KeiSeiFact
+                      icon={<Megaphone className="h-4 w-4" />}
+                      label="Job advert"
+                      value="2 weeks on local media"
+                    />
+                    <KeiSeiFact
+                      icon={<Timer className="h-4 w-4" />}
+                      label="Processing"
+                      value="15 working days from complete submission"
+                    />
+                    <KeiSeiFact
+                      icon={<Calendar className="h-4 w-4" />}
+                      label="Duration"
+                      value="Up to 3 yrs on renewal"
+                    />
+                    <KeiSeiFact
+                      icon={<CreditCard className="h-4 w-4" />}
+                      label="Fee"
+                      value="€600 per application"
+                    />
+                  </dl>
+                  <a
+                    href="https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/employment-related-permits/highly-qualified-individuals/specialist-employee-initiative/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                  >
+                    Official Identità SEI page
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+              </div>
 
               <h3>KEI vs SEI at a glance</h3>
               <div className="overflow-x-auto not-prose my-6">
@@ -1233,7 +1403,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 7 — SKILLS PASS */}
             <section id="skills-pass" className="mt-12">
-              <h2>7. The Pre-Departure Course (Skills Pass)</h2>
+              <h2>8. The Pre-Departure Course (Skills Pass)</h2>
               <p>
                 Since January 2026, every first-time Single Permit applicant
                 must complete a mandatory Pre-Departure Course before Identità
@@ -1402,7 +1572,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 8 — PROCESSING TIME */}
             <section id="processing-time" className="mt-12">
-              <h2>8. How Long Does Processing Take?</h2>
+              <h2>9. How Long Does Processing Take?</h2>
               <p>
                 Subsidiary Legislation 217.17 gives Identità up to{" "}
                 <strong>four months</strong> to process a Single Permit
@@ -1445,7 +1615,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 9 — CHANGE EMPLOYER */}
             <section id="change-employer" className="mt-12">
-              <h2>9. Changing Employer on a Single Permit</h2>
+              <h2>10. Changing Employer on a Single Permit</h2>
               <p>
                 The Single Permit is tied to one employer and one designation.
                 Any change makes the existing permit null and void and triggers
@@ -1549,7 +1719,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 10 — TERMINATION */}
             <section id="after-termination" className="mt-12">
-              <h2>10. What Happens After Termination</h2>
+              <h2>11. What Happens After Termination</h2>
               <p>
                 Termination of employment is the moment a Single Permit is most
                 exposed. The permit was issued for one specific employer, so
@@ -1668,7 +1838,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 11 — TAX LINK */}
             <section id="tax-link" className="mt-12">
-              <h2>11. Net Pay, SSC and Tax for Permit Holders</h2>
+              <h2>12. Net Pay, SSC and Tax for Permit Holders</h2>
               <p>
                 A Single Permit holder is taxed and contributes to social
                 security on exactly the same basis as a Maltese employee. Your
@@ -1737,7 +1907,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 12 — Employer Compliance Rules at a Glance */}
             <section id="employer-rules" className="mt-12">
-              <h2>12. Employer Compliance Rules at a Glance</h2>
+              <h2>13. Employer Compliance Rules at a Glance</h2>
               <p>
                 Most of this guide is written for the foreign worker. But the
                 Single Permit application is filed by the employer, and the 2025
@@ -1896,7 +2066,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Section 13 — FAQ */}
             <section id="faq" className="mt-12">
-              <h2>13. Frequently Asked Questions</h2>
+              <h2>14. Frequently Asked Questions</h2>
 
               <h3>How much does the Malta Single Permit cost in 2026?</h3>
               <p>
@@ -2078,3 +2248,25 @@ export default function MaltaSinglePermitGuide2026Page() {
 
 export const revalidate = false;
 export const dynamic = "force-static";
+
+function KeiSeiFact({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <span className="mt-0.5 text-muted-foreground">{icon}</span>
+      <div className="flex-1">
+        <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">
+          {label}
+        </dt>
+        <dd className="text-sm font-semibold text-foreground">{value}</dd>
+      </div>
+    </div>
+  );
+}
