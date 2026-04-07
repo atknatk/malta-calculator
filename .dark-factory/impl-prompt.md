@@ -144,16 +144,31 @@ let`, `if let`, or `??` with a sensible default.
 9. **Do not merge yourself.** Governance handles merge decisions based on
    risk + holdout + satisfaction scores.
 
-${ISSUE_REF}
-
 # Spec for THIS task
 
-The intent spec was attached as the "Intent Spec" section in the surrounding
-prompt. Holdout scenarios have been stripped — if you find yourself looking
-for them, you are looking in the wrong place. The holdout-validator will
-evaluate your output independently.
+The intent spec (with holdout scenarios already stripped) has been written
+to `${SESSION_DIR}/spec.md`. **Read that file first** — it is your contract.
+It contains code samples, JSON schemas, test matrices, and acceptance
+criteria for the task.
 
-${GUARDRAILS_SECTION}
+If the intent spec has a small body and instructs you to read a canonical
+file under `ios-app-plan/tasks/NN-name.md`, read that file via the Read
+tool. The canonical file does NOT match the holdout guard pattern.
+
+You MUST NOT attempt to read:
+
+- `.dark-factory/holdouts/` — holdout scenarios
+- `${SESSION_DIR}/spec-full.md` — full spec with holdouts
+- any `*.intent.md` directly (the stripped version is already at spec.md)
+
+The holdout-guard PreToolUse hook will block these reads anyway.
+
+# Guardrails from past failures
+
+Read `.dark-factory/failure-patterns.md` before starting work — that file
+lists every failure pattern recorded from past iterations, including the
+seeded iOS-specific rules (Decimal, force-unwrap, Liquid Glass fallback,
+etc.). Avoid repeating anything documented there.
 
 # CRITICAL — Output Format
 
