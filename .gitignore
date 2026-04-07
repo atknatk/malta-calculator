@@ -52,9 +52,53 @@ ios-app/build/
 ios-app/DerivedData/
 ios-app/**/xcuserdata/
 ios-app/**/*.xcuserstate
-ios-app/**/.swiftpm/
+ios-app/**/.swiftpm/xcode/
 ios-app/**/.build/
+
+# XcodeGen generated files
+ios-app/*.xcodeproj
+ios-app/*.xcworkspace
+
+# Xcode build artifacts
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcarchive
+*.moved-aside
+*.hmap
+*.xccheckout
+*.xcscmblueprint
+
+# Xcode temporary files
+*~.nib
+*.swp
+
+# Swift Package Manager
+ios-app/Packages/*/Package.resolved
+ios-app/.swiftpm/
+
+# Fastlane
+ios-app/fastlane/.env
+ios-app/fastlane/.env.*
+!ios-app/fastlane/.env.default
 ios-app/fastlane/report.xml
 ios-app/fastlane/Preview.html
 ios-app/fastlane/screenshots/
 ios-app/fastlane/test_output/
+ios-app/fastlane/gym/
+ios-app/fastlane/README.md
+
+# Bundler (Fastlane)
+ios-app/fastlane/vendor/
+ios-app/fastlane/.bundle/
+ios-app/fastlane/Gemfile.lock
+
+# CocoaPods (not used, but prevent accidental inclusion)
+ios-app/Pods/
+
+# Carthage (not used, but prevent accidental inclusion)
+ios-app/Carthage/
+
+# Xcode Playground
+ios-app/timeline.xctimeline
+ios-app/playground.xcworkspace

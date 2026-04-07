@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "CalculationKit",
     defaultLocalization: "en",
-    platforms: [.iOS(.v17), .macOS(.v14)],
+    platforms: [.iOS(.v18), .macOS(.v14)],
     products: [
         .library(name: "CalculationKit", targets: ["CalculationKit"]),
     ],
@@ -18,7 +18,10 @@ let package = Package(
         ),
         .testTarget(
             name: "CalculationKitTests",
-            dependencies: ["CalculationKit"]
+            dependencies: ["CalculationKit"],
+            swiftSettings: [
+                .enableUpcomingFeature("StrictConcurrency"),
+            ]
         ),
     ]
 )

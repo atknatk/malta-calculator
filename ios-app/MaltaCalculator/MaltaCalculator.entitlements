@@ -2,8 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- v1 ships with iCloud capability scaffolded but not enabled.
-	     Toggling iCloud sync requires the ICloudOnboardingSheet flow added in v1.1.
-	     The keys below are present so we don't need to re-provision later. -->
+	<key>aps-environment</key>
+	<string>development</string>
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:maltacalculator.com</string>
+		<string>webcredentials:maltacalculator.com</string>
+	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.maltacalculator.app</string>
+	</array>
 </dict>
 </plist>

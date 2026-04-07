@@ -39,6 +39,7 @@ targets:
       - path: MaltaCalculator/Resources
         excludes:
           - "**/.DS_Store"
+      - path: MaltaCalculator/PrivacyInfo.xcprivacy
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.maltacalculator.app

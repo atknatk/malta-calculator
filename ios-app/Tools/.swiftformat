@@ -1,4 +1,6 @@
 --swiftversion 6.0
+--minversion 0.54.0
+--exclude DerivedData,build,.build,Pods,Carthage,.swiftpm
 --indent 4
 --wraparguments before-first
 --wrapcollections before-first
@@ -26,3 +28,8 @@
 --nospaceoperators ..<,...
 --tabwidth 4
 --xcodeindentation enabled
+--funcattributes prev-line
+--typeattributes prev-line
+--varattributes same-line
+--storedvarattributes same-line
+--computedvarattributes same-line
