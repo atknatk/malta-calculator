@@ -1,0 +1,104 @@
+scenario: "Liquid Glass + iOS 18 fallback — centralized modifier with #available branch, Reduce Transparency support, MeshGradient/PhaseAnimator availability gating, FloatingOrbs reduce-motion handling"
+version: 1
+project: ios-design
+category: liquid-glass
+priority: critical
+source: "ios-app-plan/tasks/02-design-system.md"
+
+preconditions:
+  - type: state
+    description: "DesignSystem package exists with at minimum the DSColor token namespace"
+  - type: state
+    description: "Deployment target is iOS 18.0 — both iOS 18 and iOS 26 must be supported"
+
+behaviors:
+  - id: liquid-glass-modifier-centralized
+    type: deterministic
+    status: implemented
+    description: "DesignSystem/Sources/DesignSystem/Effects/LiquidGlass.swift defines a public View modifier liquidGlass(tint:cornerRadius:) (or a struct LiquidGlassModifier conforming to ViewModifier). This is the ONLY place in the entire codebase that calls .glassEffect() / .glassBackgroundEffect()."
+
+  - id: liquid-glass-ios26-branch
+    type: deterministic
+    status: implemented
+    description: "The liquidGlass modifier body contains an explicit `if #available(iOS 26.0, *)` guard. The iOS 26 branch uses .glassEffect() (or .glassBackgroundEffect()) with the configured tint and corner radius."
+
+  - id: liquid-glass-ios18-fallback
+    type: deterministic
+    status: implemented
+    description: "The else branch (iOS 18-25) renders a layered fallback: .background(.regularMaterial) plus a subtle DSColor.maltaGoldMuted overlay and matching cornerRadius. The fallback visually approximates the Liquid Glass aesthetic without crashing on iOS 18."
+
+  - id: liquid-glass-reduce-transparency
+    type: deterministic
+    status: implemented
+    description: "Both branches read @Environment(\\.accessibilityReduceTransparency). When the user has Reduce Transparency enabled, the modifier renders an opaque DSColor.surface (or surfaceElevated) instead of the glass/material effect — even on iOS 26."
+
+  - id: mesh-gradient-availability
+    type: deterministic
+    status: implemented
+    description: "Every call site of MeshGradient( in DesignSystem (e.g. MeshBackground.swift, FloatingOrbs.swift) is wrapped in `if #available(iOS 18.0, *)` and provides a RadialGradient or LinearGradient fallback for older iOS. Default minimum is iOS 18 so the fallback exists for safety, not necessity."
+
+  - id: mesh-background-component
+    type: deterministic
+    status: implemented
+    description: "DesignSystem exposes MeshBackground (a View) that produces an animated mesh gradient using DSColor.maltaGold + maltaGoldMuted + mediterraneanBlue. Animation is gated on accessibilityReduceMotion: when on, the gradient is static."
+
+  - id: floating-orbs-reduce-motion
+    type: deterministic
+    status: implemented
+    description: "FloatingOrbs.swift renders 3-5 decorative gradient circles with PhaseAnimator. When @Environment(\\.accessibilityReduceMotion) is .reduce, the orbs render statically (no animation, no PhaseAnimator initialization)."
+
+  - id: floating-orbs-onappear-defer
+    type: deterministic
+    status: implemented
+    description: "FloatingOrbs animation starts only after .onAppear (deferred) so cold launch isn't slowed by animation initialization. The first frame after launch shows static orbs, then the PhaseAnimator engages."
+
+  - id: glass-effect-container
+    type: deterministic
+    status: implemented
+    description: "Where multiple liquid glass surfaces appear in the same view (e.g. card stack, toolbar with cards), they are wrapped in GlassEffectContainer (iOS 26+) so the system can render them in a single pass. Wrapped in #available with a Group fallback for iOS 18."
+
+  - id: liquid-glass-tint-uses-tokens
+    type: deterministic
+    status: implemented
+    description: "The tint parameter to liquidGlass() accepts a DSColor token (not a raw Color). Default tint is DSColor.maltaGold.opacity(0.15)."
+
+  - id: liquid-glass-snapshot-tests
+    type: unit-behavioral
+    status: implemented
+    description: "DesignSystem snapshot tests cover a representative card with .liquidGlass() applied in: light mode, dark mode, with reduce-transparency enabled (should be opaque), with reduce-motion enabled (no animation captured)."
+
+  - id: liquid-glass-doc-comment
+    type: deterministic
+    status: implemented
+    description: "The liquidGlass modifier has a /// doc comment explaining: (a) iOS 26 vs iOS 18 behavior, (b) how to use it instead of glassEffect directly, (c) the reduce-transparency contract, (d) example call site."
+
+anti_patterns:
+  - id: no-raw-glass-effect-call
+    type: llm-judge
+    description: "The .glassEffect() and .glassBackgroundEffect() APIs MUST only be called from inside the centralized LiquidGlass.swift modifier. Any other call site bypasses the iOS 18 fallback and crashes on older devices. Search for direct usage anywhere in the codebase outside DesignSystem/Sources/DesignSystem/Effects/."
+    evidence_needed: "grep -r 'glassEffect(' ios-app/ returns hits only inside DesignSystem/Sources/DesignSystem/Effects/"
+
+  - id: no-unguarded-mesh-gradient
+    type: llm-judge
+    description: "MeshGradient( without an enclosing #available(iOS 18.0, *) check is forbidden. Even though the deployment target is 18, the explicit guard documents intent and protects against future minor iOS API changes."
+    evidence_needed: "Every MeshGradient( call has #available(iOS 18.0, *) within 5 lines above or is inside a function/view that's already gated"
+
+  - id: no-glass-without-reduce-transparency
+    type: llm-judge
+    description: "A liquid glass surface that does not check accessibilityReduceTransparency is hostile to users with vestibular disorders or low vision. The centralized modifier handles this; never reimplement it ad-hoc."
+    evidence_needed: "Glass-style backgrounds in feature code go through .liquidGlass() (or DSCard(.glass)) — not raw .background(.regularMaterial)"
+
+  - id: no-floating-orbs-without-reduce-motion
+    type: llm-judge
+    description: "Decorative animated backgrounds (FloatingOrbs, MeshBackground when animated) MUST consult accessibilityReduceMotion. Animations that ignore the user setting cause motion sickness."
+    evidence_needed: "Every PhaseAnimator/.animation in decorative backgrounds is wrapped in a reduceMotion check"
+
+  - id: no-glass-on-text-only
+    type: llm-judge
+    description: "Liquid Glass should not be applied to plain text labels (legibility risk). It is for cards, sheets, toolbars, and floating elements that already have padding and high-contrast content."
+    evidence_needed: "No .liquidGlass() applied directly to a Text() view"
+
+  - id: no-blur-radius-magic
+    type: llm-judge
+    description: "Custom .blur(radius: N) calls must not appear in feature code. Blur is part of the glass effect and centralized."
+    evidence_needed: "grep -r '\\.blur(radius' ios-app/MaltaCalculator returns no matches"

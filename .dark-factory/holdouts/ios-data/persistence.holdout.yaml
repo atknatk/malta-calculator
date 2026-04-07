@@ -1,0 +1,134 @@
+scenario: "SwiftData persistence — versioned schema, migration plan, opt-in CloudKit (default OFF), bounded fetches, privacy manifest declares storage usage, in-memory test container"
+version: 1
+project: ios-data
+category: persistence
+priority: critical
+source: "ios-app-plan/tasks/10-persistence.md"
+
+preconditions:
+  - type: state
+    description: "ios-app/MaltaCalculator/Data directory contains SwiftData @Model types"
+  - type: state
+    description: "iCloud entitlements are declared (per ADR-013) but the CloudKit container is opt-in"
+
+behaviors:
+  - id: schema-v1-models
+    type: deterministic
+    status: implemented
+    description: "Data/SchemaV1.swift defines a `MaltaCalculatorSchemaV1` enum conforming to VersionedSchema with the v1 model types: SavedCalculation, CalculatorUsage, GuideBookmark, UserPreferences. The enum exposes a static `var versionIdentifier: Schema.Version` set to 1.0.0."
+
+  - id: migration-plan-stub
+    type: deterministic
+    status: implemented
+    description: "Data/MigrationPlan.swift defines `MaltaCalculatorMigrationPlan` conforming to SchemaMigrationPlan with `static var schemas: [VersionedSchema.Type] = [MaltaCalculatorSchemaV1.self]` and an empty `static var stages: [MigrationStage] = []` for v1. Future versions add stages."
+
+  - id: model-container-versioned
+    type: deterministic
+    status: implemented
+    description: "ModelContainer is constructed via `try ModelContainer(for: schema, migrationPlan: MaltaCalculatorMigrationPlan.self, configurations: [config])` — never via the inferred constructor `ModelContainer(for: SavedCalculation.self)`."
+
+  - id: model-container-cloudkit-conditional
+    type: deterministic
+    status: implemented
+    description: 'The ModelConfiguration cloudKitDatabase parameter is set to `.private("iCloud.com.maltacalculator.app")` ONLY when `userPreferences.syncWithICloud == true`. When false (the default), cloudKitDatabase is `.none`.'
+
+  - id: cloudkit-default-off
+    type: deterministic
+    status: implemented
+    description: "UserPreferences.syncWithICloud has a default value of `false`. The container is initially built without CloudKit. Toggling on requires the iCloud onboarding flow."
+
+  - id: icloud-onboarding-sheet
+    type: deterministic
+    status: implemented
+    description: "ICloudOnboardingSheet (or similar) explains: (a) what data syncs (calculations, bookmarks, preferences), (b) what stays local (analytics — none, since we have none), (c) the iCloud account requirement, (d) how to disable later. The sheet has a clear consent button."
+
+  - id: icloud-toggle-rebuilds-container
+    type: deterministic
+    status: implemented
+    description: "When the user toggles syncWithICloud, the ModelContainer is rebuilt with the new cloudKitDatabase setting. Existing local data migrates to the CloudKit private DB on first enable. Disabling drops the CloudKit binding but keeps local data."
+
+  - id: saved-calculation-model
+    type: deterministic
+    status: implemented
+    description: "SavedCalculation @Model has: id (UUID), calculatorId (String), inputJSON (Data), outputJSON (Data), title (String), createdAt (Date), updatedAt (Date), tag (String?), pinned (Bool). All properties have explicit types; no `@Attribute` defaults that fight migration."
+
+  - id: calculator-usage-model
+    type: deterministic
+    status: implemented
+    description: "CalculatorUsage @Model tracks recents: id, calculatorId, lastUsed (Date), useCount (Int). Used by Calculators Hub for the 'Recently Used' section."
+
+  - id: guide-bookmark-model
+    type: deterministic
+    status: implemented
+    description: "GuideBookmark @Model has: id, guideId, paragraphAnchor (String?), bookmarkedAt (Date)."
+
+  - id: user-preferences-model
+    type: deterministic
+    status: implemented
+    description: 'UserPreferences @Model is a singleton (`@Attribute(.unique) var key: String = "global"`) with: theme (.system/.light/.dark), accentColor (String), syncWithICloud (Bool), defaultTaxYear (Int), debounceMs (Int), hasSeenOnboarding (Bool).'
+
+  - id: bounded-list-fetches
+    type: deterministic
+    status: implemented
+    description: "FetchDescriptor instances backing UI lists set a `fetchLimit` (e.g. 100 for SavedCalculation history, 20 for CalculatorUsage recents). Unbounded fetches are forbidden."
+
+  - id: fetch-descriptor-sort
+    type: deterministic
+    status: implemented
+    description: "FetchDescriptors that drive UI provide explicit sort descriptors (e.g. \\SavedCalculation.updatedAt order: .reverse) so the UI order is deterministic."
+
+  - id: store-classes
+    type: deterministic
+    status: implemented
+    description: "SavedCalculationStore and UserPreferencesStore are @Observable @MainActor classes wrapping the modelContext. Views/ViewModels call store methods, never modelContext directly."
+
+  - id: store-fetch-throws-typed
+    type: deterministic
+    status: implemented
+    description: "Store methods that fetch declare `throws(StoreError)` (Swift 6 typed throws) and define a typed StoreError enum. UI handles errors via the store's exposed state."
+
+  - id: privacy-manifest-storage
+    type: deterministic
+    status: implemented
+    description: "Resources/PrivacyInfo.xcprivacy declares NSPrivacyAccessedAPITypes including UserDefaults (CA92.1) and FileTimestamp (C617.1) with the appropriate reason codes. CloudKit usage is documented separately when sync is enabled."
+
+  - id: in-memory-container-tests
+    type: unit-behavioral
+    status: implemented
+    description: "DataTests creates an in-memory ModelContainer (`isStoredInMemoryOnly: true`) for unit tests, so SwiftData logic is testable without writing to disk. Test helpers expose a `func makeTestContainer() throws -> ModelContainer`."
+
+  - id: schema-snapshot-test
+    type: unit-behavioral
+    status: implemented
+    description: "DataTests includes a snapshot test that asserts the v1 schema's serialized representation. This catches accidental schema changes that should bump the version."
+
+anti_patterns:
+  - id: no-default-cloudkit-on
+    type: llm-judge
+    description: "syncWithICloud must default to false. Silent iCloud uploads are a privacy violation per ADR-013."
+    evidence_needed: "UserPreferences.syncWithICloud default value is false in the model declaration and initial seed"
+
+  - id: no-unbounded-fetch
+    type: llm-judge
+    description: "FetchDescriptor without fetchLimit on UI-driving queries is forbidden. As the user accumulates history, an unbounded fetch will OOM the app."
+    evidence_needed: "Every FetchDescriptor used by views or ViewModels has a fetchLimit"
+
+  - id: no-context-in-views
+    type: llm-judge
+    description: "Views must not call modelContext.insert/save/delete directly. Use a Store class. The boundary keeps SwiftData testable and avoids ad-hoc save calls scattered through views."
+    evidence_needed: "modelContext.insert/save/delete appears only in Store classes, not in *Screen.swift"
+
+  - id: no-non-versioned-container
+    type: llm-judge
+    description: "ModelContainer constructed without a Schema and migrationPlan is forbidden. Even with no migrations in v1, the explicit versioning is mandatory so v2 doesn't have to retrofit it."
+    evidence_needed: "ModelContainer(for:configurations:) calls always pass a Schema constructed from MaltaCalculatorSchemaV1"
+
+  - id: no-cloudkit-without-consent
+    type: llm-judge
+    description: "Enabling CloudKit without going through the ICloudOnboardingSheet flow is forbidden. Even debug/test code uses the same toggle path."
+    evidence_needed: "syncWithICloud is only flipped to true from the consent flow code path"
+
+  - id: no-private-cloudkit-public-zone
+    type: llm-judge
+    description: "Only `.private(...)` CloudKit database is allowed. Public or shared zones are forbidden — calculator data is private to the user."
+    evidence_needed: "cloudKitDatabase is `.private(...)` or `.none`, never `.public` or `.shared`"

@@ -1,0 +1,139 @@
+scenario: "App Store readiness — privacy manifest, store metadata, screenshots, fastlane lanes (build/beta/release), match signing, ASO keywords, no debug print in release"
+version: 1
+project: ios-release
+category: store-readiness
+priority: critical
+source: "ios-app-plan/tasks/16-release.md"
+
+preconditions:
+  - type: state
+    description: "All feature work complete and ios-app builds in Release configuration"
+  - type: state
+    description: "Apple Developer account credentials are available to the human operator (fastlane match runs locally, not in CI)"
+
+behaviors:
+  - id: privacy-manifest-tracking-false
+    type: deterministic
+    status: implemented
+    description: "ios-app/MaltaCalculator/Resources/PrivacyInfo.xcprivacy exists, sets NSPrivacyTracking=false, and provides empty NSPrivacyTrackingDomains array. The app collects zero analytics per ADR-010."
+
+  - id: privacy-manifest-api-categories
+    type: deterministic
+    status: implemented
+    description: "PrivacyInfo.xcprivacy declares NSPrivacyAccessedAPITypes for the categories actually used: UserDefaults (CA92.1 — app functionality), FileTimestamp (C617.1 — app functionality), DiskSpace (E174.1 — app functionality), SystemBootTime (35F9.1 — app functionality). No tracking domains."
+
+  - id: privacy-manifest-data-collection
+    type: deterministic
+    status: implemented
+    description: "PrivacyInfo.xcprivacy declares NSPrivacyCollectedDataTypes ONLY when iCloud sync is enabled (and even then, only the calculator-state data category). The default v1 build with sync OFF declares an empty array."
+
+  - id: store-metadata-files
+    type: deterministic
+    status: implemented
+    description: "ios-app/fastlane/metadata/en-US/ contains: name.txt (≤30 chars), subtitle.txt (≤30 chars), description.txt (≤4000 chars), keywords.txt (≤100 chars), promotional_text.txt (≤170 chars), release_notes.txt (≤4000 chars), support_url.txt, marketing_url.txt, privacy_url.txt."
+
+  - id: store-name-malta-calculator
+    type: deterministic
+    status: implemented
+    description: "name.txt is 'Malta Calculator' (matches the brand decision in ADR-015)."
+
+  - id: store-keywords-aso
+    type: deterministic
+    status: implemented
+    description: "keywords.txt contains a comma-separated list under 100 chars optimized for ASO. Includes: malta tax, salary calculator, mortgage, payroll, ssc, cola, pension, expat. No keyword stuffing or competitor brand names."
+
+  - id: store-description-quality
+    type: deterministic
+    status: implemented
+    description: "description.txt is well-written marketing copy under 4000 chars covering: what the app does, who it's for, key features, why offline-first, why free, privacy stance. No emoji-spam or marketing fluff."
+
+  - id: fastlane-appfile
+    type: deterministic
+    status: implemented
+    description: "ios-app/fastlane/Appfile sets app_identifier to com.maltacalculator.app and apple_id/team_id from environment variables (not hardcoded)."
+
+  - id: fastlane-fastfile-lanes
+    type: deterministic
+    status: implemented
+    description: "ios-app/fastlane/Fastfile defines lanes: build (Release archive), beta (TestFlight upload via pilot), release (App Store submission via deliver). Each lane runs build before upload and uses match for signing."
+
+  - id: fastlane-match-config
+    type: deterministic
+    status: implemented
+    description: "fastlane/Matchfile is configured for git_url-based certificate storage. The repository URL points to a private match repo (URL is in env var, not hardcoded)."
+
+  - id: snapshot-spec
+    type: deterministic
+    status: implemented
+    description: "ios-app/fastlane/Snapfile lists devices: iPhone 16 Pro, iPhone 16 Pro Max, iPhone SE (3rd generation), iPad Pro 13-inch (M4). At least 5 screenshots per device."
+
+  - id: snapshot-helper
+    type: deterministic
+    status: implemented
+    description: "A UI test target (MaltaCalculatorUITests) includes SnapshotHelper.swift and a UITest class that drives the app to capture each marketing screenshot via snapshot('01-Salary')."
+
+  - id: signing-non-interactive
+    type: deterministic
+    status: implemented
+    description: "Project uses Automatic Signing (ProvisioningStyle = Automatic) OR fastlane match for code signing. No stale .mobileprovision files committed to git."
+
+  - id: build-warnings-zero-release
+    type: deterministic
+    status: implemented
+    description: "Release configuration build with `xcodebuild -configuration Release` produces zero warnings. SWIFT_TREAT_WARNINGS_AS_ERRORS = YES enforced."
+
+  - id: app-icon-complete
+    type: deterministic
+    status: implemented
+    description: "Assets.xcassets/AppIcon.appiconset contains the marketing 1024x1024 PNG plus all required sizes for iOS 18+. The launch screen is provided via the UILaunchScreen Info.plist key (no Launch Screen storyboard)."
+
+  - id: testflight-internal-group
+    type: deterministic
+    status: implemented
+    description: "fastlane Pilotfile (or inline beta lane config) creates an internal TestFlight group named 'Internal Testers' for the dev team. External groups are configured manually before public beta."
+
+  - id: changelog-versioned
+    type: deterministic
+    status: implemented
+    description: "ios-app/CHANGELOG.md tracks app version history. Each version has a date, build number, and notes formatted for App Store release notes (markdown stripped)."
+
+  - id: marketing-version
+    type: deterministic
+    status: implemented
+    description: "MARKETING_VERSION starts at 1.0.0 in Release config. CURRENT_PROJECT_VERSION (build number) is monotonically increasing — fastlane increments it on each beta upload."
+
+  - id: app-store-rating-questions
+    type: deterministic
+    status: implemented
+    description: "ios-app/fastlane/metadata/en-US/review_information/ contains the App Review form answers: contact_email, demo_account_name (n/a, free app, no auth), notes (offline calculator, no server)."
+
+anti_patterns:
+  - id: no-tracking-sdks
+    type: llm-judge
+    description: "Analytics or tracking SDKs (Firebase, Mixpanel, Amplitude, Sentry user-data, AppsFlyer) are forbidden per ADR-010. The app collects zero data."
+    evidence_needed: "Package.resolved and Package.swift contain no analytics SDK dependencies"
+
+  - id: no-debug-logger-release
+    type: llm-judge
+    description: "Logger.debug or Logger.info calls in hot paths must be wrapped in #if DEBUG so Release builds don't waste energy on log calls."
+    evidence_needed: "Logger.debug/info appear only in #if DEBUG blocks for production sources"
+
+  - id: no-sandbox-receipt-urls
+    type: llm-judge
+    description: "Sandbox URLs (sandbox.itunes.apple.com) in production code are forbidden — they indicate a forgotten StoreKit test path."
+    evidence_needed: "grep -r 'sandbox.itunes' ios-app/MaltaCalculator returns no matches"
+
+  - id: no-hardcoded-api-keys
+    type: llm-judge
+    description: "API keys, signing certificates, or App Store Connect credentials in source code are forbidden. They live in env vars and fastlane match."
+    evidence_needed: "No 'sk_' / 'pk_' / 'API_KEY' / hex-secret patterns in committed sources"
+
+  - id: no-marketing-version-zero
+    type: llm-judge
+    description: "MARKETING_VERSION cannot be 0.x or contain trailing dots. Must be a valid semantic version like 1.0.0."
+    evidence_needed: "MARKETING_VERSION matches semver pattern in pbxproj/xcconfig"
+
+  - id: no-unused-entitlements
+    type: llm-judge
+    description: "Declaring entitlements that are not actually used (Push Notifications, HealthKit, etc.) increases App Review scrutiny. Only declare what the app uses."
+    evidence_needed: ".entitlements file lists only the keys actually used by the app code"

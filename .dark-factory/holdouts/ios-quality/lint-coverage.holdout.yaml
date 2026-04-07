@@ -1,0 +1,109 @@
+scenario: "Code quality gates — SwiftLint strict, SwiftFormat lint clean, 80%+ CalculationKit coverage, 60%+ overall, zero build warnings, no print/force-unwrap/TODO-without-issue"
+version: 1
+project: ios-quality
+category: lint-coverage
+priority: critical
+source: "ios-app-plan/tasks/13-testing.md"
+
+preconditions:
+  - type: state
+    description: "ios-app/ contains a buildable Xcode project or SPM workspace"
+  - type: state
+    description: "Mint is installed and Mintfile pins SwiftLint + SwiftFormat versions"
+
+behaviors:
+  - id: swiftlint-strict-clean
+    type: deterministic
+    status: implemented
+    description: "Running `mint run swiftlint --strict --config ios-app/.swiftlint.yml ios-app/` from the repo root exits 0 with zero violations of severity error. Strict mode treats warnings as errors. The script is wired in CI."
+
+  - id: swiftlint-rules-mandatory
+    type: deterministic
+    status: implemented
+    description: "ios-app/.swiftlint.yml enables (not disables) the following rules at error severity: force_unwrapping, force_try, force_cast, implicit_return, redundant_string_enum_value, unused_closure_parameter, vertical_whitespace_closing_braces, file_length (max 600), function_body_length (max 100), type_body_length (max 400), cyclomatic_complexity (max 12)."
+
+  - id: swiftformat-lint-clean
+    type: deterministic
+    status: implemented
+    description: "Running `mint run swiftformat --lint --config ios-app/.swiftformat ios-app/` exits 0. The CI workflow runs this as a separate step from build."
+
+  - id: build-warnings-zero-release
+    type: deterministic
+    status: implemented
+    description: "Project build settings set SWIFT_TREAT_WARNINGS_AS_ERRORS = YES for the Release configuration. Debug may keep warnings as warnings for ergonomics. CI builds in Release at least once per PR to enforce this gate."
+
+  - id: coverage-calckit-80
+    type: unit-behavioral
+    status: implemented
+    description: "swift test --enable-code-coverage in the CalculationKit package reports >= 80% line coverage. Coverage is enforced by a CI script that parses xcresult and fails the build if below threshold."
+
+  - id: coverage-overall-60
+    type: unit-behavioral
+    status: implemented
+    description: "Aggregate coverage across all packages and the app target is >= 60%. The lower threshold reflects that view code is harder to unit-test (covered by snapshots and UI tests instead)."
+
+  - id: coverage-script
+    type: deterministic
+    status: implemented
+    description: "ios-app-plan/scripts/coverage-check.sh (or .swift) parses the xcresult bundle from `xcodebuild test`, extracts per-target coverage, prints a report, and exits non-zero if any target is below its configured threshold."
+
+  - id: ci-uploads-coverage-artifact
+    type: deterministic
+    status: implemented
+    description: ".github/workflows/ios.yml uploads the xcresult bundle as a build artifact on failure so reviewers can see exactly which tests failed and what coverage looked like."
+
+  - id: pr-coverage-comment
+    type: unit-behavioral
+    status: planned
+    description: "A future enhancement posts a coverage delta comment on each PR (vs the base branch baseline). Not required for v1 — enforcement is via the threshold script."
+
+  - id: dependency-pinning
+    type: deterministic
+    status: implemented
+    description: "Package.resolved is checked into git. SPM dependencies are pinned to exact versions or to a tight range (.upToNextMinor). The Mintfile pins SwiftLint + SwiftFormat to exact versions."
+
+  - id: lint-rules-documented
+    type: deterministic
+    status: implemented
+    description: "ios-app/.swiftlint.yml has comments explaining why each disabled rule is disabled. Disabled rules are an exception, not the default."
+
+  - id: docc-warning-as-error
+    type: deterministic
+    status: implemented
+    description: "DocC documentation warnings (broken links, missing parameter docs) are treated as errors via DOCC_WARNINGS_AS_ERRORS = YES in build settings."
+
+anti_patterns:
+  - id: no-print-statements
+    type: llm-judge
+    description: "print() in production source code is forbidden — it pollutes Console.app and is invisible in TestFlight builds. Use os.Logger with a per-file subsystem/category."
+    evidence_needed: "grep -rn '^\\s*print(' ios-app/MaltaCalculator ios-app/Packages/CalculationKit/Sources ios-app/Packages/DesignSystem/Sources returns no matches"
+
+  - id: no-force-unwrap
+    type: llm-judge
+    description: "Force unwrap `!` is forbidden in production code (test fixtures may use it). Use guard let, if let, or ?? with a sensible default."
+    evidence_needed: "SwiftLint force_unwrapping rule passes with zero violations in production sources"
+
+  - id: no-force-try
+    type: llm-judge
+    description: "try! is forbidden in production code. Use throws or do/catch with typed errors."
+    evidence_needed: "SwiftLint force_try rule passes; no `try!` in production sources"
+
+  - id: no-todo-without-issue
+    type: llm-judge
+    description: "TODO and FIXME comments without an issue link (e.g. // TODO: #123 — explain) are forbidden. Untracked TODOs accumulate forever."
+    evidence_needed: "TODO/FIXME comments are accompanied by `#NN` issue references"
+
+  - id: no-empty-catch
+    type: llm-judge
+    description: "Empty catch blocks (`catch { }`) are forbidden. Errors must be logged via Logger.error or rethrown."
+    evidence_needed: "No bare `} catch { }` patterns in production sources"
+
+  - id: no-disabled-tests-without-issue
+    type: llm-judge
+    description: "Disabled tests must reference an issue explaining why and have a target re-enable date."
+    evidence_needed: "@Test(.disabled) and XCTSkip use a #NN issue reference and a TODO date"
+
+  - id: no-warn-suppression
+    type: llm-judge
+    description: "Pragma directives that suppress warnings (e.g. // swiftlint:disable, #pragma diagnostic) without justification are forbidden. Add a comment explaining the exception."
+    evidence_needed: "swiftlint:disable directives have a trailing reason comment"

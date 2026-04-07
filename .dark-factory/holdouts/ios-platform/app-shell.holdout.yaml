@@ -1,0 +1,114 @@
+scenario: "App shell — TabView with .sidebarAdaptable, NavigationStack per tab, AppState observable, lazy tab loading, state restoration on cold launch, deep-link routing"
+version: 1
+project: ios-platform
+category: app-shell
+priority: critical
+source: "ios-app-plan/tasks/05-navigation.md"
+
+preconditions:
+  - type: state
+    description: "MaltaCalculatorApp.swift entry point exists"
+  - type: state
+    description: "DesignSystem provides tab bar styling tokens"
+
+behaviors:
+  - id: app-state-observable
+    type: deterministic
+    status: implemented
+    description: "App/AppState.swift defines a public final class AppState annotated with @Observable. It owns: selectedTab (RootTab enum), routers per feature, app launch timestamp, and the deep-link queue."
+
+  - id: root-tab-enum
+    type: deterministic
+    status: implemented
+    description: "App/RootTab.swift defines a RootTab enum: salary, calculators, guides, history, settings. Each case has a localized title and SF Symbol icon. Identifiable + Hashable conformance for tag binding."
+
+  - id: rootview-tabview
+    type: deterministic
+    status: implemented
+    description: "RootView constructs a TabView bound to AppState.selectedTab. Each tab uses .tabItem with Label(title, systemImage:). The TabView uses .tabViewStyle(.sidebarAdaptable) so iPad gets a sidebar automatically."
+
+  - id: lazy-tab-content
+    type: deterministic
+    status: implemented
+    description: "Each tab's root view is wrapped in a small Group/lazy initializer so its ViewModel is constructed on first appearance, not on app launch. This keeps cold launch under the 400ms budget."
+
+  - id: navigation-stack-per-tab
+    type: deterministic
+    status: implemented
+    description: "Each tab root contains its own NavigationStack with a path bound to a feature-scoped router (SalaryRouter, CalculatorsRouter, GuidesRouter, etc.). Routers are @Observable @MainActor classes."
+
+  - id: router-destination-types
+    type: deterministic
+    status: implemented
+    description: "Each router defines a Destination enum (Hashable) listing the screens reachable from that tab. Views use .navigationDestination(for: SomeRouter.Destination.self) { ... } to switch on the case."
+
+  - id: calculator-detail-factory
+    type: deterministic
+    status: implemented
+    description: "App/CalculatorDetailFactory.swift switches on a CalculatorID and returns the correct detail view (SalaryDetailView, MortgageDetailView, etc.). It is the single source of truth for calculator-id → view mapping."
+
+  - id: state-restoration-tab
+    type: deterministic
+    status: implemented
+    description: "selectedTab is persisted via @AppStorage so cold launch returns to the user's last-used tab. On first launch the default is .salary."
+
+  - id: state-restoration-router-path
+    type: deterministic
+    status: implemented
+    description: "Each router persists its navigation path to UserPreferences (or AppStorage with a JSON-encoded String) so cold launch restores the deep navigation state. Limited depth (max 3) to avoid restoring stale flows."
+
+  - id: scene-storage-input
+    type: deterministic
+    status: implemented
+    description: "Calculator inputs use @SceneStorage so a force-quit and relaunch restores the in-progress calculation state."
+
+  - id: tab-bar-accent
+    type: deterministic
+    status: implemented
+    description: "TabView uses .tint(DSColor.maltaGold) so the selected tab glyph and label match the brand. iOS 26 picks up the Liquid Glass tint automatically."
+
+  - id: ios26-tab-style
+    type: deterministic
+    status: implemented
+    description: "TabView wraps `.tabViewStyle(.sidebarAdaptable)` in `if #available(iOS 26.0, *) { ... } else { ... .tabViewStyle(.automatic) }` if needed. iOS 26 picks the new Liquid Glass tab bar; iOS 18 uses standard tab bar."
+
+  - id: navigation-bar-display-mode
+    type: deterministic
+    status: implemented
+    description: "Each feature's root screen sets .navigationBarTitleDisplayMode(.large) for the root and .inline for detail. Title text is from the localized String Catalog."
+
+  - id: app-state-environment
+    type: deterministic
+    status: implemented
+    description: "AppState is injected via .environment(appState) at the WindowGroup level and consumed downstream via @Environment(AppState.self). Routers and stores are also passed through environment."
+
+  - id: focus-management
+    type: deterministic
+    status: implemented
+    description: "Tab switches do not steal keyboard focus from a text field. The salary input field's focus is managed via @FocusState scoped to its view."
+
+anti_patterns:
+  - id: no-singleton-app-state
+    type: llm-judge
+    description: "AppState.shared static singleton is forbidden. Inject via environment for testability."
+    evidence_needed: "AppState has no static .shared property; instances are created in @main and injected"
+
+  - id: no-tab-content-in-rootview
+    type: llm-judge
+    description: "RootView body must not contain tab content inline (e.g. switch selectedTab). Each tab is its own view file with its own ViewModel."
+    evidence_needed: "RootView only constructs TabView { SalaryTab(); CalculatorsTab(); ... } pattern"
+
+  - id: no-navigation-link-without-value
+    type: llm-judge
+    description: "NavigationLink(destination:) (the eager variant) is forbidden in long lists. Use NavigationLink(value:) and .navigationDestination(for:) so destinations are created lazily."
+    evidence_needed: "Long lists use NavigationLink(value:) form"
+
+  - id: no-deep-restoration-stale
+    type: llm-judge
+    description: "Restoring a navigation path more than 3 levels deep on cold launch can land the user in a confusing flow. Limit restoration depth."
+    evidence_needed: "Router restoration logic caps path depth at 3"
+
+  - id: no-uitabbarcontroller
+    type: llm-judge
+    description: "UIKit tab bar controller bridging is forbidden. SwiftUI TabView only."
+    evidence_needed: "No UITabBarController references in source"

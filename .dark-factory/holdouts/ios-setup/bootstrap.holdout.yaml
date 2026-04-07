@@ -1,0 +1,131 @@
+scenario: "Xcode workspace bootstrap — SPM packages, app target, bundle ID, deployment target, lint config, CI workflow, gitignore"
+version: 1
+project: ios-setup
+category: bootstrap
+priority: critical
+source: "ios-app-plan/tasks/01-project-setup.md"
+
+preconditions:
+  - type: state
+    description: "Repository is a valid git repo with main branch present"
+  - type: state
+    description: "Xcode 26 is installed and `xcode-select -p` resolves"
+  - type: state
+    description: "Mint package manager is available for SwiftLint/SwiftFormat tooling"
+
+behaviors:
+  - id: workspace-or-project-exists
+    type: deterministic
+    status: implemented
+    description: "An ios-app/ directory exists at repo root and contains either MaltaCalculator.xcworkspace or MaltaCalculator.xcodeproj. The workspace references the app target plus the local SPM packages CalculationKit and DesignSystem."
+
+  - id: swiftui-entry-point
+    type: deterministic
+    status: implemented
+    description: "ios-app/MaltaCalculator/App/MaltaCalculatorApp.swift exists, is annotated with @main, and constructs a single WindowGroup with a RootView. No UIApplicationDelegateAdaptor unless required for push notifications."
+
+  - id: spm-package-calculationkit
+    type: deterministic
+    status: implemented
+    description: "ios-app/Packages/CalculationKit/Package.swift exists with swift-tools-version >= 5.10, declares .iOS(.v18) platform, exposes a CalculationKit library product, and lists Tests and Fixtures targets."
+
+  - id: spm-package-designsystem
+    type: deterministic
+    status: implemented
+    description: "ios-app/Packages/DesignSystem/Package.swift exists with swift-tools-version >= 5.10, declares .iOS(.v18) platform, exposes a DesignSystem library product, and depends on swift-snapshot-testing for the test target."
+
+  - id: bundle-identifier-correct
+    type: deterministic
+    status: implemented
+    description: "App target's PRODUCT_BUNDLE_IDENTIFIER (in pbxproj or xcconfig) is exactly com.maltacalculator.app per ADR-015. The team identifier is set or left empty for automatic signing."
+
+  - id: deployment-target-ios18
+    type: deterministic
+    status: implemented
+    description: "App target's IPHONEOS_DEPLOYMENT_TARGET is 18.0 (or later). All SPM packages declare .iOS(.v18) so iOS 26 Liquid Glass APIs can be used with #available branches while still supporting iOS 18 devices."
+
+  - id: swiftlint-config
+    type: deterministic
+    status: implemented
+    description: "ios-app/.swiftlint.yml exists at repo root or under ios-app/. Required strict rules enabled: force_unwrapping, force_try, implicit_return, redundant_string_enum_value. Excluded paths include build/, .build/, DerivedData/."
+
+  - id: swiftformat-config
+    type: deterministic
+    status: implemented
+    description: "ios-app/.swiftformat exists with rules tuned for SwiftUI: disable wrapMultilineStatementBraces, enable redundantReturn, set indent to 4 spaces."
+
+  - id: mintfile-tooling
+    type: deterministic
+    status: implemented
+    description: "ios-app/Mintfile pins SwiftLint and SwiftFormat to specific versions so CI and dev environments resolve identical tooling."
+
+  - id: ci-workflow-ios
+    type: deterministic
+    status: implemented
+    description: ".github/workflows/ios.yml exists, triggers on pull_request to main when ios-app/** changes, runs on macos-15 with Xcode 26 selected via xcode-select, executes mint bootstrap, swiftlint, swiftformat --lint, and xcodebuild test against an iOS 18 simulator."
+
+  - id: ci-workflow-uploads-results
+    type: deterministic
+    status: implemented
+    description: "The ios.yml workflow uploads xcresult bundles as build artifacts on failure, including coverage data."
+
+  - id: gitignore-xcode
+    type: deterministic
+    status: implemented
+    description: ".gitignore at repo root excludes ios-app/build/, ios-app/DerivedData/, **/xcuserdata/, **/*.xcuserstate, **/.swiftpm/, **/.build/, fastlane/report.xml, fastlane/Preview.html, fastlane/screenshots/."
+
+  - id: info-plist-base-keys
+    type: deterministic
+    status: implemented
+    description: "Info.plist (or generated equivalent) declares CFBundleDisplayName=Malta Calculator, NSHumanReadableCopyright, ITSAppUsesNonExemptEncryption=false, UIApplicationSceneManifest with a default scene, and UIRequiredDeviceCapabilities=arm64."
+
+  - id: entitlements-baseline
+    type: deterministic
+    status: implemented
+    description: "MaltaCalculator.entitlements exists. iCloud entitlements ARE declared but the CloudKit container is configured opt-in via runtime check (per ADR-013). No background-modes unless documented."
+
+  - id: app-icon-asset-catalog
+    type: deterministic
+    status: implemented
+    description: "Assets.xcassets contains an AppIcon set with placeholder PNG slots for all required iOS 18 sizes (1024 marketing, 60@2x, 60@3x, 76@2x for iPad). Final art ships in Task 16."
+
+  - id: privacy-manifest-stub
+    type: deterministic
+    status: implemented
+    description: "Resources/PrivacyInfo.xcprivacy exists as an XML plist with NSPrivacyTracking=false and an empty NSPrivacyTrackingDomains array. Specific API category entries are added in Task 16 once SwiftData and other system APIs are wired."
+
+  - id: fastlane-skeleton
+    type: deterministic
+    status: implemented
+    description: "ios-app/fastlane/Appfile and ios-app/fastlane/Fastfile exist with at least a build lane that runs `gym` for the iOS Simulator destination. release/beta lanes are added in Task 16."
+
+anti_patterns:
+  - id: no-cocoapods
+    type: llm-judge
+    description: "CocoaPods is forbidden — Swift Package Manager only per ADR. The repo must not contain Podfile, Podfile.lock, *.podspec, or any Pods/ directory."
+    evidence_needed: "Absence of Podfile, Podfile.lock, *.podspec, Pods/ directory anywhere under ios-app/"
+
+  - id: no-carthage
+    type: llm-judge
+    description: "Carthage is forbidden — SPM only. Cartfile and Cartfile.resolved must not exist."
+    evidence_needed: "Absence of Cartfile, Cartfile.resolved under ios-app/"
+
+  - id: no-storyboards-or-xibs
+    type: llm-judge
+    description: "App must be SwiftUI-only. Storyboards and XIBs are forbidden, including Main.storyboard and LaunchScreen.storyboard. The launch screen is provided via UILaunchScreen Info.plist key."
+    evidence_needed: "No .storyboard or .xib files under ios-app/"
+
+  - id: no-uikit-appdelegate-default
+    type: llm-judge
+    description: "The app entry point uses @main on a SwiftUI App struct, NOT a UIApplicationDelegate. UIApplicationDelegateAdaptor is allowed only when justified by an iOS API that requires AppDelegate (and that justification is documented in code)."
+    evidence_needed: "MaltaCalculatorApp.swift uses @main and there is no AppDelegate.swift unless commented with a justification"
+
+  - id: no-hardcoded-team-id
+    type: llm-judge
+    description: "DEVELOPMENT_TEAM is not hardcoded in pbxproj checked into git. It is left empty (automatic signing) or supplied via xcconfig that is gitignored."
+    evidence_needed: "DEVELOPMENT_TEAM is empty or sourced from xcconfig in pbxproj"
+
+  - id: no-warnings-suppressed
+    type: llm-judge
+    description: "Build settings do not suppress warnings via SWIFT_SUPPRESS_WARNINGS or GCC_WARN_*=NO. Warnings are treated as errors in Release."
+    evidence_needed: "No SWIFT_SUPPRESS_WARNINGS or wholesale GCC_WARN_*=NO in pbxproj/xcconfig"

@@ -1,0 +1,139 @@
+scenario: "DesignSystem token surface — color/typography/spacing/radius/shadow/motion tokens with light+dark variants, Dynamic Type support, and zero magic numbers in feature code"
+version: 1
+project: ios-design
+category: design-tokens
+priority: critical
+source: "ios-app-plan/tasks/02-design-system.md"
+
+preconditions:
+  - type: state
+    description: "ios-app/Packages/DesignSystem package exists with Sources and Tests targets"
+  - type: state
+    description: "swift-snapshot-testing dependency is declared in DesignSystem Package.swift"
+
+behaviors:
+  - id: ds-color-namespace
+    type: deterministic
+    status: implemented
+    description: "DesignSystem/Sources/DesignSystem/Tokens/DSColor.swift defines a public DSColor enum (or struct namespace) exposing static let constants for the entire Malta brand palette: maltaGold, maltaGoldMuted, maltaGoldDark, mediterraneanBlue, medBlueMuted, surface, surfaceElevated, surfaceInverse, background, backgroundElevated, textPrimary, textSecondary, textTertiary, textInverse, success, warning, error, separator, overlay."
+
+  - id: ds-color-light-dark-variants
+    type: deterministic
+    status: implemented
+    description: "Each DSColor token resolves dynamically via UIColor(dynamicProvider:) or Asset Catalog so it returns the correct value in light and dark mode. Tokens are defined once and SwiftUI/UIKit consumers get automatic dark mode adaptation."
+
+  - id: ds-color-asset-catalog
+    type: deterministic
+    status: implemented
+    description: "DesignSystem/Sources/DesignSystem/Resources/Colors.xcassets contains a Color Set for every named token in DSColor. Each set has Any Appearance and Dark variants with hex values matching the brand spec from ios-app-plan/tasks/02-design-system.md."
+
+  - id: ds-spacing-grid
+    type: deterministic
+    status: implemented
+    description: "DSSpacing.swift defines public static let xxs (2pt), xs (4pt), sm (8pt), md (16pt), lg (24pt), xl (32pt), xxl (48pt), xxxl (64pt) on a 4-point grid. All values are CGFloat."
+
+  - id: ds-radius-tokens
+    type: deterministic
+    status: implemented
+    description: "DSRadius.swift defines public static let xs (4), sm (8), md (12), lg (16), xl (24), pill (999) for consistent corner rounding."
+
+  - id: ds-font-tokens
+    type: deterministic
+    status: implemented
+    description: "Font.DS extension covers the iOS type ramp: largeTitle, title1, title2, title3, headline, subheadline, body, callout, footnote, caption1, caption2. Every token is built from system font with Dynamic Type support — Font.system(.largeTitle, design: .default, weight: .bold) etc."
+
+  - id: ds-motion-tokens
+    type: deterministic
+    status: implemented
+    description: "DSMotion.swift defines public static let standard, gentle, snappy, bouncy as Animation constants. Each is built from interpolatingSpring with documented stiffness/damping. A motionRespectingReduceMotion(_ animation:) helper returns nil if Reduce Motion is enabled."
+
+  - id: ds-shadow-tokens
+    type: deterministic
+    status: implemented
+    description: "DSShadow.swift defines elevation tiers: low, medium, high, glass. Each is a struct with color, radius, x, y. A View.dsShadow(_:) modifier applies the chosen tier."
+
+  - id: ds-elevation-modifier
+    type: deterministic
+    status: implemented
+    description: "A View modifier .dsElevation(_:DSElevation) wraps shadow + background tint changes for raised cards, supporting both light and dark mode."
+
+  - id: ds-snapshot-tests-light-dark
+    type: unit-behavioral
+    status: implemented
+    description: "DesignSystem/Tests/DesignSystemTests/Snapshots/ contains snapshot test files for every public component. Each test asserts at least .light and .dark color schemes via swift-snapshot-testing."
+
+  - id: ds-snapshot-tests-dynamic-type
+    type: unit-behavioral
+    status: implemented
+    description: "Text-heavy components (DSCard, monthly row, floating net card) have additional snapshot tests at sizeCategory .accessibilityExtraExtraLarge to verify AX5 layouts do not clip or overflow."
+
+  - id: ds-snapshot-tests-rtl
+    type: unit-behavioral
+    status: implemented
+    description: "Components with horizontal layouts (toggle group, breakdown chart legend, monthly row) include a snapshot at .layoutDirection(.rightToLeft) to catch hard-coded leading/trailing assumptions."
+
+  - id: ds-button-variants
+    type: deterministic
+    status: implemented
+    description: "DSButton supports .primary, .secondary, .tertiary, .ghost, .destructive variants. Each variant uses DSColor tokens, has consistent height (44pt minimum touch target), and a disabled state with reduced opacity."
+
+  - id: ds-button-loading-state
+    type: deterministic
+    status: implemented
+    description: "DSButton accepts an isLoading binding that swaps the label with ProgressView and disables interaction. The button respects Reduce Motion (no spin if reduce-motion enabled)."
+
+  - id: ds-card-variants
+    type: deterministic
+    status: implemented
+    description: "DSCard supports .plain, .elevated, .glass, .gradient variants. The .glass variant uses the centralized liquidGlass() modifier (validated by liquid-glass-fallback holdout)."
+
+  - id: ds-currency-field
+    type: deterministic
+    status: implemented
+    description: "DSCurrencyField wraps a TextField with Decimal binding. Uses .keyboardType(.decimalPad), formats display via NumberFormatter currency, parses input back to Decimal. Exposes accessibilityLabel and accessibilityValue."
+
+  - id: ds-toggle-group
+    type: deterministic
+    status: implemented
+    description: "DSToggleGroup is a generic segmented picker over an enum. Visually rendered as pill buttons with selected state using DSColor.maltaGold background. Supports 2-5 segments with overflow to scroll."
+
+  - id: ds-animated-number
+    type: deterministic
+    status: implemented
+    description: "DSAnimatedNumber renders a Decimal with .contentTransition(.numericText()) and .monospacedDigit(). The transition is wrapped to fall back to .identity when Reduce Motion is enabled."
+
+  - id: ds-tokens-exported
+    type: deterministic
+    status: implemented
+    description: "All DS* and Font.DS namespaces are public and exported from the DesignSystem module so feature code can `import DesignSystem` and immediately use them."
+
+anti_patterns:
+  - id: no-inline-color-hex-in-features
+    type: llm-judge
+    description: "Feature code must never call Color(hex:) or instantiate raw colors. All colors must come from DSColor.* tokens. The only place colors may be defined from raw values is the DesignSystem package itself (specifically DSColor.swift and the Colors.xcassets catalog)."
+    evidence_needed: "grep -r 'Color(hex' ios-app/MaltaCalculator returns no matches; only DesignSystem/Sources references"
+
+  - id: no-inline-rgb
+    type: llm-judge
+    description: "Feature code must not call Color(red:green:blue:) or Color(red:green:blue:opacity:) directly."
+    evidence_needed: "grep -r 'Color(red:' ios-app/MaltaCalculator returns no matches"
+
+  - id: no-magic-spacing
+    type: llm-judge
+    description: "Feature code must not pass numeric literals to .padding(), .frame(width/height:), or HStack/VStack(spacing:). All spacing values come from DSSpacing tokens. A small number of one-off cases (e.g. precise alignment in a custom Shape) are acceptable but must be commented with the reason."
+    evidence_needed: "grep -E '\\.padding\\(\\s*[0-9]' or '\\.spacing:\\s*[0-9]' returns only DesignSystem internals or commented exceptions"
+
+  - id: no-fixed-fonts
+    type: llm-judge
+    description: "Feature code must not use Font.system(size:) with a fixed point size for body text. Custom sizes break Dynamic Type and accessibility. The Font.DS tokens are mandatory."
+    evidence_needed: "grep -r 'Font.system(size:' ios-app/MaltaCalculator/Features returns no matches"
+
+  - id: no-uikit-color-bridging
+    type: llm-judge
+    description: "Feature code must not bridge from UIColor to Color via Color(uiColor:) for design tokens. UIKit color bridging is allowed only inside DesignSystem when configuring SF Symbol/UIKit interop layers."
+    evidence_needed: "Color(uiColor:) only appears within DesignSystem package, not in feature code"
+
+  - id: no-tokens-without-dark-variant
+    type: llm-judge
+    description: "Every DSColor token must have a documented dark mode variant. A token defined only for light mode would invert badly when the user enables dark mode."
+    evidence_needed: "Colors.xcassets shows Any Appearance + Dark for each color set"

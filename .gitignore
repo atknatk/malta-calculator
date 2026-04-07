@@ -34,3 +34,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Dark Factory — keep config and holdouts, ignore runtime artifacts
+.dark-factory/sessions/
+.dark-factory/.stop-signal
+.dark-factory/.ralph-attempts.json
+.dark-factory/.rate-limiter.json
+.dark-factory/.circuit-breaker.json
+.dark-factory/ralph.log
+.dark-factory/ralph-monitor.log
+
+# iOS / Xcode
+ios-app/build/
+ios-app/DerivedData/
+ios-app/**/xcuserdata/
+ios-app/**/*.xcuserstate
+ios-app/**/.swiftpm/
+ios-app/**/.build/
+ios-app/fastlane/report.xml
+ios-app/fastlane/Preview.html
+ios-app/fastlane/screenshots/
+ios-app/fastlane/test_output/

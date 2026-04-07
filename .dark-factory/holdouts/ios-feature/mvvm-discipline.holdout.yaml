@@ -1,0 +1,114 @@
+scenario: "MVVM discipline — @Observable @MainActor ViewModels, passive views, no business logic in view body, debounced recalculation, side effects via ViewModel methods, no ObservableObject"
+version: 1
+project: ios-feature
+category: mvvm
+priority: high
+source: "ios-app-plan/tasks/06-feature-salary.md, ios-app-plan/tasks/08-feature-calculator-detail.md"
+
+preconditions:
+  - type: state
+    description: "At least one feature screen exists in ios-app/MaltaCalculator/Features"
+  - type: state
+    description: "Deployment target is iOS 18 (Observation framework available)"
+
+behaviors:
+  - id: viewmodel-observable-macro
+    type: deterministic
+    status: implemented
+    description: "Every file ending in ViewModel.swift under Features/ is annotated with @Observable. The @Observable macro replaces ObservableObject across the entire feature surface."
+
+  - id: viewmodel-mainactor
+    type: deterministic
+    status: implemented
+    description: "ViewModels are @MainActor at the class level. All mutating methods run on the main actor; background work is done inside Task.detached(priority: .userInitiated) and results hop back to main via @MainActor.run or by awaiting."
+
+  - id: viewmodel-final-class
+    type: deterministic
+    status: implemented
+    description: "ViewModel classes are declared `final class` to enable better static dispatch and prevent accidental subclassing."
+
+  - id: viewmodel-init-injection
+    type: deterministic
+    status: implemented
+    description: "ViewModels accept their dependencies (calculators, stores, loaders) via initializer injection. Defaults can be provided for ergonomics, but tests can pass mocks/stubs to verify behavior."
+
+  - id: view-state-property
+    type: deterministic
+    status: implemented
+    description: "Views that own a ViewModel use `@State private var viewModel = SomeViewModel()` (with @Observable, @State is correct, NOT @StateObject). Child views receive the viewModel via plain `let viewModel: SomeViewModel`."
+
+  - id: view-no-business-logic
+    type: deterministic
+    status: implemented
+    description: "View body contains layout, formatting, and binding only. No tax calculation, no PMT formula, no SSC bracket lookup, no SwiftData fetching directly. All such work is in the ViewModel."
+
+  - id: viewmodel-imports-calckit
+    type: deterministic
+    status: implemented
+    description: "ViewModels import CalculationKit (and DesignSystem for tokens). Views import only DesignSystem and reference their ViewModel — they do NOT import CalculationKit directly. This enforces the boundary."
+
+  - id: recalc-debounced
+    type: deterministic
+    status: implemented
+    description: "ViewModels that respond to text input debounce their recalculate() by 50-80ms (Task.sleep, AsyncSequence debounce, or a manual timer). The debounce is documented in code."
+
+  - id: heavy-work-detached
+    type: deterministic
+    status: implemented
+    description: "Long-running calculations (e.g. mortgage 30-year amortization, salary 12-month cumulative) run inside Task.detached(priority: .userInitiated) so the main actor stays responsive. Results are assigned back via @MainActor."
+
+  - id: actions-as-methods
+    type: deterministic
+    status: implemented
+    description: "User actions (save, share, reset, navigate) are methods on the ViewModel. Views call them via .button { viewModel.save() }. No business logic inside button closures."
+
+  - id: viewmodel-error-state
+    type: deterministic
+    status: implemented
+    description: "ViewModels expose an error state property (`var error: SomeError?` or `var state: ViewState`) that views read to render error UI. Errors are typed (LocalizedError) for user-facing messages."
+
+  - id: viewmodel-loading-state
+    type: deterministic
+    status: implemented
+    description: "ViewModels expose a loading state (`var isLoading: Bool` or part of a `state` enum) and views render appropriate skeletons / progress views via the loading state, never via direct Task awaits in body."
+
+  - id: viewmodel-tests-mock-deps
+    type: unit-behavioral
+    status: implemented
+    description: "ViewModelTests inject mock dependencies (e.g. a fake calculator that returns a known output) and verify state transitions. Tests do NOT touch the network, file system, or real SwiftData."
+
+  - id: navigation-via-router
+    type: deterministic
+    status: implemented
+    description: "Cross-feature navigation goes through a feature-scoped Router (e.g. SalaryRouter, CalculatorsRouter). Views call router.push(.detail(calculator)) — they do not construct destination views inline with NavigationLink(value:) for non-trivial flows."
+
+anti_patterns:
+  - id: no-observable-object
+    type: llm-judge
+    description: "ObservableObject + @Published + @StateObject is forbidden. The Observation framework (@Observable + @State) is the only allowed pattern. Mixing the two creates inconsistent reactivity."
+    evidence_needed: "grep -r 'ObservableObject\\|@Published\\|@StateObject' ios-app/MaltaCalculator/Features returns no matches"
+
+  - id: no-business-logic-in-view-body
+    type: llm-judge
+    description: "Calculator instantiation inside view body (e.g. SalaryCalculator(...)) or computing tax brackets in a `var body` is forbidden. All such work belongs in the ViewModel."
+    evidence_needed: "Calculator types are not instantiated in *Screen.swift files; they live in *ViewModel.swift only"
+
+  - id: no-task-in-body
+    type: llm-judge
+    description: "Inline `.task { ... }` performing async business logic without going through the ViewModel is forbidden. Use ViewModel methods called from a `.task { await viewModel.load() }` modifier."
+    evidence_needed: "Task closures in views call viewModel methods only"
+
+  - id: no-direct-modelcontext-in-view
+    type: llm-judge
+    description: "Views do not call modelContext.insert/save/delete directly. Persistence flows through a Store class injected into the ViewModel."
+    evidence_needed: "modelContext.insert/save/delete appears only in Store classes or ViewModels, not in *Screen.swift files"
+
+  - id: no-environmental-shared-state
+    type: llm-judge
+    description: "Avoid stuffing every state into @Environment(\\.someKey). Use Environment for app-wide singletons (router, theme, store) but keep feature state in the ViewModel."
+    evidence_needed: "Environment values are restricted to AppState, theme, and routers — not feature-specific state"
+
+  - id: no-singleton-shortcuts
+    type: llm-judge
+    description: "Static .shared singletons in ViewModels are forbidden. Inject dependencies via init for testability."
+    evidence_needed: "ViewModel init parameters cover all dependencies; no Foo.shared lookups inside ViewModels"

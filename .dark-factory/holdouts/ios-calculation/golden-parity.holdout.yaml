@@ -1,0 +1,111 @@
+scenario: "Golden parity tests — every CalculationKit motor matches the Next.js web app to ±€0.01 across shared JSON fixtures, with broad coverage of Malta tax brackets"
+version: 1
+project: ios-calculation
+category: golden-parity
+priority: critical
+source: "ios-app-plan/tasks/03-calculation-kit.md, ios-app-plan/tasks/17-calculator-mapping.md"
+
+preconditions:
+  - type: state
+    description: "Web TypeScript calculators in src/utils/*.ts are the source of truth"
+  - type: state
+    description: "An export script generates JSON fixtures from the web calculators"
+  - type: state
+    description: "CalculationKit has motors being ported (Salary, Mortgage, Pension, etc.)"
+
+behaviors:
+  - id: golden-fixture-export-script
+    type: deterministic
+    status: implemented
+    description: "scripts/export-golden-fixtures.ts (TypeScript, runs under tsx) imports each web calculator from src/utils/, generates a deterministic set of inputs covering edge cases, calls the calculator, and writes JSON files to ios-app/Packages/CalculationKit/Tests/Fixtures/golden/<calculator>/<case>.json. The script is idempotent — same inputs → same JSON byte-for-byte."
+
+  - id: golden-fixture-format
+    type: deterministic
+    status: implemented
+    description: 'Each fixture JSON has the shape `{ "input": {...}, "expectedOutput": {...}, "meta": { "source": "src/utils/...", "calculator": "...", "generatedAt": "..." } }`. Decimal values are serialized as JSON strings (e.g. "14976.50") to preserve precision.'
+
+  - id: golden-loader-helper
+    type: deterministic
+    status: implemented
+    description: "ios-app/Packages/CalculationKit/Tests/CalculationKitTests/Helpers/GoldenLoader.swift loads a fixture by name, decodes input + expectedOutput as Decimal-bearing structs, and exposes a `expectMoneyEqual(_ actual: Money, _ expected: Money, tolerance: Decimal = 0.01)` helper that uses Swift Testing's #expect."
+
+  - id: golden-tolerance-constant
+    type: deterministic
+    status: implemented
+    description: "GoldenLoader.defaultTolerance is a public Decimal constant set to 0.01 with a doc comment explaining: (a) the unit (euro), (b) the rationale (matches web rounding behavior), (c) when to override (never, for production fixtures)."
+
+  - id: salary-golden-cases
+    type: unit-behavioral
+    status: implemented
+    description: "SalaryCalculatorGoldenTests.swift has at minimum 12 test cases covering: single (low/mid/high — €15k/€25k/€55k), married 0/1/2 children, parent 0/1/2 children, and 1962-flag eligibility. Each test loads JSON, runs SalaryCalculator, asserts annualNet within €0.01."
+
+  - id: salary-monthly-rows-parity
+    type: unit-behavioral
+    status: implemented
+    description: "Salary golden tests assert not only the annual aggregate but also each of the 12 monthly rows (gross, ssc, tax, net) within €0.01. Cumulative tax bugs only show in the per-month sequence."
+
+  - id: mortgage-golden-cases
+    type: unit-behavioral
+    status: implemented
+    description: "MortgageCalculatorGoldenTests has at least 6 cases: typical FTB (€250k @ 4.5% / 30y, 10% deposit), high-value (€500k), high-rate (6%), short term (15y), zero-deposit edge, max-LTV edge."
+
+  - id: pension-golden-cases
+    type: unit-behavioral
+    status: implemented
+    description: "PensionCalculatorGoldenTests has at least 6 cases covering different birth years (pre-1962, 1962, 1963, 1980), tax statuses, child counts, and deferral years."
+
+  - id: stamp-duty-golden-cases
+    type: unit-behavioral
+    status: implemented
+    description: "StampDutyCalculatorGoldenTests covers: under €200k FTB exemption, exactly €200k boundary, €350k typical, €1M high-value, second property (no exemption)."
+
+  - id: overtime-golden-cases
+    type: unit-behavioral
+    status: implemented
+    description: "OvertimeCalculatorGoldenTests covers weekday 1.5x, sunday 2x, public holiday 2x, mixed weeks, max-hours edge."
+
+  - id: per-motor-minimum-cases
+    type: unit-behavioral
+    status: implemented
+    description: "Every calculator motor under CalculationKit/Sources/.../Calculators/ has a corresponding *GoldenTests.swift file with at least 3 fixture-backed test cases. Motors lacking golden tests fail this scenario."
+
+  - id: drift-check-script
+    type: deterministic
+    status: implemented
+    description: "scripts/tax-config-drift-check.sh compares the JSON exported tax config (under ios-app/Packages/CalculationKit/Resources/tax-config-*.json) against src/config/malta-tax-config.ts. CI runs it on every PR to catch web/iOS divergence."
+
+  - id: ci-runs-golden-tests
+    type: deterministic
+    status: implemented
+    description: ".github/workflows/ios.yml runs `swift test --filter GoldenTests` (or equivalent) as part of the iOS build job. Failures upload xcresult bundles."
+
+anti_patterns:
+  - id: no-skipped-golden-tests
+    type: llm-judge
+    description: "Disabled golden tests (@Test(.disabled), .skipUnless, ifdef-out blocks) are forbidden. If a fixture cannot be made to pass, the underlying calculator bug must be fixed before merging — the test cannot be silenced."
+    evidence_needed: "grep -r '@Test(.disabled' ios-app/Packages/CalculationKit/Tests returns no matches"
+
+  - id: no-loose-tolerance
+    type: llm-judge
+    description: "Tolerance > €0.01 is forbidden for production fixtures. If a calculator legitimately needs more tolerance (e.g. recurring decimal in compound interest), document the rationale in the test and the calculator doc comment."
+    evidence_needed: "Tolerance values used in #expect calls are exactly the GoldenLoader.defaultTolerance (0.01) or override is documented"
+
+  - id: no-hardcoded-tax-rates
+    type: llm-judge
+    description: "Calculator implementations must not contain hardcoded tax rates like 0.15, 0.25, 0.35. All rates come from MaltaTaxConfig via TaxConfigStore. Hardcoding makes tax-year updates impossible without code changes."
+    evidence_needed: "grep -E '\\b0\\.(15|25|35)\\s*\\*' ios-app/Packages/CalculationKit/Sources/CalculationKit/Calculators returns no matches"
+
+  - id: no-fixture-cherry-picking
+    type: llm-judge
+    description: "Fixtures must be generated by the export script, not hand-edited. Hand-tuned fixtures hide rounding bugs by 'fixing' the test instead of the code. The export script is the only legal author of *.json fixtures."
+    evidence_needed: "Each fixture's `meta.source` field references the export script and the JSON has the script's signature comment"
+
+  - id: no-test-only-config
+    type: llm-judge
+    description: "Calculator tests must use the same MaltaTaxConfig the production code uses (loaded via TaxConfigStore in test mode). Forking the config for tests defeats the parity purpose."
+    evidence_needed: "Test files load TaxConfigStore via the production loader or a test wrapper that loads the same JSON"
+
+  - id: no-non-deterministic-tests
+    type: llm-judge
+    description: "Tests must be deterministic. No Date(), no UUID(), no random inputs. Time-dependent calculators (pension age) accept a clock parameter that tests pin to a known date."
+    evidence_needed: "No Date() or UUID() in golden test files"

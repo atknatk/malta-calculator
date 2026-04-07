@@ -1,0 +1,1 @@
+../../../ios-app-plan/tasks/12-settings-localization.md

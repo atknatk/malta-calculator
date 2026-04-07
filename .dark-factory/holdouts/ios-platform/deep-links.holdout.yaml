@@ -1,0 +1,89 @@
+scenario: "Deep links — maltacalc:// URL scheme handling, parser, validation, routing into the correct calculator with prefilled state, Universal Links foundation"
+version: 1
+project: ios-platform
+category: deep-links
+priority: high
+source: "ios-app-plan/tasks/05-navigation.md"
+
+preconditions:
+  - type: state
+    description: "RootView and routers are wired"
+  - type: state
+    description: "Info.plist supports CFBundleURLTypes for the app's URL scheme"
+
+behaviors:
+  - id: cfbundleurltypes
+    type: deterministic
+    status: implemented
+    description: "Info.plist (or generated) declares CFBundleURLTypes with URL Schemes containing 'maltacalc'. The role is 'Editor' and the bundle identifier is com.maltacalculator.app."
+
+  - id: deep-link-parser
+    type: deterministic
+    status: implemented
+    description: "App/DeepLinkParser.swift parses a URL into a DeepLinkDestination enum: case salary(year:Int?, gross:Decimal?, taxStatus:String?), case calculator(id:String, params:[String:String]), case guide(slug:String), case settings(section:String?). Invalid URLs return nil."
+
+  - id: deep-link-destination-enum
+    type: deterministic
+    status: implemented
+    description: "DeepLinkDestination is Hashable and Sendable so it can be queued in AppState and consumed across actor hops."
+
+  - id: deep-link-handler-onopenurl
+    type: deterministic
+    status: implemented
+    description: "RootView (or the WindowGroup scene) handles .onOpenURL { url in appState.handleDeepLink(url) }. AppState.handleDeepLink parses the URL and either routes immediately or queues for the next foreground."
+
+  - id: deep-link-routing
+    type: deterministic
+    status: implemented
+    description: "When a deep link is received, AppState switches to the appropriate tab (salary/calculators/guides/settings) and the feature router pushes the matching destination. The transition uses .animation only when not in reduce-motion."
+
+  - id: salary-prefill-from-link
+    type: deterministic
+    status: implemented
+    description: "maltacalc://salary?year=2026&gross=25000&status=single launches the Salary tab and prefills the year, gross wage, and tax status. The recalculation runs after the input is set."
+
+  - id: calculator-prefill-from-link
+    type: deterministic
+    status: implemented
+    description: "maltacalc://calculators/mortgage?price=300000&deposit=10&rate=4.5&years=30 routes to the mortgage calculator with the params prefilled."
+
+  - id: invalid-link-handling
+    type: deterministic
+    status: implemented
+    description: "Invalid URLs (unknown scheme, missing required params, malformed numbers) are ignored gracefully — no crash, no alert spam. The fallback is the user's last-used tab."
+
+  - id: deep-link-tests
+    type: unit-behavioral
+    status: implemented
+    description: "DeepLinkParserTests covers at least 12 cases: valid salary, valid calculator with all params, valid calculator with no params, valid guide, valid settings section, missing scheme, wrong scheme, malformed numeric params, unknown calculator id, unknown guide slug, query string special chars, percent-encoded values."
+
+  - id: universal-links-future
+    type: deterministic
+    status: planned
+    description: "Universal Links (https://maltacalculator.com/...) are documented as a v1.1 enhancement. The DeepLinkParser is structured to accept either scheme so the Universal Links upgrade is purely an apple-app-site-association deployment, no code changes."
+
+  - id: scene-state-input-restored
+    type: deterministic
+    status: implemented
+    description: "Deep link prefilled state is preserved across app backgrounding via @SceneStorage on the target view's input fields."
+
+anti_patterns:
+  - id: no-implicit-url-handling
+    type: llm-judge
+    description: "Handling URLs in places other than .onOpenURL or AppState.handleDeepLink is forbidden. Scattered URL parsing makes the routing logic untestable."
+    evidence_needed: "URL.scheme is checked only in DeepLinkParser; .onOpenURL exists in exactly one place"
+
+  - id: no-force-decode-deep-link
+    type: llm-judge
+    description: "Force unwrapping URLComponents! or query items! when parsing user-supplied URLs is dangerous — a malformed link crashes the app. Use guard let / if let throughout."
+    evidence_needed: "DeepLinkParser uses guard let / if let only; no force unwraps"
+
+  - id: no-deep-link-without-validation
+    type: llm-judge
+    description: "Numeric parameters from URLs must be validated (range, sign, max value) before being applied to the calculator. A malicious URL like ?gross=-99999999999 must not crash the calculator."
+    evidence_needed: "Deep link params are validated against expected ranges before being passed to ViewModel"
+
+  - id: no-blocking-route
+    type: llm-judge
+    description: "Deep link routing must not block on async work (e.g. waiting for tax config to load). Queue the destination and route once the prerequisite is ready."
+    evidence_needed: "AppState.handleDeepLink returns immediately; routing is dispatched async"

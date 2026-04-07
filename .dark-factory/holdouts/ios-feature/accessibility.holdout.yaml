@@ -1,0 +1,139 @@
+scenario: "Accessibility — VoiceOver labels/hints, accessibilityValue for currency, Reduce Motion + Reduce Transparency, Dynamic Type AX5 layouts, 44pt touch targets, color contrast WCAG AA"
+version: 1
+project: ios-feature
+category: accessibility
+priority: critical
+source: "ios-app-plan/tasks/14-accessibility.md"
+
+preconditions:
+  - type: state
+    description: "At least one feature screen exists in ios-app/MaltaCalculator/Features"
+  - type: state
+    description: "DesignSystem provides DSColor tokens with documented contrast ratios"
+
+behaviors:
+  - id: button-accessibility-label
+    type: deterministic
+    status: implemented
+    description: "Every Button(action:) in feature code either contains a Text/Label child OR chains .accessibilityLabel(...). Icon-only buttons (Image(systemName:) only) MUST chain .accessibilityLabel."
+
+  - id: button-accessibility-hint
+    type: deterministic
+    status: implemented
+    description: "Buttons whose action is non-obvious from the label (e.g. icon buttons, destructive actions) chain .accessibilityHint(...) describing what tapping does."
+
+  - id: text-field-accessibility
+    type: deterministic
+    status: implemented
+    description: "Every TextField, DSCurrencyField, and SecureField in feature code chains .accessibilityLabel(...) and .accessibilityHint(...). Currency fields additionally chain .accessibilityValue(formattedAmount)."
+
+  - id: numeric-accessibility-value
+    type: deterministic
+    status: implemented
+    description: 'Currency display Text views (e.g. floating net card €14,976.50) chain .accessibilityValue("14,976 euros and 50 cents") so VoiceOver speaks it naturally instead of ''euro fourteen comma nine seven six point five zero''. The value is formatted via NumberFormatter or similar.'
+
+  - id: header-trait-on-section-titles
+    type: deterministic
+    status: implemented
+    description: "Section title Text views in screens chain .accessibilityAddTraits(.isHeader). VoiceOver users navigate by headers using the rotor, so this is critical for long screens like Calculators Hub."
+
+  - id: button-trait-on-tappable-cards
+    type: deterministic
+    status: implemented
+    description: "CalculatorCard and other tappable card views are wrapped in Button or chain .accessibilityAddTraits(.isButton). They also have a combined accessibility element so VoiceOver reads the whole card as one item."
+
+  - id: combined-accessibility-elements
+    type: deterministic
+    status: implemented
+    description: "Composite cards (Floating Net Card, Monthly Row, Calculator Card) chain .accessibilityElement(children: .combine) and provide a single label/value/hint sentence so VoiceOver reads them as one unit."
+
+  - id: dynamic-type-tokens-everywhere
+    type: deterministic
+    status: implemented
+    description: "All Text views in feature code use Font.DS.* tokens (which are built from system font with Dynamic Type). No Font.system(size:) literals."
+
+  - id: scaled-metric-padding
+    type: deterministic
+    status: implemented
+    description: "Padding/spacing values that need to scale with Dynamic Type (e.g. row heights for monthly breakdowns) use @ScaledMetric. Static decorative spacing can stay as DSSpacing constants."
+
+  - id: ax5-layout-fits
+    type: unit-behavioral
+    status: implemented
+    description: "Snapshot tests at sizeCategory .accessibilityExtraExtraLarge confirm critical layouts (FloatingNetCard, MonthlyRowCard, CalculatorCard) do not clip, overflow, or push elements off-screen. Multi-column grids collapse to single-column at AX3+."
+
+  - id: viewthatfits-fallback
+    type: deterministic
+    status: implemented
+    description: "Horizontal layouts that contain text (toggle group, monthly row stats) use ViewThatFits with a vertical fallback so AX3+ Dynamic Type wraps gracefully instead of clipping."
+
+  - id: reduce-motion-environment
+    type: deterministic
+    status: implemented
+    description: "Every screen that animates state transitions reads @Environment(\\.accessibilityReduceMotion) and either skips animations or substitutes .identity transitions when on. This includes withAnimation, .animation(), PhaseAnimator, and .contentTransition(.numericText())."
+
+  - id: reduce-transparency-environment
+    type: deterministic
+    status: implemented
+    description: "Liquid glass surfaces respect @Environment(\\.accessibilityReduceTransparency) and collapse to opaque DSColor.surface backgrounds when on. This is enforced by the centralized liquidGlass() modifier (see liquid-glass-fallback holdout)."
+
+  - id: minimum-touch-target
+    type: deterministic
+    status: implemented
+    description: "All interactive elements (buttons, segmented picker pills, toggle handles) have a minimum 44x44 point hit area. Small visual elements use .frame(minWidth: 44, minHeight: 44) or .contentShape(Rectangle()).frame(...) to extend the hit area without growing the visual."
+
+  - id: focus-order-logical
+    type: deterministic
+    status: implemented
+    description: "VoiceOver focus order follows reading order top-to-bottom, left-to-right. Custom focus order is only applied where the visual layout differs from the logical reading order, using .accessibilitySortPriority."
+
+  - id: announce-state-changes
+    type: deterministic
+    status: implemented
+    description: "When the salary calculation completes after a debounce, the new net value is announced via .accessibilityElement that updates its value, OR via UIAccessibility.post(notification: .announcement). Silent state changes leave VoiceOver users confused."
+
+  - id: contrast-tokens-aa
+    type: deterministic
+    status: implemented
+    description: "Documented DSColor token contrast ratios (in DSColor doc comment) meet WCAG AA: 4.5:1 for body text, 3:1 for large text and UI components. The Malta Gold on white pair (4.83:1) is documented as AA-compliant; mediterranean blue on white (3.34:1) is restricted to large text only."
+
+  - id: bold-text-environment
+    type: deterministic
+    status: implemented
+    description: "Components react to @Environment(\\.legibilityWeight) — when the user has Bold Text enabled, semibold weights step up to bold."
+
+  - id: smart-invert-decorative
+    type: deterministic
+    status: implemented
+    description: "Decorative images, app icon previews, and the donut chart chain .accessibilityIgnoresInvertColors(true) so Smart Invert leaves them visually intact."
+
+anti_patterns:
+  - id: no-icon-only-button-without-label
+    type: llm-judge
+    description: "An icon-only Button (containing only Image(systemName:)) without an accessibilityLabel is hostile to VoiceOver. Always provide a label or use Label(_, systemImage:)."
+    evidence_needed: "No Button { Image(systemName: ...) } pattern in feature code without .accessibilityLabel within the same view"
+
+  - id: no-currency-text-without-value
+    type: llm-judge
+    description: "Text views that display formatted currency must chain .accessibilityValue with a spoken-friendly format. The visual '€14,976.50' must read as 'fourteen thousand nine hundred seventy-six euros fifty cents' or similar."
+    evidence_needed: "Currency display in feature code uses .accessibilityValue with numberFormatter spellOut or word-form output"
+
+  - id: no-fixed-font-size
+    type: llm-judge
+    description: "Font.system(size: N) is forbidden for body text. Use Font.DS.body / .headline / etc. so Dynamic Type works."
+    evidence_needed: "grep -r 'Font.system(size:' ios-app/MaltaCalculator/Features returns no matches"
+
+  - id: no-animation-without-reduce-motion-check
+    type: llm-judge
+    description: "withAnimation { ... } and .animation(...) calls without a reduce-motion guard are forbidden in feature code. Use the DSMotion.respectReduceMotion(...) helper or check @Environment(\\.accessibilityReduceMotion) explicitly."
+    evidence_needed: "withAnimation/.animation calls in feature code are paired with reduceMotion check or come from a centralized helper"
+
+  - id: no-touch-target-below-44pt
+    type: llm-judge
+    description: "Tappable elements smaller than 44x44 points are forbidden. Especially for elderly users using calculator app."
+    evidence_needed: "Custom buttons set .frame(minWidth: 44, minHeight: 44) or use system Button defaults"
+
+  - id: no-color-only-information
+    type: llm-judge
+    description: "Information conveyed by color alone (e.g. red = error, green = success) must also be conveyed via icon or label so colorblind users get the message."
+    evidence_needed: "Status indicators include both color AND icon/text"

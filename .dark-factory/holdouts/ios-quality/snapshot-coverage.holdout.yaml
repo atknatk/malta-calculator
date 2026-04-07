@@ -1,0 +1,114 @@
+scenario: "Snapshot test coverage matrix — every reusable component and feature screen has light+dark+AX5+RTL snapshots, plus iPad and Reduce Transparency variants for glass surfaces"
+version: 1
+project: ios-quality
+category: snapshot-coverage
+priority: high
+source: "ios-app-plan/tasks/13-testing.md, ios-app-plan/tasks/02-design-system.md"
+
+preconditions:
+  - type: state
+    description: "swift-snapshot-testing (pointfreeco) is added as a Swift Package dependency"
+  - type: state
+    description: "DesignSystem and feature targets have test targets"
+
+behaviors:
+  - id: snapshot-helper-extension
+    type: deterministic
+    status: implemented
+    description: "A SnapshotHelpers.swift in DesignSystem/Tests defines extension wrappers like assertSnapshot(matching:as:colorScheme:sizeCategory:layoutDirection:) that bundle common variants into a single call site."
+
+  - id: ds-button-snapshot-matrix
+    type: unit-behavioral
+    status: implemented
+    description: "DSButtonTests.swift snapshots each variant (.primary, .secondary, .tertiary, .ghost, .destructive) in: light + dark color schemes, default + AX5 size categories, default + isLoading state, default + disabled state. Minimum 5 variants × 4 modes = 20 snapshots."
+
+  - id: ds-card-snapshot-matrix
+    type: unit-behavioral
+    status: implemented
+    description: "DSCardTests.swift snapshots each card variant (.plain, .elevated, .glass, .gradient) in light + dark + reduce-transparency. Glass variants additionally test the iOS 18 fallback path."
+
+  - id: ds-currency-field-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "DSCurrencyFieldTests snapshots empty, focused, with-value, error states in light + dark + AX5."
+
+  - id: ds-toggle-group-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "DSToggleGroupTests snapshots 2/3/4/5 segments in light + dark + AX5 + RTL."
+
+  - id: ds-animated-number-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "DSAnimatedNumberTests snapshots representative values in light + dark with monospaced digits visible."
+
+  - id: ds-breakdown-chart-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "DSBreakdownChartTests snapshots a typical donut breakdown (net + tax + ssc) in light + dark + AX5 + RTL."
+
+  - id: floating-net-card-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "FloatingNetCardTests snapshots low/mid/high salary scenarios in light + dark + AX5 + reduce-transparency. The reduce-transparency variant must show an opaque card."
+
+  - id: monthly-row-card-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "MonthlyRowCardTests snapshots typical, expanded-detail, and edge-case (zero net) variants in light + dark + AX5."
+
+  - id: calculators-hub-card-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "CalculatorCardTests snapshots active and coming-soon states in light + dark + AX5 for both iPhone and iPad layouts."
+
+  - id: feature-screen-snapshots
+    type: unit-behavioral
+    status: implemented
+    description: "Each top-level feature screen (SalaryScreen, CalculatorsHubScreen, GuidesListScreen, SettingsScreen, HistoryScreen) has at least one snapshot test capturing the default state in light + dark."
+
+  - id: snapshot-baselines-checked-in
+    type: deterministic
+    status: implemented
+    description: "PNG baselines for snapshot tests are committed under ios-app/Packages/.../Tests/__Snapshots__/ — git-tracked. Re-recording requires a deliberate commit with a justification in the message."
+
+  - id: snapshot-recording-disabled
+    type: deterministic
+    status: implemented
+    description: "Snapshot tests run with `record: false` (the default). Setting `record: true` is forbidden in committed code — it would cause the test to always pass and silently overwrite baselines."
+
+  - id: snapshot-ci-runs
+    type: deterministic
+    status: implemented
+    description: ".github/workflows/ios.yml runs snapshot tests as part of the test job. Failing snapshots upload the diff PNGs as build artifacts so reviewers can see what changed."
+
+  - id: snapshot-tolerance-pixel-perfect
+    type: deterministic
+    status: implemented
+    description: "Snapshot tests use the default 0% pixel tolerance. Slight visual changes (anti-aliasing differences) require explicit re-recording, not silent tolerance bumps."
+
+  - id: device-trait-coverage
+    type: unit-behavioral
+    status: implemented
+    description: "Snapshots are captured at iPhone 16 Pro and iPad Pro 13-inch traits. iPad-specific layouts (sidebar adaptable tabs, multi-column grids) are explicitly tested at iPad trait."
+
+anti_patterns:
+  - id: no-record-true-committed
+    type: llm-judge
+    description: "Snapshot tests with `record: true` committed to git are forbidden. They always pass and silently overwrite baselines, defeating the purpose."
+    evidence_needed: "grep -r 'record: true' ios-app/Packages/.../Tests returns no matches"
+
+  - id: no-snapshot-skip
+    type: llm-judge
+    description: "Disabled snapshot tests without an issue link are forbidden. If a snapshot is flaky, fix the source of the flake (animation timing, fonts) — don't disable."
+    evidence_needed: "@Test(.disabled) on snapshot tests has a #NN issue reference"
+
+  - id: no-loose-pixel-tolerance
+    type: llm-judge
+    description: "Snapshot precision parameters above 0.05 are forbidden. They hide real visual regressions."
+    evidence_needed: "precision: parameters in snapshot tests are 0 or absent"
+
+  - id: no-unbaselined-snapshots
+    type: llm-judge
+    description: "A snapshot test that runs without an existing baseline (because it was just added) must have its baseline committed in the same PR. Missing baselines are a CI error."
+    evidence_needed: "Every assertSnapshot call has a corresponding PNG file under __Snapshots__/"

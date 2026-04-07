@@ -1,0 +1,109 @@
+scenario: "Money is Decimal end-to-end — typealias, DTOs, calculator I/O, JSON decoding, rounding, no Double leakage anywhere in CalculationKit"
+version: 1
+project: ios-calculation
+category: decimal-discipline
+priority: critical
+source: "ios-app-plan/tasks/03-calculation-kit.md"
+
+preconditions:
+  - type: state
+    description: "CalculationKit Swift package exists with Sources and Tests targets"
+  - type: state
+    description: "MaltaTaxConfig DTOs are being introduced or modified"
+
+behaviors:
+  - id: money-typealias
+    type: deterministic
+    status: implemented
+    description: "ios-app/Packages/CalculationKit/Sources/CalculationKit/Core/Money.swift defines `public typealias Money = Decimal` (or a tagged struct wrapping Decimal). The typealias is used consistently throughout the package."
+
+  - id: percentage-typealias
+    type: deterministic
+    status: implemented
+    description: "Core/Percentage.swift defines a Percentage type wrapping Decimal with helpers .asDecimal (e.g. 15% → 0.15) and .asPercent (0.15 → 15) so callers cannot accidentally multiply by 0.15 vs 15."
+
+  - id: tax-config-dto-decimal
+    type: deterministic
+    status: implemented
+    description: "MaltaTaxConfigDTO and all nested bracket DTOs declare from, to, rate, subtract as Decimal. JSON decoding uses Decimal directly via JSONDecoder's Decimal handling, never via Double."
+
+  - id: salary-input-decimal
+    type: deterministic
+    status: implemented
+    description: "SalaryInput.swift declares grossWage, allowances, deductions, bonuses as Money. No properties typed Double or Float."
+
+  - id: salary-output-decimal
+    type: deterministic
+    status: implemented
+    description: "SalaryOutput.swift and SalarySummary.swift declare net, tax, ssc, allowance fields as Money. Aggregate fields (annualNet, annualGross) are also Money."
+
+  - id: mortgage-output-decimal
+    type: deterministic
+    status: implemented
+    description: "MortgageOutput.swift uses Money for principal, interest, monthlyPayment, totalPayable. The amortization schedule entries also use Money."
+
+  - id: pension-output-decimal
+    type: deterministic
+    status: implemented
+    description: "PensionOutput.swift uses Money for projectedAnnualPension, monthlyPension, twoThirdsCap. Years/age fields use Int."
+
+  - id: stamp-duty-output-decimal
+    type: deterministic
+    status: implemented
+    description: "StampDutyOutput.swift uses Money for duty, exemption, payable. PropertyPrice input is Money."
+
+  - id: rounding-helper
+    type: deterministic
+    status: implemented
+    description: "Core/MoneyRounding.swift exposes a public extension on Decimal: roundedToCents(rule:) defaulting to .bankers (banker's rounding). Calculators use this helper for the final cent rounding step, never implicit Int truncation."
+
+  - id: rounding-doc-comment
+    type: deterministic
+    status: implemented
+    description: "The roundedToCents helper has a doc comment explaining: (a) why bankers rounding (matches the web app), (b) the precision (2 fractional digits), (c) when to call it (only at the final boundary, not between intermediate operations)."
+
+  - id: decimal-decoding-via-jsondecoder
+    type: deterministic
+    status: implemented
+    description: "JSONDecoder used by TaxConfigStore is configured with explicit Decimal handling. JSON numeric tokens decode straight to Decimal without going through Double."
+
+  - id: tax-bracket-decimal-arithmetic
+    type: unit-behavioral
+    status: implemented
+    description: "Bracket calculation in SalaryCalculator (cumulative monthly tax) uses Decimal arithmetic exclusively. No `.doubleValue` or `Double($0)` casts inside the calculation hot path."
+
+  - id: pmt-formula-decimal
+    type: unit-behavioral
+    status: implemented
+    description: "MortgageCalculator's PMT formula performs interest compounding using Decimal. Where pow() is needed (e.g. (1+r)^n), the implementation uses NSDecimalNumber with NSDecimalNumberHandler or a manual loop — never Foundation pow(_:_:) on Double."
+
+anti_patterns:
+  - id: no-double-money-properties
+    type: llm-judge
+    description: "Any monetary property typed as Double or Float is forbidden in CalculationKit. This includes input/output structs, intermediate values, and stored properties on calculator types. The names to watch: net, gross, tax, ssc, salary, amount, wage, allowance, pension, premium, principal, payment, deposit, interest_amount."
+    evidence_needed: "grep -rE '(net|gross|tax|ssc|salary|amount|wage|allowance|pension|principal|payment|deposit)\\s*:\\s*Double' ios-app/Packages/CalculationKit/Sources returns no matches"
+
+  - id: no-float-money-properties
+    type: llm-judge
+    description: "Float for monetary values is even worse than Double — lower precision. Forbidden everywhere in CalculationKit."
+    evidence_needed: "grep -rE 'Float' ios-app/Packages/CalculationKit/Sources returns matches only on inert constants like font sizes (none expected since this is a logic-only package)"
+
+  - id: no-double-cast-in-calc-hot-path
+    type: llm-judge
+    description: "Casting Decimal → Double inside the calculation hot path destroys precision. Permitted only when interfacing with a system API that strictly requires Double (e.g. Charts axis values for display), and even then the value is recomputed from the original Decimal for the actual displayed number."
+    evidence_needed: "grep -r 'Double(' ios-app/Packages/CalculationKit/Sources/CalculationKit/Calculators returns no matches OR matches only in clearly-commented display-formatting code"
+
+  - id: no-numerical-comparison-via-double
+    type: llm-judge
+    description: "Bracket comparisons (income >= bracket.from, income < bracket.to) must compare Decimal directly via Decimal's Comparable conformance. Casting to Double for comparison introduces rounding errors at bracket boundaries."
+    evidence_needed: "Bracket comparison code shows direct Decimal <, >, >= operators with no Double cast"
+
+  - id: no-implicit-zero-via-init
+    type: llm-judge
+    description: "Avoid Decimal() default-initialized to 0 in places that should explicitly read from input. Use Decimal.zero or `Decimal(0)` to make zero intent obvious; missing initialization is a common source of silent zero outputs."
+    evidence_needed: "Decimal() with no arguments appears only in test fixtures or with explicit `// = 0` comments"
+
+  - id: no-string-money
+    type: llm-judge
+    description: "Money values are never stored as String inside CalculationKit. Strings are for display formatting at the UI boundary only (FormatStyle, NumberFormatter)."
+    evidence_needed: "No String properties on input/output structs that hold monetary values"

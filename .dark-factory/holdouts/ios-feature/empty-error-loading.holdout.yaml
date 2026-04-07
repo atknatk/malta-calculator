@@ -1,0 +1,114 @@
+scenario: "Empty / error / loading states — every screen handles all four states (loading, empty, error, success), with helpful copy, retry actions, and accessibility support"
+version: 1
+project: ios-feature
+category: state-handling
+priority: high
+source: "ios-app-plan/tasks/06-feature-salary.md, ios-app-plan/tasks/07-feature-calculators-hub.md"
+
+preconditions:
+  - type: state
+    description: "At least one feature screen exists"
+  - type: state
+    description: "DesignSystem provides a DSEmptyState or similar reusable empty-state component"
+
+behaviors:
+  - id: viewstate-enum
+    type: deterministic
+    status: implemented
+    description: "Each ViewModel exposes a ViewState enum (or equivalent): .idle, .loading, .empty, .error(SomeError), .success(Data). Views switch on the state to render the right placeholder."
+
+  - id: ds-empty-state-component
+    type: deterministic
+    status: implemented
+    description: "DesignSystem/Sources/DesignSystem/Components/DSEmptyState.swift defines a reusable empty-state view with: SF Symbol icon, title, description, optional action button. All copy comes from String Catalog keys."
+
+  - id: ds-error-state-component
+    type: deterministic
+    status: implemented
+    description: "DSErrorState component shows an error icon, the localized error description, the recoverySuggestion (if any), and a retry button. Used by all feature screens."
+
+  - id: ds-loading-skeleton
+    type: deterministic
+    status: implemented
+    description: "DSSkeleton modifier or component renders a shimmering placeholder for content that's loading. Uses .redacted(reason: .placeholder) under the hood with a custom shimmer animation that respects Reduce Motion."
+
+  - id: salary-loading-skeleton
+    type: deterministic
+    status: implemented
+    description: "SalaryScreen shows skeleton placeholders for the floating net card and the monthly breakdown rows during initial tax config load."
+
+  - id: calculators-hub-empty-search
+    type: deterministic
+    status: implemented
+    description: "CalculatorsHubScreen handles empty search results: shows DSEmptyState with 'No calculators found' and a 'Clear search' action."
+
+  - id: calculators-hub-empty-recents
+    type: deterministic
+    status: implemented
+    description: "On first launch, the 'Recently used' section is empty. The screen renders a brief inline hint like 'Your recently used calculators appear here' instead of an awkward gap."
+
+  - id: history-empty
+    type: deterministic
+    status: implemented
+    description: "When SavedCalculation history is empty, HistoryScreen renders DSEmptyState with: title 'No saved calculations yet', description 'Save a calculation to find it here later', and a CTA button 'Open salary calculator'."
+
+  - id: guides-empty-bookmarks
+    type: deterministic
+    status: implemented
+    description: "When the user has no bookmarked guides, the bookmarks tab shows DSEmptyState with a 'Browse all guides' CTA."
+
+  - id: tax-config-load-error
+    type: deterministic
+    status: implemented
+    description: "If TaxConfigStore fails to load (corrupt JSON, missing file), the salary screen shows an error state explaining 'Tax configuration could not be loaded' with a 'Retry' button. The app remains usable for non-salary calculators."
+
+  - id: error-localized-description
+    type: deterministic
+    status: implemented
+    description: "All errors thrown from CalculationKit/Stores conform to LocalizedError with errorDescription and recoverySuggestion. The view binds to those properties for user-facing messages."
+
+  - id: retry-action
+    type: deterministic
+    status: implemented
+    description: "Error states have a retry button that calls the same ViewModel method that originally failed (loadConfig, recalculate, etc.). Retry resets the error state."
+
+  - id: empty-state-accessibility
+    type: deterministic
+    status: implemented
+    description: "Empty/error states are accessibility-grouped via .accessibilityElement(children: .combine) so VoiceOver reads them as a single coherent announcement."
+
+  - id: skeleton-reduce-motion
+    type: deterministic
+    status: implemented
+    description: "Shimmer animation in DSSkeleton checks @Environment(\\.accessibilityReduceMotion) and renders a static placeholder when on."
+
+  - id: pull-to-refresh
+    type: deterministic
+    status: implemented
+    description: "Lists that load remote-ish data (saved calculations, guides) support .refreshable { await viewModel.reload() } so users can pull-to-refresh. Triggers haptic on success."
+
+  - id: no-empty-screens
+    type: deterministic
+    status: implemented
+    description: "No screen ships with a blank background as its empty state. Every screen has either content, skeleton, empty-state, or error-state visible at all times."
+
+anti_patterns:
+  - id: no-loading-spinner-in-button
+    type: llm-judge
+    description: "Replacing a button with a bare ProgressView() during loading is forbidden. Use DSButton's isLoading state which keeps the layout stable and disables interaction."
+    evidence_needed: "Loading states use DSButton(isLoading:) or DSSkeleton, not raw ProgressView() swaps that cause layout jumps"
+
+  - id: no-blank-error
+    type: llm-judge
+    description: "Showing nothing when an error occurs is forbidden. The user must always see what happened and how to recover."
+    evidence_needed: "ViewState.error has a corresponding view branch that renders DSErrorState"
+
+  - id: no-untranslated-error
+    type: llm-judge
+    description: "Error messages with hardcoded English (e.g. 'Something went wrong') are forbidden. Use String Catalog keys."
+    evidence_needed: "Error message strings come from LocalizedError or String(localized:)"
+
+  - id: no-fatal-error-ui
+    type: llm-judge
+    description: "fatalError() in feature code is forbidden. Show an error state instead — never crash."
+    evidence_needed: "grep -r 'fatalError(' ios-app/MaltaCalculator/Features returns no matches outside #if DEBUG"

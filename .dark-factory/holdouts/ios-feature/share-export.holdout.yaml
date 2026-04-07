@@ -1,0 +1,119 @@
+scenario: "Share & export — Transferable conformance, ImageRenderer cards (1080×1080), PDFKit A4 export, ShareLink with text/PNG/PDF, image cache, no PII leakage"
+version: 1
+project: ios-feature
+category: share-export
+priority: high
+source: "ios-app-plan/tasks/11-share-export.md"
+
+preconditions:
+  - type: state
+    description: "Calculator output structs exist for at least Salary and Mortgage"
+  - type: state
+    description: "DesignSystem provides DSColor + Font.DS tokens for share card layouts"
+
+behaviors:
+  - id: shareable-protocol
+    type: deterministic
+    status: implemented
+    description: "Shared/Shareable.swift defines a `protocol Shareable` with associatedtype State and methods for renderShareCardPNG(state:) -> Data, renderPDF(state:) -> Data, shareText(state:) -> String."
+
+  - id: shareable-content-transferable
+    type: deterministic
+    status: implemented
+    description: "ShareableContent struct conforms to Transferable with TransferRepresentation supporting .data(image/png), .data(application/pdf), and .text. Used by ShareLink(item:) calls."
+
+  - id: salary-share-card
+    type: deterministic
+    status: implemented
+    description: "SalaryShareCard is a 1080×1080 SwiftUI view used by ImageRenderer. It renders the year, gross, net, monthly net, and a small donut chart breakdown — branded with Malta Gold and the app icon."
+
+  - id: salary-share-card-readable
+    type: deterministic
+    status: implemented
+    description: "The share card is readable when shrunk to social media thumbnails (300×300). Font sizes are large, contrast is high, decorative elements collapse gracefully."
+
+  - id: mortgage-share-card
+    type: deterministic
+    status: implemented
+    description: "MortgageShareCard renders property price, deposit, monthly payment, total payable, and a 30-year amortization curve."
+
+  - id: generic-share-card
+    type: deterministic
+    status: implemented
+    description: "GenericShareCard handles other calculators (overtime, vacation, vehicle, etc.) with a templated layout: title, key inputs, primary outputs, brand footer."
+
+  - id: image-renderer-cache
+    type: deterministic
+    status: implemented
+    description: "Each share card view caches its rendered Data keyed by the calculator state. Tapping share twice on the same calculation returns the cached image (microsecond response) instead of re-rendering (~30ms)."
+
+  - id: pdf-export-a4
+    type: deterministic
+    status: implemented
+    description: "SalaryPDFView is an A4-sized SwiftUI view (8.5×11 or 595×842 pt) suitable for printing. PDFRenderer (using ImageRenderer + PDFKit) generates a single-page PDF with the full salary breakdown table and brand header."
+
+  - id: pdf-export-multi-page
+    type: deterministic
+    status: implemented
+    description: "Long mortgage amortization PDFs (30 years × 12 months = 360 rows) span multiple pages. PDFRenderer splits content using PDFKit page boundaries and adds a footer with page number and brand."
+
+  - id: share-link-integration
+    type: deterministic
+    status: implemented
+    description: 'Each calculator detail screen has a ''Share'' button that opens ShareLink(item: ShareableContent(...), preview: SharePreview("Salary calculation", image: ...)). The preview shows the share card thumbnail.'
+
+  - id: share-button-accessibility
+    type: deterministic
+    status: implemented
+    description: "Share buttons have accessibilityLabel: 'Share' and accessibilityHint: 'Share this calculation as image, PDF, or text'."
+
+  - id: share-text-fallback
+    type: deterministic
+    status: implemented
+    description: "When sharing to a text-only destination (iMessage, Notes), the text representation is human-readable: 'Malta Salary 2026 — Gross €25,000 / Net €19,234 / per month €1,602.83'. Branded but not noisy."
+
+  - id: copy-to-clipboard
+    type: deterministic
+    status: implemented
+    description: "A 'Copy result' menu item copies the text representation to UIPasteboard.general. Confirmation feedback uses a small toast or haptic."
+
+  - id: pdf-export-cancel
+    type: deterministic
+    status: implemented
+    description: "Long PDF generation (30+ pages) shows a progress indicator and is cancellable via Task cancellation."
+
+  - id: share-pii-stripped
+    type: deterministic
+    status: implemented
+    description: "Share content includes the calculation but NOT user identifying information (no name, no email, no device id). Calculator state contains only numeric inputs and outputs."
+
+  - id: share-tests-snapshot
+    type: unit-behavioral
+    status: implemented
+    description: "Snapshot tests render each share card with a known state and assert pixel-perfect output across runs. Catches accidental layout shifts."
+
+anti_patterns:
+  - id: no-pii-in-share
+    type: llm-judge
+    description: "Share content must not contain user identifying information. The calculation is tax math, not personal data. No 'Generated by John Doe' or device IDs."
+    evidence_needed: "Share text/image generation does not read from anywhere that holds personal identifiers"
+
+  - id: no-share-blocking-main
+    type: llm-judge
+    description: "PDF rendering on the main thread blocks the UI for 100+ms on long amortization tables. Run rendering in a background Task and present the result via @MainActor."
+    evidence_needed: "PDFRenderer uses Task.detached or async/await"
+
+  - id: no-uikit-share-sheet
+    type: llm-judge
+    description: "UIActivityViewController bridging is forbidden. Use SwiftUI ShareLink(item:) which integrates with iOS 16+ share sheet natively."
+    evidence_needed: "No UIActivityViewController references in feature code"
+
+  - id: no-cgcontext-direct
+    type: llm-judge
+    description: "Direct CGContext drawing for share cards is forbidden. Use ImageRenderer { SwiftUI view } so the share card is the same SwiftUI code that renders on-screen."
+    evidence_needed: "Share rendering uses ImageRenderer or SwiftUI's native APIs"
+
+  - id: no-render-without-cache
+    type: llm-judge
+    description: "ImageRenderer calls without checking the cache first are wasteful. Same input → same output → cache hit."
+    evidence_needed: "ImageRenderer call sites check a cache keyed by state before rendering"

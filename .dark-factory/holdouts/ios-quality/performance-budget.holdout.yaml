@@ -1,0 +1,124 @@
+scenario: "Performance budget — cold launch < 400ms (iPhone 15), salary recalc < 50ms, mortgage amort < 30ms, 60fps scrolling, < 80MB idle memory, < 25MB binary, XCTMetric baselines"
+version: 1
+project: ios-quality
+category: performance-budget
+priority: high
+source: "ios-app-plan/tasks/15-performance.md"
+
+preconditions:
+  - type: state
+    description: "ios-app builds and runs on iOS Simulator"
+  - type: state
+    description: "Calculator motors and at least one feature screen exist"
+
+behaviors:
+  - id: xctmetric-target-exists
+    type: deterministic
+    status: implemented
+    description: "A performance test target (CalculationKitPerformanceTests or similar) extends XCTestCase and contains measure(...) blocks for the critical paths: salary 12-month, mortgage 30-year amortization, pension calculation, app cold launch, navigation memory."
+
+  - id: salary-perf-budget-50ms
+    type: unit-behavioral
+    status: implemented
+    description: "test_salary_calculation_speed uses XCTClockMetric with 100 iterations and asserts the median runtime is under 20ms (target). The test fails if the median exceeds 50ms (hard budget)."
+
+  - id: mortgage-perf-budget-30ms
+    type: unit-behavioral
+    status: implemented
+    description: "test_mortgage_amortization_30y measures a typical 30-year amortization and asserts the median runtime is under 30ms."
+
+  - id: pension-perf-budget
+    type: unit-behavioral
+    status: implemented
+    description: "test_pension_calculation measures a typical pension calculation and asserts the median runtime is under 30ms."
+
+  - id: app-launch-budget-400ms
+    type: unit-behavioral
+    status: implemented
+    description: "test_app_launch uses XCTApplicationLaunchMetric with 5 iterations and asserts launch time on iPhone 15 simulator is under 400ms (target). On iPhone SE 3 the budget is 600ms."
+
+  - id: memory-after-navigation-budget
+    type: unit-behavioral
+    status: implemented
+    description: "test_memory_after_navigation uses XCTMemoryMetric to verify that opening 5 calculator screens and returning does not grow resident memory by more than 10MB. Catches retain cycles."
+
+  - id: os-signpost-categories
+    type: deterministic
+    status: implemented
+    description: "An OSLog extension defines static `calculation`, `rendering`, `persistence`, and `navigation` categories with subsystem `com.maltacalculator.app`. Critical methods (SalaryViewModel.recalculate, MortgageCalculator.calculate, ModelContainer creation) wrap their body in os_signpost(.begin/.end, ...) markers."
+
+  - id: signpost-on-recalc
+    type: deterministic
+    status: implemented
+    description: "Every ViewModel recalculate() method has paired os_signpost markers so Instruments shows the per-recalc duration in the Points of Interest pane."
+
+  - id: launch-minimal-app-init
+    type: deterministic
+    status: implemented
+    description: "MaltaCalculatorApp.swift has a minimal init: only constructs the WindowGroup. No JSON decoding, no SwiftData container creation, no TaxConfigStore warm load in the entry point. Heavy work is deferred to .task on the first feature that needs it."
+
+  - id: tax-config-lazy-load
+    type: deterministic
+    status: implemented
+    description: "TaxConfigStore.shared (or the injected instance) loads its JSON file lazily on first call to taxConfig(forYear:), not at app launch."
+
+  - id: lazy-vstack-for-lists
+    type: deterministic
+    status: implemented
+    description: "Long lists (Calculators Hub grid, monthly salary breakdown, history list, guides list) use LazyVStack/LazyHStack/LazyVGrid so off-screen rows are not constructed until scrolled into view."
+
+  - id: stable-id-keys
+    type: deterministic
+    status: implemented
+    description: "ForEach uses stable ID keys (UUID stored in the model, never UUID() inline). Inline UUID generation breaks SwiftUI's diffing and forces full re-renders."
+
+  - id: glass-count-budget
+    type: deterministic
+    status: implemented
+    description: "No single screen renders more than 8 liquid glass surfaces simultaneously. Cards beyond that threshold use solid surface variants. The constraint is documented in DesignSystem doc comments."
+
+  - id: image-renderer-cache
+    type: deterministic
+    status: implemented
+    description: "Share card rendering (ImageRenderer) caches the rendered image keyed by input state. Repeated shares of the same calculation reuse the cached PNG instead of re-rendering."
+
+  - id: ci-perf-baseline
+    type: deterministic
+    status: implemented
+    description: ".github/workflows/ios.yml runs the performance test target on PRs and uploads the xcresult bundle. A baseline-comparison script can flag >10% regressions as warnings."
+
+  - id: instruments-doc
+    type: deterministic
+    status: implemented
+    description: "ios-app-plan/tasks/15-performance.md (the spec) includes Instruments profiling recipes and the os_signpost categories so a human can verify on real hardware."
+
+anti_patterns:
+  - id: no-sync-network-at-launch
+    type: llm-judge
+    description: "URLSession or async network calls in MaltaCalculatorApp init or RootView's initial render are forbidden — the app is offline-first and must launch under 400ms."
+    evidence_needed: "No URLSession.shared.data calls in App/ or RootView; all are deferred via .task or user-triggered actions"
+
+  - id: no-heavy-init-on-rootview
+    type: llm-judge
+    description: "RootView and tab root views must not perform heavy work in init() or `var body`. JSON decoding, SwiftData fetches, and decimal computations belong in ViewModel methods called from .task."
+    evidence_needed: "No for-loops, JSON decoders, or calculator instantiations inside RootView/init or body"
+
+  - id: no-non-lazy-list-for-large
+    type: llm-judge
+    description: "VStack/HStack with 50+ children is forbidden when content can be lazy. Use LazyVStack/LazyHStack."
+    evidence_needed: "Long lists in feature code use Lazy variants"
+
+  - id: no-eager-modelcontainer
+    type: llm-judge
+    description: "ModelContainer construction in @main App init blocks the main thread. It must be deferred — created on first use or constructed in a background Task."
+    evidence_needed: "ModelContainer is constructed via .task or lazily, not synchronously in @main init"
+
+  - id: no-debug-logger-in-prod
+    type: llm-judge
+    description: "Logger.debug() / Logger.info() calls inside hot paths in Release configuration are wasteful. Hot-path logs should be Logger.trace or guarded by #if DEBUG."
+    evidence_needed: "Logger.debug calls in calculator hot paths are wrapped in #if DEBUG or moved to trace level"
+
+  - id: no-blocking-io-on-main
+    type: llm-judge
+    description: "FileManager / Data(contentsOf:) on the main thread is forbidden. File I/O happens on a background queue or via async loaders."
+    evidence_needed: "No Data(contentsOf:) on main; uses await or background Task"

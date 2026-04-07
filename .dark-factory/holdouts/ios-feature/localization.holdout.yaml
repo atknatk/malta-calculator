@@ -1,0 +1,114 @@
+scenario: "Localization — String Catalog (Localizable.xcstrings) is the only home for user-visible text, plurals via catalog variants, currency via FormatStyle with Locale.current, ready for future locales without refactoring"
+version: 1
+project: ios-feature
+category: localization
+priority: high
+source: "ios-app-plan/tasks/12-settings-localization.md"
+
+preconditions:
+  - type: state
+    description: "ios-app/MaltaCalculator/Resources/Localizable.xcstrings exists or is being created"
+  - type: state
+    description: "v1 ships English only per ADR-011, but the catalog is structured for additional locales"
+
+behaviors:
+  - id: string-catalog-exists
+    type: deterministic
+    status: implemented
+    description: "ios-app/MaltaCalculator/Resources/Localizable.xcstrings (modern String Catalog format) exists and is referenced as a Resource in the app target. Schema version is 1.0 with sourceLanguage `en`."
+
+  - id: catalog-organized-by-feature
+    type: deterministic
+    status: implemented
+    description: "Keys in the catalog are namespaced by feature (e.g. `salary.netPay.title`, `calculators.hub.searchPlaceholder`, `settings.privacy.title`). This makes future translations easy to assign by feature area."
+
+  - id: text-uses-catalog-keys
+    type: deterministic
+    status: implemented
+    description: 'Feature views construct Text via `Text("key.subkey")` (which auto-resolves to LocalizedStringResource) or `Text(LocalizedStringResource("key.subkey"))`. NEVER `Text("Free-form English Sentence")`.'
+
+  - id: string-localized-helper
+    type: deterministic
+    status: implemented
+    description: 'Where a String (not a Text) is needed, code uses `String(localized: "key.subkey")`. ViewModels that compute display strings use this pattern.'
+
+  - id: plurals-via-catalog
+    type: deterministic
+    status: implemented
+    description: "Pluralized strings (e.g. '1 child' / '2 children') use the String Catalog plural variants (zero/one/other). Consumed via `String(localized: \"children.count.\\(count)\", defaultValue: \"^[\\(count) child](inflect: true)\")` or similar inflection markup."
+
+  - id: currency-format-style
+    type: deterministic
+    status: implemented
+    description: 'Currency display uses Decimal.formatted(.currency(code: "EUR").locale(.current)) or NumberFormatter with numberStyle = .currency. Manual `"€" + value.description` concatenation is forbidden.'
+
+  - id: number-format-style
+    type: deterministic
+    status: implemented
+    description: "Numeric display (percentages, counts) uses Swift FormatStyle (.percent, .number) with Locale.current so future locales get correct grouping/decimal separators."
+
+  - id: date-format-style
+    type: deterministic
+    status: implemented
+    description: "Date display uses Date.formatted(date:time:) or .formatted(.dateTime.year().month().day()) with the user's locale, never hardcoded `dd/MM/yyyy` strings."
+
+  - id: bundle-resolution
+    type: deterministic
+    status: implemented
+    description: 'When loading strings from a SPM module''s catalog (e.g. DesignSystem strings), code uses `String(localized: "key", bundle: .module)` to ensure the correct bundle is searched.'
+
+  - id: english-source-strings-complete
+    type: deterministic
+    status: implemented
+    description: "Every key referenced in feature code has an entry in Localizable.xcstrings with an English source string. The catalog has zero stale keys (keys not referenced in code) and zero missing keys."
+
+  - id: catalog-strings-validated-build
+    type: deterministic
+    status: implemented
+    description: "Xcode's String Catalog automatic extraction is enabled (the build phase that scans for Text/LocalizedStringResource references and warns about missing keys). Build settings include LOCALIZATION_PREFERS_STRING_CATALOGS = YES."
+
+  - id: error-messages-localized
+    type: deterministic
+    status: implemented
+    description: "Error messages thrown from CalculationKit (CalculationError) are LocalizedError-conforming and use catalog keys for errorDescription and recoverySuggestion."
+
+  - id: voice-control-friendly-labels
+    type: deterministic
+    status: implemented
+    description: "Localized button labels are natural commands a user could speak via Voice Control (e.g. 'Save', 'Calculate', 'Reset'). Avoid jargon or numerical-only labels that Voice Control cannot match easily."
+
+  - id: rtl-mirroring-ready
+    type: deterministic
+    status: implemented
+    description: "Layouts use leading/trailing rather than left/right. Custom paths (donut chart, segmented controls) are tested in .layoutDirection(.rightToLeft) snapshot to confirm they mirror correctly."
+
+anti_patterns:
+  - id: no-hardcoded-english-strings
+    type: llm-judge
+    description: "Hardcoded English text in Text(...) or other display sites is forbidden. Even though v1 ships English only, the catalog is the single source — adding a new locale must not require source code changes."
+    evidence_needed: 'Feature views contain only Text("key.subkey") patterns; no Text("Free form English") matches'
+
+  - id: no-string-concatenation-in-text
+    type: llm-judge
+    description: "Concatenating strings with + inside Text(...) for localized content is forbidden — it breaks translation. Use String Catalog placeholders: \"hello.user.\\(name)\" with positional arguments in the catalog."
+    evidence_needed: 'No Text("..." + ...) patterns in feature code'
+
+  - id: no-euro-prefix-literal
+    type: llm-judge
+    description: 'Manual \"€\" prefixes are forbidden — they ignore locale-specific separator rules (€1.000,00 vs €1,000.00). Use FormatStyle.currency(code: \"EUR\").'
+    evidence_needed: 'No \"€\" character literals in feature code outside of localized catalog values'
+
+  - id: no-if-count-pluralization
+    type: llm-judge
+    description: 'Manual `if count == 1 { "child" } else { "children" }` is forbidden. Use String Catalog plural variants — they handle dozens of language plural forms automatically.'
+    evidence_needed: "No `count == 1` switches around child/children, year/years, month/months in feature code"
+
+  - id: no-nslocalizedstring
+    type: llm-judge
+    description: "NSLocalizedString and Bundle.main.localizedString are legacy APIs. Use String(localized:) and Text(_) which integrate with String Catalog."
+    evidence_needed: "grep -r 'NSLocalizedString' ios-app/MaltaCalculator returns no matches"
+
+  - id: no-locale-en-us-hardcoded
+    type: llm-judge
+    description: 'Hardcoded `Locale(identifier: "en_US")` or `.en_US_POSIX` is forbidden in display code. Use Locale.current. POSIX locale is acceptable only for parsing fixed-format inputs (e.g. JSON dates).'
+    evidence_needed: "Hardcoded locales appear only in JSON parsing or test fixtures"

@@ -1,0 +1,183 @@
+# =============================================================================
+# Malta Calculator iOS — Dark Factory Configuration
+# =============================================================================
+# Autonomous pipeline that codes the iOS app day and night against the plan in
+# `ios-app-plan/`. Each task in `.dark-factory/backlog.md` points at one of the
+# detailed task files (e.g. `ios-app-plan/tasks/02-design-system.md`) which the
+# implementation agent treats as the intent spec.
+#
+# Quality bar: production-grade, world-class. Holdouts in
+# `.dark-factory/holdouts/` enforce financial accuracy (Decimal-only money),
+# Liquid Glass + iOS 18 fallback, accessibility, localization discipline,
+# snapshot/golden coverage, and performance budgets.
+# =============================================================================
+
+# --- Project identity ---
+project_name: "MaltaCalculatoriOS"
+github_repo: "atknatk/malta-calculator"
+
+# --- Working tree ---
+# All iOS code lives under ios-app/ (created by Task 01). The web Next.js app
+# is the source of truth for tax config + golden fixtures and is NOT touched
+# by the dark factory.
+ios_workdir: "ios-app"
+plan_dir: "ios-app-plan"
+specs_dir: "ios-app-plan/tasks"
+
+# --- Ship strategy ---
+# pr-creation: every task opens a feature branch + PR. T0/T1 auto-merge after
+# CI; T2+ wait for human review. Direct commits to main are forbidden.
+ship_model: "pr-creation"
+base_branch: "main"
+
+# --- Backlog ---
+holdout_dir: ".dark-factory/holdouts"
+backlog_file: ".dark-factory/backlog.md"
+backlog_format: "spec-only" # We use spec files directly; GitHub Issues optional.
+
+# --- Governance ceiling ---
+# T2 lets the loop create review-PRs autonomously while still gating risky
+# changes. Lift to T3 only after readiness audit hits 85+.
+governance_ceiling: "T2"
+
+# --- Holdout validation (multi-run quorum) ---
+# Each task is validated 3 times against hidden behavioural scenarios; 2/3
+# must score >= 90 for the implementation to count as passing.
+holdout_runs: 3
+holdout_quorum: 2
+holdout_threshold: 90
+
+# --- Retry policy ---
+max_attempts_per_spec: 3
+
+# --- Guardrails — past-failure feedback loop ---
+guardrails_file: ".dark-factory/failure-patterns.md"
+
+# --- Loop resilience ---
+rate_limit_calls_per_hour: 30 # Conservative — long-running iOS builds.
+rate_limit_tokens_per_hour: 0
+cb_no_progress_threshold: 4
+cb_same_error_threshold: 3
+cb_cooldown_minutes: 45
+exit_empty_backlog_confirmations: 2
+
+# --- Agent budgets (USD) & timeouts (seconds) ---
+# Implementation gets a generous budget because Swift builds are slow and the
+# tasks are non-trivial. Holdout/satisfaction stay tight to keep cost in check.
+impl_budget: 15
+impl_timeout: 4500 # 75 minutes — Xcode builds + tests can be heavy.
+holdout_budget: 3
+holdout_timeout: 600
+sat_budget: 3
+sat_timeout: 600
+
+# --- Tool allowlists ---
+impl_tools: "Read,Write,Edit,Grep,Glob,Bash,Agent"
+holdout_tools: "Read,Grep,Glob,Bash"
+sat_tools: "Read,Grep,Glob"
+
+# --- Custom implementation prompt ---
+# Points the impl agent at the iOS plan, CLAUDE.md, and quality rules.
+impl_prompt_file: ".dark-factory/impl-prompt.md"
+
+# --- Layer → Holdout directory mapping ---
+# Backlog rows tag each task with a layer (ios-setup, ios-design, …). The
+# holdout-validator picks scenarios from the matching directory.
+layer_mapping: "" # Identity mapping — layer name == directory name.
+
+# --- Holdout guard ---
+holdout_allowed_agents: "holdout-validator,satisfaction-judge"
+
+# --- PR labels ---
+pr_label_review: "needs-review"
+pr_label_arch_review: "architecture-review"
+pr_label_pipeline: "agent:pipeline"
+pr_label_factory: "dark-factory"
+pr_label_ios: "ios"
+
+# --- Issue sync (optional — leave label empty to disable) ---
+issue_sync_label: ""
+
+# --- Commit & git ---
+commit_suffix: "[agent:dark-factory]"
+
+# --- Task selection ---
+selection_timeout: 90
+selection_budget: 0.75
+
+# =============================================================================
+# Risk Factors — iOS specific
+# =============================================================================
+# Each matching factor adds its score to the risk total when the pattern hits
+# either the layer name or the spec body. Production-grade quality means we
+# treat financial accuracy and platform-API breaking changes as high risk.
+risk_factors:
+  # --- Financial accuracy (highest priority) ---
+  - pattern: "decimal|money|currency|tax|ssc|cola|salary|pension|mortgage"
+    score: 25
+    label: "Financial calculation"
+
+  - pattern: "tax-config|MaltaTaxConfig|bracket|threshold"
+    score: 30
+    label: "Tax configuration / regulatory"
+
+  - pattern: "golden|fixture|parity"
+    score: 15
+    label: "Golden parity test"
+
+  # --- Platform / iOS 26 features ---
+  - pattern: "glassEffect|GlassEffect|MeshGradient|liquidGlass|iOS26"
+    score: 15
+    label: "iOS 26 Liquid Glass"
+
+  - pattern: "available\\(iOS 26"
+    score: 10
+    label: "iOS version branch"
+
+  - pattern: "SwiftData|@Model|ModelContainer|CloudKit"
+    score: 20
+    label: "Persistence / iCloud"
+
+  - pattern: "ImageRenderer|PDFKit|Transferable"
+    score: 10
+    label: "Share / export rendering"
+
+  # --- Cross-cutting concerns ---
+  - pattern: "accessibility|VoiceOver|Dynamic Type|reduceMotion"
+    score: 10
+    label: "Accessibility surface"
+
+  - pattern: "Localizable\\.xcstrings|String Catalog|locale"
+    score: 5
+    label: "Localization"
+
+  - pattern: "Package\\.swift|SPM|dependency"
+    score: 15
+    label: "Dependency change"
+
+  - pattern: "Info\\.plist|entitlements|provisioning|signing"
+    score: 25
+    label: "App entitlements / signing"
+
+  - pattern: "PrivacyInfo\\.xcprivacy|privacy manifest"
+    score: 15
+    label: "Privacy manifest"
+
+  - pattern: "fastlane|GitHub Actions|ci\\.yml|ios\\.yml"
+    score: 10
+    label: "CI / release pipeline"
+
+  - pattern: "Decimal|NSDecimalNumber"
+    score: 5
+    label: "Decimal handling"
+
+# =============================================================================
+# Governance Tier Thresholds (defaults shown for clarity)
+# =============================================================================
+tier_t0_max_risk: 15
+tier_t0_min_sat: 80
+tier_t1_max_risk: 40
+tier_t1_min_sat: 75
+tier_t2_max_risk: 60
+tier_t2_min_sat: 70
+tier_blocked_min_sat: 50
