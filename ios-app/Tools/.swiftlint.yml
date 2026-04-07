@@ -1,0 +1,74 @@
+disabled_rules:
+  - todo
+  - trailing_whitespace
+  - opening_brace
+
+opt_in_rules:
+  - force_unwrapping
+  - empty_count
+  - closure_spacing
+  - contains_over_first_not_nil
+  - convenience_type
+  - discouraged_optional_boolean
+  - empty_string
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - implicit_return
+  - literal_expression_end_indentation
+  - multiline_parameters
+  - operator_usage_whitespace
+  - overridden_super_call
+  - prefer_self_type_over_type_of_self
+  - redundant_nil_coalescing
+  - single_test_class
+  - sorted_first_last
+  - toggle_bool
+  - unneeded_parentheses_in_closure_argument
+  # unused_import is an analyzer-only rule, listed under analyzer_rules below
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+
+line_length:
+  warning: 120
+  error: 150
+  ignores_urls: true
+  ignores_comments: true
+
+type_body_length:
+  warning: 300
+  error: 400
+
+file_length:
+  warning: 500
+  error: 700
+  ignore_comment_only_lines: true
+
+function_body_length:
+  warning: 50
+  error: 80
+
+cyclomatic_complexity:
+  warning: 10
+  error: 15
+
+identifier_name:
+  min_length: 2
+  max_length: 50
+  excluded:
+    - id
+    - vm
+    - to
+
+force_unwrapping:
+  severity: error
+
+excluded:
+  - Packages
+  - DerivedData
+  - fastlane
+  - Pods
+  - .build
+  - "**/.build"
+
+reporter: "xcode"

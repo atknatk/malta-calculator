@@ -1,0 +1,117 @@
+name: MaltaCalculator
+options:
+  bundleIdPrefix: com.maltacalculator
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "26.3"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+  defaultConfig: Debug
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+    Release:
+      SWIFT_TREAT_WARNINGS_AS_ERRORS: "YES"
+
+packages:
+  CalculationKit:
+    path: Packages/CalculationKit
+  DesignSystem:
+    path: Packages/DesignSystem
+
+targets:
+  MaltaCalculator:
+    type: application
+    platform: iOS
+    sources:
+      - path: MaltaCalculator
+        excludes:
+          - "**/.DS_Store"
+    resources:
+      - path: MaltaCalculator/Resources
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.maltacalculator.app
+        INFOPLIST_FILE: MaltaCalculator/Info.plist
+        CODE_SIGN_ENTITLEMENTS: MaltaCalculator/MaltaCalculator.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        GENERATE_INFOPLIST_FILE: "NO"
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+    dependencies:
+      - package: CalculationKit
+      - package: DesignSystem
+    preBuildScripts:
+      - name: "SwiftLint"
+        basedOnDependencyAnalysis: false
+        shell: /bin/bash
+        script: |
+          if [[ "$CONFIGURATION" == "Debug" ]]; then
+            if which swiftlint >/dev/null; then
+              swiftlint lint --config "${SRCROOT}/Tools/.swiftlint.yml" "${SRCROOT}/MaltaCalculator" "${SRCROOT}/Tests"
+            else
+              echo "warning: SwiftLint not installed"
+            fi
+          fi
+
+  MaltaCalculatorTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/MaltaCalculatorTests
+    dependencies:
+      - target: MaltaCalculator
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.maltacalculator.app.tests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/MaltaCalculator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MaltaCalculator"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+  MaltaCalculatorUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/MaltaCalculatorUITests
+    dependencies:
+      - target: MaltaCalculator
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.maltacalculator.app.uitests
+        TEST_TARGET_NAME: MaltaCalculator
+
+schemes:
+  MaltaCalculator:
+    build:
+      targets:
+        MaltaCalculator: all
+        MaltaCalculatorTests: [test]
+        MaltaCalculatorUITests: [test]
+    run:
+      config: Debug
+      commandLineArguments:
+        "-UITesting_disableAnimations": true
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - MaltaCalculator
+      targets:
+        - name: MaltaCalculatorTests
+          parallelizable: true
+        - name: MaltaCalculatorUITests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

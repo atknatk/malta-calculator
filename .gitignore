@@ -35,6 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+*.xlsx
+*.pdf
+
 # Dark Factory — keep config and holdouts, ignore runtime artifacts
 .dark-factory/sessions/
 .dark-factory/.stop-signal

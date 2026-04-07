@@ -1,0 +1,75 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ios-app/**"
+      - ".github/workflows/ios.yml"
+  pull_request:
+    paths:
+      - "ios-app/**"
+      - ".github/workflows/ios.yml"
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: ios-app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: sudo xcode-select -switch /Applications/Xcode_26.app/Contents/Developer
+
+      - name: Xcode version
+        run: xcodebuild -version
+
+      - name: Cache SPM
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData/**/SourcePackages
+            .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: Install tools
+        run: brew install swiftlint swiftformat xcbeautify
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -workspace MaltaCalculator.xcworkspace \
+            -scheme MaltaCalculator \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify
+
+      - name: Test (Unit)
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -workspace MaltaCalculator.xcworkspace \
+            -scheme MaltaCalculator \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
+            -resultBundlePath TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ios-app/TestResults.xcresult

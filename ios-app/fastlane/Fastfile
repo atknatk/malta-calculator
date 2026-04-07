@@ -1,0 +1,47 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Lint Swift code"
+  lane :lint do
+    sh("bash ../Tools/scripts/lint.sh")
+  end
+
+  desc "Run tests"
+  lane :test do
+    run_tests(
+      workspace: "MaltaCalculator.xcworkspace",
+      scheme: "MaltaCalculator",
+      devices: ["iPhone 16 Pro"]
+    )
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    match(type: "appstore", readonly: true)
+    increment_build_number(xcodeproj: "MaltaCalculator.xcodeproj")
+    build_app(
+      workspace: "MaltaCalculator.xcworkspace",
+      scheme: "MaltaCalculator",
+      export_method: "app-store"
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Release to App Store"
+  lane :release do
+    match(type: "appstore", readonly: true)
+    capture_screenshots if ENV["CAPTURE_SCREENSHOTS"]
+    build_app(
+      workspace: "MaltaCalculator.xcworkspace",
+      scheme: "MaltaCalculator"
+    )
+    upload_to_app_store(
+      submit_for_review: true,
+      automatic_release: false,
+      skip_screenshots: true,
+      skip_metadata: false
+    )
+  end
+end

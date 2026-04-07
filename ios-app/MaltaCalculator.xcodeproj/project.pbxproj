@@ -1,0 +1,687 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2674F2F102D4F2AFC2096603 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B2D94468F50ECFF9CA19CE6 /* Assets.xcassets */; };
+		4847351F799DF82F29DE1512 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = C486B5057B7C9A4D8C42E3B0 /* DesignSystem */; };
+		5731CA00A6B35EDE3E4DA663 /* MaltaCalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A597F849A651DA532E7EF0 /* MaltaCalculatorUITests.swift */; };
+		6D900C222EB01C3329C58E30 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */; };
+		782AFC684A5F838ED798C515 /* MaltaCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C9031860876EC2F7F9299 /* MaltaCalculatorApp.swift */; };
+		7ED07E3995752D4DED35E61F /* CalculationKit in Frameworks */ = {isa = PBXBuildFile; productRef = C48FD61DB2226C059675FF3C /* CalculationKit */; };
+		97E3BBB34CB523F32A572B26 /* MaltaCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */; };
+		C6847AAB3F133B5B6419FB8B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB399DD91FD3AC40791349C /* RootView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B8B42A11BD7F6D0ACC767F1F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAB62C11BA305B4EDDBF872D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A9880F4DFAAD57B951AC9243;
+			remoteInfo = MaltaCalculator;
+		};
+		CEBB932F753BC89C06D4DFAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAB62C11BA305B4EDDBF872D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A9880F4DFAAD57B951AC9243;
+			remoteInfo = MaltaCalculator;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0EB399DD91FD3AC40791349C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltaCalculatorTests.swift; sourceTree = "<group>"; };
+		30923A99DE4E68EC4D27D367 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3B2D94468F50ECFF9CA19CE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3C34073A5855C0FE024A051D /* MaltaCalculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MaltaCalculator.entitlements; sourceTree = "<group>"; };
+		5216D5E29222604CEBBE045E /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignSystem; path = Packages/DesignSystem; sourceTree = SOURCE_ROOT; };
+		88916A000CD197FC01F85107 /* MaltaCalculatorUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MaltaCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E02AC92A3A9D962FA2CBD09 /* CalculationKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CalculationKit; path = Packages/CalculationKit; sourceTree = SOURCE_ROOT; };
+		B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		E56C9031860876EC2F7F9299 /* MaltaCalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltaCalculatorApp.swift; sourceTree = "<group>"; };
+		E86AD427071A2AEAFEF4D257 /* MaltaCalculatorTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MaltaCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4A597F849A651DA532E7EF0 /* MaltaCalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltaCalculatorUITests.swift; sourceTree = "<group>"; };
+		F7526166DC60D76EDC80388A /* MaltaCalculator.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MaltaCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7F399BDEAD60FDE8D33F41F8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7ED07E3995752D4DED35E61F /* CalculationKit in Frameworks */,
+				4847351F799DF82F29DE1512 /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0FA0BCEA5839E658180A2FED /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E56C9031860876EC2F7F9299 /* MaltaCalculatorApp.swift */,
+				0EB399DD91FD3AC40791349C /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		159184829657B70A1E4B1B39 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				ED3E06246004DEE4C4B94640 /* MaltaCalculatorTests */,
+				8F7448FB9C75AF32BB70C91C /* MaltaCalculatorUITests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		3B15E2DF5AEFC96951BBE98C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3B2D94468F50ECFF9CA19CE6 /* Assets.xcassets */,
+				B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */,
+				D3CC236D7135DF74FAF1D550 /* Content */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		521FA70764A16C6F56F751BF /* MaltaCalculator */ = {
+			isa = PBXGroup;
+			children = (
+				30923A99DE4E68EC4D27D367 /* Info.plist */,
+				3C34073A5855C0FE024A051D /* MaltaCalculator.entitlements */,
+				0FA0BCEA5839E658180A2FED /* App */,
+				C2A5CD33D817C83AB284031F /* Features */,
+				3B15E2DF5AEFC96951BBE98C /* Resources */,
+			);
+			path = MaltaCalculator;
+			sourceTree = "<group>";
+		};
+		5D928A26F99DC0BCDF4346CB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				9E02AC92A3A9D962FA2CBD09 /* CalculationKit */,
+				5216D5E29222604CEBBE045E /* DesignSystem */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		60789D23BF9E984082F161F5 /* Calculators */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Calculators;
+			sourceTree = "<group>";
+		};
+		8F7448FB9C75AF32BB70C91C /* MaltaCalculatorUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F4A597F849A651DA532E7EF0 /* MaltaCalculatorUITests.swift */,
+			);
+			path = MaltaCalculatorUITests;
+			sourceTree = "<group>";
+		};
+		9738D2C64A3E5073AF5C6476 /* Salary */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Salary;
+			sourceTree = "<group>";
+		};
+		BAF0E80AA5486788A908B381 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		C2A5CD33D817C83AB284031F /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				60789D23BF9E984082F161F5 /* Calculators */,
+				DC4F7714F4AC15789F1F1B4F /* Guides */,
+				DC18A45A2269526D842D9287 /* Home */,
+				9738D2C64A3E5073AF5C6476 /* Salary */,
+				BAF0E80AA5486788A908B381 /* Settings */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		D3CC236D7135DF74FAF1D550 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		DC18A45A2269526D842D9287 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		DC4F7714F4AC15789F1F1B4F /* Guides */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Guides;
+			sourceTree = "<group>";
+		};
+		ED3E06246004DEE4C4B94640 /* MaltaCalculatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */,
+			);
+			path = MaltaCalculatorTests;
+			sourceTree = "<group>";
+		};
+		ED628831598593879A4EDD29 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F7526166DC60D76EDC80388A /* MaltaCalculator.app */,
+				E86AD427071A2AEAFEF4D257 /* MaltaCalculatorTests.xctest */,
+				88916A000CD197FC01F85107 /* MaltaCalculatorUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F4BAFEDFC4331468E73AE5F7 = {
+			isa = PBXGroup;
+			children = (
+				521FA70764A16C6F56F751BF /* MaltaCalculator */,
+				5D928A26F99DC0BCDF4346CB /* Packages */,
+				159184829657B70A1E4B1B39 /* Tests */,
+				ED628831598593879A4EDD29 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2A47EE8616DE9A2E80D984A4 /* MaltaCalculatorUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C665EA115745562F3CA5097 /* Build configuration list for PBXNativeTarget "MaltaCalculatorUITests" */;
+			buildPhases = (
+				5B6AF65AE6372E4E1C5498BE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4D2BF6E8BE9DF62C0F2747D7 /* PBXTargetDependency */,
+			);
+			name = MaltaCalculatorUITests;
+			packageProductDependencies = (
+			);
+			productName = MaltaCalculatorUITests;
+			productReference = 88916A000CD197FC01F85107 /* MaltaCalculatorUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		A88B8B88C4550E7EB7E32E85 /* MaltaCalculatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F354520F481F46288B864843 /* Build configuration list for PBXNativeTarget "MaltaCalculatorTests" */;
+			buildPhases = (
+				E64769ED3FAC403D95AE25A4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6C9A04E1CE5CD61C399BA7CD /* PBXTargetDependency */,
+			);
+			name = MaltaCalculatorTests;
+			packageProductDependencies = (
+			);
+			productName = MaltaCalculatorTests;
+			productReference = E86AD427071A2AEAFEF4D257 /* MaltaCalculatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A9880F4DFAAD57B951AC9243 /* MaltaCalculator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B35E3A4C6D3D8E93080B1535 /* Build configuration list for PBXNativeTarget "MaltaCalculator" */;
+			buildPhases = (
+				BA8DA0A49A4499BD88417E7E /* SwiftLint */,
+				C01906A8C9FBC32EBCB24916 /* Sources */,
+				F2FA9D86BCC5676ACF2689EB /* Resources */,
+				7F399BDEAD60FDE8D33F41F8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MaltaCalculator;
+			packageProductDependencies = (
+				C48FD61DB2226C059675FF3C /* CalculationKit */,
+				C486B5057B7C9A4D8C42E3B0 /* DesignSystem */,
+			);
+			productName = MaltaCalculator;
+			productReference = F7526166DC60D76EDC80388A /* MaltaCalculator.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EAB62C11BA305B4EDDBF872D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2630;
+				TargetAttributes = {
+					2A47EE8616DE9A2E80D984A4 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = A9880F4DFAAD57B951AC9243;
+					};
+					A88B8B88C4550E7EB7E32E85 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					A9880F4DFAAD57B951AC9243 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 660F06C0C23CA72F23CFC1CF /* Build configuration list for PBXProject "MaltaCalculator" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F4BAFEDFC4331468E73AE5F7;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B238A6DE0FDF38A7DCE79F73 /* XCLocalSwiftPackageReference "Packages/CalculationKit" */,
+				3B36D6A2300DAFC6B6A6447F /* XCLocalSwiftPackageReference "Packages/DesignSystem" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A9880F4DFAAD57B951AC9243 /* MaltaCalculator */,
+				A88B8B88C4550E7EB7E32E85 /* MaltaCalculatorTests */,
+				2A47EE8616DE9A2E80D984A4 /* MaltaCalculatorUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F2FA9D86BCC5676ACF2689EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2674F2F102D4F2AFC2096603 /* Assets.xcassets in Resources */,
+				6D900C222EB01C3329C58E30 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BA8DA0A49A4499BD88417E7E /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "if [[ \"$CONFIGURATION\" == \"Debug\" ]]; then\n  if which swiftlint >/dev/null; then\n    swiftlint lint --config \"${SRCROOT}/Tools/.swiftlint.yml\" \"${SRCROOT}/MaltaCalculator\" \"${SRCROOT}/Tests\"\n  else\n    echo \"warning: SwiftLint not installed\"\n  fi\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5B6AF65AE6372E4E1C5498BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5731CA00A6B35EDE3E4DA663 /* MaltaCalculatorUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C01906A8C9FBC32EBCB24916 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				782AFC684A5F838ED798C515 /* MaltaCalculatorApp.swift in Sources */,
+				C6847AAB3F133B5B6419FB8B /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64769ED3FAC403D95AE25A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97E3BBB34CB523F32A572B26 /* MaltaCalculatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4D2BF6E8BE9DF62C0F2747D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A9880F4DFAAD57B951AC9243 /* MaltaCalculator */;
+			targetProxy = B8B42A11BD7F6D0ACC767F1F /* PBXContainerItemProxy */;
+		};
+		6C9A04E1CE5CD61C399BA7CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A9880F4DFAAD57B951AC9243 /* MaltaCalculator */;
+			targetProxy = CEBB932F753BC89C06D4DFAE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2AB1AFAC2E88FD9317986C6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maltacalculator.app.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MaltaCalculator;
+			};
+			name = Debug;
+		};
+		2F5D9D8E07D4E71A8C3E2A07 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maltacalculator.app.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MaltaCalculator;
+			};
+			name = Release;
+		};
+		3F80870434C0341BDF9FA72A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maltacalculator.app.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MaltaCalculator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MaltaCalculator";
+			};
+			name = Release;
+		};
+		43F10D3284514B654D0FEF28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		99DA6BB722D804D727F5DC31 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MaltaCalculator/MaltaCalculator.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MaltaCalculator/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maltacalculator.app;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B1540DEB9D073BC8B01857E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		BFACBE883FDA1A59C4B7E6EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MaltaCalculator/MaltaCalculator.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MaltaCalculator/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maltacalculator.app;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D6DB0B71828F99616FE8C87E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maltacalculator.app.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MaltaCalculator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MaltaCalculator";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C665EA115745562F3CA5097 /* Build configuration list for PBXNativeTarget "MaltaCalculatorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AB1AFAC2E88FD9317986C6D /* Debug */,
+				2F5D9D8E07D4E71A8C3E2A07 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		660F06C0C23CA72F23CFC1CF /* Build configuration list for PBXProject "MaltaCalculator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1540DEB9D073BC8B01857E1 /* Debug */,
+				43F10D3284514B654D0FEF28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B35E3A4C6D3D8E93080B1535 /* Build configuration list for PBXNativeTarget "MaltaCalculator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFACBE883FDA1A59C4B7E6EF /* Debug */,
+				99DA6BB722D804D727F5DC31 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F354520F481F46288B864843 /* Build configuration list for PBXNativeTarget "MaltaCalculatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6DB0B71828F99616FE8C87E /* Debug */,
+				3F80870434C0341BDF9FA72A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		3B36D6A2300DAFC6B6A6447F /* XCLocalSwiftPackageReference "Packages/DesignSystem" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DesignSystem;
+		};
+		B238A6DE0FDF38A7DCE79F73 /* XCLocalSwiftPackageReference "Packages/CalculationKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/CalculationKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C486B5057B7C9A4D8C42E3B0 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		C48FD61DB2226C059675FF3C /* CalculationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CalculationKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = EAB62C11BA305B4EDDBF872D /* Project object */;
+}

@@ -1,0 +1,50 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+!default.xcworkspace
+
+# SwiftPM
+.build/
+Packages/*/.build/
+Package.resolved
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+fastlane/README.md
+
+# CocoaPods (not used, safety net)
+Pods/
+
+# Bundler
+.bundle/
+
+# Mint
+.mint/
+
+# Environment
+.env
+.env.local
+
+# Archives & IPA
+*.xcarchive
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Sensitive
+*.p8
+*.p12
+*.mobileprovision
+*.certSigningRequest
+
+# Test results
+TestResults.xcresult
