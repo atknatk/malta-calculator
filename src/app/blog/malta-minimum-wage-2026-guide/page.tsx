@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     "Malta national minimum wage",
     "Malta wage rates",
   ],
-  alternates: { canonical: `${SITE_URL}/blog/malta-minimum-wage-2026-guide` },
+  alternates: pageAlternates("/blog/malta-minimum-wage-2026-guide"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Minimum Wage 2026: Complete Guide",

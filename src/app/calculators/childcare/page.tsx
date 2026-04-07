@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Baby } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Childcare Subsidy Calculator | Malta Calculator",
   description:
     "Calculate childcare subsidy in Malta based on income. Free tool for childcare support calculations.",
-  alternates: { canonical: `${SITE_URL}/calculators/childcare` },
+  alternates: pageAlternates("/calculators/childcare"),
   openGraph: {
     ...ogMetadata,
     title: "Childcare Subsidy Calculator | Malta Calculator",

@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -55,9 +56,7 @@ export const metadata: Metadata = {
     "Malta tax thresholds",
     "Malta 35% tax bracket",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-tax-rates-2026-complete-guide`,
-  },
+  alternates: pageAlternates("/blog/malta-tax-rates-2026-complete-guide"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Tax Rates 2026: Complete Guide to Income Tax Brackets",

@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -44,9 +45,7 @@ export const metadata: Metadata = {
     "Malta TCN family visa",
     "Malta non-EU family",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-family-reunification-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-family-reunification-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Family Reunification 2026: Complete Salary Guide",
@@ -64,12 +63,20 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Identità Malta - Family Reunification",
-    url: "https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/non-employment-permits/family-reunification/",
+    name: "Identità Malta - Family Reunification (Forms G.01 / G.02)",
+    url: "https://identita.gov.mt/family-reunification/",
+  },
+  {
+    name: "Identità Malta - Family Member Permit",
+    url: "https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/non-employment-permits/family-member/",
   },
   {
     name: "Identità Malta - Family Members Policy",
     url: "https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/non-employment-permits/family-members-policy/",
+  },
+  {
+    name: "Subsidiary Legislation 217.06 - Family Reunification Regulations",
+    url: "https://legislation.mt/eli/sl/217.6/eng/pdf",
   },
 ];
 
@@ -203,11 +210,18 @@ export default function FamilyReunificationGuidePage() {
                     Who Can You Sponsor?
                   </h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Spouse or registered partner</li>
-                    <li>• Minor children (under 18)</li>
-                    <li>• Adult dependent children</li>
-                    <li>• Dependent parents (in some cases)</li>
+                    <li>• Spouse aged 21 or over (monogamous marriage only)</li>
+                    <li>• Unmarried minor children of sponsor and spouse</li>
+                    <li>
+                      • Unmarried minor children adopted under Maltese law
+                    </li>
+                    <li>• Children under sole custody of sponsor or spouse</li>
                   </ul>
+                  <p className="text-xs text-muted-foreground mt-3 italic">
+                    Per S.L. 217.06 Reg. 4. Adult children and parents are
+                    generally not eligible (except for unaccompanied minor
+                    refugees).
+                  </p>
                 </div>
                 <div className="p-6 bg-violet-500/10 border border-violet-500/20 rounded-2xl">
                   <Globe className="h-8 w-8 text-violet-600 mb-3" />
@@ -215,12 +229,43 @@ export default function FamilyReunificationGuidePage() {
                     Who Is This For?
                   </h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Non-EU workers in Malta</li>
-                    <li>• Single Permit holders</li>
+                    <li>• Non-EU workers in Malta (TCN)</li>
+                    <li>• Single Permit holders with 1+ year residence</li>
                     <li>• Long-term residents</li>
-                    <li>• TCN with valid residence</li>
+                    <li>• Sponsors with reasonable prospects of permanence</li>
                   </ul>
                 </div>
+              </div>
+
+              <div className="p-6 bg-muted/30 border border-border rounded-2xl not-prose my-6">
+                <h3 className="font-semibold text-lg mb-3">
+                  Sponsor Pre-Conditions
+                </h3>
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li>
+                    • Hold a Malta residence permit valid for{" "}
+                    <strong>at least 1 year</strong> (S.L. 217.06 Reg. 3)
+                  </li>
+                  <li>
+                    • Have <strong>reasonable prospects</strong> of obtaining
+                    permanent residence
+                  </li>
+                  <li>
+                    • Under <strong>Family Members Policy</strong>: wait{" "}
+                    <strong>12 calendar months</strong> from the date your
+                    initial permit was first issued before applying
+                  </li>
+                  <li>
+                    • <strong>Exception</strong>: Key Employee Initiative (KEI)
+                    or Specialist Employee Initiative holders earning{" "}
+                    <strong>€50,000+ gross/year</strong> may apply earlier
+                  </li>
+                  <li>
+                    • Sponsors with pending refugee, temporary protection or
+                    subsidiary protection status are{" "}
+                    <strong>not eligible</strong> under S.L. 217.06
+                  </li>
+                </ul>
               </div>
             </section>
 
@@ -242,13 +287,18 @@ export default function FamilyReunificationGuidePage() {
                     </h3>
                   </div>
                   <p className="text-muted-foreground mb-4">
-                    The primary legal framework for family reunification under
-                    Malta immigration law.
+                    The primary legal framework (S.L. 217.06) implementing EU
+                    Directive 2003/86/EC on family reunification.
                   </p>
-                  <div className="p-4 bg-background/50 rounded-xl">
-                    <p className="font-medium mb-2">💰 Salary Requirement:</p>
+                  <div className="p-4 bg-background/50 rounded-xl space-y-2">
+                    <p className="font-medium">💰 Salary Requirement:</p>
                     <p className="text-lg font-bold text-blue-600">
                       Average Wage (Gross) + 20% per family member
+                    </p>
+                    <p className="text-xs text-muted-foreground pt-2 border-t border-border/50">
+                      ⏱ Decision: up to <strong>9 months</strong> · 📋 Forms{" "}
+                      <strong>G.01</strong> (new) / <strong>G.02</strong>{" "}
+                      (renewal) · 💶 Fee: <strong>€50</strong>
                     </p>
                   </div>
                   <a
@@ -271,13 +321,18 @@ export default function FamilyReunificationGuidePage() {
                     </h3>
                   </div>
                   <p className="text-muted-foreground mb-4">
-                    An alternative policy managed by Identità for specific
-                    cases.
+                    An alternative policy managed by Identità for sponsors who
+                    do not (yet) qualify under S.L. 217.06.
                   </p>
-                  <div className="p-4 bg-background/50 rounded-xl">
-                    <p className="font-medium mb-2">💰 Salary Requirement:</p>
+                  <div className="p-4 bg-background/50 rounded-xl space-y-2">
+                    <p className="font-medium">💰 Salary Requirement:</p>
                     <p className="text-lg font-bold text-purple-600">
                       €18,940 Net + 20% of median wage per family member
+                    </p>
+                    <p className="text-xs text-muted-foreground pt-2 border-t border-border/50">
+                      ⏱ Decision: within <strong>60 days</strong> · 🏥 Health
+                      insurance: min <strong>€100,000</strong> · ⏳ 12-month
+                      waiting period from initial permit
                     </p>
                   </div>
                   <a
@@ -441,25 +496,45 @@ export default function FamilyReunificationGuidePage() {
                 <div className="p-4 rounded-xl bg-muted/30 border border-border">
                   <h4 className="font-semibold mb-3">For the Sponsor</h4>
                   <ul className="text-sm text-muted-foreground space-y-2">
-                    <li>• Valid residence permit</li>
+                    <li>• Valid residence permit (min. 1 year)</li>
                     <li>• Employment contract</li>
-                    <li>• Recent payslips (3-6 months)</li>
+                    <li>• Last 6 months of payslips</li>
                     <li>• Tax returns (FS3)</li>
-                    <li>• Proof of accommodation</li>
-                    <li>• Health insurance</li>
+                    <li>
+                      • Proof of accommodation meeting health/safety standards
+                    </li>
+                    <li>
+                      • Sickness insurance covering all risks (min.{" "}
+                      <strong>€100,000</strong> under Family Members Policy)
+                    </li>
                   </ul>
                 </div>
                 <div className="p-4 rounded-xl bg-muted/30 border border-border">
                   <h4 className="font-semibold mb-3">For Family Members</h4>
                   <ul className="text-sm text-muted-foreground space-y-2">
-                    <li>• Valid passport</li>
-                    <li>• Marriage certificate (for spouse)</li>
-                    <li>• Birth certificates (for children)</li>
+                    <li>
+                      • Valid passport (min. <strong>8 months validity</strong>{" "}
+                      at submission)
+                    </li>
+                    <li>• Marriage certificate (spouse must be 21+)</li>
+                    <li>• Birth certificates (for minor children)</li>
                     <li>• Police clearance certificates</li>
                     <li>• Medical certificates</li>
                     <li>• Photos (passport size)</li>
                   </ul>
                 </div>
+              </div>
+
+              <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl not-prose mt-4">
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">
+                    Where family members must be:
+                  </strong>{" "}
+                  Under both schemes, family members generally must reside{" "}
+                  <strong>outside Malta</strong> when the application is
+                  submitted. The Director may accept in-country applications in
+                  exceptional cases (e.g. minor children born in Malta).
+                </p>
               </div>
             </section>
 
@@ -475,7 +550,9 @@ export default function FamilyReunificationGuidePage() {
                     <h4 className="font-semibold">Gather Documents</h4>
                     <p className="text-sm text-muted-foreground">
                       Collect all required documents and have them
-                      translated/apostilled if needed.
+                      translated/apostilled if needed. For S.L. 217.06 use Form{" "}
+                      <strong>G.01</strong> (new application) or{" "}
+                      <strong>G.02</strong> (renewal).
                     </p>
                   </div>
                 </div>
@@ -484,9 +561,19 @@ export default function FamilyReunificationGuidePage() {
                     2
                   </div>
                   <div>
-                    <h4 className="font-semibold">Submit Application</h4>
+                    <h4 className="font-semibold">Submit Application Online</h4>
                     <p className="text-sm text-muted-foreground">
-                      Apply through Identità Malta (online or in person).
+                      Apply through the Expatriates Unit Portal at{" "}
+                      <a
+                        href="https://expatriates.identita.gov.mt"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        expatriates.identita.gov.mt
+                      </a>
+                      . Family members must usually be outside Malta at the time
+                      of submission.
                     </p>
                   </div>
                 </div>
@@ -497,7 +584,8 @@ export default function FamilyReunificationGuidePage() {
                   <div>
                     <h4 className="font-semibold">Pay Fees</h4>
                     <p className="text-sm text-muted-foreground">
-                      Pay the application and residence permit fees.
+                      Application fee: <strong>€50</strong> for both new and
+                      renewal applications under S.L. 217.06.
                     </p>
                   </div>
                 </div>
@@ -506,10 +594,14 @@ export default function FamilyReunificationGuidePage() {
                     4
                   </div>
                   <div>
-                    <h4 className="font-semibold">Wait for Approval</h4>
+                    <h4 className="font-semibold">Wait for Decision</h4>
                     <p className="text-sm text-muted-foreground">
-                      Processing typically takes 3-6 months. Your family can
-                      apply for visa once approved.
+                      <strong>S.L. 217.06:</strong> decision within{" "}
+                      <strong>9 months</strong> of application (longer in
+                      complex cases). <strong>Family Members Policy:</strong>{" "}
+                      decision within <strong>60 days</strong> of complete
+                      submission. Once approved, family members can apply for an
+                      entry visa.
                     </p>
                   </div>
                 </div>
@@ -525,9 +617,13 @@ export default function FamilyReunificationGuidePage() {
                     Which scheme should I apply under?
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Family Reunification (S.L. 217.6) is the main legal pathway.
-                    Family Member Policy is typically for specific situations.
-                    Consult Identità Malta for guidance.
+                    Family Reunification (S.L. 217.06) is the main legal pathway
+                    and applies if you meet all conditions in the regulations.
+                    The Family Members Policy is a non-statutory policy used by
+                    Identità for sponsors who do not (yet) meet S.L. 217.06
+                    requirements but qualify under separate criteria. Consult
+                    Identità Malta for guidance on which route fits your
+                    situation.
                   </p>
                 </div>
                 <div className="p-4 bg-muted/30 rounded-xl">
@@ -535,9 +631,10 @@ export default function FamilyReunificationGuidePage() {
                     Can I combine income with my spouse?
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Generally, the sponsor must demonstrate sufficient
-                    individual income. Joint income may be considered in
-                    specific circumstances.
+                    Under S.L. 217.06 the sponsor must demonstrate sufficient
+                    individual stable resources. At renewal, contributions of
+                    family members already in Malta to the household income may
+                    be taken into account (Reg. 18).
                   </p>
                 </div>
                 <div className="p-4 bg-muted/30 rounded-xl">
@@ -545,9 +642,12 @@ export default function FamilyReunificationGuidePage() {
                     How long does the process take?
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Typical processing time is 3-6 months, but can vary
-                    depending on complexity and document verification
-                    requirements.
+                    Under <strong>S.L. 217.06</strong>, the Director must decide
+                    within <strong>9 months</strong> of submission (extendable
+                    in complex cases). Under the{" "}
+                    <strong>Family Members Policy</strong>, the standard
+                    decision time is <strong>60 days</strong> from a complete
+                    submission.
                   </p>
                 </div>
                 <div className="p-4 bg-muted/30 rounded-xl">
@@ -555,8 +655,44 @@ export default function FamilyReunificationGuidePage() {
                     Can my family work in Malta?
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Family members may apply for work permits after receiving
-                    residence status. Specific conditions apply.
+                    Under S.L. 217.06 (Reg. 15), family members get the same
+                    access to employment as the sponsor — but for the{" "}
+                    <strong>first 12 months</strong> after arrival, their
+                    employment is subject to a labour market assessment and an
+                    employment licence requirement. Under the Family Members
+                    Policy, residence does <strong>not</strong> automatically
+                    grant employment rights — a separate Single Permit is
+                    required.
+                  </p>
+                </div>
+                <div className="p-4 bg-muted/30 rounded-xl">
+                  <h4 className="font-semibold mb-2">
+                    Do I have to wait before applying?
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    Under S.L. 217.06 you must hold a Malta residence permit
+                    valid for at least 1 year and have reasonable prospects of
+                    permanent residence. Under the Family Members Policy you
+                    must wait <strong>12 calendar months</strong> from the date
+                    your initial permit was first issued — except for{" "}
+                    <strong>
+                      Key Employee / Specialist Employee Initiative
+                    </strong>{" "}
+                    holders earning €50,000+ gross per year, who may apply
+                    earlier.
+                  </p>
+                </div>
+                <div className="p-4 bg-muted/30 rounded-xl">
+                  <h4 className="font-semibold mb-2">
+                    Can I sponsor my parents or adult children?
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    No — S.L. 217.06 (Reg. 4) only allows reunification with
+                    your spouse (aged 21+, monogamous marriage) and unmarried
+                    minor children. Adult dependent children and parents are
+                    generally not eligible. Limited exceptions apply for
+                    unaccompanied minor refugees who may sponsor first-degree
+                    ascendants under Reg. 24.
                   </p>
                 </div>
               </div>

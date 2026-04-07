@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { StampDutyCalculator } from "./_components/stamp-duty-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Stamp Duty Calculator | Malta Calculator",
   description:
     "Calculate stamp duty on property purchase in Malta. 5% standard rate or first-time buyer exemption on €200,000.",
-  alternates: { canonical: `${SITE_URL}/calculators/stamp-duty` },
+  alternates: pageAlternates("/calculators/stamp-duty"),
   openGraph: {
     ...ogMetadata,
     title: "Stamp Duty Calculator | Malta Calculator",

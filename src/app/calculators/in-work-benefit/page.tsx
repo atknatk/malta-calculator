@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Briefcase } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "In-Work Benefit Calculator | Malta Calculator",
   description:
     "Calculate in-work benefit in Malta for low-income working families. Free eligibility and amount calculator.",
-  alternates: { canonical: `${SITE_URL}/calculators/in-work-benefit` },
+  alternates: pageAlternates("/calculators/in-work-benefit"),
   openGraph: {
     ...ogMetadata,
     title: "In-Work Benefit Calculator | Malta Calculator",

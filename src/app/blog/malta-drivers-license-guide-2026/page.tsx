@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -32,9 +33,7 @@ export const metadata: Metadata = {
     "Transport Malta license",
     "Malta driving test fees",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-drivers-license-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-drivers-license-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Driving License 2026 Guide",

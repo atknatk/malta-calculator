@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -45,9 +46,7 @@ export const metadata: Metadata = {
     "children under 16 Malta",
     "Malta DSS children",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-childrens-allowance-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-childrens-allowance-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Children's Allowance 2026: Complete Guide",

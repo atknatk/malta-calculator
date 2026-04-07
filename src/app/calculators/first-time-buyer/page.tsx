@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Home } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "First-Time Buyer Scheme Calculator | Malta Calculator",
   description:
     "Calculate first-time buyer benefits in Malta. Stamp duty reductions and grants for first property purchase.",
-  alternates: { canonical: `${SITE_URL}/calculators/first-time-buyer` },
+  alternates: pageAlternates("/calculators/first-time-buyer"),
   openGraph: {
     ...ogMetadata,
     title: "First-Time Buyer Scheme Calculator | Malta Calculator",

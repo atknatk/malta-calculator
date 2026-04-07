@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { MortgageCalculator } from "./_components/mortgage-calculator";
 import {
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     "home loan calculator Malta",
     "property loan Malta",
   ],
-  alternates: { canonical: `${SITE_URL}/calculators/mortgage` },
+  alternates: pageAlternates("/calculators/mortgage"),
   openGraph: {
     ...ogMetadata,
     title: "Mortgage Calculator | Malta Calculator",

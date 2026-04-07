@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -31,9 +32,7 @@ export const metadata: Metadata = {
     "Malta property rental tax",
     "Malta landlord tax",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-rental-income-tax-15-percent-guide`,
-  },
+  alternates: pageAlternates("/blog/malta-rental-income-tax-15-percent-guide"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Rental Income Tax 2026: 15% Guide",

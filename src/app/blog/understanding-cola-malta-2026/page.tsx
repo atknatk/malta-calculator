@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -47,9 +48,7 @@ export const metadata: Metadata = {
     "COLA tax Malta",
     "Malta salary increase 2026",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/understanding-cola-malta-2026`,
-  },
+  alternates: pageAlternates("/blog/understanding-cola-malta-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Understanding COLA in Malta 2026: Cost of Living Adjustment Guide",

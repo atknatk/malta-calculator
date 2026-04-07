@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     "Malta vehicle tax",
     "Transport Malta license",
   ],
-  alternates: { canonical: `${SITE_URL}/blog/malta-road-license-guide-2026` },
+  alternates: pageAlternates("/blog/malta-road-license-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Road License 2026 Guide",

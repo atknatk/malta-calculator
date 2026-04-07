@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Calculator } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Self-Employed SSC Calculator | Malta Calculator",
   description:
     "Calculate Class 2 SSC for self-employed in Malta. Free social security contribution calculator.",
-  alternates: { canonical: `${SITE_URL}/calculators/self-employed-ssc` },
+  alternates: pageAlternates("/calculators/self-employed-ssc"),
   openGraph: {
     ...ogMetadata,
     title: "Self-Employed SSC Calculator | Malta Calculator",

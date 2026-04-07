@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -31,9 +32,7 @@ export const metadata: Metadata = {
     "Malta provisional tax",
     "Malta Class 2 SSC",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-self-employment-tax-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-self-employment-tax-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Self-Employment Tax Guide 2026",

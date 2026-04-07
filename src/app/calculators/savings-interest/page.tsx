@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { SavingsCalculator } from "./_components/savings-calculator";
 import {
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     "savings Malta",
     "bank interest Malta",
   ],
-  alternates: { canonical: `${SITE_URL}/calculators/savings-interest` },
+  alternates: pageAlternates("/calculators/savings-interest"),
   openGraph: {
     ...ogMetadata,
     title: "Savings Interest Calculator | Malta Calculator",

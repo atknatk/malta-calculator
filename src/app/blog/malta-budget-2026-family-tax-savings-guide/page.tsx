@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -67,9 +68,9 @@ export const metadata: Metadata = {
     "Malta property inheritance tax",
     "Malta Micro Invest scheme 2026",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-budget-2026-family-tax-savings-guide`,
-  },
+  alternates: pageAlternates(
+    "/blog/malta-budget-2026-family-tax-savings-guide",
+  ),
   openGraph: {
     ...ogMetadata,
     title: "Malta Budget 2026: New Family Tax Savings & Key Changes",

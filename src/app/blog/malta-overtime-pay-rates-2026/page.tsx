@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     "Malta 1.5x overtime",
     "Malta weekend overtime",
   ],
-  alternates: { canonical: `${SITE_URL}/blog/malta-overtime-pay-rates-2026` },
+  alternates: pageAlternates("/blog/malta-overtime-pay-rates-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Overtime Pay 2026: Complete Guide",

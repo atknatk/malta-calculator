@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -38,9 +39,7 @@ export const metadata: Metadata = {
     "Malta expat salary",
     "Malta tax for foreigners",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-expat-tax-hqp-scheme-guide`,
-  },
+  alternates: pageAlternates("/blog/malta-expat-tax-hqp-scheme-guide"),
   openGraph: {
     ...ogMetadata,
     title:

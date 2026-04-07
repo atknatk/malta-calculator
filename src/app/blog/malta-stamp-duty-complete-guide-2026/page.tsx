@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -32,9 +33,7 @@ export const metadata: Metadata = {
     "Malta 5% stamp duty",
     "Malta AIP stamp duty",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-stamp-duty-complete-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-stamp-duty-complete-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Stamp Duty 2026: Complete Guide",

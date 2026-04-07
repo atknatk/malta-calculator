@@ -9,7 +9,7 @@ export const OG_IMAGE = {
   secureUrl: `${SITE_URL}/og-image.png`,
   width: 1200,
   height: 630,
-  alt: "Malta Salary Calculator - Calculate your net salary instantly with accurate 2024-2026 tax rates",
+  alt: "Malta Calculator — Free financial tools for Malta residents",
   type: "image/png",
 };
 
@@ -98,9 +98,14 @@ export const defaultMetadata: Metadata = {
   },
 };
 
+/**
+ * NOT: title ve description alanları kasıtlı olarak çıkarıldı.
+ * Next.js metadata API, eğer openGraph.title/description set değilse,
+ * page-level metadata.title/description'a otomatik fallback yapar.
+ * Bu sayede her sayfa kendi og:description ve twitter:description değerini
+ * doğru üretir; aksi halde tüm sayfalar ana sayfanın salary metnini paylaşır.
+ */
 export const twitterMetadata: Metadata["twitter"] = {
-  title: TITLE,
-  description: DESCRIPTION_SHORT,
   card: "summary_large_image",
   site: "@maltacalculator",
   creator: "@maltacalculator",
@@ -108,8 +113,6 @@ export const twitterMetadata: Metadata["twitter"] = {
 };
 
 export const ogMetadata: Metadata["openGraph"] = {
-  title: TITLE,
-  description: DESCRIPTION,
   type: "website",
   locale: "en_MT",
   alternateLocale: ["en_GB", "en_US"],
@@ -133,7 +136,7 @@ export const viewportConfig: Viewport = {
   colorScheme: "light dark",
 };
 
-// Helper to generate dynamic OG image URL for blog posts
+// Helper to generate dynamic OG image URL for blog posts and calculators
 export function getBlogOgImage(title: string) {
   return {
     url: `${SITE_URL}/api/og?title=${encodeURIComponent(title)}`,
@@ -142,6 +145,33 @@ export function getBlogOgImage(title: string) {
     height: 630,
     alt: title,
     type: "image/png",
+  };
+}
+
+/**
+ * Generic dynamic OG image — hangi sayfa türü olursa olsun /api/og endpoint'inden
+ * title'a göre özel image üretir. getBlogOgImage ile aynı, semantik olarak
+ * blog dışındaki sayfalarda kullanmak için var.
+ */
+export const getDynamicOgImage = getBlogOgImage;
+
+/**
+ * Page-level alternates helper.
+ * Canonical + hreflang en-MT + x-default tek seferde.
+ *
+ * Kullanım:
+ *   alternates: pageAlternates("/calculators/pension"),
+ *
+ * Tek market (Malta) hedeflendiği için x-default = en-MT.
+ */
+export function pageAlternates(path: string): Metadata["alternates"] {
+  const fullUrl = path.startsWith("http") ? path : `${SITE_URL}${path}`;
+  return {
+    canonical: fullUrl,
+    languages: {
+      "en-MT": fullUrl,
+      "x-default": fullUrl,
+    },
   };
 }
 

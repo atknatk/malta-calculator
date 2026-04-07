@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -58,9 +59,7 @@ export const metadata: Metadata = {
     "malta payroll calculation",
     "malta income tax calculation example",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/how-to-calculate-net-salary-malta-2026`,
-  },
+  alternates: pageAlternates("/blog/how-to-calculate-net-salary-malta-2026"),
   openGraph: {
     ...ogMetadata,
     title: "How to Calculate Your Net Salary in Malta (2026 Guide)",

@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { RoadLicenseCalculator } from "./_components/road-license-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Road License Calculator | Malta Calculator",
   description:
     "Calculate annual road license (circulation tax) fees in Malta. Based on engine capacity, CO2 emissions, vehicle type, and fuel type.",
-  alternates: { canonical: `${SITE_URL}/calculators/road-license` },
+  alternates: pageAlternates("/calculators/road-license"),
   openGraph: {
     ...ogMetadata,
     title: "Road License Calculator Malta",

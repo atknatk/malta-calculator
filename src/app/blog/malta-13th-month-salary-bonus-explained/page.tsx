@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -42,9 +43,7 @@ export const metadata: Metadata = {
     "Malta statutory bonus",
     "Malta government bonus",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-13th-month-salary-bonus-explained`,
-  },
+  alternates: pageAlternates("/blog/malta-13th-month-salary-bonus-explained"),
   openGraph: {
     ...ogMetadata,
     title: "Malta 13th Month Salary (Bonus) Explained",

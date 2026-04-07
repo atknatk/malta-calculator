@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -43,9 +44,7 @@ export const metadata: Metadata = {
     "Malta paternity leave",
     "Malta parental leave",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-maternity-leave-2026-guide`,
-  },
+  alternates: pageAlternates("/blog/malta-maternity-leave-2026-guide"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Maternity Leave 2026: Complete Guide",

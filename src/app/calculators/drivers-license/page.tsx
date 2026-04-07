@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { DriversLicenseCalculator } from "./_components/drivers-license-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Driver's License Fees Calculator | Malta Calculator",
   description:
     "Calculate driving license fees in Malta. New license, renewal, international permit, and category upgrade costs including tests and medical.",
-  alternates: { canonical: `${SITE_URL}/calculators/drivers-license` },
+  alternates: pageAlternates("/calculators/drivers-license"),
   openGraph: {
     ...ogMetadata,
     title: "Driver's License Fees Calculator Malta",

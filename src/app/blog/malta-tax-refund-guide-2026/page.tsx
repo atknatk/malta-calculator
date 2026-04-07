@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     "Malta FS3 form",
     "Malta tax return",
   ],
-  alternates: { canonical: `${SITE_URL}/blog/malta-tax-refund-guide-2026` },
+  alternates: pageAlternates("/blog/malta-tax-refund-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Tax Refund 2026: How to Claim Back",

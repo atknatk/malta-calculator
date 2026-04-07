@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -43,9 +44,7 @@ export const metadata: Metadata = {
     "VFA malta tax",
     "crypto trading tax malta",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-crypto-digital-asset-tax-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-crypto-digital-asset-tax-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Crypto & Digital Asset Tax Guide 2026",

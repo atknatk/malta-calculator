@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -41,9 +42,7 @@ export const metadata: Metadata = {
     "withholding tax malta treaty",
     "unilateral relief malta",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-double-taxation-treaty-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-double-taxation-treaty-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Double Taxation Treaty Guide 2026",

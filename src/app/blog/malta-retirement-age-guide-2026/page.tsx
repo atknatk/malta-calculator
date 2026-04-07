@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     "Malta Social Security Act",
     "Malta retirement 2026",
   ],
-  alternates: { canonical: `${SITE_URL}/blog/malta-retirement-age-guide-2026` },
+  alternates: pageAlternates("/blog/malta-retirement-age-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Retirement Age 2026: Complete Guide",

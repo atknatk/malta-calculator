@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Home } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Rental Tax Calculator | Malta Calculator",
   description:
     "Calculate rental income tax in Malta. 15% flat rate or progressive rate comparison tool.",
-  alternates: { canonical: `${SITE_URL}/calculators/rental-tax` },
+  alternates: pageAlternates("/calculators/rental-tax"),
   openGraph: {
     ...ogMetadata,
     title: "Rental Tax Calculator | Malta Calculator",

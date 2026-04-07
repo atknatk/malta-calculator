@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -55,9 +56,7 @@ export const metadata: Metadata = {
     "Malta digital government",
     "Malta social security online",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-mysocialsecurity-app-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-mysocialsecurity-app-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "mySocialSecurity Malta App 2026: Complete Guide",

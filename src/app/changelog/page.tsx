@@ -55,6 +55,80 @@ interface ChangelogEntry {
 
 const changelogEntries: ChangelogEntry[] = [
   {
+    version: "v3.7.0",
+    date: "April 7, 2026",
+    title: "GEO & AI Search Optimization",
+    type: "major",
+    icon: <TrendingUp className="w-5 h-5" />,
+    description:
+      "Generative Engine Optimization (GEO) rollout — structured data, FAQ schemas, author authority signals, and a public data API to improve visibility in AI-powered search.",
+    features: [
+      "🤖 FAQ JSON-LD schemas added across 30+ blog posts for AI search visibility",
+      "👤 Author authority signals (E-E-A-T) on all guide pages",
+      "🔌 Public calculator data API for external integrations",
+      "📊 Enhanced JSON-LD structured data sitewide",
+      "📝 New guide: Malta Double Taxation Treaty Guide 2026",
+      "💼 New guide: How to Calculate Net Salary in Malta 2026",
+      "🛂 New guide: Malta Single Permit Guide 2026",
+      "⚡ /generate-blog slash command for local blog authoring",
+    ],
+  },
+  {
+    version: "v3.6.0",
+    date: "February 20, 2026",
+    title: "Content Automation & Platform Fixes",
+    type: "feature",
+    icon: <Sparkles className="w-5 h-5" />,
+    description:
+      "Automated blog pipeline, comment system, and a batch of platform bug fixes for title metadata and content consistency.",
+    features: [
+      "📝 Weekly automated blog post generation via GitHub Actions",
+      "💬 Blog comment system with automated comment generation",
+      "📅 2x/week blog schedule with refreshed topic queue",
+      '🏷️ Fixed duplicate "Malta Calculator" title template issue',
+      "🌍 English-only content enforcement on about page",
+      "💰 Optimized AI workflow costs (reduced max turns, caching tuned)",
+      "🔧 Bedrock configuration improvements for CI blog generation",
+      "📰 Malta Budget 2026 family tax savings blog post",
+    ],
+  },
+  {
+    version: "v3.5.0",
+    date: "February 16, 2026",
+    title: "Performance & UI Polish",
+    type: "feature",
+    icon: <Zap className="w-5 h-5" />,
+    description:
+      "Major performance overhaul — instant UI response, smoother salary calculations, and a series of UX polish improvements.",
+    features: [
+      "⚡ Replaced Framer Motion with CSS transitions for instant UI response",
+      "🚀 Converted useEffect to useMemo for instant salary calculation updates",
+      "🧩 Extracted salary calculator sub-components for better code organization",
+      "⏲️ Document title countdown and tick-tock sound effects on timer",
+      "🎨 Creative Malta-themed 404 error page",
+      "📲 Social sharing buttons with dynamic Open Graph images",
+      "🔗 Fixed blog CTA buttons to link to dedicated calculators",
+      "🏷️ Removed duplicate MarketingLayout wrapper on salary page",
+    ],
+  },
+  {
+    version: "v3.4.0",
+    date: "February 16, 2026",
+    title: "Authentication, Payments & B2B Dashboard",
+    type: "major",
+    icon: <Shield className="w-5 h-5" />,
+    description:
+      "Launched the B2B payroll platform — Clerk authentication, Stripe production payments, plan-based dashboard, and a Generate Payslip CTA on the main salary calculator.",
+    features: [
+      "🔐 Clerk authentication with login/signup UI",
+      "💳 Stripe production setup with webhook integration",
+      "📊 Plan-based upgrade buttons on company dashboard",
+      "💼 Generate Payslip CTA on salary calculator results",
+      "🔗 Shareable payslip links with improved UX",
+      "🏢 B2B company subscription workflow",
+    ],
+  },
+  {
     version: "v3.3.0",
     date: "February 4, 2026",
     title: "Countdown Timer & SEO Enhancements",

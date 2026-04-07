@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Coins } from "lucide-react";
 
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   title: "Bonus Tax Calculator | Malta Calculator",
   description:
     "Calculate tax on one-time bonuses in Malta. Free tool for 13th month salary, performance bonus, and year-end bonus tax.",
-  alternates: { canonical: `${SITE_URL}/calculators/bonus-tax` },
+  alternates: pageAlternates("/calculators/bonus-tax"),
   openGraph: {
     ...ogMetadata,
     title: "Bonus Tax Calculator | Malta Calculator",

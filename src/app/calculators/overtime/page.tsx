@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { OvertimeCalculator } from "./_components/overtime-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Overtime Calculator | Malta Calculator",
   description:
     "Calculate overtime pay in Malta at 1.5x and 2x rates. Free tool for weekday, weekend, and holiday overtime calculations.",
-  alternates: { canonical: `${SITE_URL}/calculators/overtime` },
+  alternates: pageAlternates("/calculators/overtime"),
   openGraph: {
     ...ogMetadata,
     title: "Overtime Calculator | Malta Calculator",

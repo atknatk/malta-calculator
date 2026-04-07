@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
@@ -33,9 +34,7 @@ export const metadata: Metadata = {
     "Malta family allowance",
     "children under 16 Malta",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/calculators/children-allowance`,
-  },
+  alternates: pageAlternates("/calculators/children-allowance"),
   openGraph: {
     ...ogMetadata,
     title: "Children's Allowance Calculator Malta 2026",

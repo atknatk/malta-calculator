@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Calculator } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Self-Employed Tax Calculator | Malta Calculator",
   description:
     "Calculate self-employed income tax in Malta. Free tool with deductible expenses and Part B assessment.",
-  alternates: { canonical: `${SITE_URL}/calculators/self-employed-tax` },
+  alternates: pageAlternates("/calculators/self-employed-tax"),
   openGraph: {
     ...ogMetadata,
     title: "Self-Employed Tax Calculator | Malta Calculator",

@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Baby } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Maternity & Paternity Leave Calculator | Malta Calculator",
   description:
     "Calculate maternity and paternity leave in Malta. Free tool for leave duration and pay calculations.",
-  alternates: { canonical: `${SITE_URL}/calculators/maternity` },
+  alternates: pageAlternates("/calculators/maternity"),
   openGraph: {
     ...ogMetadata,
     title: "Maternity & Paternity Leave Calculator | Malta Calculator",

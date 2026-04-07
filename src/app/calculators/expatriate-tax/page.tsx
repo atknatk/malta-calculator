@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Globe } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Expatriate Tax Calculator (HQP) | Malta Calculator",
   description:
     "Calculate 15% flat tax for highly qualified persons in Malta. Malta HQP scheme calculator for expats.",
-  alternates: { canonical: `${SITE_URL}/calculators/expatriate-tax` },
+  alternates: pageAlternates("/calculators/expatriate-tax"),
   openGraph: {
     ...ogMetadata,
     title: "Expatriate Tax Calculator (HQP) | Malta Calculator",

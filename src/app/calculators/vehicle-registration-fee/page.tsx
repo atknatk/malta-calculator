@@ -7,6 +7,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { VehicleRegistrationFeeCalculator } from "./_components/vehicle-registration-fee-calculator";
 import {
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     "VRT inspection fee",
     "road tax Malta",
   ],
-  alternates: { canonical: `${SITE_URL}/calculators/vehicle-registration-fee` },
+  alternates: pageAlternates("/calculators/vehicle-registration-fee"),
   openGraph: {
     ...ogMetadata,
     title: "Vehicle Registration Fee Calculator Malta",

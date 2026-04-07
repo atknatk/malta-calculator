@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "../shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -30,9 +31,7 @@ export const metadata: Metadata = {
   title: "All Calculators | Malta Calculator",
   description:
     "All financial calculators for Malta - salary, tax, SSC, pension, childcare, rental tax and more. Comprehensive tools for residents and workers.",
-  alternates: {
-    canonical: `${SITE_URL}/calculators`,
-  },
+  alternates: pageAlternates("/calculators"),
   openGraph: {
     ...ogMetadata,
     title: "All Calculators | Malta Calculator",
@@ -190,9 +189,9 @@ const categories: CalculatorCategory[] = [
     items: [
       {
         href: "/calculators/pension",
-        title: "Pension Estimator",
-        description: "Estimated state pension amount",
-        available: false,
+        title: "Pension Calculator",
+        description: "Two-thirds pension & private pension tax credit",
+        available: true,
       },
       {
         href: "/calculators/retirement-age",

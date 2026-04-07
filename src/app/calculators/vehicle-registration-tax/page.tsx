@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { VehicleRegistrationTaxCalculator } from "./_components/vehicle-registration-tax-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Vehicle Registration Tax Calculator | Malta Calculator",
   description:
     "Calculate vehicle registration tax in Malta based on CO2 emissions. Includes electric/hybrid discounts, age depreciation, and EU/non-EU import duties.",
-  alternates: { canonical: `${SITE_URL}/calculators/vehicle-registration-tax` },
+  alternates: pageAlternates("/calculators/vehicle-registration-tax"),
   openGraph: {
     ...ogMetadata,
     title: "Vehicle Registration Tax Calculator Malta",

@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Clock } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Part-Time Salary Calculator | Malta Calculator",
   description:
     "Calculate part-time salary in Malta. Free pro-rata calculations for tax, SSC, and salary for part-time employees.",
-  alternates: { canonical: `${SITE_URL}/calculators/part-time` },
+  alternates: pageAlternates("/calculators/part-time"),
   openGraph: {
     ...ogMetadata,
     title: "Part-Time Salary Calculator | Malta Calculator",

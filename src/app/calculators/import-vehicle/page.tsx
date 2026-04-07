@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { ImportVehicleCalculator } from "./_components/import-vehicle-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Import Vehicle Calculator | Malta Calculator",
   description:
     "Calculate the total cost of importing a vehicle to Malta. Includes registration tax, import duty, VAT, shipping, and all fees.",
-  alternates: { canonical: `${SITE_URL}/calculators/import-vehicle` },
+  alternates: pageAlternates("/calculators/import-vehicle"),
   openGraph: {
     ...ogMetadata,
     title: "Import Vehicle Calculator Malta",

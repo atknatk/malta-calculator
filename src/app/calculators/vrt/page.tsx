@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { VRTCalculator } from "./_components/vrt-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "VRT Calculator (Vehicle Roadworthiness Test) | Malta Calculator",
   description:
     "Calculate VRT (MOT) inspection fees in Malta. Test costs for cars, motorcycles, commercial vehicles, and buses with frequency information.",
-  alternates: { canonical: `${SITE_URL}/calculators/vrt` },
+  alternates: pageAlternates("/calculators/vrt"),
   openGraph: {
     ...ogMetadata,
     title: "VRT Calculator Malta",

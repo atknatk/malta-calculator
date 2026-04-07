@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { RetirementAgeCalculator } from "./_components/retirement-age-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Retirement Age Calculator | Malta Calculator",
   description:
     "Calculate your statutory retirement age in Malta based on your date of birth. Free retirement planning tool based on Social Security Act.",
-  alternates: { canonical: `${SITE_URL}/calculators/retirement-age` },
+  alternates: pageAlternates("/calculators/retirement-age"),
   openGraph: {
     ...ogMetadata,
     title: "Retirement Age Calculator | Malta Calculator",

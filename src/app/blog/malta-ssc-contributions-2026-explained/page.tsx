@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -47,9 +48,7 @@ export const metadata: Metadata = {
     "Malta employer SSC",
     "Malta 1962 age threshold",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-ssc-contributions-2026-explained`,
-  },
+  alternates: pageAlternates("/blog/malta-ssc-contributions-2026-explained"),
   openGraph: {
     ...ogMetadata,
     title: "Malta SSC Contributions 2026: Rates, Caps & Categories Explained",

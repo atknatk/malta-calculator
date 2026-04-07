@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { VacationCalculator } from "./_components/vacation-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Vacation Days Calculator | Malta Calculator",
   description:
     "Calculate your annual leave entitlement in Malta. Minimum 192 hours (24 days) plus public holiday additions.",
-  alternates: { canonical: `${SITE_URL}/calculators/vacation` },
+  alternates: pageAlternates("/calculators/vacation"),
   openGraph: {
     ...ogMetadata,
     title: "Vacation Days Calculator | Malta Calculator",

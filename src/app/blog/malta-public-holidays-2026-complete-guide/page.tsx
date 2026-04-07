@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -52,9 +53,7 @@ export const metadata: Metadata = {
     "Malta public holiday dates",
     "Malta vacation planning 2026",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-public-holidays-2026-complete-guide`,
-  },
+  alternates: pageAlternates("/blog/malta-public-holidays-2026-complete-guide"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Public Holidays 2026: All 14 Official Dates",

@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "../shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -16,9 +17,7 @@ export const metadata: Metadata = {
   title: "Blog | Malta Tax & Salary Guides | Malta Calculator",
   description:
     "Expert guides on Malta tax rates, SSC contributions, COLA, and salary calculations. Stay updated with the latest Malta employment and tax regulations for 2024-2026.",
-  alternates: {
-    canonical: `${SITE_URL}/blog`,
-  },
+  alternates: pageAlternates("/blog"),
   openGraph: {
     ...ogMetadata,
     title: "Blog | Malta Tax & Salary Guides",
@@ -31,6 +30,16 @@ export const metadata: Metadata = {
 };
 
 const blogPosts: BlogPost[] = [
+  {
+    slug: "malta-single-permit-guide-2026",
+    title: "Malta Single Permit Guide 2026: Cost, Eligibility & Application",
+    description:
+      "Verified 2026 guide to Malta's Single Permit for non-EU workers. Fees (€600/€150), KEI €45K, SEI €30K, the new Skills Pass and the 60-day employer change window.",
+    date: "April 2026",
+    readTime: "14 min read",
+    category: "Immigration",
+    featured: true,
+  },
   {
     slug: "malta-double-taxation-treaty-guide-2026",
     title: "Malta Double Taxation Treaty Guide 2026",

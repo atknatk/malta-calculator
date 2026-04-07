@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { FamilyReunificationCalculator } from "./_components/family-reunification-calculator";
 import {
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     "Malta residence permit family",
     "Identità family reunification",
   ],
-  alternates: { canonical: `${SITE_URL}/calculators/family-reunification` },
+  alternates: pageAlternates("/calculators/family-reunification"),
   openGraph: {
     ...ogMetadata,
     title: "Family Reunification Calculator Malta 2026",

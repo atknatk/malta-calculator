@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     "Malta credit",
     "personal loan Malta",
   ],
-  alternates: { canonical: `${SITE_URL}/blog/malta-personal-loan-guide-2026` },
+  alternates: pageAlternates("/blog/malta-personal-loan-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Personal Loan Guide 2026",

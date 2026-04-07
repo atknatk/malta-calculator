@@ -196,6 +196,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       changeFrequency: "yearly" as const,
     },
+    {
+      url: `${baseUrl}/blog/malta-single-permit-guide-2026`,
+      priority: 0.9,
+      changeFrequency: "yearly" as const,
+    },
     // Family benefits blog pages
     {
       url: `${baseUrl}/blog/malta-childrens-allowance-guide-2026`,
@@ -269,6 +274,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "overtime",
     "stamp-duty",
     "retirement-age",
+    "pension",
     "vacation",
     "mortgage",
     "savings-interest",

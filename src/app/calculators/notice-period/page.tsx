@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { NoticePeriodCalculator } from "./_components/notice-period-calculator";
 import {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Notice Period Calculator | Malta Calculator",
   description:
     "Calculate your required notice period in Malta based on years of service. Free tool based on Employment and Industrial Relations Act.",
-  alternates: { canonical: `${SITE_URL}/calculators/notice-period` },
+  alternates: pageAlternates("/calculators/notice-period"),
   openGraph: {
     ...ogMetadata,
     title: "Notice Period Calculator | Malta Calculator",

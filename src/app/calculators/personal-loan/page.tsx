@@ -8,6 +8,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { LoanCalculator } from "./_components/loan-calculator";
 import {
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     "personal loan Malta",
     "bank loan calculator Malta",
   ],
-  alternates: { canonical: `${SITE_URL}/calculators/personal-loan` },
+  alternates: pageAlternates("/calculators/personal-loan"),
   openGraph: {
     ...ogMetadata,
     title: "Personal Loan Calculator | Malta Calculator",

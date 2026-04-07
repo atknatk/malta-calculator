@@ -5,6 +5,7 @@ import {
   ogMetadata,
   twitterMetadata,
   SITE_URL,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Stethoscope } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Sick Leave Calculator | Malta Calculator",
   description:
     "Calculate sick leave entitlement and sickness benefit in Malta. Free leave and payment calculator.",
-  alternates: { canonical: `${SITE_URL}/calculators/sick-leave` },
+  alternates: pageAlternates("/calculators/sick-leave"),
   openGraph: {
     ...ogMetadata,
     title: "Sick Leave Calculator | Malta Calculator",

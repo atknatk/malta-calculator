@@ -6,6 +6,7 @@ import {
   twitterMetadata,
   SITE_URL,
   getBlogOgImage,
+  pageAlternates,
 } from "@/app/shared-metadata";
 import { Shell } from "@/components/dashboard/shell";
 import Link from "next/link";
@@ -56,9 +57,7 @@ export const metadata: Metadata = {
     "Malta employment 2026",
     "Malta expat work",
   ],
-  alternates: {
-    canonical: `${SITE_URL}/blog/malta-work-permit-employment-guide-2026`,
-  },
+  alternates: pageAlternates("/blog/malta-work-permit-employment-guide-2026"),
   openGraph: {
     ...ogMetadata,
     title: "Malta Work Permit 2026: Complete Guide for EU & Non-EU Workers",
