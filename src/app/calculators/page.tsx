@@ -398,14 +398,14 @@ export default function CalculatorsPage() {
           <div className="mt-20 p-8 rounded-3xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="text-3xl font-bold text-gradient">16</div>
+                <div className="text-3xl font-bold text-gradient">18</div>
                 <div className="text-sm text-muted-foreground">
                   Active Calculators
                 </div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-gradient-secondary">
-                  13
+                  11
                 </div>
                 <div className="text-sm text-muted-foreground">Coming Soon</div>
               </div>

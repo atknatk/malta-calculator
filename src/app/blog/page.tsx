@@ -31,6 +31,16 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-single-permit-employer-compliance-2026",
+    title: "Malta Single Permit — Employer Compliance Guide 2026",
+    description:
+      "Every employer-side rule for 2026: termination rate thresholds, workforce limits, First Employment Rule (Micro 2 / Small 4 / Medium 20 / Large 40), disability quota and Jobsplus deadlines.",
+    date: "April 2026",
+    readTime: "13 min read",
+    category: "Employer Guide",
+    featured: true,
+  },
+  {
     slug: "malta-single-permit-guide-2026",
     title: "Malta Single Permit Guide 2026: Cost, Eligibility & Application",
     description:

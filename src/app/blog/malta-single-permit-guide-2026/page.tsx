@@ -28,6 +28,7 @@ import {
 } from "@/components/json-ld";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
+import { CompanySizeRulesChecker } from "@/app/blog/_shared/company-size-rules-checker";
 
 // All facts in this article are cited against primary sources from
 // Malta's identity, employment and skills authorities. Whenever a
@@ -272,57 +273,102 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             {/* Key Takeaways */}
             <div className="p-6 bg-primary/5 border border-primary/20 rounded-2xl mb-10 not-prose">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-5">
                 <CheckCircle className="h-5 w-5 text-primary" />
                 <h2 className="text-lg font-bold text-primary">
                   Key Takeaways
                 </h2>
               </div>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start gap-2">
+
+              {/* Top-line facts */}
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2.5">
                   <span className="text-primary font-bold mt-0.5">→</span>
-                  The Malta Single Permit is the residence-plus-work permit for
-                  non-EU nationals, regulated by{" "}
-                  <strong>Subsidiary Legislation 217.17</strong>.
+                  <span>
+                    The Malta Single Permit is the residence-plus-work permit
+                    for non-EU nationals, regulated by{" "}
+                    <strong>Subsidiary Legislation 217.17</strong>.
+                  </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <span className="text-primary font-bold mt-0.5">→</span>
-                  Identità government fees in 2026: <strong>€600</strong>{" "}
-                  first-time, <strong>€150 per year</strong> for renewals,{" "}
-                  <strong>€600</strong> for a change of employer,{" "}
-                  <strong>€300</strong> for a change of designation or transfer
-                  of business, and <strong>€150</strong> across the board for
-                  health-sector and elderly / disability care roles.
+                  <span>
+                    <strong>KEI</strong> requires a minimum annual gross salary
+                    of <strong>€45,000</strong>; <strong>SEI</strong> requires{" "}
+                    <strong>€30,000</strong> plus an MQF Level 6 qualification
+                    or three years of certified experience.
+                  </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <span className="text-primary font-bold mt-0.5">→</span>
-                  KEI requires a minimum annual gross salary of{" "}
-                  <strong>€45,000</strong>; SEI requires{" "}
-                  <strong>€30,000</strong> plus an MQF Level 6 qualification or
-                  three years of certified experience.
+                  <span>
+                    From <strong>January 2026</strong> a mandatory{" "}
+                    <strong>Pre-Departure Course</strong> (€250) is required for
+                    every first-time applicant; Identità began verifying
+                    certificates on <strong>1 March 2026</strong>.
+                  </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <span className="text-primary font-bold mt-0.5">→</span>
-                  From <strong>January 2026</strong> a mandatory{" "}
-                  <strong>Pre-Departure Course</strong> (€250) is required for
-                  every first-time applicant; Identità began verifying
-                  certificates on <strong>1 March 2026</strong>.
+                  <span>
+                    Average processing time is{" "}
+                    <strong>around two months</strong>; the legal maximum is
+                    four. SEI applications are processed within{" "}
+                    <strong>15 working days</strong>.
+                  </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <span className="text-primary font-bold mt-0.5">→</span>
-                  Average processing time is <strong>around two months</strong>;
-                  the legal maximum is four. SEI applications are processed
-                  within <strong>15 working days</strong>.
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold mt-0.5">→</span>
-                  After termination the worker keeps an automatic{" "}
-                  <strong>30-day</strong> grace period in Malta, extendable by
-                  another <strong>30 days</strong> with proof of financial
-                  self-sufficiency — a 60-day maximum window for a Change of
-                  Employer application.
+                  <span>
+                    After termination the worker keeps an automatic{" "}
+                    <strong>30-day</strong> grace period in Malta, extendable by
+                    another <strong>30 days</strong> with proof of financial
+                    self-sufficiency — a 60-day maximum window for a Change of
+                    Employer application.
+                  </span>
                 </li>
               </ul>
+
+              {/* Fee schedule — broken out into a clean grid */}
+              <div className="mt-5 rounded-xl border border-primary/15 bg-background/40 p-4">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Identità government fees · 2026
+                </p>
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                  <div className="flex items-baseline justify-between border-b border-border/40 pb-1.5">
+                    <dt className="text-muted-foreground">First-time</dt>
+                    <dd className="font-bold tabular-nums">€600</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-border/40 pb-1.5">
+                    <dt className="text-muted-foreground">Renewal</dt>
+                    <dd className="font-bold tabular-nums">€150 / yr</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-border/40 pb-1.5">
+                    <dt className="text-muted-foreground">
+                      Change of employer
+                    </dt>
+                    <dd className="font-bold tabular-nums">€600</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-border/40 pb-1.5">
+                    <dt className="text-muted-foreground">
+                      Change of designation
+                    </dt>
+                    <dd className="font-bold tabular-nums">€300</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between sm:col-span-2 border-b border-border/40 pb-1.5">
+                    <dt className="text-muted-foreground">
+                      Health / elderly / disability care (any type)
+                    </dt>
+                    <dd className="font-bold tabular-nums">€150</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between sm:col-span-2">
+                    <dt className="text-muted-foreground">
+                      Pre-Departure Course (first-timers)
+                    </dt>
+                    <dd className="font-bold tabular-nums">+€250</dd>
+                  </div>
+                </dl>
+              </div>
             </div>
 
             {/* Table of Contents */}
@@ -403,8 +449,16 @@ export default function MaltaSinglePermitGuide2026Page() {
                   </a>
                 </li>
                 <li>
+                  <a
+                    href="#employer-rules"
+                    className="text-primary hover:underline"
+                  >
+                    12. Employer Compliance Rules at a Glance
+                  </a>
+                </li>
+                <li>
                   <a href="#faq" className="text-primary hover:underline">
-                    12. Frequently Asked Questions
+                    13. Frequently Asked Questions
                   </a>
                 </li>
               </ol>
@@ -1681,9 +1735,168 @@ export default function MaltaSinglePermitGuide2026Page() {
               </div>
             </section>
 
-            {/* Section 12 — FAQ */}
+            {/* Section 12 — Employer Compliance Rules at a Glance */}
+            <section id="employer-rules" className="mt-12">
+              <h2>12. Employer Compliance Rules at a Glance</h2>
+              <p>
+                Most of this guide is written for the foreign worker. But the
+                Single Permit application is filed by the employer, and the 2025
+                Malta Labour Migration Policy introduced a long list of
+                employer-side rules that decide whether your application is even
+                processed. This section is a compact reference. The full
+                breakdown — termination rate maths, the First Employment Rule,
+                Jobsplus form deadlines, the disability quota and the Exemplary
+                Employer register — lives in our dedicated{" "}
+                <Link href="/blog/malta-single-permit-employer-compliance-2026">
+                  Malta Single Permit — Employer Compliance Guide 2026
+                </Link>
+                .
+              </p>
+
+              <p>
+                The single biggest variable is <strong>company size</strong>.
+                Almost every new rule has different thresholds for Micro (1–9),
+                Small (10–49), Medium (50–249) and Large (250+) employers. Use
+                the checker below to see exactly what applies to you.
+              </p>
+
+              <CompanySizeRulesChecker />
+
+              <h3>The rules every employer must know</h3>
+              <ol>
+                <li>
+                  <strong>Termination rate threshold (1 Aug 2025).</strong>{" "}
+                  Jobsplus rejects Single Permit applications if your
+                  termination rate exceeds the limit for your size band: 50% for
+                  Small, 45% for Medium, 40% for Large. The limits start 15
+                  percentage points higher and tighten by 1 July 2026. Companies
+                  under 10 employees, KEI applications, sports, students and
+                  healthcare are <strong>exempt</strong>.
+                </li>
+                <li>
+                  <strong>Workforce application limits (1 Aug 2025).</strong>{" "}
+                  How many new foreign worker applications you can submit, as a
+                  percentage of your headcount 12 months earlier: Micro 200%,
+                  Small 100%, Medium 50%, Large 25%. Same exempt categories.
+                </li>
+                <li>
+                  <strong>First Employment Rule (Jan 2026).</strong> Before
+                  hiring foreign workers you must already employ a minimum
+                  number of Maltese, EU/EEA, Swiss or long-term-resident staff:{" "}
+                  <strong>Micro 2 / Small 4 / Medium 20 / Large 40</strong>.
+                  Companies over 80% foreign workforce face enhanced labour
+                  market needs testing.
+                </li>
+                <li>
+                  <strong>Disability quota (in force).</strong> The Persons with
+                  Disability (Employment) Act requires at least{" "}
+                  <strong>2%</strong> of your workforce to be persons with
+                  disabilities, or you must pay an annual contribution.
+                  Non-compliance suspends pending Single Permit applications.
+                </li>
+                <li>
+                  <strong>Job advert rules (1 Aug 2025).</strong> Standard
+                  Single Permits need a 3-week advert on <strong>both</strong>{" "}
+                  Jobsplus and EURES, within 2 months of submission. KEI, SEI,
+                  EU Blue Card and Skilled Occupation List applications need
+                  only one local-media advert for 2 weeks.
+                </li>
+                <li>
+                  <strong>Redundancy block (1 Aug 2025).</strong> If you made
+                  someone redundant in the previous 12 months for the same role
+                  you are now trying to fill with a foreign national, the
+                  application is rejected. No exceptions.
+                </li>
+                <li>
+                  <strong>4-day Jobsplus form rule (1 Aug 2025).</strong>{" "}
+                  Engagement and termination forms must be filed within 4
+                  working days. Miss the deadline and all your pending Single
+                  Permit applications (except renewals) are suspended. Repeat
+                  offenders can be disqualified from submitting new
+                  applications.
+                </li>
+                <li>
+                  <strong>No cash salaries (1 Aug 2025).</strong> Foreign
+                  workers whose employment is registered on or after 1 August
+                  2025 must be paid through a licensed financial institution.
+                  Cash payments are not permitted.
+                </li>
+                <li>
+                  <strong>
+                    No financial compensation from employees (1 Aug 2025).
+                  </strong>{" "}
+                  Employers cannot ask foreign workers for any payment in return
+                  for hiring, recruitment or termination. This addresses
+                  reported exploitation in some sectors.
+                </li>
+                <li>
+                  <strong>Tourist-visa loophole closed (1 Oct 2025).</strong>{" "}
+                  Foreign nationals already in Malta on a visa that does not
+                  permit employment cannot apply for a Single Permit from within
+                  Malta. They must leave Malta and apply from abroad.
+                </li>
+                <li>
+                  <strong>Interim 60-day permit (1 Oct 2025).</strong> Nationals
+                  of visa-waiver countries who apply for a Single Permit within
+                  60 days of entering the Schengen Area receive an interim
+                  permit covering them while the application is processed. From
+                  day 61 onwards they must wait outside Schengen.
+                </li>
+                <li>
+                  <strong>Fixed renewal periods (1 Oct 2025).</strong> Up to 2
+                  years for standard renewals; up to 3 years for KEI, SEI and EU
+                  Blue Card. Identità&apos;s discretion to vary these periods
+                  has been removed. Low-skilled workers enrolled in Identità
+                  training programmes get 2-year renewals.
+                </li>
+                <li>
+                  <strong>Newly registered businesses (Jan 2026).</strong> New
+                  companies lose their automatic exemption from the Labour
+                  Market Needs Test. New businesses without any Maltese, EU
+                  national or long-term resident among their owners can no
+                  longer apply for foreign workers — except for FDI cases backed
+                  by Malta Enterprise.
+                </li>
+                <li>
+                  <strong>Desk investigations (Jan 2026).</strong> Employers who
+                  breach employment law face up to 12 months&apos;
+                  disqualification from submitting new Single Permit
+                  applications. Outstanding tax or social security debt triggers
+                  disqualification until cleared.
+                </li>
+                <li>
+                  <strong>
+                    Register of Exemplary Employers (Oct 2026 onwards).
+                  </strong>{" "}
+                  Compliant employers who invest in official training will be
+                  eligible for a fast-track register, with streamlined labour
+                  market testing and 2–4 year renewal periods for their staff.
+                </li>
+              </ol>
+
+              <div className="not-prose my-6 rounded-2xl border border-primary/20 bg-primary/5 p-5">
+                <p className="mb-2 text-sm font-semibold text-primary">
+                  Need the deep dive?
+                </p>
+                <p className="mb-3 text-sm text-muted-foreground">
+                  The points above are the headline rules. For the maths behind
+                  the termination rate, the exact form deadlines, worked Micro /
+                  Small / Medium / Large examples and the full FAQ for HR teams,
+                  read the dedicated guide.
+                </p>
+                <Link
+                  href="/blog/malta-single-permit-employer-compliance-2026"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+                >
+                  Open the Employer Compliance Guide
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </section>
+
+            {/* Section 13 — FAQ */}
             <section id="faq" className="mt-12">
-              <h2>12. Frequently Asked Questions</h2>
+              <h2>13. Frequently Asked Questions</h2>
 
               <h3>How much does the Malta Single Permit cost in 2026?</h3>
               <p>

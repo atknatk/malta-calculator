@@ -201,6 +201,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       changeFrequency: "yearly" as const,
     },
+    {
+      url: `${baseUrl}/blog/malta-single-permit-employer-compliance-2026`,
+      priority: 0.9,
+      changeFrequency: "yearly" as const,
+    },
     // Family benefits blog pages
     {
       url: `${baseUrl}/blog/malta-childrens-allowance-guide-2026`,
