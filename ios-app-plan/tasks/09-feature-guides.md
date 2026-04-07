@@ -69,7 +69,7 @@ const SELECTED_GUIDES = [
 const BLOG_DIR = path.join(__dirname, "../src/app/blog");
 const OUT_DIR = path.join(
   __dirname,
-  "../ios/MaltaCalculator/Resources/Content/guides",
+  "../ios-app/MaltaCalculator/Resources/Content/guides",
 );
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -121,7 +121,7 @@ for (const slug of SELECTED_GUIDES) {
 fs.writeFileSync(
   path.join(
     __dirname,
-    "../ios/MaltaCalculator/Resources/Content/guides-manifest.json",
+    "../ios-app/MaltaCalculator/Resources/Content/guides-manifest.json",
   ),
   JSON.stringify(
     { version: "1.0", generatedAt: new Date().toISOString(), guides: manifest },

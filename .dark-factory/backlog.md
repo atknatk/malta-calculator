@@ -3,7 +3,9 @@
 This backlog is consumed by the Ralph Wiggum loop in `scripts/ralph.sh`. Tasks
 are ordered top-to-bottom; the loop picks the **first row whose Status is
 `pending` and whose Governance is at or below the configured ceiling**
-(`T2` for daylight runs, `T1` for overnight `--monitor` runs).
+(`T3` by default — see `config.yaml` → `governance_ceiling`). Lower the
+ceiling to `T1` for unattended overnight runs to avoid creating
+review-required PRs while no human is available.
 
 Each row points at an `intent.md` shim under `docs/specs/<layer>/` which
 **symlinks** to the canonical task file in `ios-app-plan/tasks/`. The

@@ -47,24 +47,29 @@ Xcode → File → New → Project → iOS → App:
 - **Storage**: **SwiftData** (ileride kullanılacak)
 - **Include Tests**: ✅
 - **Minimum Deployments**: iOS 18.0
-- **Location**: repo root (`malta-calculator/ios/`)
+- **Location**: repo root (`malta-calculator/ios-app/`)
 
 ### 3.2 Workspace Oluştur
 
 ```bash
 # repo root'tan
-mkdir -p ios
-cd ios
+mkdir -p ios-app
+cd ios-app
 # Xcode ile MaltaCalculator.xcodeproj oluştur
 # Ardından:
 # File > New > Workspace > Save as: MaltaCalculator.xcworkspace
 # Workspace'e MaltaCalculator.xcodeproj ekle
 ```
 
+> **NOT (Dark Factory bootstrap)**: Tüm iOS kodu `ios-app/` altında yaşar.
+> `.dark-factory/config.yaml` → `ios_workdir: "ios-app"`, tüm holdout'lar
+> ve impl-prompt aynı path'i kullanır. Eski planda `ios/` geçiyorsa onu da
+> `ios-app/` olarak oku.
+
 ### 3.3 Tam Dosya Yapısı
 
 ```
-malta-calculator/ios/
+malta-calculator/ios-app/
 ├── MaltaCalculator.xcworkspace
 ├── MaltaCalculator.xcodeproj
 ├── MaltaCalculator/
@@ -542,11 +547,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "ios/**"
+      - "ios-app/**"
       - ".github/workflows/ios.yml"
   pull_request:
     paths:
-      - "ios/**"
+      - "ios-app/**"
       - ".github/workflows/ios.yml"
 
 concurrency:
@@ -559,7 +564,7 @@ jobs:
     runs-on: macos-15
     defaults:
       run:
-        working-directory: ios
+        working-directory: ios-app
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -624,7 +629,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: ios/TestResults.xcresult
+          path: ios-app/TestResults.xcresult
 ```
 
 ### 3.21 Fastlane `Appfile`

@@ -181,12 +181,12 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 # Save current fixtures hash
-BEFORE_HASH=$(find ios/Packages/CalculationKit/Tests/CalculationKitTests/Golden -name "*.json" -exec sha256sum {} \; | sort | sha256sum)
+BEFORE_HASH=$(find ios-app/Packages/CalculationKit/Tests/CalculationKitTests/Golden -name "*.json" -exec sha256sum {} \; | sort | sha256sum)
 
 # Regenerate
 npm run golden:generate >/dev/null 2>&1
 
-AFTER_HASH=$(find ios/Packages/CalculationKit/Tests/CalculationKitTests/Golden -name "*.json" -exec sha256sum {} \; | sort | sha256sum)
+AFTER_HASH=$(find ios-app/Packages/CalculationKit/Tests/CalculationKitTests/Golden -name "*.json" -exec sha256sum {} \; | sort | sha256sum)
 
 if [ "$BEFORE_HASH" != "$AFTER_HASH" ]; then
   echo "❌ Golden fixtures drift detected!"
@@ -442,13 +442,13 @@ test-unit:
     - run: sudo xcode-select -switch /Applications/Xcode_26.app/Contents/Developer
     - name: Resolve packages
       run: |
-        cd ios
+        cd ios-app
         xcodebuild -resolvePackageDependencies \
           -workspace MaltaCalculator.xcworkspace \
           -scheme MaltaCalculator
     - name: Run unit tests
       run: |
-        cd ios
+        cd ios-app
         xcodebuild test \
           -workspace MaltaCalculator.xcworkspace \
           -scheme MaltaCalculator \
@@ -464,7 +464,7 @@ test-unit:
     - name: Coverage report
       if: success()
       run: |
-        xcrun xccov view --report --json ios/TestResults.xcresult > coverage.json
+        xcrun xccov view --report --json ios-app/TestResults.xcresult > coverage.json
         # Parse and assert coverage thresholds
 
     - name: Upload artifacts
@@ -472,7 +472,7 @@ test-unit:
       uses: actions/upload-artifact@v4
       with:
         name: snapshot-failures
-        path: ios/Packages/DesignSystem/Tests/DesignSystemTests/__Snapshots__
+        path: ios-app/Packages/DesignSystem/Tests/DesignSystemTests/__Snapshots__
 
 test-ui:
   runs-on: macos-15
@@ -482,7 +482,7 @@ test-ui:
     - run: sudo xcode-select -switch /Applications/Xcode_26.app/Contents/Developer
     - name: Run UI tests
       run: |
-        cd ios
+        cd ios-app
         xcodebuild test \
           -workspace MaltaCalculator.xcworkspace \
           -scheme MaltaCalculator \
@@ -516,8 +516,8 @@ set -euo pipefail
 THRESHOLD_OVERALL=80
 THRESHOLD_KIT=100
 
-OVERALL=$(xcrun xccov view --report ios/TestResults.xcresult | grep "TOTAL" | awk '{print $4}' | tr -d '%')
-KIT=$(xcrun xccov view --report ios/TestResults.xcresult | grep "CalculationKit" | awk '{print $4}' | tr -d '%')
+OVERALL=$(xcrun xccov view --report ios-app/TestResults.xcresult | grep "TOTAL" | awk '{print $4}' | tr -d '%')
+KIT=$(xcrun xccov view --report ios-app/TestResults.xcresult | grep "CalculationKit" | awk '{print $4}' | tr -d '%')
 
 if [ "$OVERALL" -lt "$THRESHOLD_OVERALL" ]; then
   echo "❌ Overall coverage $OVERALL% < $THRESHOLD_OVERALL%"

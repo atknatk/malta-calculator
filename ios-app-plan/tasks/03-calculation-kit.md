@@ -805,7 +805,7 @@ import { calculateMortgage } from "../src/utils/mortgage-calculator";
 
 const outputDir = path.join(
   __dirname,
-  "../ios/Packages/CalculationKit/Tests/CalculationKitTests/Golden",
+  "../ios-app/Packages/CalculationKit/Tests/CalculationKitTests/Golden",
 );
 fs.mkdirSync(outputDir, { recursive: true });
 

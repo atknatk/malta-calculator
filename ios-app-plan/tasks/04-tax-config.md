@@ -192,7 +192,7 @@ const payload = {
 
 const outputPath = path.join(
   __dirname,
-  "../ios/Packages/CalculationKit/Resources/tax-config-2020-2026.json",
+  "../ios-app/Packages/CalculationKit/Resources/tax-config-2020-2026.json",
 );
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(payload, null, 2));
@@ -593,10 +593,10 @@ TMP=$(mktemp)
 tsx scripts/export-tax-config.ts --output "$TMP"
 
 # Compare with committed
-if ! diff -q "$TMP" "ios/Packages/CalculationKit/Resources/tax-config-2020-2026.json" > /dev/null; then
+if ! diff -q "$TMP" "ios-app/Packages/CalculationKit/Resources/tax-config-2020-2026.json" > /dev/null; then
   echo "❌ Tax config drift detected!"
   echo "Run 'npm run export:tax-config' and commit the result."
-  diff "$TMP" "ios/Packages/CalculationKit/Resources/tax-config-2020-2026.json" || true
+  diff "$TMP" "ios-app/Packages/CalculationKit/Resources/tax-config-2020-2026.json" || true
   exit 1
 fi
 
