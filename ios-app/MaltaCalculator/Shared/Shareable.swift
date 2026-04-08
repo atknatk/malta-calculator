@@ -24,7 +24,9 @@ protocol Shareable {
 enum ShareCache {
     /// Returns a cache directory URL for share artifacts.
     static var directory: URL {
-        let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        guard let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+            return FileManager.default.temporaryDirectory.appendingPathComponent("ShareExport", isDirectory: true)
+        }
         let shareDir = caches.appendingPathComponent("ShareExport", isDirectory: true)
         try? FileManager.default.createDirectory(at: shareDir, withIntermediateDirectories: true)
         return shareDir

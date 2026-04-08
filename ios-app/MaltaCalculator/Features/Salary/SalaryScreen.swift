@@ -59,6 +59,7 @@ struct SalaryScreen: View {
         .onChange(of: vm.yearlyNonTaxBenefit) { vm.scheduleRecalculation() }
         .onChange(of: vm.yearlyTaxableBenefit) { vm.scheduleRecalculation() }
         .onChange(of: vm.enableCOLA) { vm.scheduleRecalculation() }
+        .sensoryFeedback(hapticFeedback, trigger: vm.lastHapticEvent)
     }
 
     // MARK: - State Views
@@ -233,9 +234,38 @@ struct SalaryScreen: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
-                shareButton
-                saveButton
-                resetButton
+                Button {
+                    vm.lastHapticEvent = .share
+                    vm.showingShareSheet = true
+                } label: {
+                    Label(
+                        String(localized: "salary.action.share"),
+                        systemImage: "square.and.arrow.up"
+                    )
+                }
+                .accessibilityLabel(Text("salary.action.share"))
+                .accessibilityHint(Text("salary.action.share.hint"))
+
+                Button {
+                    vm.save()
+                } label: {
+                    Label(
+                        String(localized: "salary.action.save"),
+                        systemImage: "bookmark"
+                    )
+                }
+                .accessibilityLabel(Text("salary.action.save"))
+                .accessibilityHint(Text("salary.action.save.hint"))
+
+                Button(role: .destructive) {
+                    vm.showingResetConfirmation = true
+                } label: {
+                    Label(
+                        String(localized: "salary.action.reset"),
+                        systemImage: "arrow.counterclockwise"
+                    )
+                }
+                .accessibilityLabel(Text("salary.action.reset"))
             } label: {
                 Image(systemName: "ellipsis.circle")
                     .accessibilityLabel(Text("salary.action.menu"))
@@ -243,162 +273,50 @@ struct SalaryScreen: View {
         }
     }
 
-    private var shareButton: some View {
-        Button {
-            vm.showingShareSheet = true
-        } label: {
-            Label(
-                String(localized: "salary.action.share"),
-                systemImage: "square.and.arrow.up"
-            )
-        }
-        .accessibilityLabel(Text("salary.action.share"))
-        .accessibilityHint(Text("salary.action.share.hint"))
-    }
-
-    private var saveButton: some View {
-        Button {
-            vm.save()
-        } label: {
-            Label(
-                String(localized: "salary.action.save"),
-                systemImage: "bookmark"
-            )
-        }
-        .accessibilityLabel(Text("salary.action.save"))
-        .accessibilityHint(Text("salary.action.save.hint"))
-    }
-
-    private var resetButton: some View {
-        Button(role: .destructive) {
-            vm.showingResetConfirmation = true
-        } label: {
-            Label(
-                String(localized: "salary.action.reset"),
-                systemImage: "arrow.counterclockwise"
-            )
-        }
-        .accessibilityLabel(Text("salary.action.reset"))
-    }
-
     // MARK: - Share Sheet
 
     @ViewBuilder
     private var shareSheet: some View {
         if let content = vm.buildShareContent() {
-            let shareText = buildShareText(from: content)
-            NavigationStack {
-                List {
-                    Section {
-                        ShareLink(
-                            item: shareText,
-                            subject: Text("salary.share.subject"),
-                            message: Text(shareText)
-                        ) {
-                            Label(
-                                String(localized: "salary.share.asText"),
-                                systemImage: "doc.plaintext"
-                            )
-                        }
-                        .accessibilityHint(Text("salary.share.asText.hint"))
-
-                        ShareLink(
-                            item: buildCSV(from: content),
-                            subject: Text("salary.share.subject")
-                        ) {
-                            Label(
-                                String(localized: "salary.share.asCSV"),
-                                systemImage: "tablecells"
-                            )
-                        }
-                        .accessibilityHint(Text("salary.share.asCSV.hint"))
-
-                        Button {
-                            UIPasteboard.general.string = shareText
-                            vm.showingShareSheet = false
-                        } label: {
-                            Label(
-                                String(localized: "salary.share.copyClipboard"),
-                                systemImage: "doc.on.doc"
-                            )
-                        }
-                        .accessibilityHint(Text("salary.share.copyClipboard.hint"))
-                    } header: {
-                        Text("salary.share.formatHeader")
-                    }
-                }
-                .navigationTitle(String(localized: "salary.action.share"))
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(String(localized: "salary.share.dismiss")) {
-                            vm.showingShareSheet = false
-                        }
-                    }
-                }
-            }
-            .presentationDetents([.medium])
+            SalaryShareSheet(vm: vm, content: content)
         } else {
-            VStack(spacing: DSSpacing.lg) {
-                Image(systemName: "square.and.arrow.up.trianglebadge.exclamationmark")
-                    .font(.system(size: 36))
-                    .foregroundStyle(DSColor.textTertiary)
-                    .accessibilityHidden(true)
-                Text("salary.share.unavailable")
-                    .font(DSFont.bodyM)
-                    .foregroundStyle(DSColor.textSecondary)
-                Button(String(localized: "salary.share.dismiss")) {
-                    vm.showingShareSheet = false
-                }
-                .buttonStyle(.bordered)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .presentationDetents([.medium])
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text("salary.share.unavailable"))
+            shareUnavailableView
         }
     }
 
-    private func buildShareText(
-        from content: SalaryShareContent
-    ) -> String {
-        String(
-            localized: "salary.share.text \(content.annualGross.eur) \(content.annualNet.eur) \(String(content.year))"
-        )
+    private var shareUnavailableView: some View {
+        VStack(spacing: DSSpacing.lg) {
+            Image(systemName: "square.and.arrow.up.trianglebadge.exclamationmark")
+                .font(.system(size: 36))
+                .foregroundStyle(DSColor.textTertiary)
+                .accessibilityHidden(true)
+            Text("salary.share.unavailable")
+                .font(DSFont.bodyM)
+                .foregroundStyle(DSColor.textSecondary)
+            Button(String(localized: "salary.share.dismiss")) {
+                vm.showingShareSheet = false
+            }
+            .buttonStyle(.bordered)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .presentationDetents([.medium])
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("salary.share.unavailable"))
     }
 
-    private func buildCSV(from content: SalaryShareContent) -> String {
-        let header = String(localized: "salary.csv.header")
-        let rows = [
-            "\(String(localized: "salary.csv.year")),\(content.year)",
-            "\(String(localized: "salary.csv.annualGross")),\(content.annualGross.eur)",
-            "\(String(localized: "salary.csv.annualSSC")),\(content.annualSSC.eur)",
-            "\(String(localized: "salary.csv.annualIncomeTax")),\(content.annualIncomeTax.eur)",
-            "\(String(localized: "salary.csv.annualNet")),\(content.annualNet.eur)",
-            "\(String(localized: "salary.csv.monthlyNetAvg")),\(content.monthlyNet.eur)",
-            "\(String(localized: "salary.csv.effectiveTaxRate")),\(content.effectiveTaxRate)"
-        ]
+    // MARK: - Haptics
 
-        var csvLines = [header] + rows
-
-        // Monthly breakdown
-        let monthly = vm.monthly
-        if !monthly.isEmpty {
-            csvLines.append("")
-            csvLines.append(String(localized: "salary.csv.monthlyHeader"))
-            for output in monthly {
-                let row = [
-                    output.month.shortName,
-                    output.grossWage.eur,
-                    output.sscTax.eur,
-                    output.incomeTax.eur,
-                    output.net.eur
-                ].joined(separator: ",")
-                csvLines.append(row)
-            }
+    private var hapticFeedback: SensoryFeedback {
+        switch vm.lastHapticEvent {
+        case .calculationSuccess, .save:
+            .success
+        case .reset:
+            .warning
+        case .share:
+            .selection
+        case .none:
+            .selection
         }
-
-        return csvLines.joined(separator: "\n")
     }
 
     // MARK: - Deep Link

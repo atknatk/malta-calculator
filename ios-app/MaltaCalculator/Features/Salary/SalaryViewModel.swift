@@ -22,7 +22,7 @@ final class SalaryViewModel {
 
     /// Annual gross salary in euros.
     var grossAnnual: Decimal = 25_000
-    /// Tax year (2020 … 2026).
+    /// Tax year (2020 ... 2026).
     var year: Int = 2026
     /// Simplified tax type.
     var simpleTaxType: SimpleTaxType = .single
@@ -58,6 +58,12 @@ final class SalaryViewModel {
     var showingSaveConfirmation: Bool = false
     /// Whether the reset confirmation dialog is presented.
     var showingResetConfirmation: Bool = false
+
+    /// Haptic event fired by the VM for the view to observe.
+    ///
+    /// The view uses `.sensoryFeedback` keyed on this value so haptics
+    /// stay out of the VM's pure logic while remaining testable.
+    var lastHapticEvent: HapticEvent = .none
 
     // MARK: - Internal
 
@@ -108,6 +114,7 @@ final class SalaryViewModel {
         self.clock = clock
 
         if autoLoad {
+            restoreFromStorage()
             Task { [weak self] in
                 await self?.loadConfigAndCalculate()
             }
@@ -115,6 +122,17 @@ final class SalaryViewModel {
     }
 
     // MARK: - Public API
+
+    /// Loads tax configuration and performs an initial calculation.
+    ///
+    /// Called automatically on init when `autoLoad` is true. Can be called
+    /// manually to trigger a fresh config load (e.g. after a config update).
+    func load() {
+        state = .loading
+        Task { [weak self] in
+            await self?.loadConfigAndCalculate()
+        }
+    }
 
     /// Applies deep-link parameters on top of the current state.
     ///
@@ -167,6 +185,8 @@ final class SalaryViewModel {
         yearlyTaxableBenefit = 0
         enableCOLA = true
         expandedMonths.removeAll()
+        lastHapticEvent = .reset
+        persistToStorage()
         scheduleRecalculation(debounceMs: 0)
     }
 
@@ -201,6 +221,7 @@ final class SalaryViewModel {
         )
         historyStore.add(entry)
         showingSaveConfirmation = true
+        lastHapticEvent = .save
         return true
     }
 
@@ -218,6 +239,12 @@ final class SalaryViewModel {
         )
     }
 
+    /// Creates a ``SalaryShareRenderer`` for the current calculation result.
+    func buildShareRenderer() -> SalaryShareRenderer? {
+        guard let content = buildShareContent() else { return nil }
+        return SalaryShareRenderer(content: content)
+    }
+
     /// Serialises the current inputs as a history payload.
     func makePayload() -> SalarySavedPayload {
         SalarySavedPayload(
@@ -231,6 +258,20 @@ final class SalaryViewModel {
             yearlyTaxableBenefit: yearlyTaxableBenefit,
             enableCOLA: enableCOLA
         )
+    }
+
+    /// Persists the current input state to UserDefaults for next launch.
+    func persistToStorage() {
+        let defaults = UserDefaults.standard
+        defaults.set(
+            (grossAnnual as NSDecimalNumber).stringValue,
+            forKey: StorageKeys.grossAnnual
+        )
+        defaults.set(year, forKey: StorageKeys.year)
+        defaults.set(simpleTaxType.rawValue, forKey: StorageKeys.taxType)
+        defaults.set(childCount, forKey: StorageKeys.childCount)
+        defaults.set(sscCategory.rawValue, forKey: StorageKeys.sscCategory)
+        defaults.set(enableCOLA, forKey: StorageKeys.enableCOLA)
     }
 
     // MARK: - Accessors
@@ -348,11 +389,78 @@ final class SalaryViewModel {
             let outputs = try calculator.calculate(inputs: inputs)
             let summary = SalarySummary(from: outputs)
             self.state = .content(SalaryContent(monthly: outputs, summary: summary))
+            self.lastHapticEvent = .calculationSuccess
+            persistToStorage()
         } catch {
             log.error("Calculation failed: \(error.localizedDescription, privacy: .public)")
             self.state = .error(
                 String(localized: "salary.error.calculation")
             )
         }
+    }
+
+    // MARK: - State Persistence
+
+    /// Restores previously persisted input state from UserDefaults.
+    private func restoreFromStorage() {
+        let defaults = UserDefaults.standard
+
+        if let grossStr = defaults.string(forKey: StorageKeys.grossAnnual),
+           let gross = Decimal(string: grossStr), gross > 0 {
+            grossAnnual = gross
+        }
+
+        let storedYear = defaults.integer(forKey: StorageKeys.year)
+        if Self.supportedYears.contains(storedYear) {
+            year = storedYear
+        }
+
+        if let typeStr = defaults.string(forKey: StorageKeys.taxType),
+           let type = SimpleTaxType(rawValue: typeStr) {
+            simpleTaxType = type
+        }
+
+        let storedChildren = defaults.integer(forKey: StorageKeys.childCount)
+        if storedChildren >= 0, storedChildren <= 10 {
+            childCount = storedChildren
+        }
+
+        if let sscStr = defaults.string(forKey: StorageKeys.sscCategory),
+           let category = SSCCategory(rawValue: sscStr) {
+            sscCategory = category
+        }
+
+        // enableCOLA defaults to true; only restore if the key was explicitly set.
+        if defaults.object(forKey: StorageKeys.enableCOLA) != nil {
+            enableCOLA = defaults.bool(forKey: StorageKeys.enableCOLA)
+        }
+    }
+}
+
+// MARK: - Supporting Types
+
+extension SalaryViewModel {
+    /// Discrete haptic events the view can observe.
+    enum HapticEvent: Equatable {
+        /// No event.
+        case none
+        /// Calculation completed successfully.
+        case calculationSuccess
+        /// Entry saved to history.
+        case save
+        /// Inputs were reset to defaults.
+        case reset
+        /// Share sheet was opened.
+        case share
+    }
+
+    /// Keys used for UserDefaults-based state persistence.
+    enum StorageKeys {
+        static let grossAnnual = "salary.lastGross"
+        static let year = "salary.lastYear"
+        static let taxType = "salary.lastTaxType"
+        static let childCount = "salary.lastChildCount"
+        static let sscCategory = "salary.lastSSCCategory"
+        static let enableCOLA = "salary.lastCOLA"
     }
 }

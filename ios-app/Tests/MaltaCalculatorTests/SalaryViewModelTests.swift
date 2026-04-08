@@ -98,6 +98,18 @@ struct SalaryViewModelTests {
         #expect(c0.summary.annualIncomeTax == c2.summary.annualIncomeTax)
     }
 
+    @Test("child count ignored for single even in 2026")
+    func childCountIgnoredForSingle() async throws {
+        let vm0 = try await loadedVM(gross: 40_000, year: 2026, type: .single, childCount: 0)
+        let vm2 = try await loadedVM(gross: 40_000, year: 2026, type: .single, childCount: 2)
+        guard case .content(let c0) = vm0.state,
+              case .content(let c2) = vm2.state else {
+            Issue.record("Expected .content")
+            return
+        }
+        #expect(c0.summary.annualIncomeTax == c2.summary.annualIncomeTax)
+    }
+
     // MARK: - Deep Link
 
     @Test("deep link applies gross and year params")
@@ -109,6 +121,14 @@ struct SalaryViewModelTests {
         #expect(vm.simpleTaxType == .married)
     }
 
+    @Test("deep link applies childCount and ssc params")
+    func deepLinkChildAndSSC() {
+        let vm = makeVM()
+        vm.applyInitialParams(["childCount": "2", "ssc": "D"])
+        #expect(vm.childCount == 2)
+        #expect(vm.sscCategory == .d)
+    }
+
     @Test("deep link ignores invalid values")
     func deepLinkInvalid() {
         let vm = makeVM()
@@ -117,6 +137,20 @@ struct SalaryViewModelTests {
         // Should remain at defaults
         #expect(vm.grossAnnual == originalGross)
         #expect(vm.year == 2026)
+    }
+
+    @Test("deep link clamps negative gross to zero")
+    func deepLinkNegativeGross() {
+        let vm = makeVM()
+        vm.applyInitialParams(["gross": "-5000"])
+        #expect(vm.grossAnnual == 0)
+    }
+
+    @Test("deep link caps child count at 10")
+    func deepLinkChildCountCap() {
+        let vm = makeVM()
+        vm.applyInitialParams(["childCount": "99"])
+        #expect(vm.childCount == 10)
     }
 
     // MARK: - Reset
@@ -141,6 +175,13 @@ struct SalaryViewModelTests {
         #expect(vm.sscCategory == .c)
         #expect(vm.enableCOLA == true)
         #expect(vm.expandedMonths.isEmpty)
+    }
+
+    @Test("reset fires reset haptic event")
+    func resetHaptic() {
+        let vm = makeVM()
+        vm.reset()
+        #expect(vm.lastHapticEvent == .reset)
     }
 
     // MARK: - Zero Gross
@@ -186,6 +227,13 @@ struct SalaryViewModelTests {
         #expect(saved == false)
     }
 
+    @Test("save fires save haptic event")
+    func saveHaptic() async throws {
+        let vm = try await loadedVM()
+        vm.save()
+        #expect(vm.lastHapticEvent == .save)
+    }
+
     // MARK: - Share Content
 
     @Test("buildShareContent returns payload when content available")
@@ -195,6 +243,25 @@ struct SalaryViewModelTests {
         #expect(content != nil)
         #expect(content?.year == 2026)
         #expect((content?.annualGross ?? 0) > 0)
+    }
+
+    @Test("buildShareContent returns nil when state is not content")
+    func shareContentNil() {
+        let vm = makeVM()
+        #expect(vm.buildShareContent() == nil)
+    }
+
+    @Test("buildShareRenderer returns renderer when content available")
+    func shareRenderer() async throws {
+        let vm = try await loadedVM(gross: 30_000)
+        let renderer = vm.buildShareRenderer()
+        #expect(renderer != nil)
+    }
+
+    @Test("buildShareRenderer returns nil without content")
+    func shareRendererNil() {
+        let vm = makeVM()
+        #expect(vm.buildShareRenderer() == nil)
     }
 
     // MARK: - Derived Properties
@@ -261,4 +328,25 @@ struct SalaryViewModelTests {
         let bullets = vm.insightBullets
         #expect(!bullets.isEmpty)
     }
+
+    @Test("insightBullets includes child bracket hint for 2026 married")
+    func insightBulletsChildHint() async throws {
+        let vm = try await loadedVM(gross: 30_000, year: 2026, type: .married)
+        let bullets = vm.insightBullets
+        let hasChildHint = bullets.contains { $0.contains("child") || $0.contains("Child") }
+        #expect(hasChildHint)
+    }
+
+    @Test("insightBullets empty when state is not content")
+    func insightBulletsEmpty() {
+        let vm = makeVM()
+        #expect(vm.insightBullets.isEmpty)
+    }
+
 }
+
+// Extended VM tests (load/retry, haptics, persistence, edge cases)
+// are in SalaryViewModelExtendedTests.swift.
+
+// Additional test suites (SalaryShareContent, SalarySavedPayload,
+// SalaryInsights, SalaryHistoryStore) are in SalarySupplementaryTests.swift.

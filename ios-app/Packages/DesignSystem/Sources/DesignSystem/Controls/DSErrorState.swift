@@ -38,7 +38,7 @@ public struct DSErrorState: View {
     public var body: some View {
         ContentUnavailableView {
             Label(title, systemImage: icon)
-                .foregroundStyle(DSColor.error)
+                .foregroundStyle(DSColor.danger)
         } description: {
             Text(description)
                 .font(DSFont.bodyM)
