@@ -1,10 +1,12 @@
 disabled_rules:
-  - todo
-  - trailing_whitespace
-  - opening_brace
+  - todo # WIP markers are acceptable during development
+  - trailing_whitespace # Handled by SwiftFormat
+  - opening_brace # SwiftFormat enforces brace style
 
 opt_in_rules:
   - force_unwrapping
+  - force_try
+  - force_cast
   - empty_count
   - closure_spacing
   - contains_over_first_not_nil
@@ -21,12 +23,14 @@ opt_in_rules:
   - overridden_super_call
   - prefer_self_type_over_type_of_self
   - redundant_nil_coalescing
+  - redundant_string_enum_value
   - single_test_class
   - sorted_first_last
   - toggle_bool
   - unneeded_parentheses_in_closure_argument
-  # unused_import is an analyzer-only rule, listed under analyzer_rules below
+  - unused_closure_parameter
   - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
   - yoda_condition
 
 line_length:
@@ -40,17 +44,17 @@ type_body_length:
   error: 400
 
 file_length:
-  warning: 500
-  error: 700
+  warning: 400
+  error: 600
   ignore_comment_only_lines: true
 
 function_body_length:
-  warning: 50
-  error: 80
+  warning: 40
+  error: 60
 
 cyclomatic_complexity:
-  warning: 10
-  error: 15
+  warning: 8
+  error: 12
 
 identifier_name:
   min_length: 2
@@ -63,8 +67,13 @@ identifier_name:
 force_unwrapping:
   severity: error
 
+force_try:
+  severity: error
+
+force_cast:
+  severity: error
+
 excluded:
-  - Packages
   - DerivedData
   - fastlane
   - Pods

@@ -150,6 +150,39 @@ enum <Feature>ViewState {
 }
 ```
 
+# EXISTING QUALITY INFRASTRUCTURE — USE THESE
+
+The following quality infra ALREADY EXISTS:
+
+- `AppSignpost` (MaltaCalculator/Shared/AppSignpost.swift) — centralized
+  `os_signpost` instrumentation. Use `AppSignpost.measure(.calculation, name:)`
+  to wrap every ViewModel's `recalculate()` or `load()` method. Categories:
+  `.calculation`, `.rendering`, `.persistence`, `.navigation`
+- `Tools/.swiftlint.yml` — already has `force_try`, `force_cast`,
+  `force_unwrapping` at error severity, plus `redundant_string_enum_value`,
+  `unused_closure_parameter`, `vertical_whitespace_closing_braces`.
+  Packages directory is NOT excluded — lint applies everywhere.
+  `file_length` error at 600, `cyclomatic_complexity` error at 12.
+- `project.yml` — `DOCC_WARNINGS_AS_ERRORS: YES` in Release config
+- Every `swiftlint:disable` MUST have a reason comment:
+  `// swiftlint:disable:next force_unwrapping -- test fixture, crash is intentional`
+
+For `ios-quality` layer tasks:
+
+- Performance tests MUST have explicit threshold assertions:
+  ```swift
+  let metrics: [XCTMetric] = [XCTClockMetric(), XCTMemoryMetric()]
+  measure(metrics: metrics) { ... }
+  // After measure, add: XCTAssertLessThan(result, threshold)
+  ```
+- Snapshot tests MUST use `record: false` (NOT `.missing`) — baselines
+  must be committed to `__Snapshots__/` directories in git
+- Create `SnapshotHelpers.swift` as a SHARED file (not private/duplicated)
+  with `hostView()` helper supporting width parameter + RTL + iPad traits
+- Snapshot coverage: light/dark/AX5/RTL for every DS component + feature screen
+- ModelContainer MUST be constructed lazily (not in @main App.body)
+- Performance tests must run on every PR (not just nightly)
+
 # How to Work (per task)
 
 1. **Read the intent spec** — the task file under `ios-app-plan/tasks/` is
