@@ -15,10 +15,17 @@ import SwiftUI
 /// user has flipped the toggle in Settings on a previous launch.
 @main
 struct MaltaCalculatorApp: App {
+    @AppStorage(SettingsViewModel.themeDefaultsKey) private var themeRaw: String = AppTheme.system.rawValue
+
+    private var theme: AppTheme {
+        AppTheme(rawValue: themeRaw) ?? .system
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
                 .tint(.accentColor)
+                .preferredColorScheme(theme.colorScheme)
         }
         .modelContainer(MaltaCalculatorApp.makeContainer())
     }
