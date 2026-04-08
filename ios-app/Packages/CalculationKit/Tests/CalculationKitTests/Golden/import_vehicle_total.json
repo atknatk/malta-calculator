@@ -1,0 +1,25 @@
+{
+  "input": {
+    "purchasePrice": 15000,
+    "currency": "GBP",
+    "vehicleAge": 3,
+    "co2Emissions": 150,
+    "engineCapacity": 1800,
+    "fuelType": "diesel",
+    "isEU": false,
+    "shippingCost": 800,
+    "isNew": false
+  },
+  "expected": {
+    "vehicleValueEUR": 17550,
+    "registrationTax": 2813,
+    "importDuty": 1849,
+    "vat": 3660,
+    "shippingCostEUR": 936,
+    "vrtFee": 36,
+    "numberPlatesFee": 35,
+    "totalCost": 26929,
+    "totalTaxesFees": 8443
+  },
+  "generatedAt": "2026-04-08T08:47:28.252Z"
+}

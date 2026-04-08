@@ -3,47 +3,50 @@
 //  MaltaCalculator
 //
 
-import DesignSystem
 import SwiftUI
 
-/// Placeholder root view shown by the bootstrap build.
+/// Root view containing the five-tab navigation structure.
 ///
-/// The real navigation tree (TabView with Home / Salary / Calculators /
-/// Guides / Settings) lands in Task 05. For now this view exists so the
-/// app launches with a recognisable Malta Calculator surface and so the
-/// `DesignSystem.liquidGlass()` modifier is exercised end-to-end.
+/// On iOS 26, the tab bar renders as a floating Liquid Glass surface.
+/// On iOS 18, it falls back to the standard UITabBar with tint applied.
+/// ``AppState`` is injected into the environment so all descendant views
+/// can access the selected tab and per-tab routers.
 struct RootView: View {
+    @State private var appState = AppState()
+
     var body: some View {
-        ZStack {
-            backgroundLayer
-            VStack(spacing: 16) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 60))
-                    .foregroundStyle(.tint)
-                    .accessibilityHidden(true)
-                Text("Malta Calculator")
-                    .font(.system(.largeTitle, design: .serif, weight: .bold))
-                Text("Coming soon")
-                    .foregroundStyle(.secondary)
+        TabView(selection: $appState.selectedTab) {
+            ForEach(RootTab.allCases) { tab in
+                tabContent(for: tab)
+                    .tabItem {
+                        Label(tab.title, systemImage: tab.systemImage)
+                    }
+                    .tag(tab)
+                    .accessibilityHint(tab.accessibilityHint)
             }
-            .padding(40)
-            .liquidGlass()
-            .padding()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Malta Calculator. Coming soon.")
+        }
+        .tabViewStyle(.sidebarAdaptable)
+        .tint(.accentColor)
+        .environment(appState)
+        .onOpenURL { url in
+            appState.handle(url: url)
         }
     }
 
-    private var backgroundLayer: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.98, green: 0.97, blue: 0.95),
-                Color(red: 0.95, green: 0.91, blue: 0.84)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
+    @ViewBuilder
+    private func tabContent(for tab: RootTab) -> some View {
+        switch tab {
+        case .home:
+            HomeNavigationStack()
+        case .salary:
+            SalaryNavigationStack()
+        case .calculators:
+            CalculatorsNavigationStack()
+        case .guides:
+            GuidesNavigationStack()
+        case .settings:
+            SettingsNavigationStack()
+        }
     }
 }
 

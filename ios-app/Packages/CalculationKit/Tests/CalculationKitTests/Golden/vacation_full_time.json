@@ -1,0 +1,15 @@
+{
+  "input": {
+    "weeklyHours": 40,
+    "year": 2026,
+    "monthsWorked": 12
+  },
+  "expected": {
+    "baseHours": 192,
+    "publicHolidayHours": 24,
+    "totalHours": 216,
+    "totalDays": 27,
+    "isProRata": false
+  },
+  "generatedAt": "2026-04-08T00:00:00.000Z"
+}

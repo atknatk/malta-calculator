@@ -77,6 +77,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.maltacalculator.app.tests
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/MaltaCalculator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MaltaCalculator"
         BUNDLE_LOADER: "$(TEST_HOST)"
+        GENERATE_INFOPLIST_FILE: "YES"
 
   MaltaCalculatorUITests:
     type: bundle.ui-testing
@@ -89,6 +90,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.maltacalculator.app.uitests
         TEST_TARGET_NAME: MaltaCalculator
+        GENERATE_INFOPLIST_FILE: "YES"
 
 schemes:
   MaltaCalculator:

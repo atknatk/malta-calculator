@@ -272,3 +272,26 @@ unhandled error). Letting them slip means production has them.
 _(record-failure.sh appends new patterns here as they happen.)_
 
 ---
+
+### [2026-04-08] [ios-design] holdout validation failed: docs/specs/ios-design/02-design-system.intent.md
+
+- **Root Cause**: 5. **Build**: zero errors, zero warnings
+<!-- DARK_FACTORY_RESULT:{"success":true,"layer":"ios-design","files_changed":2,"tests_passed":48,"tests_total":48,"coverage":85,"pr_url":"https://github.com/atknatk/malta-calculator/pull/5","error":null} -->
+- **Prevention**: (to be filled by pipeline-doctor or human)
+- **Session**: task-20260408-001013-5812f66a
+
+### [2026-04-08] [ios-design] holdout validation failed: docs/specs/ios-design/02-design-system.intent.md
+
+- **Root Cause**: **Accessibility fixes** (the key holdout-failure fixes):
+- **Build**: zero errors, zero warnings
+<!-- DARK_FACTORY_RESULT:{"success":true,"layer":"ios-design","files_changed":18,"tests_passed":90,"tests_total":90,"coverage":85,"pr_url":"https://github.com/atknatk/malta-calculator/pull/6","error":null} -->
+- **Prevention**: (to be filled by pipeline-doctor or human)
+- **Session**: task-20260408-015835-c0418dc9
+
+### [2026-04-08] [ios-design] exhausted after 3 attempts: docs/specs/ios-design/02-design-system.intent.md
+
+- **Root Cause**: **Accessibility fixes** (the key holdout-failure fixes):
+- **Build**: zero errors, zero warnings
+<!-- DARK_FACTORY_RESULT:{"success":true,"layer":"ios-design","files_changed":18,"tests_passed":90,"tests_total":90,"coverage":85,"pr_url":"https://github.com/atknatk/malta-calculator/pull/6","error":null} -->
+- **Prevention**: (to be filled by pipeline-doctor or human)
+- **Session**: task-20260408-015835-c0418dc9

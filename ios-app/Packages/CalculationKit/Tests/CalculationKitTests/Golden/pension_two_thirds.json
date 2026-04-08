@@ -1,0 +1,25 @@
+{
+  "input": {
+    "birthYear": 1960,
+    "taxStatus": "single",
+    "children": 0,
+    "paidYears": 40,
+    "averageSalary": 25000,
+    "deferralYears": 0,
+    "privatePensionContribution": 0
+  },
+  "expected": {
+    "isEligible": true,
+    "retirementAge": 64,
+    "requiredYears": 35,
+    "effectiveYears": 40,
+    "proportion": 1,
+    "pensionableIncome": 25000,
+    "isMPICapped": false,
+    "baseAnnualPension": 16666.67,
+    "annualPension": 17186.67,
+    "monthlyPension": 1432.22,
+    "annualCola": 520
+  },
+  "generatedAt": "2026-04-08T08:47:28.226Z"
+}

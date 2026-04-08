@@ -19,6 +19,7 @@ let package = Package(
         .testTarget(
             name: "CalculationKitTests",
             dependencies: ["CalculationKit"],
+            resources: [.process("Golden")],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]
