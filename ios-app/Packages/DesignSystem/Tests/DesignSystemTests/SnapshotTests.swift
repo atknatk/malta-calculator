@@ -15,54 +15,7 @@ import Testing
 import UIKit
 import SnapshotTesting
 
-// MARK: - Dynamic Type Snapshot Helpers
-
-/// Wraps a SwiftUI view in a UIHostingController configured for snapshot testing.
-@MainActor
-private func hostView<V: View>(
-    _ view: V,
-    contentSizeCategory: UIContentSizeCategory = .large,
-    colorScheme: UIUserInterfaceStyle = .light,
-    width: CGFloat = 375
-) -> UIViewController {
-    let hostingController = UIHostingController(rootView: view)
-    hostingController.overrideUserInterfaceStyle = colorScheme
-
-    let traits = UITraitCollection(preferredContentSizeCategory: contentSizeCategory)
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-
-    let container = UIViewController()
-    container.overrideUserInterfaceStyle = colorScheme
-    container.addChild(hostingController)
-    container.view.addSubview(hostingController.view)
-    hostingController.didMove(toParent: container)
-
-    NSLayoutConstraint.activate([
-        hostingController.view.leadingAnchor.constraint(equalTo: container.view.leadingAnchor),
-        hostingController.view.trailingAnchor.constraint(equalTo: container.view.trailingAnchor),
-        hostingController.view.topAnchor.constraint(equalTo: container.view.topAnchor),
-    ])
-
-    container.view.frame = CGRect(x: 0, y: 0, width: width, height: 0)
-    container.view.setNeedsLayout()
-    container.view.layoutIfNeeded()
-
-    let size = hostingController.view.intrinsicContentSize
-    container.view.frame = CGRect(x: 0, y: 0, width: width, height: max(size.height, 60))
-
-    hostingController.view.frame = container.view.bounds
-    container.view.setNeedsLayout()
-    container.view.layoutIfNeeded()
-
-    // Apply content size category via trait collection
-    let parentTraits = UITraitCollection(traitsFrom: [
-        UITraitCollection(userInterfaceStyle: colorScheme),
-        traits,
-    ])
-    container.setOverrideTraitCollection(parentTraits, forChild: hostingController)
-
-    return container
-}
+// hostView() is provided by SnapshotHelpers.swift (shared across all test files)
 
 // MARK: - Button Dynamic Type Snapshot Tests
 
@@ -75,49 +28,49 @@ struct ButtonDynamicTypeSnapshotTests {
         let vc = hostView(view, contentSizeCategory: .large)
         // Record mode: set `record: .all` to generate initial reference images.
         // After references are generated, remove `record:` to assert against them.
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Button renders at AX3 content size")
     func buttonAX3Size() {
         let view = DSButton("Calculate Salary", icon: "eurosign.circle", variant: .primary, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Button renders at extraSmall content size")
     func buttonExtraSmallSize() {
         let view = DSButton("Calculate Salary", icon: "eurosign.circle", variant: .primary, action: {})
         let vc = hostView(view, contentSizeCategory: .extraSmall)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Loading button renders at default content size")
     func loadingButtonDefaultSize() {
         let view = DSButton("Loading", variant: .primary, isLoading: true, action: {})
         let vc = hostView(view, contentSizeCategory: .large)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Loading button renders at AX3 content size")
     func loadingButtonAX3Size() {
         let view = DSButton("Loading", variant: .primary, isLoading: true, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Ghost button renders at AX3 content size")
     func ghostButtonAX3Size() {
         let view = DSButton("Cancel", variant: .ghost, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Destructive button renders at AX3 content size")
     func destructiveButtonAX3Size() {
         let view = DSButton("Delete", icon: "trash", variant: .destructive, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("All button variants render at default size")
@@ -133,7 +86,7 @@ struct ButtonDynamicTypeSnapshotTests {
         for (variant, label) in variants {
             let view = DSButton(LocalizedStringResource(stringLiteral: label), variant: variant, action: {})
             let vc = hostView(view, contentSizeCategory: .large)
-            assertSnapshot(of: vc, as: .image, named: label, record: .missing)
+            assertSnapshot(of: vc, as: .image, named: label)
         }
     }
 
@@ -147,7 +100,7 @@ struct ButtonDynamicTypeSnapshotTests {
         for (size, label) in sizes {
             let view = DSButton(LocalizedStringResource(stringLiteral: label), size: size, action: {})
             let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-            assertSnapshot(of: vc, as: .image, named: label, record: .missing)
+            assertSnapshot(of: vc, as: .image, named: label)
         }
     }
 
@@ -155,42 +108,42 @@ struct ButtonDynamicTypeSnapshotTests {
     func outlineButtonAX3Size() {
         let view = DSButton("Outline Action", variant: .outline, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Secondary button renders at AX3 content size")
     func secondaryButtonAX3Size() {
         let view = DSButton("Secondary", variant: .secondary, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Glow button renders at AX3 content size")
     func glowButtonAX3Size() {
         let view = DSButton("Glow Action", variant: .glow, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Button renders at extraExtraLarge content size")
     func buttonExtraExtraLargeSize() {
         let view = DSButton("Calculate", icon: "eurosign.circle", variant: .primary, action: {})
         let vc = hostView(view, contentSizeCategory: .extraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Loading button with large size renders scaled spinner")
     func loadingButtonLargeSize() {
         let view = DSButton("Loading", variant: .primary, size: .large, isLoading: true, action: {})
         let vc = hostView(view, contentSizeCategory: .large)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Loading button with small size renders mini spinner")
     func loadingButtonSmallSize() {
         let view = DSButton("Loading", variant: .primary, size: .small, isLoading: true, action: {})
         let vc = hostView(view, contentSizeCategory: .large)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -212,77 +165,77 @@ struct CardDynamicTypeSnapshotTests {
     func cardDefaultSize() {
         let view = DSCard(.default) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .large)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Card renders at AX3 content size")
     func cardAX3Size() {
         let view = DSCard(.default) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Card renders at extraSmall content size")
     func cardExtraSmallSize() {
         let view = DSCard(.default) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .extraSmall)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Highlighted card renders at AX3")
     func highlightedCardAX3() {
         let view = DSCard(.highlighted) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Hero card renders at AX3")
     func heroCardAX3() {
         let view = DSCard(.hero) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Compact card renders at AX3")
     func compactCardAX3() {
         let view = DSCard(.compact) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Destructive card renders at AX3")
     func destructiveCardAX3() {
         let view = DSCard(.destructive) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Info card renders at AX3")
     func infoCardAX3() {
         let view = DSCard(.info) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Success card renders at AX3")
     func successCardAX3() {
         let view = DSCard(.success) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Warning card renders at AX3")
     func warningCardAX3() {
         let view = DSCard(.warning) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Card renders at extraExtraLarge content size")
     func cardExtraExtraLargeSize() {
         let view = DSCard(.default) { sampleCardContent }
         let vc = hostView(view, contentSizeCategory: .extraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("All card variants render at default size")
@@ -300,7 +253,7 @@ struct CardDynamicTypeSnapshotTests {
         for (variant, label) in variants {
             let view = DSCard(variant) { sampleCardContent }
             let vc = hostView(view, contentSizeCategory: .large)
-            assertSnapshot(of: vc, as: .image, named: label, record: .missing)
+            assertSnapshot(of: vc, as: .image, named: label)
         }
     }
 }
@@ -314,7 +267,7 @@ struct DarkModeDynamicTypeSnapshotTests {
     func buttonDarkAX3() {
         let view = DSButton("Calculate", icon: "eurosign.circle", variant: .primary, action: {})
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Card renders in dark mode at AX3")
@@ -326,14 +279,14 @@ struct DarkModeDynamicTypeSnapshotTests {
             }
         }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Loading button renders in dark mode")
     func loadingButtonDark() {
         let view = DSButton("Saving", variant: .secondary, isLoading: true, action: {})
         let vc = hostView(view, contentSizeCategory: .large, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("All button variants render in dark mode")
@@ -349,7 +302,7 @@ struct DarkModeDynamicTypeSnapshotTests {
         for (variant, label) in variants {
             let view = DSButton(LocalizedStringResource(stringLiteral: label), variant: variant, action: {})
             let vc = hostView(view, contentSizeCategory: .large, colorScheme: .dark)
-            assertSnapshot(of: vc, as: .image, named: "Dark-\(label)", record: .missing)
+            assertSnapshot(of: vc, as: .image, named: "Dark-\(label)")
         }
     }
 
@@ -362,7 +315,7 @@ struct DarkModeDynamicTypeSnapshotTests {
             }
         }
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Success card renders in dark mode")
@@ -374,7 +327,7 @@ struct DarkModeDynamicTypeSnapshotTests {
             }
         }
         let vc = hostView(view, contentSizeCategory: .large, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Warning card renders in dark mode")
@@ -386,7 +339,7 @@ struct DarkModeDynamicTypeSnapshotTests {
             }
         }
         let vc = hostView(view, contentSizeCategory: .large, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 

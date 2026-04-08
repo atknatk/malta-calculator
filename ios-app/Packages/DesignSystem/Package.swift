@@ -11,11 +11,11 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/gonzalezreal/swift-markdown-ui",
-            from: "2.4.0"
+            exact: "2.4.1"
         ),
         .package(
             url: "https://github.com/pointfreeco/swift-snapshot-testing",
-            from: "1.17.0"
+            exact: "1.17.7"
         ),
     ],
     targets: [

@@ -3,6 +3,7 @@
 //  MaltaCalculator
 //
 
+import OSLog
 import SwiftData
 import SwiftUI
 
@@ -15,10 +16,19 @@ import SwiftUI
 /// user has flipped the toggle in Settings on a previous launch.
 @main
 struct MaltaCalculatorApp: App {
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "com.maltacalculator.app",
+        category: "Launch"
+    )
+
     @AppStorage(SettingsViewModel.themeDefaultsKey) private var themeRaw: String = AppTheme.system.rawValue
 
     private var theme: AppTheme {
         AppTheme(rawValue: themeRaw) ?? .system
+    }
+
+    init() {
+        Self.logger.info("App init — minimal path, deferring non-critical work")
     }
 
     var body: some Scene {
@@ -26,8 +36,16 @@ struct MaltaCalculatorApp: App {
             RootView()
                 .tint(.accentColor)
                 .preferredColorScheme(theme.colorScheme)
+                .task { performDeferredInit() }
         }
         .modelContainer(MaltaCalculatorApp.makeContainer())
+    }
+
+    /// Non-critical initialisation deferred until after the first frame.
+    private func performDeferredInit() {
+        ShareCache.cleanup()
+        ImageRendererCache.shared.removeAll()
+        Self.logger.info("Deferred init complete")
     }
 
     /// Builds the SwiftData container used by the app.
