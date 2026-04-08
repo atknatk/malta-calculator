@@ -51,7 +51,7 @@ struct MonthlyRowCard: View {
             .accessibilityLabel(String(
                 localized: "salary.monthly.row.accessibilityLabel \(output.month.rawValue.capitalized)"
             ))
-            .accessibilityValue(String(localized: "salary.monthly.row.accessibilityValue \(output.net.eur)"))
+            .accessibilityValue(rowAccessibilityValue)
             .accessibilityHint(String(localized: isExpanded
                 ? "salary.monthly.row.collapseHint"
                 : "salary.monthly.row.expandHint"))
@@ -78,6 +78,15 @@ struct MonthlyRowCard: View {
         }
         .liquidGlass()
         .animation(reduceMotion ? DSMotion.instant : DSMotion.standard, value: isExpanded)
+    }
+
+    private var rowAccessibilityValue: String {
+        let net = output.net.eur
+        let tax = output.incomeTax.eur
+        let ssc = output.sscTax.eur
+        return String(
+            localized: "salary.monthly.row.accessibilityValueDetailed \(net) \(tax) \(ssc)"
+        )
     }
 
     private func detailRow(

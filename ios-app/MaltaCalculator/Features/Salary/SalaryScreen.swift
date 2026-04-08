@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import UIKit
 import DesignSystem
 import CalculationKit
 
@@ -18,6 +19,29 @@ struct SalaryScreen: View {
     @ScaledMetric private var cardSpacing: CGFloat = DSSpacing.lg
 
     var body: some View {
+        scrollContent
+            .scrollDismissesKeyboard(.interactively)
+            .background { MeshBackground().ignoresSafeArea() }
+            .navigationTitle(String(localized: "salary.title"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { toolbarContent }
+            .sheet(isPresented: $vm.showingShareSheet) { shareSheet }
+            .alert(
+                String(localized: "salary.saved.title"),
+                isPresented: $vm.showingSaveConfirmation
+            ) {
+                Button(String(localized: "salary.saved.ok"), role: .cancel) {}
+            } message: {
+                Text("salary.saved.message")
+            }
+            .modifier(RecalculationModifier(vm: vm))
+            .modifier(HapticFeedbackModifier(vm: vm))
+            .onAppear { applyDeepLinkParams() }
+    }
+
+    // MARK: - Scroll Content
+
+    private var scrollContent: some View {
         ScrollView {
             VStack(spacing: cardSpacing) {
                 headerSection
@@ -33,39 +57,14 @@ struct SalaryScreen: View {
             .padding(.top, DSSpacing.md)
             .padding(.bottom, DSSpacing.xxl)
         }
-        .scrollDismissesKeyboard(.interactively)
-        .background { MeshBackground().ignoresSafeArea() }
-        .navigationTitle(String(localized: "salary.title"))
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbarContent }
-        .sheet(isPresented: $vm.showingShareSheet) {
-            if let content = vm.buildShareContent() {
-                ShareSheet(text: content.shareText)
-            }
-        }
-        .alert(
-            String(localized: "salary.saved.title"),
-            isPresented: $vm.showingSaveConfirmation
-        ) {
-            Button(String(localized: "salary.saved.ok"), role: .cancel) {}
-        } message: {
-            Text("salary.saved.message")
-        }
-        .onChange(of: vm.grossAnnual) { vm.scheduleRecalculation() }
-        .onChange(of: vm.year) { vm.scheduleRecalculation() }
-        .onChange(of: vm.simpleTaxType) { vm.scheduleRecalculation() }
-        .onChange(of: vm.childCount) { vm.scheduleRecalculation() }
-        .onChange(of: vm.sscCategory) { vm.scheduleRecalculation() }
-        .onChange(of: vm.birthDate) { vm.scheduleRecalculation() }
-        .onChange(of: vm.yearlyNonTaxBenefit) { vm.scheduleRecalculation() }
-        .onChange(of: vm.yearlyTaxableBenefit) { vm.scheduleRecalculation() }
-        .onChange(of: vm.enableCOLA) { vm.scheduleRecalculation() }
-        .onAppear {
-            let params = appState.salaryRouter.initialParams
-            if !params.isEmpty {
-                vm.applyInitialParams(params)
-                appState.salaryRouter.initialParams = [:]
-            }
+    }
+
+    // MARK: - Share Sheet
+
+    @ViewBuilder
+    private var shareSheet: some View {
+        if let content = vm.buildShareContent() {
+            ShareSheet(text: content.shareText)
         }
     }
 
@@ -92,6 +91,8 @@ struct SalaryScreen: View {
                     )
                 }
                 Button(role: .destructive) {
+                    UINotificationFeedbackGenerator()
+                        .notificationOccurred(.warning)
                     vm.reset()
                 } label: {
                     Label(
@@ -148,10 +149,23 @@ struct SalaryScreen: View {
             GridItem(.flexible()),
             GridItem(.flexible())
         ], spacing: DSSpacing.md) {
-            keyFigure(label: "salary.summary.annualGross", value: summary.annualGross)
-            keyFigure(label: "salary.summary.annualSSC", value: summary.annualSSC)
-            keyFigure(label: "salary.summary.annualTax", value: summary.annualIncomeTax)
-            keyFigure(label: "salary.summary.effectiveRate", value: nil, rate: summary.effectiveTaxRate)
+            keyFigure(
+                label: "salary.summary.annualGross",
+                value: summary.annualGross
+            )
+            keyFigure(
+                label: "salary.summary.annualSSC",
+                value: summary.annualSSC
+            )
+            keyFigure(
+                label: "salary.summary.annualTax",
+                value: summary.annualIncomeTax
+            )
+            keyFigure(
+                label: "salary.summary.effectiveRate",
+                value: nil,
+                rate: summary.effectiveTaxRate
+            )
         }
     }
 
@@ -165,11 +179,19 @@ struct SalaryScreen: View {
                 .font(DSFont.caption)
                 .foregroundStyle(DSColor.textSecondary)
             if let value {
-                DSAnimatedNumber(value, format: .currency, font: DSFont.heading(18))
-                    .foregroundStyle(DSColor.textPrimary)
+                DSAnimatedNumber(
+                    value,
+                    format: .currency,
+                    font: DSFont.heading(18)
+                )
+                .foregroundStyle(DSColor.textPrimary)
             } else if let rate {
-                DSAnimatedNumber(rate, format: .percent, font: DSFont.heading(18))
-                    .foregroundStyle(DSColor.textPrimary)
+                DSAnimatedNumber(
+                    rate,
+                    format: .percent,
+                    font: DSFont.heading(18)
+                )
+                .foregroundStyle(DSColor.textPrimary)
             }
         }
         .frame(maxWidth: .infinity)
@@ -206,7 +228,9 @@ struct SalaryScreen: View {
 
     // MARK: - Insights
 
-    private func insightsSection(_ summary: SalarySummary) -> some View {
+    private func insightsSection(
+        _ summary: SalarySummary
+    ) -> some View {
         let insights = SalaryInsights(
             summary: summary,
             year: vm.year,
@@ -248,6 +272,71 @@ struct SalaryScreen: View {
             .multilineTextAlignment(.center)
             .padding(.horizontal, DSSpacing.md)
     }
+
+    // MARK: - Helpers
+
+    private func applyDeepLinkParams() {
+        let params = appState.salaryRouter.initialParams
+        if !params.isEmpty {
+            vm.applyInitialParams(params)
+            appState.salaryRouter.initialParams = [:]
+        }
+    }
+}
+
+// MARK: - Recalculation Modifier
+
+/// Bundles all `.onChange` triggers for salary input recalculation.
+private struct RecalculationModifier: ViewModifier {
+    @Bindable var vm: SalaryViewModel
+
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: vm.grossAnnual) { vm.scheduleRecalculation() }
+            .onChange(of: vm.year) { vm.scheduleRecalculation() }
+            .onChange(of: vm.simpleTaxType) {
+                vm.scheduleRecalculation()
+            }
+            .onChange(of: vm.childCount) { vm.scheduleRecalculation() }
+            .onChange(of: vm.sscCategory) { vm.scheduleRecalculation() }
+            .onChange(of: vm.birthDate) { vm.scheduleRecalculation() }
+            .onChange(of: vm.yearlyNonTaxBenefit) {
+                vm.scheduleRecalculation()
+            }
+            .onChange(of: vm.yearlyTaxableBenefit) {
+                vm.scheduleRecalculation()
+            }
+            .onChange(of: vm.enableCOLA) { vm.scheduleRecalculation() }
+    }
+}
+
+// MARK: - Haptic Feedback Modifier
+
+/// Provides haptic feedback for calculation success and UI triggers.
+private struct HapticFeedbackModifier: ViewModifier {
+    @Bindable var vm: SalaryViewModel
+
+    func body(content: Content) -> some View {
+        content
+            .sensoryFeedback(
+                .success,
+                trigger: vm.calculationSucceeded
+            ) { old, new in
+                new && !old
+            }
+            .sensoryFeedback(
+                .success,
+                trigger: vm.showingSaveConfirmation
+            ) { _, new in
+                new
+            }
+            .sensoryFeedback(
+                .selection,
+                trigger: vm.showingShareSheet
+            ) { _, new in
+                new
+            }
+    }
 }
 
 // MARK: - Share Sheet
@@ -256,8 +345,13 @@ struct SalaryScreen: View {
 private struct ShareSheet: UIViewControllerRepresentable {
     let text: String
 
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    func makeUIViewController(
+        context: Context
+    ) -> UIActivityViewController {
+        UIActivityViewController(
+            activityItems: [text],
+            applicationActivities: nil
+        )
     }
 
     func updateUIViewController(

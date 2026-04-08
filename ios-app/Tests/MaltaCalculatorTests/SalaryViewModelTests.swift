@@ -10,7 +10,7 @@ import Testing
 
 // MARK: - SalaryViewModel Tests
 
-@Suite("SalaryViewModel")
+@Suite("SalaryViewModel", .serialized)
 @MainActor
 struct SalaryViewModelTests {
 
@@ -227,6 +227,116 @@ struct SalaryViewModelTests {
         #expect(content?.year == 2026)
         #expect((content?.annualGross ?? 0) > 0)
         #expect(content?.shareText.contains("Malta Salary Calculator") == true)
+    }
+
+    // MARK: - State Persistence
+
+    /// Removes all salary persistence keys from UserDefaults.
+    private func clearSalaryDefaults(_ defaults: UserDefaults) {
+        defaults.removeObject(forKey: "salary.lastGross")
+        defaults.removeObject(forKey: "salary.lastYear")
+        defaults.removeObject(forKey: "salary.lastTaxType")
+        defaults.synchronize()
+    }
+
+    @Test("persists gross, year, and tax type via scheduleRecalculation")
+    func persistInputs() {
+        let defaults = UserDefaults.standard
+        clearSalaryDefaults(defaults)
+
+        let vm = SalaryViewModel(skipAutoLoad: true)
+        vm.grossAnnual = 42_000
+        vm.year = 2025
+        vm.simpleTaxType = .parent
+        vm.scheduleRecalculation(debounceMs: 0)
+
+        #expect(defaults.string(forKey: "salary.lastGross") == "42000")
+        #expect(defaults.integer(forKey: "salary.lastYear") == 2025)
+        #expect(defaults.string(forKey: "salary.lastTaxType") == "parent")
+
+        clearSalaryDefaults(defaults)
+    }
+
+    @Test("restores persisted inputs on init")
+    func restoreInputs() {
+        let defaults = UserDefaults.standard
+        // Ensure clean state before writing test values
+        clearSalaryDefaults(defaults)
+        defaults.set("55000", forKey: "salary.lastGross")
+        defaults.set(2024, forKey: "salary.lastYear")
+        defaults.set("married", forKey: "salary.lastTaxType")
+        defaults.synchronize()
+
+        let vm = SalaryViewModel(skipAutoLoad: true, restoreDefaults: true)
+
+        #expect(vm.grossAnnual == 55_000)
+        #expect(vm.year == 2024)
+        #expect(vm.simpleTaxType == .married)
+
+        // Cleanup
+        clearSalaryDefaults(defaults)
+    }
+
+    @Test("ignores invalid persisted year")
+    func restoreInvalidYear() {
+        let defaults = UserDefaults.standard
+        clearSalaryDefaults(defaults)
+        defaults.set(1999, forKey: "salary.lastYear")
+        defaults.synchronize()
+
+        let vm = SalaryViewModel(skipAutoLoad: true, restoreDefaults: true)
+        #expect(vm.year == 2026) // default, not the invalid value
+
+        clearSalaryDefaults(defaults)
+    }
+
+    @Test("ignores invalid persisted tax type")
+    func restoreInvalidTaxType() {
+        let defaults = UserDefaults.standard
+        clearSalaryDefaults(defaults)
+        defaults.set("alien", forKey: "salary.lastTaxType")
+        defaults.synchronize()
+
+        let vm = SalaryViewModel(skipAutoLoad: true, restoreDefaults: true)
+        #expect(vm.simpleTaxType == .single) // default
+
+        clearSalaryDefaults(defaults)
+    }
+
+    // MARK: - Calculation Succeeded Flag
+
+    @Test("calculationSucceeded is set after successful calculation")
+    func calculationSucceeded() async throws {
+        let vm = SalaryViewModel(skipAutoLoad: true)
+        #expect(!vm.calculationSucceeded)
+        await vm.loadConfigAndCalculate()
+        #expect(vm.calculationSucceeded)
+    }
+
+    // MARK: - Suggested SSC Category
+
+    @Test("suggestedSSCCategory returns .c when non-c and gross > 10k")
+    func suggestedSSC() {
+        let vm = SalaryViewModel(skipAutoLoad: true)
+        vm.grossAnnual = 30_000
+        vm.sscCategory = .b
+        #expect(vm.suggestedSSCCategory == .c)
+    }
+
+    @Test("suggestedSSCCategory returns nil when already .c")
+    func noSSCSuggestion() {
+        let vm = SalaryViewModel(skipAutoLoad: true)
+        vm.grossAnnual = 30_000
+        vm.sscCategory = .c
+        #expect(vm.suggestedSSCCategory == nil)
+    }
+
+    @Test("suggestedSSCCategory returns nil when gross is zero")
+    func zeroGrossNoSSCSuggestion() {
+        let vm = SalaryViewModel(skipAutoLoad: true)
+        vm.grossAnnual = 0
+        vm.sscCategory = .b
+        #expect(vm.suggestedSSCCategory == nil)
     }
 }
 

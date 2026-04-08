@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "•" : {
+
+    },
     "app.name" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -12,451 +15,57 @@
         }
       }
     },
-
-    "tab.home" : {
+    "calculator.childrensAllowance.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Home"
+            "value" : "Children's Allowance"
           }
         }
       }
     },
-    "tab.salary" : {
+    "calculator.driversLicense.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salary"
+            "value" : "Driver's License"
           }
         }
       }
     },
-    "tab.calculators" : {
+    "calculator.familyReunification.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calculators"
+            "value" : "Family Reunification"
           }
         }
       }
     },
-    "tab.guides" : {
+    "calculator.importVehicle.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Guides"
+            "value" : "Import Vehicle"
           }
         }
       }
     },
-    "tab.settings" : {
+    "calculator.mortgage.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Settings"
-          }
-        }
-      }
-    },
-
-    "tab.home.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the home screen with featured calculators"
-          }
-        }
-      }
-    },
-    "tab.salary.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the salary calculator"
-          }
-        }
-      }
-    },
-    "tab.calculators.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the list of all calculators"
-          }
-        }
-      }
-    },
-    "tab.guides.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens financial guides and articles"
-          }
-        }
-      }
-    },
-    "tab.settings.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens app settings"
-          }
-        }
-      }
-    },
-
-    "home.placeholder.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Home"
-          }
-        }
-      }
-    },
-    "home.placeholder.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Featured calculators and recent activity will appear here."
-          }
-        }
-      }
-    },
-    "home.placeholder.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Home screen. Featured calculators and recent activity will appear here."
-          }
-        }
-      }
-    },
-
-    "salary.placeholder.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salary Calculator"
-          }
-        }
-      }
-    },
-    "salary.placeholder.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The salary calculator is under development."
-          }
-        }
-      }
-    },
-    "salary.placeholder.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salary calculator. Under development."
-          }
-        }
-      }
-    },
-    "salary.history.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salary History"
-          }
-        }
-      }
-    },
-
-    "calculators.placeholder.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculators"
-          }
-        }
-      }
-    },
-    "calculators.placeholder.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The calculator hub is under development."
-          }
-        }
-      }
-    },
-    "calculators.placeholder.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculators hub. Under development."
-          }
-        }
-      }
-    },
-    "calculators.history.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculation History"
-          }
-        }
-      }
-    },
-    "calculators.savedDetail.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saved Calculation"
-          }
-        }
-      }
-    },
-
-    "guides.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guides"
-          }
-        }
-      }
-    },
-    "guides.placeholder.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guides"
-          }
-        }
-      }
-    },
-    "guides.placeholder.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Financial guides and articles will appear here."
-          }
-        }
-      }
-    },
-    "guides.placeholder.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guides screen. Financial guides and articles will appear here."
-          }
-        }
-      }
-    },
-    "guides.reader.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guide"
-          }
-        }
-      }
-    },
-    "guides.bookmarks.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bookmarks"
-          }
-        }
-      }
-    },
-
-    "settings.placeholder.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
-          }
-        }
-      }
-    },
-    "settings.placeholder.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App settings will appear here."
-          }
-        }
-      }
-    },
-    "settings.placeholder.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings screen. App settings will appear here."
-          }
-        }
-      }
-    },
-    "settings.about.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About"
-          }
-        }
-      }
-    },
-    "settings.disclaimer.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disclaimer"
-          }
-        }
-      }
-    },
-    "settings.acknowledgements.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acknowledgements"
-          }
-        }
-      }
-    },
-
-    "screen.comingSoon.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming Soon"
-          }
-        }
-      }
-    },
-    "screen.comingSoon.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This feature is under development."
-          }
-        }
-      }
-    },
-    "screen.comingSoon.calculatorDescription %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The %@ calculator is under development."
-          }
-        }
-      }
-    },
-    "screen.comingSoon.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming soon. This feature is under development."
-          }
-        }
-      }
-    },
-    "screen.comingSoon.label" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming soon"
-          }
-        }
-      }
-    },
-
-    "calculator.salary.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salary Calculator"
+            "value" : "Mortgage Calculator"
           }
         }
       }
@@ -483,46 +92,13 @@
         }
       }
     },
-    "calculator.childrensAllowance.title" : {
+    "calculator.pension.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Children's Allowance"
-          }
-        }
-      }
-    },
-    "calculator.stampDuty.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stamp Duty"
-          }
-        }
-      }
-    },
-    "calculator.mortgage.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mortgage Calculator"
-          }
-        }
-      }
-    },
-    "calculator.savingsInterest.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Savings Interest"
+            "value" : "Pension Calculator"
           }
         }
       }
@@ -538,17 +114,6 @@
         }
       }
     },
-    "calculator.pension.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pension Calculator"
-          }
-        }
-      }
-    },
     "calculator.retirementAge.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -556,6 +121,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Retirement Age"
+          }
+        }
+      }
+    },
+    "calculator.roadLicense.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Road License"
+          }
+        }
+      }
+    },
+    "calculator.salary.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salary Calculator"
+          }
+        }
+      }
+    },
+    "calculator.savingsInterest.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Savings Interest"
+          }
+        }
+      }
+    },
+    "calculator.stampDuty.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stamp Duty"
           }
         }
       }
@@ -593,28 +202,6 @@
         }
       }
     },
-    "calculator.roadLicense.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Road License"
-          }
-        }
-      }
-    },
-    "calculator.driversLicense.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Driver's License"
-          }
-        }
-      }
-    },
     "calculator.vrt.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -626,113 +213,255 @@
         }
       }
     },
-    "calculator.importVehicle.title" : {
+    "calculators.history.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import Vehicle"
+            "value" : "Calculation History"
           }
         }
       }
     },
-    "calculator.familyReunification.title" : {
+    "calculators.placeholder.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Family Reunification"
+            "value" : "Calculators hub. Under development."
           }
         }
       }
     },
-
-    "salary.title" : {
+    "calculators.placeholder.description" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salary Calculator"
+            "value" : "The calculator hub is under development."
           }
         }
       }
     },
-    "salary.netPay.label" : {
+    "calculators.placeholder.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your Net Pay"
+            "value" : "Calculators"
           }
         }
       }
     },
-    "salary.netPay.perYear" : {
+    "calculators.savedDetail.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "per year"
+            "value" : "Saved Calculation"
           }
         }
       }
     },
-    "salary.netPay.monthly" : {
+    "guides.bookmarks.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monthly"
+            "value" : "Bookmarks"
           }
         }
       }
     },
-    "salary.netPay.yearBadge %@" : {
+    "guides.placeholder.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Year %@"
+            "value" : "Guides screen. Financial guides and articles will appear here."
           }
         }
       }
     },
-    "salary.netPay.accessibilityLabel" : {
+    "guides.placeholder.description" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Net pay"
+            "value" : "Financial guides and articles will appear here."
           }
         }
       }
     },
-    "salary.netPay.accessibilityValue %@ %@" : {
+    "guides.placeholder.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ per year, %@ per month"
+            "value" : "Guides"
           }
         }
       }
     },
-    "salary.input.title" : {
+    "guides.reader.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your Income"
+            "value" : "Guide"
+          }
+        }
+      }
+    },
+    "guides.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guides"
+          }
+        }
+      }
+    },
+    "home.placeholder.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home screen. Featured calculators and recent activity will appear here."
+          }
+        }
+      }
+    },
+    "home.placeholder.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Featured calculators and recent activity will appear here."
+          }
+        }
+      }
+    },
+    "home.placeholder.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        }
+      }
+    },
+    "salary.chart.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annual salary breakdown chart"
+          }
+        }
+      }
+    },
+    "salary.chart.accessibilityValue %@ %@ %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net %@, income tax %@, SSC %@"
+          }
+        }
+      }
+    },
+    "salary.chart.annualNet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annual Net"
+          }
+        }
+      }
+    },
+    "salary.chart.cumulativeNet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cumulative Net Pay"
+          }
+        }
+      }
+    },
+    "salary.chart.incomeTax" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Income Tax"
+          }
+        }
+      }
+    },
+    "salary.chart.net" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net"
+          }
+        }
+      }
+    },
+    "salary.chart.ssc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSC"
+          }
+        }
+      }
+    },
+    "salary.disclaimer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This calculator provides estimates for informational purposes only and does not constitute financial or tax advice. Consult a qualified tax professional for personalised guidance."
+          }
+        }
+      }
+    },
+    "salary.history.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salary History"
           }
         }
       }
@@ -748,68 +477,90 @@
         }
       }
     },
-    "salary.input.monthlyEquivalent %@" : {
+    "salary.input.benefits" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "= %@/month"
+            "value" : "Benefits & Allowances"
           }
         }
       }
     },
-    "salary.input.taxType" : {
+    "salary.input.benefits.accessibilityHint" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tax Status"
+            "value" : "Tap to expand and enter benefit amounts"
           }
         }
       }
     },
-    "salary.input.taxType.accessibilityLabel" : {
+    "salary.input.benefits.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select your tax filing status"
+            "value" : "Benefits and allowances section"
           }
         }
       }
     },
-    "salary.taxType.single" : {
+    "salary.input.birthDate" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Single"
+            "value" : "Date of Birth"
           }
         }
       }
     },
-    "salary.taxType.married" : {
+    "salary.input.birthDate.accessibilityHint" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Married"
+            "value" : "Tap to expand the date picker"
           }
         }
       }
     },
-    "salary.taxType.parent" : {
+    "salary.input.birthDate.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parent"
+            "value" : "Date of birth"
+          }
+        }
+      }
+    },
+    "salary.input.birthDate.picker" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select your date of birth"
+          }
+        }
+      }
+    },
+    "salary.input.birthDate.pre1962Warning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Born before 1962: old SSC weekly cap applies"
           }
         }
       }
@@ -821,6 +572,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Number of Children"
+          }
+        }
+      }
+    },
+    "salary.input.cola" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include COLA"
+          }
+        }
+      }
+    },
+    "salary.input.cola.accessibilityHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toggle to include or exclude the cost of living adjustment in your calculation"
+          }
+        }
+      }
+    },
+    "salary.input.cola.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include government COLA bonus"
+          }
+        }
+      }
+    },
+    "salary.input.cola.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Government cost of living adjustment"
+          }
+        }
+      }
+    },
+    "salary.input.monthlyEquivalent %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "= %@/month"
+          }
+        }
+      }
+    },
+    "salary.input.nonTaxBenefit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yearly Non-Taxable Benefit"
           }
         }
       }
@@ -858,105 +675,6 @@
         }
       }
     },
-    "salary.input.birthDate" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Date of Birth"
-          }
-        }
-      }
-    },
-    "salary.input.birthDate.picker" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select your date of birth"
-          }
-        }
-      }
-    },
-    "salary.input.birthDate.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Date of birth"
-          }
-        }
-      }
-    },
-    "salary.input.birthDate.accessibilityHint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap to expand the date picker"
-          }
-        }
-      }
-    },
-    "salary.input.birthDate.pre1962Warning" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Born before 1962: old SSC weekly cap applies"
-          }
-        }
-      }
-    },
-    "salary.input.benefits" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Benefits & Allowances"
-          }
-        }
-      }
-    },
-    "salary.input.benefits.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Benefits and allowances section"
-          }
-        }
-      }
-    },
-    "salary.input.benefits.accessibilityHint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap to expand and enter benefit amounts"
-          }
-        }
-      }
-    },
-    "salary.input.nonTaxBenefit" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yearly Non-Taxable Benefit"
-          }
-        }
-      }
-    },
     "salary.input.taxableBenefit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -968,73 +686,150 @@
         }
       }
     },
-    "salary.input.cola" : {
+    "salary.input.taxType" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Include COLA"
+            "value" : "Tax Status"
           }
         }
       }
     },
-    "salary.input.cola.description" : {
+    "salary.input.taxType.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Government cost of living adjustment"
+            "value" : "Select your tax filing status"
           }
         }
       }
     },
-    "salary.input.cola.accessibilityLabel" : {
+    "salary.input.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Include government COLA bonus"
+            "value" : "Your Income"
           }
         }
       }
     },
-    "salary.input.cola.accessibilityHint" : {
+    "salary.insights.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toggle to include or exclude the cost of living adjustment in your calculation"
+            "value" : "Salary insights and tips"
           }
         }
       }
     },
-    "salary.yearPicker.accessibilityLabel" : {
+    "salary.insights.childTaxHint" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select tax year"
+            "value" : "Tip: Claiming child tax bracket in 2026 can reduce your tax by up to €3,000/year."
           }
         }
       }
     },
-    "salary.chart.net" : {
+    "salary.insights.effectiveRate %@" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Net"
+            "value" : "Your effective tax rate is %@%%."
           }
         }
       }
     },
-    "salary.chart.incomeTax" : {
+    "salary.insights.paydayEstimate %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expect approximately %@ to hit your account each month after deductions."
+          }
+        }
+      }
+    },
+    "salary.insights.pensionHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consider a private pension contribution (up to €3,000/year) to claim a 25% tax credit."
+          }
+        }
+      }
+    },
+    "salary.insights.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What this means for you"
+          }
+        }
+      }
+    },
+    "salary.monthly.cumulativeTax" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cumulative Tax"
+          }
+        }
+      }
+    },
+    "salary.monthly.grossTotal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gross Total"
+          }
+        }
+      }
+    },
+    "salary.monthly.grossWage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gross Wage"
+          }
+        }
+      }
+    },
+    "salary.monthly.incomeBase" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Income Base"
+          }
+        }
+      }
+    },
+    "salary.monthly.incomeTax" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -1045,35 +840,244 @@
         }
       }
     },
-    "salary.chart.ssc" : {
+    "salary.monthly.net" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SSC"
+            "value" : "Net"
           }
         }
       }
     },
-    "salary.chart.annualNet" : {
+    "salary.monthly.netResult" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annual Net"
+            "value" : "Net"
           }
         }
       }
     },
-    "salary.chart.cumulativeNet" : {
+    "salary.monthly.row.accessibilityLabel %@" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cumulative Net Pay"
+            "value" : "%@ salary breakdown"
+          }
+        }
+      }
+    },
+    "salary.monthly.row.accessibilityValue %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ net"
+          }
+        }
+      }
+    },
+    "salary.monthly.row.accessibilityValueDetailed %@ %@ %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ net after %@ tax and %@ SSC"
+          }
+        }
+      }
+    },
+    "salary.monthly.row.collapseHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to hide breakdown details"
+          }
+        }
+      }
+    },
+    "salary.monthly.row.expandHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to show full breakdown"
+          }
+        }
+      }
+    },
+    "salary.monthly.sscBase" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSC Base"
+          }
+        }
+      }
+    },
+    "salary.monthly.sscTax" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSC Tax"
+          }
+        }
+      }
+    },
+    "salary.monthly.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly Breakdown"
+          }
+        }
+      }
+    },
+    "salary.netPay.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net pay"
+          }
+        }
+      }
+    },
+    "salary.netPay.accessibilityValue %@ %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ per year, %@ per month"
+          }
+        }
+      }
+    },
+    "salary.netPay.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Net Pay"
+          }
+        }
+      }
+    },
+    "salary.netPay.monthly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly"
+          }
+        }
+      }
+    },
+    "salary.netPay.perYear" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "per year"
+          }
+        }
+      }
+    },
+    "salary.netPay.yearBadge %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year %@"
+          }
+        }
+      }
+    },
+    "salary.placeholder.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salary calculator. Under development."
+          }
+        }
+      }
+    },
+    "salary.placeholder.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The salary calculator is under development."
+          }
+        }
+      }
+    },
+    "salary.placeholder.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salary Calculator"
+          }
+        }
+      }
+    },
+    "salary.saved.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your calculation has been saved to history."
+          }
+        }
+      }
+    },
+    "salary.saved.ok" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "salary.saved.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved"
           }
         }
       }
@@ -1122,266 +1126,46 @@
         }
       }
     },
-    "salary.monthly.title" : {
+    "salary.taxType.married" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monthly Breakdown"
+            "value" : "Married"
           }
         }
       }
     },
-    "salary.monthly.net" : {
+    "salary.taxType.parent" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Net"
+            "value" : "Parent"
           }
         }
       }
     },
-    "salary.monthly.grossWage" : {
+    "salary.taxType.single" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gross Wage"
+            "value" : "Single"
           }
         }
       }
     },
-    "salary.monthly.grossTotal" : {
+    "salary.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gross Total"
-          }
-        }
-      }
-    },
-    "salary.monthly.sscBase" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSC Base"
-          }
-        }
-      }
-    },
-    "salary.monthly.sscTax" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSC Tax"
-          }
-        }
-      }
-    },
-    "salary.monthly.incomeBase" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Income Base"
-          }
-        }
-      }
-    },
-    "salary.monthly.incomeTax" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Income Tax"
-          }
-        }
-      }
-    },
-    "salary.monthly.cumulativeTax" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cumulative Tax"
-          }
-        }
-      }
-    },
-    "salary.monthly.netResult" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Net"
-          }
-        }
-      }
-    },
-    "salary.monthly.row.accessibilityLabel %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ salary breakdown"
-          }
-        }
-      }
-    },
-    "salary.monthly.row.accessibilityValue %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ net"
-          }
-        }
-      }
-    },
-    "salary.monthly.row.expandHint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap to show full breakdown"
-          }
-        }
-      }
-    },
-    "salary.monthly.row.collapseHint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap to hide breakdown details"
-          }
-        }
-      }
-    },
-    "salary.insights.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "What this means for you"
-          }
-        }
-      }
-    },
-    "salary.insights.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salary insights and tips"
-          }
-        }
-      }
-    },
-    "salary.insights.effectiveRate %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your effective tax rate is %@%%."
-          }
-        }
-      }
-    },
-    "salary.insights.paydayEstimate %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expect approximately %@ to hit your account each month after deductions."
-          }
-        }
-      }
-    },
-    "salary.insights.childTaxHint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tip: Claiming child tax bracket in 2026 can reduce your tax by up to €3,000/year."
-          }
-        }
-      }
-    },
-    "salary.insights.pensionHint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Consider a private pension contribution (up to €3,000/year) to claim a 25% tax credit."
-          }
-        }
-      }
-    },
-    "salary.disclaimer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This calculator provides estimates for informational purposes only and does not constitute financial or tax advice. Consult a qualified tax professional for personalised guidance."
-          }
-        }
-      }
-    },
-    "salary.toolbar.share" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share"
-          }
-        }
-      }
-    },
-    "salary.toolbar.save" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
-          }
-        }
-      }
-    },
-    "salary.toolbar.reset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset"
+            "value" : "Salary Calculator"
           }
         }
       }
@@ -1408,35 +1192,277 @@
         }
       }
     },
-    "salary.saved.title" : {
+    "salary.toolbar.reset" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saved"
+            "value" : "Reset"
           }
         }
       }
     },
-    "salary.saved.ok" : {
+    "salary.toolbar.save" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OK"
+            "value" : "Save"
           }
         }
       }
     },
-    "salary.saved.message" : {
+    "salary.toolbar.share" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your calculation has been saved to history."
+            "value" : "Share"
+          }
+        }
+      }
+    },
+    "salary.yearPicker.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select tax year"
+          }
+        }
+      }
+    },
+    "screen.comingSoon.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming soon. This feature is under development."
+          }
+        }
+      }
+    },
+    "screen.comingSoon.calculatorDescription %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The %@ calculator is under development."
+          }
+        }
+      }
+    },
+    "screen.comingSoon.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This feature is under development."
+          }
+        }
+      }
+    },
+    "screen.comingSoon.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming soon"
+          }
+        }
+      }
+    },
+    "screen.comingSoon.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming Soon"
+          }
+        }
+      }
+    },
+    "settings.about.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
+    },
+    "settings.acknowledgements.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acknowledgements"
+          }
+        }
+      }
+    },
+    "settings.disclaimer.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disclaimer"
+          }
+        }
+      }
+    },
+    "settings.placeholder.accessibilityLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings screen. App settings will appear here."
+          }
+        }
+      }
+    },
+    "settings.placeholder.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App settings will appear here."
+          }
+        }
+      }
+    },
+    "settings.placeholder.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "tab.calculators" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculators"
+          }
+        }
+      }
+    },
+    "tab.calculators.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the list of all calculators"
+          }
+        }
+      }
+    },
+    "tab.guides" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guides"
+          }
+        }
+      }
+    },
+    "tab.guides.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens financial guides and articles"
+          }
+        }
+      }
+    },
+    "tab.home" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        }
+      }
+    },
+    "tab.home.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the home screen with featured calculators"
+          }
+        }
+      }
+    },
+    "tab.salary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salary"
+          }
+        }
+      }
+    },
+    "tab.salary.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the salary calculator"
+          }
+        }
+      }
+    },
+    "tab.settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "tab.settings.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens app settings"
           }
         }
       }

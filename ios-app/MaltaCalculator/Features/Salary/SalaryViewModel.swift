@@ -12,9 +12,19 @@ import os
 ///
 /// Owns all input state, triggers debounced recalculation via `CalculationKit`,
 /// and exposes monthly outputs plus an annual summary for the view layer.
+/// Persists last-used inputs to `UserDefaults` so the user's previous session
+/// is restored on next launch.
 @Observable
 @MainActor
 final class SalaryViewModel {
+
+    // MARK: - Persistence Keys
+
+    private enum DefaultsKey {
+        static let lastGross = "salary.lastGross"
+        static let lastYear = "salary.lastYear"
+        static let lastTaxType = "salary.lastTaxType"
+    }
 
     // MARK: - Inputs
 
@@ -73,15 +83,26 @@ final class SalaryViewModel {
         category: "SalaryViewModel"
     )
 
+    /// Whether the last calculation completed successfully (drives haptic).
+    private(set) var calculationSucceeded: Bool = false
+
     // MARK: - Initialization
 
     init() {
+        restoreInputs()
         Task { await loadConfigAndCalculate() }
     }
 
     /// Test-only initializer that skips automatic config loading.
     init(skipAutoLoad: Bool) {
         // no-op: caller will call loadConfigAndCalculate() manually
+    }
+
+    /// Test-only initializer that skips auto-load but allows restoring persisted inputs.
+    init(skipAutoLoad: Bool, restoreDefaults: Bool) {
+        if restoreDefaults {
+            restoreInputs()
+        }
     }
 
     // MARK: - Public API
@@ -103,8 +124,9 @@ final class SalaryViewModel {
         scheduleRecalculation()
     }
 
-    /// Triggers a debounced recalculation.
+    /// Triggers a debounced recalculation and persists the current inputs.
     func scheduleRecalculation(debounceMs: Int = 80) {
+        persistInputs()
         recalcTask?.cancel()
         recalcTask = Task { [weak self] in
             try? await Task.sleep(for: .milliseconds(debounceMs))
@@ -217,8 +239,10 @@ final class SalaryViewModel {
             monthly = outputs
             summary = SalarySummary(from: outputs)
             error = nil
+            calculationSucceeded = true
         } catch {
             self.error = error.localizedDescription
+            calculationSucceeded = false
             log.error("Calculation failed: \(error.localizedDescription, privacy: .public)")
         }
     }
@@ -237,5 +261,32 @@ final class SalaryViewModel {
             monthlyNet: summary.averageMonthlyNet,
             effectiveTaxRate: summary.effectiveTaxRate
         )
+    }
+
+    // MARK: - State Persistence
+
+    /// Saves the current primary inputs to UserDefaults.
+    private func persistInputs() {
+        let defaults = UserDefaults.standard
+        defaults.set("\(grossAnnual)", forKey: DefaultsKey.lastGross)
+        defaults.set(year, forKey: DefaultsKey.lastYear)
+        defaults.set(simpleTaxType.rawValue, forKey: DefaultsKey.lastTaxType)
+    }
+
+    /// Restores previously saved inputs from UserDefaults.
+    private func restoreInputs() {
+        let defaults = UserDefaults.standard
+        if let grossStr = defaults.string(forKey: DefaultsKey.lastGross),
+           let gross = Decimal(string: grossStr) {
+            grossAnnual = gross
+        }
+        let savedYear = defaults.integer(forKey: DefaultsKey.lastYear)
+        if savedYear >= 2020, savedYear <= 2026 {
+            year = savedYear
+        }
+        if let typeStr = defaults.string(forKey: DefaultsKey.lastTaxType),
+           let taxType = SimpleTaxType(rawValue: typeStr) {
+            simpleTaxType = taxType
+        }
     }
 }
