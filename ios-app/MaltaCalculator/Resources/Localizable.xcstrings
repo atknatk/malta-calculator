@@ -2390,6 +2390,291 @@
           }
         }
       }
+    },
+    "salary.error.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unable to Load"
+          }
+        }
+      }
+    },
+    "calculators.search.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search calculators"
+          }
+        }
+      }
+    },
+    "calculators.recentlyUsed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recently Used"
+          }
+        }
+      }
+    },
+    "calculators.stats.active": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
+          }
+        }
+      }
+    },
+    "calculators.stats.soon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soon"
+          }
+        }
+      }
+    },
+    "calculators.stats.categories": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categories"
+          }
+        }
+      }
+    },
+    "calculators.stats.price": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forever"
+          }
+        }
+      }
+    },
+    "calculators.category.employment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Employment & Salary"
+          }
+        }
+      }
+    },
+    "calculators.category.family": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Family & Children"
+          }
+        }
+      }
+    },
+    "calculators.category.property": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Property & Housing"
+          }
+        }
+      }
+    },
+    "calculators.category.banking": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Banking & Loans"
+          }
+        }
+      }
+    },
+    "calculators.category.retirement": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirement & Savings"
+          }
+        }
+      }
+    },
+    "calculators.category.selfEmployment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Self-Employment"
+          }
+        }
+      }
+    },
+    "calculators.category.leave": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave & Time Off"
+          }
+        }
+      }
+    },
+    "calculators.category.transport": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transport & Vehicles"
+          }
+        }
+      }
+    },
+    "calculators.category.immigration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immigration & Visa"
+          }
+        }
+      }
+    },
+    "calculators.card.hint.open": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the calculator"
+          }
+        }
+      }
+    },
+    "calculators.card.hint.comingSoon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming soon — not yet available"
+          }
+        }
+      }
+    },
+    "calculators.card.hint.recent": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reopens this calculator"
+          }
+        }
+      }
+    },
+    "calculators.badge.soon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soon"
+          }
+        }
+      }
+    },
+    "calculators.comingSoon.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming Soon"
+          }
+        }
+      }
+    },
+    "calculators.comingSoon.message %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is on the roadmap and will be available in a future update."
+          }
+        }
+      }
+    },
+    "calculators.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No calculators yet"
+          }
+        }
+      }
+    },
+    "calculators.empty.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check back soon for new calculators."
+          }
+        }
+      }
+    },
+    "calculators.error.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not load calculators"
+          }
+        }
+      }
+    },
+    "common.ok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
