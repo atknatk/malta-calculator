@@ -26,6 +26,14 @@ enum CalculatorDetailFactory {
         case .salary:
             // Salary is handled by its own dedicated tab.
             EmptyView()
+        case .mortgage:
+            MortgageScreen(initialParams: initialParams)
+        case .personalLoan:
+            PersonalLoanScreen(initialParams: initialParams)
+        case .stampDuty:
+            StampDutyScreen(initialParams: initialParams)
+        case .savingsInterest:
+            SavingsInterestScreen(initialParams: initialParams)
         default:
             ComingSoonScreen(id: id)
                 .navigationTitle(id.displayName)

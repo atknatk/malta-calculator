@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-04-08T00:00:00Z",
+  "guides": [
+    {
+      "slug": "how-to-calculate-net-salary-malta-2026",
+      "title": "How to Calculate Net Salary in Malta 2026",
+      "description": "A step-by-step walkthrough of gross-to-net salary calculation in Malta including tax, SSC and COLA.",
+      "category": "salary",
+      "tags": ["salary", "2026", "net-pay", "tax"],
+      "publishedAt": "2026-01-10T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 8,
+      "symbolName": "eurosign.circle.fill",
+      "gradientName": "salary"
+    },
+    {
+      "slug": "malta-tax-rates-2026-complete-guide",
+      "title": "Malta Tax Rates 2026 — Complete Guide",
+      "description": "Income tax brackets for Single, Married and Parent categories in Malta for tax year 2026.",
+      "category": "tax",
+      "tags": ["tax", "2026", "income-tax"],
+      "publishedAt": "2026-01-15T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 10,
+      "symbolName": "doc.text.fill",
+      "gradientName": "tax"
+    },
+    {
+      "slug": "malta-ssc-contributions-2026-explained",
+      "title": "Malta SSC Contributions 2026 Explained",
+      "description": "Social Security Contribution categories A-D, weekly caps and employer obligations in Malta.",
+      "category": "tax",
+      "tags": ["ssc", "2026", "contributions"],
+      "publishedAt": "2026-01-20T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 7,
+      "symbolName": "doc.text.fill",
+      "gradientName": "tax"
+    },
+    {
+      "slug": "malta-mortgage-guide-2026",
+      "title": "Malta Mortgage Guide 2026",
+      "description": "Loan-to-value limits, interest rates and PMT calculation for Malta mortgages in 2026.",
+      "category": "property",
+      "tags": ["mortgage", "property", "loan"],
+      "publishedAt": "2026-02-01T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 9,
+      "symbolName": "house.fill",
+      "gradientName": "property"
+    },
+    {
+      "slug": "malta-stamp-duty-complete-guide-2026",
+      "title": "Malta Stamp Duty — Complete Guide 2026",
+      "description": "First-time buyer relief, standard rates and UCA zones for Malta property stamp duty.",
+      "category": "property",
+      "tags": ["stamp-duty", "property", "first-time-buyer"],
+      "publishedAt": "2026-02-05T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 6,
+      "symbolName": "house.fill",
+      "gradientName": "property"
+    },
+    {
+      "slug": "malta-minimum-wage-2026-guide",
+      "title": "Malta Minimum Wage 2026 Guide",
+      "description": "Statutory minimum wage, COLA and sectoral wage regulation orders in Malta.",
+      "category": "employment",
+      "tags": ["minimum-wage", "employment", "cola"],
+      "publishedAt": "2026-02-10T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 5,
+      "symbolName": "briefcase.fill",
+      "gradientName": "employment"
+    },
+    {
+      "slug": "malta-public-holidays-2026-complete-guide",
+      "title": "Malta Public Holidays 2026",
+      "description": "Full list of national and public holidays in Malta for 2026 and how they affect pay.",
+      "category": "leave",
+      "tags": ["holidays", "leave", "2026"],
+      "publishedAt": "2026-02-15T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 4,
+      "symbolName": "calendar",
+      "gradientName": "leave"
+    },
+    {
+      "slug": "malta-pension-system-2026-guide",
+      "title": "Malta Pension System 2026 Guide",
+      "description": "Two-thirds pension rules, retirement age and third pillar schemes in Malta.",
+      "category": "retirement",
+      "tags": ["pension", "retirement", "2026"],
+      "publishedAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 11,
+      "symbolName": "leaf.fill",
+      "gradientName": "retirement"
+    },
+    {
+      "slug": "malta-rental-income-tax-15-percent-guide",
+      "title": "Malta Rental Income — 15% Flat Tax",
+      "description": "Optional 15% flat tax rate for residential and commercial rental income in Malta.",
+      "category": "property",
+      "tags": ["rental", "tax", "property"],
+      "publishedAt": "2026-03-01T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 6,
+      "symbolName": "house.fill",
+      "gradientName": "property"
+    },
+    {
+      "slug": "malta-vacation-leave-entitlement-2026",
+      "title": "Malta Vacation Leave Entitlement 2026",
+      "description": "Statutory annual leave rules, pro-rata calculations and carry-over in Malta.",
+      "category": "leave",
+      "tags": ["leave", "vacation", "2026"],
+      "publishedAt": "2026-03-05T00:00:00Z",
+      "updatedAt": "2026-03-20T00:00:00Z",
+      "readingMinutes": 5,
+      "symbolName": "calendar",
+      "gradientName": "leave"
+    }
+  ]
+}

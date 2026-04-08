@@ -171,9 +171,110 @@ struct CalculatorIDTests {
         }
     }
 
-    @Test("count matches expected 18 calculators")
+    @Test("count matches expected 29 calculators (18 active + 11 coming soon)")
     func count() {
-        #expect(CalculatorID.allCases.count == 18)
+        #expect(CalculatorID.allCases.count == 29)
+        #expect(CalculatorID.allCases.count(where: { $0.isAvailable }) == 18)
+        #expect(CalculatorID.allCases.count(where: { !$0.isAvailable }) == 11)
+    }
+
+    @Test("every id has a subtitle and a category")
+    func subtitlesAndCategories() {
+        for id in CalculatorID.allCases {
+            #expect(!id.subtitle.isEmpty, "subtitle missing for \(id.rawValue)")
+            _ = id.category
+        }
+    }
+
+    @Test("all nine categories are represented")
+    func categoryCoverage() {
+        let represented = Set(CalculatorID.allCases.map(\.category))
+        #expect(represented == Set(CalculatorCategory.allCases))
+    }
+}
+
+// MARK: - Calculators Hub ViewModel Tests
+
+@Suite("CalculatorsViewModel")
+@MainActor
+struct CalculatorsViewModelTests {
+    private func makeVM() -> CalculatorsViewModel {
+        let suite = "test-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite) ?? .standard
+        defaults.removePersistentDomain(forName: suite)
+        let store = RecentlyUsedCalculatorsStore(defaults: defaults)
+        return CalculatorsViewModel(recentsStore: store)
+    }
+
+    @Test("loads full catalog on init")
+    func loadsCatalog() {
+        let vm = makeVM()
+        #expect(vm.allItems.count == CalculatorID.allCases.count)
+        if case .content(let items) = vm.state {
+            #expect(items.count == CalculatorID.allCases.count)
+        } else {
+            Issue.record("state should be .content")
+        }
+    }
+
+    @Test("statistics match enum")
+    func statistics() {
+        let vm = makeVM()
+        #expect(vm.statistics.active == 18)
+        #expect(vm.statistics.soon == 11)
+        #expect(vm.statistics.categories == 9)
+    }
+
+    @Test("search filters case-insensitively on title")
+    func searchFilter() {
+        let vm = makeVM()
+        vm.searchText = "MORTGAGE"
+        #expect(vm.filteredItems.contains(where: { $0.id == .mortgage }))
+        #expect(vm.filteredItems.allSatisfy {
+            $0.title.lowercased().contains("mortgage")
+                || $0.subtitle.lowercased().contains("mortgage")
+        })
+    }
+
+    @Test("search with whitespace is treated as empty")
+    func searchWhitespace() {
+        let vm = makeVM()
+        vm.searchText = "   "
+        #expect(vm.filteredItems.count == vm.allItems.count)
+    }
+
+    @Test("selectCategory narrows filtered items")
+    func categoryFilter() {
+        let vm = makeVM()
+        vm.selectCategory(.banking)
+        #expect(vm.filteredItems.allSatisfy { $0.category == .banking })
+        #expect(!vm.filteredItems.isEmpty)
+    }
+
+    @Test("recordUsage updates recently-used LRU")
+    func recentUsageLRU() {
+        let vm = makeVM()
+        vm.recordUsage(.salary)
+        vm.recordUsage(.mortgage)
+        vm.recordUsage(.pension)
+        #expect(vm.recentlyUsed.map(\.id) == [.pension, .mortgage, .salary])
+
+        // Re-record an existing item; it moves to the front.
+        vm.recordUsage(.salary)
+        #expect(vm.recentlyUsed.first?.id == .salary)
+        #expect(vm.recentlyUsed.count == 3)
+    }
+
+    @Test("recently used is capped at 5 entries")
+    func recentUsageCapped() {
+        let vm = makeVM()
+        let ids: [CalculatorID] = [
+            .salary, .mortgage, .pension, .vacation, .stampDuty, .overtime
+        ]
+        for id in ids { vm.recordUsage(id) }
+        #expect(vm.recentlyUsed.count == 5)
+        #expect(vm.recentlyUsed.first?.id == .overtime)
+        #expect(!vm.recentlyUsed.contains(where: { $0.id == .salary }))
     }
 }
 
