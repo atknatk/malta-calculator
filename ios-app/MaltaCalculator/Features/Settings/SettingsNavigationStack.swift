@@ -27,11 +27,11 @@ struct SettingsNavigationStack: View {
             ComingSoonScreen()
                 .navigationTitle(String(localized: "settings.about.title"))
         case .disclaimer:
-            ComingSoonScreen()
-                .navigationTitle(String(localized: "settings.disclaimer.title"))
+            DisclaimerScreen()
         case .acknowledgements:
-            ComingSoonScreen()
-                .navigationTitle(String(localized: "settings.acknowledgements.title"))
+            AcknowledgementsScreen()
+        case .whatsNew:
+            WhatsNewScreen()
         }
     }
 }

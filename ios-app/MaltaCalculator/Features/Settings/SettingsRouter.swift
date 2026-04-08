@@ -14,6 +14,8 @@ enum SettingsDestination: Hashable, Sendable {
     case disclaimer
     /// Show the acknowledgements screen.
     case acknowledgements
+    /// Show the release notes / changelog.
+    case whatsNew
 }
 
 /// Manages navigation state for the Settings tab.

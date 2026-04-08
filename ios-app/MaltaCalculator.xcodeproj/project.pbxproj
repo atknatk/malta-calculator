@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0067A0B9A8DB647216EF6C7F /* PersonalLoanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD070C272554DDBFF0D21ED9 /* PersonalLoanScreen.swift */; };
+		04A492B12074EB1282A73DD3 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378DC2E84E37BB655AAA241 /* SettingsViewModelTests.swift */; };
 		04B8D7DE591D010BA3061E03 /* SalaryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB9EA68AA0894ABB7557491 /* SalaryRouter.swift */; };
 		08659968BAB40FB64C707EA2 /* CalculatorDetailScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8321C61529EC908499CA9 /* CalculatorDetailScaffold.swift */; };
 		097F8FD7EC763BB04D25710B /* SalaryInputCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD302D56952E537AD1CE80F /* SalaryInputCard.swift */; };
@@ -15,6 +16,7 @@
 		0FCFC389EFDEBFD3497B7D18 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B061035E96AA7997E8CAC49 /* UserPreferences.swift */; };
 		119ED70E5323E6E963B15D1A /* CalculatorDetailFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC201A185EE17EE9E59944 /* CalculatorDetailFactory.swift */; };
 		180DC48AF704479B28847C90 /* SalaryShareContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B55CB27A3396A252C5D97 /* SalaryShareContent.swift */; };
+		19CD2032A3C53FE5D5957354 /* DisclaimerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824964E9EC4387DE49DC371D /* DisclaimerScreen.swift */; };
 		1A28CE82AF2D5D07EBEAAAD5 /* SchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C0244B16C6850A656325A8 /* SchemaV1.swift */; };
 		1AD722675A40BFD121C6F143 /* GenericShareContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8A52DDF38697B25FBBFBF /* GenericShareContent.swift */; };
 		1BC52A44BA1E36FC2418E7C5 /* SalaryShareRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED05DB4CD4CB44296145A07 /* SalaryShareRenderer.swift */; };
@@ -39,6 +41,7 @@
 		4C802CD6747CF6EA5F5A8F21 /* guide-malta-ssc-contributions-2026-explained.md in Resources */ = {isa = PBXBuildFile; fileRef = 270B7CAAA8AA3CBFFF9414BD /* guide-malta-ssc-contributions-2026-explained.md */; };
 		4D45A5A7BB116E0B8EA3B3D6 /* guide-malta-mortgage-guide-2026.md in Resources */ = {isa = PBXBuildFile; fileRef = CF6FAD2245ED023C73A934D2 /* guide-malta-mortgage-guide-2026.md */; };
 		51117088C8F39182D4B10756 /* SavedCalculationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493BE331389E650E6807A18 /* SavedCalculationStore.swift */; };
+		51D82499220CB42F0B5BAD86 /* WhatsNewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C50B64729A3220F9A644163 /* WhatsNewScreen.swift */; };
 		54D6F4026FD146CAA37182DC /* CalculatorUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFB2F4EBDA9946AC76B983B /* CalculatorUsage.swift */; };
 		553C5188CD8199A7636FCAD7 /* CalculatorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDE7D4117636F59B3F008F7 /* CalculatorCard.swift */; };
 		556DF960D1B45D579BA7318E /* GenericShareRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6193338E11F26405411369 /* GenericShareRenderer.swift */; };
@@ -72,11 +75,13 @@
 		A0506D0FA967D0D4CE93B3BF /* SalaryHistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49720D6446C63D3096C0DBF /* SalaryHistoryStore.swift */; };
 		A1E1652DD06D4385756F0C2D /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A00B96C7E49F500243FA1D4 /* HomeRouter.swift */; };
 		A3B55F09016FA044DEDE2183 /* SalaryCumulativeChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D7264658AB2E77129DB557 /* SalaryCumulativeChart.swift */; };
+		A42B27D42CB94FF9699CA66C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19A9F3FC5F821414CBE9C9F /* SettingsViewModel.swift */; };
 		A5DEC90016A7C04619F0DD92 /* CalculatorsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769CBA9DC5C006A496D6DA5 /* CalculatorsRouter.swift */; };
 		A77F0F527CE7184169DF4E04 /* GuideBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544A5D9615B74C007C9FAB97 /* GuideBookmark.swift */; };
 		B3272830A3B933851135A1A3 /* SavedCalculationStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5030BA1EE3701FD03BCF18BA /* SavedCalculationStoreTests.swift */; };
 		B3CF295AF0F42C1917B04981 /* SalaryInsights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F513E52842C7EB018445340 /* SalaryInsights.swift */; };
 		B405D6274B6630F91E37D49D /* CalculatorCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B7AC1BF35224C8838E58E /* CalculatorCategory.swift */; };
+		B4726FEB248AD83667D38672 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237CD1A946622A6B1B761E1C /* ExportService.swift */; };
 		B5B3A9FE556CC699F9B241BE /* StampDutyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57A8FFD99C0FA3577EBDCC6 /* StampDutyViewModel.swift */; };
 		B6487A2E6F9964EEB5B0D182 /* CalculatorShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5772923034EC8D4D41107245 /* CalculatorShareTests.swift */; };
 		B95D628BEBF695371E962A65 /* SalaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF899578EDD4E9A79BE92085 /* SalaryViewModel.swift */; };
@@ -99,6 +104,7 @@
 		ED303C9630E671F84F652289 /* Shareable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B905C2D355135D34826B966 /* Shareable.swift */; };
 		EE7AAAC6D3422D3D2E4D8224 /* SalarySupplementaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A91AE471607EBED19C9BE0 /* SalarySupplementaryTests.swift */; };
 		F0FC0903F95CC57DD8E513E2 /* StampDutyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AB3B9760D914C20A0A3150 /* StampDutyScreen.swift */; };
+		F1DFC4340309C8A774672590 /* AcknowledgementsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FDD57A820D6636CCBB4D2B7 /* AcknowledgementsScreen.swift */; };
 		F92B35029B9654E390226710 /* guide-malta-rental-income-tax-15-percent-guide.md in Resources */ = {isa = PBXBuildFile; fileRef = 25E3357FB5DBFB164D4026C4 /* guide-malta-rental-income-tax-15-percent-guide.md */; };
 		F93EB8664CA5B5775410D2BC /* PersonalLoanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9C6823592A2D45CA17215D /* PersonalLoanViewModel.swift */; };
 		FC8934C195201F2F72F6FF74 /* CategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C219513F5FA94CE4CEDF0EF /* CategoryHeaderView.swift */; };
@@ -132,6 +138,7 @@
 		0D456B2D06DC5CDF11DF7EE8 /* CalculatorDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorDetailViewModelTests.swift; sourceTree = "<group>"; };
 		0D6C8D78A4223883FBD66997 /* guide-how-to-calculate-net-salary-malta-2026.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-how-to-calculate-net-salary-malta-2026.md"; sourceTree = "<group>"; };
 		0EB399DD91FD3AC40791349C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		0FDD57A820D6636CCBB4D2B7 /* AcknowledgementsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsScreen.swift; sourceTree = "<group>"; };
 		13B1C72AD65F6BC1133AC27C /* SalaryBreakdownDonut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryBreakdownDonut.swift; sourceTree = "<group>"; };
 		13E3E8FDD58C1E3AF80F4174 /* GuideReaderScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideReaderScreen.swift; sourceTree = "<group>"; };
 		15E3E5526C58232B15C7B96D /* RecentlyUsedCalculatorsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyUsedCalculatorsStore.swift; sourceTree = "<group>"; };
@@ -140,6 +147,7 @@
 		1B905C2D355135D34826B966 /* Shareable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shareable.swift; sourceTree = "<group>"; };
 		1C219513F5FA94CE4CEDF0EF /* CategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryHeaderView.swift; sourceTree = "<group>"; };
 		204D44EAD0E645CF48C8478F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		237CD1A946622A6B1B761E1C /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 		247B55CB27A3396A252C5D97 /* SalaryShareContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryShareContent.swift; sourceTree = "<group>"; };
 		25E3357FB5DBFB164D4026C4 /* guide-malta-rental-income-tax-15-percent-guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-rental-income-tax-15-percent-guide.md"; sourceTree = "<group>"; };
 		270B7CAAA8AA3CBFFF9414BD /* guide-malta-ssc-contributions-2026-explained.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-ssc-contributions-2026-explained.md"; sourceTree = "<group>"; };
@@ -157,6 +165,7 @@
 		3F6BEE173BA2ED9E9B2D5B11 /* SalaryNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryNavigationStack.swift; sourceTree = "<group>"; };
 		41C0244B16C6850A656325A8 /* SchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1.swift; sourceTree = "<group>"; };
 		42D7264658AB2E77129DB557 /* SalaryCumulativeChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryCumulativeChart.swift; sourceTree = "<group>"; };
+		4378DC2E84E37BB655AAA241 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
 		4716E52C1E32E14157D12E2D /* SavedCalculation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCalculation.swift; sourceTree = "<group>"; };
 		48B34B3E952B1E7D13DDF3D5 /* GuidesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesRouter.swift; sourceTree = "<group>"; };
 		4B620E757840AA997B6C9320 /* Guide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Guide.swift; sourceTree = "<group>"; };
@@ -177,6 +186,7 @@
 		77032E062C54F311369DE826 /* CalculatorCatalogItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCatalogItem.swift; sourceTree = "<group>"; };
 		7B1990B80CE79226E9799B38 /* HomeNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationStack.swift; sourceTree = "<group>"; };
 		7ED05DB4CD4CB44296145A07 /* SalaryShareRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryShareRenderer.swift; sourceTree = "<group>"; };
+		824964E9EC4387DE49DC371D /* DisclaimerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerScreen.swift; sourceTree = "<group>"; };
 		8493BE331389E650E6807A18 /* SavedCalculationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCalculationStore.swift; sourceTree = "<group>"; };
 		869341FEE0078594059E16AE /* guide-malta-minimum-wage-2026-guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-minimum-wage-2026-guide.md"; sourceTree = "<group>"; };
 		87A91AE471607EBED19C9BE0 /* SalarySupplementaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalarySupplementaryTests.swift; sourceTree = "<group>"; };
@@ -190,12 +200,14 @@
 		9A8286077B8CB7B3F2D7A4BE /* GuidesStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesStoreTests.swift; sourceTree = "<group>"; };
 		9B061035E96AA7997E8CAC49 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		9B2B2029832EBCE8C727E4C9 /* guide-malta-stamp-duty-complete-guide-2026.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-stamp-duty-complete-guide-2026.md"; sourceTree = "<group>"; };
+		9C50B64729A3220F9A644163 /* WhatsNewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewScreen.swift; sourceTree = "<group>"; };
 		9D81CBD21AD3E0A4DD8B6690 /* CalculatorsNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorsNavigationStack.swift; sourceTree = "<group>"; };
 		9E02AC92A3A9D962FA2CBD09 /* CalculationKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CalculationKit; path = Packages/CalculationKit; sourceTree = SOURCE_ROOT; };
 		A6C6958E71C6DF14EC5FED80 /* SalaryShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryShareSheet.swift; sourceTree = "<group>"; };
 		AC9C6823592A2D45CA17215D /* PersonalLoanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalLoanViewModel.swift; sourceTree = "<group>"; };
 		B00D2402531AC47105121240 /* MarkdownBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlock.swift; sourceTree = "<group>"; };
 		B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B19A9F3FC5F821414CBE9C9F /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B3045DD00D8F5D876F098246 /* MortgageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MortgageViewModel.swift; sourceTree = "<group>"; };
 		B33DD602684DA55F016D1232 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		B68B7AC1BF35224C8838E58E /* CalculatorCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCategory.swift; sourceTree = "<group>"; };
@@ -416,9 +428,14 @@
 		BAF0E80AA5486788A908B381 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				0FDD57A820D6636CCBB4D2B7 /* AcknowledgementsScreen.swift */,
+				824964E9EC4387DE49DC371D /* DisclaimerScreen.swift */,
+				237CD1A946622A6B1B761E1C /* ExportService.swift */,
 				34A42FCF3B386343A26597D4 /* SettingsNavigationStack.swift */,
 				EE5548E630FA77423E6502F8 /* SettingsRouter.swift */,
 				B33DD602684DA55F016D1232 /* SettingsScreen.swift */,
+				B19A9F3FC5F821414CBE9C9F /* SettingsViewModel.swift */,
+				9C50B64729A3220F9A644163 /* WhatsNewScreen.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -486,6 +503,7 @@
 				E0F29F70993460AA015D5397 /* SalaryViewModelExtendedTests.swift */,
 				561285B3935AD06138B40FBD /* SalaryViewModelTests.swift */,
 				5030BA1EE3701FD03BCF18BA /* SavedCalculationStoreTests.swift */,
+				4378DC2E84E37BB655AAA241 /* SettingsViewModelTests.swift */,
 			);
 			path = MaltaCalculatorTests;
 			sourceTree = "<group>";
@@ -691,6 +709,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1DFC4340309C8A774672590 /* AcknowledgementsScreen.swift in Sources */,
 				C2EE207041B0A27066C76450 /* AppState.swift in Sources */,
 				553C5188CD8199A7636FCAD7 /* CalculatorCard.swift in Sources */,
 				2B6405B4066CE2F320FB3870 /* CalculatorCatalogItem.swift in Sources */,
@@ -709,6 +728,8 @@
 				6E634251FC90FB71FB8498FF /* ComingSoonScreen.swift in Sources */,
 				9BE76A8D031B973E52C765E6 /* DeepLinkDestination.swift in Sources */,
 				3500D5404052FA1640A70CB2 /* DeepLinkParser.swift in Sources */,
+				19CD2032A3C53FE5D5957354 /* DisclaimerScreen.swift in Sources */,
+				B4726FEB248AD83667D38672 /* ExportService.swift in Sources */,
 				4C22ACB71B2BCFC5F87C2DD8 /* FloatingNetCard.swift in Sources */,
 				1AD722675A40BFD121C6F143 /* GenericShareContent.swift in Sources */,
 				556DF960D1B45D579BA7318E /* GenericShareRenderer.swift in Sources */,
@@ -757,11 +778,13 @@
 				C756109F8B4909FF9ECA3D36 /* SettingsNavigationStack.swift in Sources */,
 				35DB034D63D71DA83154E8CA /* SettingsRouter.swift in Sources */,
 				76151F4483109E2357E1B3EC /* SettingsScreen.swift in Sources */,
+				A42B27D42CB94FF9699CA66C /* SettingsViewModel.swift in Sources */,
 				ED303C9630E671F84F652289 /* Shareable.swift in Sources */,
 				F0FC0903F95CC57DD8E513E2 /* StampDutyScreen.swift in Sources */,
 				B5B3A9FE556CC699F9B241BE /* StampDutyViewModel.swift in Sources */,
 				0FCFC389EFDEBFD3497B7D18 /* UserPreferences.swift in Sources */,
 				7841539BDCEEEC995BDF9321 /* UserPreferencesStore.swift in Sources */,
+				51D82499220CB42F0B5BAD86 /* WhatsNewScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,6 +800,7 @@
 				269986F35BA4EB346361813B /* SalaryViewModelExtendedTests.swift in Sources */,
 				88526C719D29F0E1C0FBCBFE /* SalaryViewModelTests.swift in Sources */,
 				B3272830A3B933851135A1A3 /* SavedCalculationStoreTests.swift in Sources */,
+				04A492B12074EB1282A73DD3 /* SettingsViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

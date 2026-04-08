@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "—" : {
+
+    },
     "%lld active, %lld coming soon, %lld categories, free forever" : {
       "localizations" : {
         "en" : {
@@ -11,10 +14,31 @@
         }
       }
     },
+    "%lld min" : {
+
+    },
+    "%lld percent" : {
+
+    },
+    "•" : {
+
+    },
     "^[%lld calculator](inflect: true)" : {
 
     },
     "^[%lld result](inflect: true)" : {
+
+    },
+    "85%" : {
+
+    },
+    "100%" : {
+
+    },
+    "115%" : {
+
+    },
+    "130%" : {
 
     },
     "app.name" : {
@@ -72,6 +96,75 @@
         }
       }
     },
+    "calculator.info.button" : {
+
+    },
+    "calculator.info.done" : {
+
+    },
+    "calculator.info.hint" : {
+
+    },
+    "calculator.menu.label" : {
+
+    },
+    "calculator.menu.reset" : {
+
+    },
+    "calculator.menu.save" : {
+
+    },
+    "calculator.menu.share" : {
+
+    },
+    "calculator.mortgage.deposit" : {
+
+    },
+    "calculator.mortgage.depositWarning" : {
+
+    },
+    "calculator.mortgage.info.depositLabel" : {
+
+    },
+    "calculator.mortgage.info.depositValue" : {
+
+    },
+    "calculator.mortgage.info.ltvLabel" : {
+
+    },
+    "calculator.mortgage.info.ltvValue" : {
+
+    },
+    "calculator.mortgage.info.pmtLabel" : {
+
+    },
+    "calculator.mortgage.info.pmtValue" : {
+
+    },
+    "calculator.mortgage.loanAmount" : {
+
+    },
+    "calculator.mortgage.ltv" : {
+
+    },
+    "calculator.mortgage.monthlyPayment" : {
+
+    },
+    "calculator.mortgage.propertyPrice" : {
+
+    },
+    "calculator.mortgage.rate" : {
+
+    },
+    "calculator.mortgage.share.subtitle %@" : {
+
+    },
+    "calculator.mortgage.subtitle" : {
+
+    },
+    "calculator.mortgage.term" : {
+
+    },
     "calculator.mortgage.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -82,6 +175,12 @@
           }
         }
       }
+    },
+    "calculator.mortgage.totalCost" : {
+
+    },
+    "calculator.mortgage.totalInterest" : {
+
     },
     "calculator.noticePeriod.title" : {
       "extractionState" : "manual",
@@ -116,6 +215,42 @@
         }
       }
     },
+    "calculator.personalLoan.amount" : {
+
+    },
+    "calculator.personalLoan.info.formulaLabel" : {
+
+    },
+    "calculator.personalLoan.info.formulaValue" : {
+
+    },
+    "calculator.personalLoan.info.rangeLabel" : {
+
+    },
+    "calculator.personalLoan.info.rangeValue" : {
+
+    },
+    "calculator.personalLoan.loanAmount" : {
+
+    },
+    "calculator.personalLoan.monthlyPayment" : {
+
+    },
+    "calculator.personalLoan.payments" : {
+
+    },
+    "calculator.personalLoan.rate" : {
+
+    },
+    "calculator.personalLoan.share.subtitle %@" : {
+
+    },
+    "calculator.personalLoan.subtitle" : {
+
+    },
+    "calculator.personalLoan.term" : {
+
+    },
     "calculator.personalLoan.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -126,6 +261,15 @@
           }
         }
       }
+    },
+    "calculator.personalLoan.totalCost" : {
+
+    },
+    "calculator.personalLoan.totalInterest" : {
+
+    },
+    "calculator.personalLoan.totalRepayment" : {
+
     },
     "calculator.retirementAge.title" : {
       "extractionState" : "manual",
@@ -160,6 +304,78 @@
         }
       }
     },
+    "calculator.savings.effectiveYieldNet" : {
+
+    },
+    "calculator.savings.finalBalanceNet" : {
+
+    },
+    "calculator.savings.share.subtitle %lld" : {
+
+    },
+    "calculator.savings.term" : {
+
+    },
+    "calculator.savings.title" : {
+
+    },
+    "calculator.savings.totalContributions" : {
+
+    },
+    "calculator.savings.totalInterestNet" : {
+
+    },
+    "calculator.savings.withholdingTax" : {
+
+    },
+    "calculator.savingsInterest.contributions" : {
+
+    },
+    "calculator.savingsInterest.finalBalance" : {
+
+    },
+    "calculator.savingsInterest.frequency" : {
+
+    },
+    "calculator.savingsInterest.frequency.monthly" : {
+
+    },
+    "calculator.savingsInterest.frequency.yearly" : {
+
+    },
+    "calculator.savingsInterest.info.formulaLabel" : {
+
+    },
+    "calculator.savingsInterest.info.formulaValue" : {
+
+    },
+    "calculator.savingsInterest.info.taxLabel" : {
+
+    },
+    "calculator.savingsInterest.info.taxValue" : {
+
+    },
+    "calculator.savingsInterest.initialDeposit" : {
+
+    },
+    "calculator.savingsInterest.interestNet" : {
+
+    },
+    "calculator.savingsInterest.monthlyContribution" : {
+
+    },
+    "calculator.savingsInterest.rate" : {
+
+    },
+    "calculator.savingsInterest.subtitle" : {
+
+    },
+    "calculator.savingsInterest.tax" : {
+
+    },
+    "calculator.savingsInterest.term" : {
+
+    },
     "calculator.savingsInterest.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -170,6 +386,63 @@
           }
         }
       }
+    },
+    "calculator.savingsInterest.yield" : {
+
+    },
+    "calculator.stampDuty.amount" : {
+
+    },
+    "calculator.stampDuty.duty" : {
+
+    },
+    "calculator.stampDuty.effectiveRate" : {
+
+    },
+    "calculator.stampDuty.exempted" : {
+
+    },
+    "calculator.stampDuty.firstTimeBuyer" : {
+
+    },
+    "calculator.stampDuty.firstTimeBuyer.hint" : {
+
+    },
+    "calculator.stampDuty.info.exemptionLabel" : {
+
+    },
+    "calculator.stampDuty.info.exemptionValue" : {
+
+    },
+    "calculator.stampDuty.info.maxSavingsLabel" : {
+
+    },
+    "calculator.stampDuty.info.maxSavingsValue" : {
+
+    },
+    "calculator.stampDuty.info.standardLabel" : {
+
+    },
+    "calculator.stampDuty.info.standardValue" : {
+
+    },
+    "calculator.stampDuty.propertyPrice" : {
+
+    },
+    "calculator.stampDuty.savings" : {
+
+    },
+    "calculator.stampDuty.share.subtitle %@" : {
+
+    },
+    "calculator.stampDuty.subtitle" : {
+
+    },
+    "calculator.stampDuty.taxable" : {
+
+    },
+    "calculator.stampDuty.taxableAmount" : {
+
     },
     "calculator.stampDuty.title" : {
       "extractionState" : "manual",
@@ -578,6 +851,66 @@
         }
       }
     },
+    "guides.card.bookmarked" : {
+
+    },
+    "guides.card.hint" : {
+
+    },
+    "guides.card.not-bookmarked" : {
+
+    },
+    "guides.category.banking" : {
+
+    },
+    "guides.category.employment" : {
+
+    },
+    "guides.category.general" : {
+
+    },
+    "guides.category.immigration" : {
+
+    },
+    "guides.category.leave" : {
+
+    },
+    "guides.category.property" : {
+
+    },
+    "guides.category.retirement" : {
+
+    },
+    "guides.category.salary" : {
+
+    },
+    "guides.category.tax" : {
+
+    },
+    "guides.empty.description" : {
+
+    },
+    "guides.empty.title" : {
+
+    },
+    "guides.error.decode-failed" : {
+
+    },
+    "guides.error.description" : {
+
+    },
+    "guides.error.manifest-missing" : {
+
+    },
+    "guides.error.title" : {
+
+    },
+    "guides.filter.accessibility" : {
+
+    },
+    "guides.filter.all" : {
+
+    },
     "guides.placeholder.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -611,6 +944,24 @@
         }
       }
     },
+    "guides.reader.bookmark.add" : {
+
+    },
+    "guides.reader.bookmark.remove" : {
+
+    },
+    "guides.reader.font-size" : {
+
+    },
+    "guides.reader.missing-content" : {
+
+    },
+    "guides.reader.progress.label" : {
+
+    },
+    "guides.reader.share" : {
+
+    },
     "guides.reader.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -621,6 +972,15 @@
           }
         }
       }
+    },
+    "guides.search.prompt" : {
+
+    },
+    "guides.section.all" : {
+
+    },
+    "guides.section.bookmarked" : {
+
     },
     "guides.title" : {
       "extractionState" : "manual",
@@ -2227,301 +2587,14 @@
         }
       }
     },
-    "stepper.decrease" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Decrease"
-          }
-        }
-      }
+    "share.card.footer" : {
+
     },
-    "stepper.decrease.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Decreases the value by one"
-          }
-        }
-      }
+    "share.pdf.disclaimer" : {
+
     },
-    "stepper.increase" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Increase"
-          }
-        }
-      }
-    },
-    "stepper.increase.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Increases the value by one"
-          }
-        }
-      }
-    },
-    "tab.calculators" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculators"
-          }
-        }
-      }
-    },
-    "tab.calculators.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the list of all calculators"
-          }
-        }
-      }
-    },
-    "tab.guides" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guides"
-          }
-        }
-      }
-    },
-    "tab.guides.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens financial guides and articles"
-          }
-        }
-      }
-    },
-    "tab.home" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Home"
-          }
-        }
-      }
-    },
-    "tab.home.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the home screen with featured calculators"
-          }
-        }
-      }
-    },
-    "tab.salary" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salary"
-          }
-        }
-      }
-    },
-    "tab.salary.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the salary calculator"
-          }
-        }
-      }
-    },
-    "tab.settings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
-          }
-        }
-      }
-    },
-    "tab.settings.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens app settings"
-          }
-        }
-      }
-    },
-    "salary.error.title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unable to Load"
-          }
-        }
-      }
-    },
-    "salary.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salary Calculator"
-          }
-        }
-      }
-    },
-    "screen.comingSoon.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming soon. This feature is under development."
-          }
-        }
-      }
-    },
-    "screen.comingSoon.calculatorDescription %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The %@ calculator is under development."
-          }
-        }
-      }
-    },
-    "screen.comingSoon.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This feature is under development."
-          }
-        }
-      }
-    },
-    "screen.comingSoon.label" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming soon"
-          }
-        }
-      }
-    },
-    "screen.comingSoon.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming Soon"
-          }
-        }
-      }
-    },
-    "settings.about.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About"
-          }
-        }
-      }
-    },
-    "settings.acknowledgements.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acknowledgements"
-          }
-        }
-      }
-    },
-    "settings.disclaimer.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disclaimer"
-          }
-        }
-      }
-    },
-    "settings.placeholder.accessibilityLabel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings screen. App settings will appear here."
-          }
-        }
-      }
-    },
-    "settings.placeholder.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App settings will appear here."
-          }
-        }
-      }
-    },
-    "settings.placeholder.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
-          }
-        }
-      }
+    "share.text.footer" : {
+
     },
     "stepper.decrease" : {
       "extractionState" : "manual",
