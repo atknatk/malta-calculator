@@ -11,39 +11,27 @@ import SwiftUI
 /// The real navigation tree (TabView with Home / Salary / Calculators /
 /// Guides / Settings) lands in Task 05. For now this view exists so the
 /// app launches with a recognisable Malta Calculator surface and so the
-/// `DesignSystem.liquidGlass()` modifier is exercised end-to-end.
+/// `DesignSystem` components are exercised end-to-end.
 struct RootView: View {
     var body: some View {
         ZStack {
-            backgroundLayer
-            VStack(spacing: 16) {
+            MeshBackground()
+            VStack(spacing: DSSpacing.md) {
                 Image(systemName: "sparkles")
                     .font(.system(size: 60))
-                    .foregroundStyle(.tint)
+                    .foregroundStyle(DSColor.maltaGold)
                     .accessibilityHidden(true)
-                Text("Malta Calculator")
-                    .font(.system(.largeTitle, design: .serif, weight: .bold))
+                GradientText("Malta Calculator", font: DSFont.displayS)
                 Text("Coming soon")
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.bodyM)
+                    .foregroundStyle(DSColor.textSecondary)
             }
-            .padding(40)
+            .padding(DSSpacing.xxl)
             .liquidGlass()
             .padding()
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Malta Calculator. Coming soon.")
         }
-    }
-
-    private var backgroundLayer: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.98, green: 0.97, blue: 0.95),
-                Color(red: 0.95, green: 0.91, blue: 0.84)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
     }
 }
 
