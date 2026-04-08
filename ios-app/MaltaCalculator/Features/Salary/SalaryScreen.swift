@@ -13,6 +13,8 @@ struct SalaryScreen: View {
     @State private var vm = SalaryViewModel()
     @Environment(AppState.self) private var appState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @ScaledMetric private var cardSpacing: CGFloat = DSSpacing.lg
 
     var body: some View {
         Group {
@@ -65,13 +67,16 @@ struct SalaryScreen: View {
     // MARK: - State Views
 
     private var loadingView: some View {
-        VStack(spacing: DSSpacing.lg) {
-            ProgressView().tint(DSColor.maltaGold)
-            Text("salary.loading")
-                .font(DSFont.bodyM)
-                .foregroundStyle(DSColor.textSecondary)
+        ScrollView {
+            VStack(spacing: cardSpacing) {
+                DSSkeletonCard()
+                DSSkeletonCard()
+                DSSkeletonCard()
+            }
+            .padding(.horizontal, DSSpacing.md)
+            .padding(.top, DSSpacing.md)
+            .padding(.bottom, DSSpacing.xxl)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityLabel(Text("salary.loading"))
     }
 
@@ -86,22 +91,12 @@ struct SalaryScreen: View {
     }
 
     private func errorView(message: String) -> some View {
-        VStack(spacing: DSSpacing.lg) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 40))
-                .foregroundStyle(DSColor.danger)
-                .accessibilityHidden(true)
-            Text("salary.error.message")
-                .font(DSFont.bodyM)
-                .foregroundStyle(DSColor.textSecondary)
-                .multilineTextAlignment(.center)
-            DSButton(
-                "salary.error.retry",
-                variant: .secondary
-            ) { vm.retry() }
-        }
-        .padding(DSSpacing.xl)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        DSErrorState(
+            title: "salary.error.title",
+            description: "salary.error.message",
+            icon: "exclamationmark.triangle",
+            retryAction: { vm.retry() }
+        )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("salary.error.a11yLabel"))
         .accessibilityHint(Text("salary.error.a11yHint"))
@@ -111,7 +106,7 @@ struct SalaryScreen: View {
 
     private var contentView: some View {
         ScrollView {
-            VStack(spacing: DSSpacing.lg) {
+            VStack(spacing: cardSpacing) {
                 headerSection
                 SalaryInputCard(vm: vm)
                 summaryCard

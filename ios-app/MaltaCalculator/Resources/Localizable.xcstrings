@@ -2079,6 +2079,16 @@
           }
         }
       }
+    },
+    "salary.error.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unable to Load"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
