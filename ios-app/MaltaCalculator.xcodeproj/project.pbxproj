@@ -72,6 +72,24 @@
 		B100000000000000000000C7 /* SavingsInterestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F100000000000000000000C7 /* SavingsInterestScreen.swift */; };
 		B100000000000000000000C8 /* SavingsInterestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F100000000000000000000C8 /* SavingsInterestViewModel.swift */; };
 		B100000000000000000000C9 /* CalculatorDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F100000000000000000000C9 /* CalculatorDetailViewModelTests.swift */; };
+		D200000000000000000000A1 /* Guide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100000000000000000000A1 /* Guide.swift */; };
+		D200000000000000000000A2 /* GuidesViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100000000000000000000A2 /* GuidesViewState.swift */; };
+		D200000000000000000000A3 /* GuidesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100000000000000000000A3 /* GuidesStore.swift */; };
+		D200000000000000000000A4 /* GuideCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100000000000000000000A4 /* GuideCard.swift */; };
+		D200000000000000000000A5 /* GuideReaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100000000000000000000A5 /* GuideReaderScreen.swift */; };
+		D200000000000000000000A6 /* MarkdownBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100000000000000000000A6 /* MarkdownBlock.swift */; };
+		E200000000000000000000B1 /* guide-how-to-calculate-net-salary-malta-2026.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B1 /* guide-how-to-calculate-net-salary-malta-2026.md */; };
+		E200000000000000000000B2 /* guide-malta-mortgage-guide-2026.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B2 /* guide-malta-mortgage-guide-2026.md */; };
+		E200000000000000000000B3 /* guide-malta-ssc-contributions-2026-explained.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B3 /* guide-malta-ssc-contributions-2026-explained.md */; };
+		E200000000000000000000B4 /* guide-malta-stamp-duty-complete-guide-2026.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B4 /* guide-malta-stamp-duty-complete-guide-2026.md */; };
+		E200000000000000000000B5 /* guide-malta-tax-rates-2026-complete-guide.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B5 /* guide-malta-tax-rates-2026-complete-guide.md */; };
+		E200000000000000000000B6 /* guide-malta-minimum-wage-2026-guide.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B6 /* guide-malta-minimum-wage-2026-guide.md */; };
+		E200000000000000000000B7 /* guide-malta-public-holidays-2026-complete-guide.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B7 /* guide-malta-public-holidays-2026-complete-guide.md */; };
+		E200000000000000000000B8 /* guide-malta-pension-system-2026-guide.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B8 /* guide-malta-pension-system-2026-guide.md */; };
+		E200000000000000000000B9 /* guide-malta-rental-income-tax-15-percent-guide.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000B9 /* guide-malta-rental-income-tax-15-percent-guide.md */; };
+		E200000000000000000000BA /* guide-malta-vacation-leave-entitlement-2026.md in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000BA /* guide-malta-vacation-leave-entitlement-2026.md */; };
+		E200000000000000000000BB /* guides-manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = E100000000000000000000BB /* guides-manifest.json */; };
+		F300000000000000000000B0 /* GuidesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F300000000000000000000A0 /* GuidesStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +180,24 @@
 		F100000000000000000000C7 /* SavingsInterestScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsInterestScreen.swift; sourceTree = "<group>"; };
 		F100000000000000000000C8 /* SavingsInterestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsInterestViewModel.swift; sourceTree = "<group>"; };
 		F100000000000000000000C9 /* CalculatorDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorDetailViewModelTests.swift; sourceTree = "<group>"; };
+		D100000000000000000000A1 /* Guide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Guide.swift; sourceTree = "<group>"; };
+		D100000000000000000000A2 /* GuidesViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesViewState.swift; sourceTree = "<group>"; };
+		D100000000000000000000A3 /* GuidesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesStore.swift; sourceTree = "<group>"; };
+		D100000000000000000000A4 /* GuideCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideCard.swift; sourceTree = "<group>"; };
+		D100000000000000000000A5 /* GuideReaderScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideReaderScreen.swift; sourceTree = "<group>"; };
+		D100000000000000000000A6 /* MarkdownBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlock.swift; sourceTree = "<group>"; };
+		E100000000000000000000B1 /* guide-how-to-calculate-net-salary-malta-2026.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-how-to-calculate-net-salary-malta-2026.md"; sourceTree = "<group>"; };
+		E100000000000000000000B2 /* guide-malta-mortgage-guide-2026.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-mortgage-guide-2026.md"; sourceTree = "<group>"; };
+		E100000000000000000000B3 /* guide-malta-ssc-contributions-2026-explained.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-ssc-contributions-2026-explained.md"; sourceTree = "<group>"; };
+		E100000000000000000000B4 /* guide-malta-stamp-duty-complete-guide-2026.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-stamp-duty-complete-guide-2026.md"; sourceTree = "<group>"; };
+		E100000000000000000000B5 /* guide-malta-tax-rates-2026-complete-guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-tax-rates-2026-complete-guide.md"; sourceTree = "<group>"; };
+		E100000000000000000000B6 /* guide-malta-minimum-wage-2026-guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-minimum-wage-2026-guide.md"; sourceTree = "<group>"; };
+		E100000000000000000000B7 /* guide-malta-public-holidays-2026-complete-guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-public-holidays-2026-complete-guide.md"; sourceTree = "<group>"; };
+		E100000000000000000000B8 /* guide-malta-pension-system-2026-guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-pension-system-2026-guide.md"; sourceTree = "<group>"; };
+		E100000000000000000000B9 /* guide-malta-rental-income-tax-15-percent-guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-rental-income-tax-15-percent-guide.md"; sourceTree = "<group>"; };
+		E100000000000000000000BA /* guide-malta-vacation-leave-entitlement-2026.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "guide-malta-vacation-leave-entitlement-2026.md"; sourceTree = "<group>"; };
+		E100000000000000000000BB /* guides-manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "guides-manifest.json"; sourceTree = "<group>"; };
+		F300000000000000000000A0 /* GuidesStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesStoreTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +239,17 @@
 			children = (
 				3B2D94468F50ECFF9CA19CE6 /* Assets.xcassets */,
 				B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */,
+				E100000000000000000000BB /* guides-manifest.json */,
+				E100000000000000000000B1 /* guide-how-to-calculate-net-salary-malta-2026.md */,
+				E100000000000000000000B6 /* guide-malta-minimum-wage-2026-guide.md */,
+				E100000000000000000000B2 /* guide-malta-mortgage-guide-2026.md */,
+				E100000000000000000000B8 /* guide-malta-pension-system-2026-guide.md */,
+				E100000000000000000000B7 /* guide-malta-public-holidays-2026-complete-guide.md */,
+				E100000000000000000000B9 /* guide-malta-rental-income-tax-15-percent-guide.md */,
+				E100000000000000000000B3 /* guide-malta-ssc-contributions-2026-explained.md */,
+				E100000000000000000000B4 /* guide-malta-stamp-duty-complete-guide-2026.md */,
+				E100000000000000000000B5 /* guide-malta-tax-rates-2026-complete-guide.md */,
+				E100000000000000000000BA /* guide-malta-vacation-leave-entitlement-2026.md */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -337,9 +384,15 @@
 		DC4F7714F4AC15789F1F1B4F /* Guides */ = {
 			isa = PBXGroup;
 			children = (
+				D100000000000000000000A1 /* Guide.swift */,
+				D100000000000000000000A4 /* GuideCard.swift */,
+				D100000000000000000000A5 /* GuideReaderScreen.swift */,
 				D0B587E8159BD0D50C0B0A95 /* GuidesListScreen.swift */,
 				2FCAE694A6EA2741F6CC8668 /* GuidesNavigationStack.swift */,
 				48B34B3E952B1E7D13DDF3D5 /* GuidesRouter.swift */,
+				D100000000000000000000A3 /* GuidesStore.swift */,
+				D100000000000000000000A2 /* GuidesViewState.swift */,
+				D100000000000000000000A6 /* MarkdownBlock.swift */,
 			);
 			path = Guides;
 			sourceTree = "<group>";
@@ -349,6 +402,7 @@
 			children = (
 				29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */,
 				F100000000000000000000C9 /* CalculatorDetailViewModelTests.swift */,
+				F300000000000000000000A0 /* GuidesStoreTests.swift */,
 				87A91AE471607EBED19C9BE0 /* SalarySupplementaryTests.swift */,
 				E0F29F70993460AA015D5397 /* SalaryViewModelExtendedTests.swift */,
 				561285B3935AD06138B40FBD /* SalaryViewModelTests.swift */,
@@ -537,6 +591,17 @@
 				2674F2F102D4F2AFC2096603 /* Assets.xcassets in Resources */,
 				6D900C222EB01C3329C58E30 /* Localizable.xcstrings in Resources */,
 				29C80428C863DABC3703E096 /* PrivacyInfo.xcprivacy in Resources */,
+				E200000000000000000000BB /* guides-manifest.json in Resources */,
+				E200000000000000000000B1 /* guide-how-to-calculate-net-salary-malta-2026.md in Resources */,
+				E200000000000000000000B2 /* guide-malta-mortgage-guide-2026.md in Resources */,
+				E200000000000000000000B3 /* guide-malta-ssc-contributions-2026-explained.md in Resources */,
+				E200000000000000000000B4 /* guide-malta-stamp-duty-complete-guide-2026.md in Resources */,
+				E200000000000000000000B5 /* guide-malta-tax-rates-2026-complete-guide.md in Resources */,
+				E200000000000000000000B6 /* guide-malta-minimum-wage-2026-guide.md in Resources */,
+				E200000000000000000000B7 /* guide-malta-public-holidays-2026-complete-guide.md in Resources */,
+				E200000000000000000000B8 /* guide-malta-pension-system-2026-guide.md in Resources */,
+				E200000000000000000000B9 /* guide-malta-rental-income-tax-15-percent-guide.md in Resources */,
+				E200000000000000000000BA /* guide-malta-vacation-leave-entitlement-2026.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,9 +666,15 @@
 				9BE76A8D031B973E52C765E6 /* DeepLinkDestination.swift in Sources */,
 				3500D5404052FA1640A70CB2 /* DeepLinkParser.swift in Sources */,
 				4C22ACB71B2BCFC5F87C2DD8 /* FloatingNetCard.swift in Sources */,
+				D200000000000000000000A1 /* Guide.swift in Sources */,
+				D200000000000000000000A4 /* GuideCard.swift in Sources */,
+				D200000000000000000000A5 /* GuideReaderScreen.swift in Sources */,
 				82BED4CE2167852339F9B389 /* GuidesListScreen.swift in Sources */,
 				55A8BBB6A610C51F336CC587 /* GuidesNavigationStack.swift in Sources */,
 				226117E2D6212FBEF53D2A74 /* GuidesRouter.swift in Sources */,
+				D200000000000000000000A3 /* GuidesStore.swift in Sources */,
+				D200000000000000000000A2 /* GuidesViewState.swift in Sources */,
+				D200000000000000000000A6 /* MarkdownBlock.swift in Sources */,
 				967011AD45892F28800F04AB /* HomeNavigationStack.swift in Sources */,
 				A1E1652DD06D4385756F0C2D /* HomeRouter.swift in Sources */,
 				72D367D2CB7E9A85324E6E51 /* HomeScreen.swift in Sources */,
@@ -640,6 +711,7 @@
 			files = (
 				97E3BBB34CB523F32A572B26 /* MaltaCalculatorTests.swift in Sources */,
 				B100000000000000000000C9 /* CalculatorDetailViewModelTests.swift in Sources */,
+				F300000000000000000000B0 /* GuidesStoreTests.swift in Sources */,
 				EE7AAAC6D3422D3D2E4D8224 /* SalarySupplementaryTests.swift in Sources */,
 				269986F35BA4EB346361813B /* SalaryViewModelExtendedTests.swift in Sources */,
 				88526C719D29F0E1C0FBCBFE /* SalaryViewModelTests.swift in Sources */,
