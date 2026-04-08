@@ -1,12 +1,10 @@
 {
-  "generatedAt": "2026-04-08T23:00:00Z",
   "input": {
     "birthYear": 1985
   },
   "expected": {
     "retirementAge": 65,
-    "retirementYear": 2050,
-    "yearsUntilRetirement": 24,
-    "eligibleForEarlyRetirement": false
-  }
+    "retirementYear": 2050
+  },
+  "generatedAt": "2026-04-08T22:08:51.888Z"
 }

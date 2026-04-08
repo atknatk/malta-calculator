@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-08T23:00:00Z",
   "input": {
-    "propertyPrice": 120000,
+    "propertyPrice": 200000,
     "depositPercent": 20,
     "interestRate": 0,
     "loanTermYears": 10
   },
   "expected": {
-    "loanAmount": 96000,
-    "depositAmount": 24000,
-    "monthlyPayment": 800,
+    "loanAmount": 160000,
+    "depositAmount": 40000,
+    "monthlyPayment": 1333.33,
     "totalInterest": 0,
-    "totalCost": 96000,
+    "totalCost": 160000,
     "ltvRatio": 80,
     "numberOfPayments": 120
-  }
+  },
+  "generatedAt": "2026-04-08T22:08:51.886Z"
 }

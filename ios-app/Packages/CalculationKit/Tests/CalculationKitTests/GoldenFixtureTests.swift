@@ -586,4 +586,121 @@ struct ImportVehicleGoldenTests {
     }
 }
 
+// MARK: - New Golden Fixtures (salary_2026_high_earner_75k, salary_with_cola, salary_part_time_b, pension_with_private)
+
+@Suite("Golden: Salary High Earner")
+struct SalaryHighEarnerGoldenTests {
+    @Test("2026 single 75k high earner matches web golden")
+    func salary2026HighEarner75k() async throws {
+        let fixture: GoldenFixture<WebSalaryFixtureInput, [WebSalaryExpected]> =
+            try GoldenLoader.load("salary_2026_high_earner_75k")
+
+        let config = fixture.input.config.toConfig()
+        let inputs = fixture.input.inputs.map { $0.toSalaryInput() }
+
+        let taxConfig = try await TaxConfigStore.shared.load()
+        let calculator = SalaryCalculator(config: config, taxConfig: taxConfig)
+        let output = try calculator.calculate(inputs: inputs)
+
+        try #require(output.count == fixture.expected.count)
+        for (actual, expected) in zip(output, fixture.expected) {
+            assertMoney(actual.net, expected.net, label: "\(actual.month) net")
+            assertMoney(actual.sscTax, expected.sscTax, label: "\(actual.month) sscTax")
+            assertMoney(actual.incomeTax, expected.incomeTax, label: "\(actual.month) incomeTax")
+            assertMoney(actual.grossTotal, expected.grossTotal, label: "\(actual.month) grossTotal")
+            assertMoney(actual.governmentBonus, expected.governmentBonus, label: "\(actual.month) govBonus")
+        }
+    }
+}
+
+@Suite("Golden: Salary with COLA")
+struct SalaryWithColaGoldenTests {
+    @Test("2026 single 30k with COLA matches web golden")
+    func salaryWithCola() async throws {
+        let fixture: GoldenFixture<WebSalaryFixtureInput, [WebSalaryExpected]> =
+            try GoldenLoader.load("salary_with_cola")
+
+        let config = fixture.input.config.toConfig()
+        let inputs = fixture.input.inputs.map { $0.toSalaryInput() }
+
+        let taxConfig = try await TaxConfigStore.shared.load()
+        let calculator = SalaryCalculator(config: config, taxConfig: taxConfig)
+        let output = try calculator.calculate(inputs: inputs)
+
+        try #require(output.count == fixture.expected.count)
+        for (actual, expected) in zip(output, fixture.expected) {
+            assertMoney(actual.net, expected.net, label: "\(actual.month) net")
+            assertMoney(actual.sscTax, expected.sscTax, label: "\(actual.month) sscTax")
+            assertMoney(actual.incomeTax, expected.incomeTax, label: "\(actual.month) incomeTax")
+            assertMoney(actual.governmentBonus, expected.governmentBonus, label: "\(actual.month) govBonus")
+        }
+        // Verify COLA months have non-zero government bonus
+        let marchOutput = output.first(where: { $0.month == .march })
+        #expect(marchOutput?.governmentBonus ?? 0 > 0, "March should have COLA bonus")
+    }
+}
+
+@Suite("Golden: Salary Part-Time B")
+struct SalaryPartTimeBGoldenTests {
+    @Test("2026 single 12k part-time cat B matches web golden")
+    func salaryPartTimeB() async throws {
+        let fixture: GoldenFixture<WebSalaryFixtureInput, [WebSalaryExpected]> =
+            try GoldenLoader.load("salary_part_time_b")
+
+        let config = fixture.input.config.toConfig()
+        let inputs = fixture.input.inputs.map { $0.toSalaryInput() }
+
+        let taxConfig = try await TaxConfigStore.shared.load()
+        let calculator = SalaryCalculator(config: config, taxConfig: taxConfig)
+        let output = try calculator.calculate(inputs: inputs)
+
+        try #require(output.count == fixture.expected.count)
+        for (actual, expected) in zip(output, fixture.expected) {
+            assertMoney(actual.net, expected.net, label: "\(actual.month) net")
+            assertMoney(actual.sscTax, expected.sscTax, label: "\(actual.month) sscTax")
+            assertMoney(actual.incomeTax, expected.incomeTax, label: "\(actual.month) incomeTax")
+        }
+    }
+}
+
+@Suite("Golden: Pension with Private Contribution")
+struct PensionWithPrivateGoldenTests {
+    private struct PensionWithPrivateExpected: Decodable {
+        let isEligible: Bool
+        let retirementAge: Int
+        let requiredYears: Int
+        let effectiveYears: Int
+        let pensionableIncome: Decimal
+        let isMPICapped: Bool
+        let baseAnnualPension: Decimal
+        let annualPension: Decimal
+        let monthlyPension: Decimal
+        let privateTaxCredit: Decimal
+        let privateContribution: Decimal
+        let annualCola: Decimal
+    }
+
+    @Test("Married with private pension contribution matches web golden")
+    func pensionWithPrivate() throws {
+        let fixture: GoldenFixture<PensionInput, PensionWithPrivateExpected> =
+            try GoldenLoader.load("pension_with_private")
+
+        let calc = PensionCalculator()
+        let output = calc.calculate(input: fixture.input)
+
+        #expect(output.isEligible == fixture.expected.isEligible)
+        #expect(output.retirementAge == fixture.expected.retirementAge)
+        #expect(output.requiredYears == fixture.expected.requiredYears)
+        #expect(output.effectiveYears == fixture.expected.effectiveYears)
+        #expect(output.isMPICapped == fixture.expected.isMPICapped)
+        assertMoney(output.pensionableIncome, fixture.expected.pensionableIncome, label: "pensionableIncome")
+        assertMoney(output.baseAnnualPension, fixture.expected.baseAnnualPension, label: "baseAnnualPension")
+        assertMoney(output.annualPension, fixture.expected.annualPension, label: "annualPension")
+        assertMoney(output.monthlyPension, fixture.expected.monthlyPension, label: "monthlyPension")
+        assertMoney(output.privateTaxCredit, fixture.expected.privateTaxCredit, label: "privateTaxCredit")
+        assertMoney(output.privateContribution, fixture.expected.privateContribution, label: "privateContribution")
+        assertMoney(output.annualCola, fixture.expected.annualCola, label: "annualCola")
+    }
+}
+
 // TaxConfigStore concurrency tests moved to TaxConfigStoreTests.swift

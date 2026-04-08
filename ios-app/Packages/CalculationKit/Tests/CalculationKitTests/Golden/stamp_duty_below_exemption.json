@@ -1,5 +1,4 @@
 {
-  "generatedAt": "2026-04-08T23:00:00Z",
   "input": {
     "propertyPrice": 180000,
     "isFirstTimeBuyer": true
@@ -9,5 +8,6 @@
     "exemptedAmount": 180000,
     "taxableAmount": 0,
     "savings": 9000
-  }
+  },
+  "generatedAt": "2026-04-08T22:08:51.887Z"
 }

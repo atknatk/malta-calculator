@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-08T23:00:00Z",
   "input": {
     "loanAmount": 50000,
     "interestRate": 6,
     "loanTermMonths": 84
   },
   "expected": {
-    "monthlyPayment": 730.47,
+    "monthlyPayment": 730.43,
     "totalRepayment": 61355.93,
     "totalInterest": 11355.93,
     "numberOfPayments": 84
-  }
+  },
+  "generatedAt": "2026-04-08T22:08:51.887Z"
 }

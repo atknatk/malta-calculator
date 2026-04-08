@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-08T23:00:00Z",
   "input": {
     "familyMemberCount": 3,
-    "scheme": "family-reunification"
+    "scheme": "family_reunification"
   },
   "expected": {
-    "minimumRequired": 39961.6,
-    "incomeType": "gross",
-    "baseWage": 24976,
-    "additionalAmount": 14985.6,
+    "minimumRequired": 30304,
+    "incomeType": "net",
+    "baseWage": 18940,
+    "additionalAmount": 11364,
     "percentagePerMember": 20
-  }
+  },
+  "generatedAt": "2026-04-08T22:08:51.889Z"
 }

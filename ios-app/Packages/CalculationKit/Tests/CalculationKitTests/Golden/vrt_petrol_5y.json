@@ -1,5 +1,4 @@
 {
-  "generatedAt": "2026-04-08T23:00:00Z",
   "input": {
     "vehicleType": "car",
     "vehicleAge": 5,
@@ -7,8 +6,7 @@
   },
   "expected": {
     "testFee": 36,
-    "retestFee": 18,
-    "nextTestDue": 12,
-    "frequency": "Annual"
-  }
+    "retestFee": 18
+  },
+  "generatedAt": "2026-04-08T22:08:51.890Z"
 }

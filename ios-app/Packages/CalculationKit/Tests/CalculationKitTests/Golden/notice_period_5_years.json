@@ -1,12 +1,10 @@
 {
   "input": {
-    "monthsOfService": 60,
-    "isInProbation": false
+    "monthsOfService": 60
   },
   "expected": {
     "weeks": 8,
-    "days": 56,
-    "isInProbation": false
+    "days": 56
   },
-  "generatedAt": "2026-04-08T00:00:00.000Z"
+  "generatedAt": "2026-04-08T22:08:51.888Z"
 }

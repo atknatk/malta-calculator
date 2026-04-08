@@ -1,5 +1,4 @@
 {
-  "generatedAt": "2026-04-08T23:00:00Z",
   "input": {
     "engineCapacity": 1600,
     "co2Emissions": 140,
@@ -11,7 +10,7 @@
   "expected": {
     "annualFee": 170,
     "baseFee": 130,
-    "co2Surcharge": 40,
-    "ecoDiscount": 0
-  }
+    "co2Surcharge": 40
+  },
+  "generatedAt": "2026-04-08T22:08:51.889Z"
 }
