@@ -1,0 +1,14 @@
+{
+  "input": {
+    "familyMemberCount": 3,
+    "scheme": "family-member-policy"
+  },
+  "expected": {
+    "minimumRequired": 30304,
+    "incomeType": "net",
+    "baseWage": 18940,
+    "additionalAmount": 11364,
+    "percentagePerMember": 20
+  },
+  "generatedAt": "2026-04-08T22:08:51.889Z"
+}

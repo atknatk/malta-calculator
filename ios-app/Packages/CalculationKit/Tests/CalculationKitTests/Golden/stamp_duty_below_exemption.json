@@ -1,0 +1,13 @@
+{
+  "input": {
+    "propertyPrice": 180000,
+    "isFirstTimeBuyer": true
+  },
+  "expected": {
+    "stampDuty": 0,
+    "exemptedAmount": 180000,
+    "taxableAmount": 0,
+    "savings": 9000
+  },
+  "generatedAt": "2026-04-08T22:08:51.887Z"
+}

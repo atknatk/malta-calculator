@@ -1,0 +1,14 @@
+{
+  "input": {
+    "vehicleType": "car",
+    "plateType": "random",
+    "isImported": false
+  },
+  "expected": {
+    "administrationFee": 15,
+    "platesFee": 70,
+    "vrtInspectionFee": 0,
+    "totalFee": 215
+  },
+  "generatedAt": "2026-04-08T22:08:51.890Z"
+}

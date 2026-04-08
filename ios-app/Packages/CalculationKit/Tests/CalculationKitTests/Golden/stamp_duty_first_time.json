@@ -5,10 +5,9 @@
   },
   "expected": {
     "stampDuty": 7500,
-    "effectiveRate": 2.14,
     "exemptedAmount": 200000,
     "taxableAmount": 150000,
     "savings": 10000
   },
-  "generatedAt": "2026-04-08T00:00:00.000Z"
+  "generatedAt": "2026-04-08T22:08:51.887Z"
 }

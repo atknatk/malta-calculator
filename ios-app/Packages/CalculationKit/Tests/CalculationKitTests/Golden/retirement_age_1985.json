@@ -1,10 +1,10 @@
 {
   "input": {
-    "monthsOfService": 60
+    "birthYear": 1985
   },
   "expected": {
-    "weeks": 8,
-    "days": 56
+    "retirementAge": 65,
+    "retirementYear": 2050
   },
   "generatedAt": "2026-04-08T22:08:51.888Z"
 }

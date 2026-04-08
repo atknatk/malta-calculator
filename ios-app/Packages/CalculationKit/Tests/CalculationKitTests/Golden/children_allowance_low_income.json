@@ -1,0 +1,23 @@
+{
+  "input": {
+    "grossIncome": 8000,
+    "sscPaid": 500,
+    "rentIncome": 0,
+    "interestIncome": 0,
+    "pensionIncome": 0,
+    "maintenanceIncome": 0,
+    "otherIncome": 0,
+    "taxPaid": 0,
+    "numberOfChildren": 2
+  },
+  "expected": {
+    "totalIncome": 8000,
+    "netIncome": 7500,
+    "weeklyPerChild": 27.29,
+    "yearlyPerChild": 1419.08,
+    "yearlyForAll": 2838.16,
+    "quarterlyPayment": 709.54,
+    "rateType": "maximum"
+  },
+  "generatedAt": "2026-04-08T22:08:51.889Z"
+}

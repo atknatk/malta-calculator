@@ -1,0 +1,18 @@
+{
+  "input": {
+    "initialDeposit": 50000,
+    "monthlyContribution": 200,
+    "interestRate": 4,
+    "years": 10,
+    "compoundingFrequency": "yearly"
+  },
+  "expected": {
+    "finalBalanceGross": 102826.87,
+    "totalContributions": 74000,
+    "totalInterestGross": 28826.87,
+    "withholdingTax": 4324.03,
+    "totalInterestNet": 24502.84,
+    "finalBalanceNet": 98502.84
+  },
+  "generatedAt": "2026-04-08T22:08:51.887Z"
+}

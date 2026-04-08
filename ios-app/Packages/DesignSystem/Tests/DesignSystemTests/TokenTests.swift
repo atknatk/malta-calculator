@@ -199,11 +199,12 @@ struct ShadowTests {
 
     @Test("allValues contains all non-none shadows")
     func allValues() {
-        #expect(DSShadow.allValues.count == 4)
+        #expect(DSShadow.allValues.count == 5)
         #expect(DSShadow.allValues.contains(DSShadow.card))
         #expect(DSShadow.allValues.contains(DSShadow.elevated))
         #expect(DSShadow.allValues.contains(DSShadow.glow))
         #expect(DSShadow.allValues.contains(DSShadow.pressed))
+        #expect(DSShadow.allValues.contains(DSShadow.high))
     }
 
     @Test("allValuesIncludingNone contains all shadows")

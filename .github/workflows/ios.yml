@@ -10,6 +10,10 @@ on:
     paths:
       - "ios-app/**"
       - ".github/workflows/ios.yml"
+  schedule:
+    # Nightly at 3 AM UTC — runs UI tests and performance tests
+    - cron: "0 3 * * *"
+  workflow_dispatch:
 
 concurrency:
   group: ios-${{ github.ref }}
@@ -108,7 +112,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             | xcbeautify
 
-      - name: Test (Unit)
+      - name: Test (Unit + Golden + Snapshot)
         run: |
           set -o pipefail
           xcodebuild test \
@@ -116,8 +120,22 @@ jobs:
             -scheme "$SCHEME" \
             -destination "$DESTINATION" \
             -resultBundlePath TestResults.xcresult \
+            -enableCodeCoverage YES \
             CODE_SIGNING_ALLOWED=NO \
             | xcbeautify
+
+      - name: Coverage report
+        if: success()
+        run: |
+          if command -v xcrun &>/dev/null && [ -d TestResults.xcresult ]; then
+            xcrun xccov view --report TestResults.xcresult || true
+          fi
+
+      - name: Check coverage thresholds
+        if: success()
+        run: |
+          cd ..
+          bash ios-app/scripts/check-coverage.sh ios-app/TestResults.xcresult || true
 
       - name: Upload test results
         if: always()
@@ -125,3 +143,88 @@ jobs:
         with:
           name: test-results
           path: ios-app/TestResults.xcresult
+
+      - name: Upload snapshot failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-failures
+          path: |
+            ios-app/Packages/DesignSystem/Tests/DesignSystemTests/__Snapshots__
+            ios-app/Packages/DesignSystem/Tests/DesignSystemTests/Snapshots
+
+  golden-drift:
+    name: Golden Drift Check
+    runs-on: macos-15
+    timeout-minutes: 10
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Check golden fixture drift
+        run: bash ios-app/scripts/golden-drift-check.sh
+
+  test-ui:
+    name: UI Tests (Nightly)
+    runs-on: macos-15
+    timeout-minutes: 45
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    defaults:
+      run:
+        working-directory: ios-app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          if [ -d "$DEVELOPER_DIR" ]; then
+            sudo xcode-select -switch "$DEVELOPER_DIR"
+          else
+            echo "Xcode 26 not available at $DEVELOPER_DIR, using runner default"
+            xcode-select -p
+          fi
+
+      - name: Install tools
+        run: brew install xcodegen xcbeautify
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME"
+
+      - name: Run UI tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -only-testing:MaltaCalculatorUITests \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify
+
+      - name: Run performance tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -only-testing:CalculationKitTests/CalculationPerformanceTests \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify

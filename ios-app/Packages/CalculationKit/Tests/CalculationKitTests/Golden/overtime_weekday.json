@@ -1,0 +1,13 @@
+{
+  "input": {
+    "hourlyRate": 12,
+    "overtimeHours": 6,
+    "overtimeType": "weekday"
+  },
+  "expected": {
+    "multiplier": 1.5,
+    "overtimeRate": 18,
+    "totalOvertimePay": 108
+  },
+  "generatedAt": "2026-04-08T22:08:51.887Z"
+}

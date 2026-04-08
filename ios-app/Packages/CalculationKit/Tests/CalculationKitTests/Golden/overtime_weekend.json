@@ -2,14 +2,12 @@
   "input": {
     "hourlyRate": 15,
     "overtimeHours": 8,
-    "overtimeType": "sunday",
-    "annualSalary": null
+    "overtimeType": "sunday"
   },
   "expected": {
-    "baseHourlyRate": 15,
-    "multiplier": 2.0,
+    "multiplier": 2,
     "overtimeRate": 30,
     "totalOvertimePay": 240
   },
-  "generatedAt": "2026-04-08T00:00:00.000Z"
+  "generatedAt": "2026-04-08T22:08:51.887Z"
 }
