@@ -10,6 +10,7 @@ import SwiftUI
 /// Savings Interest calculator detail screen.
 struct SavingsInterestScreen: View {
     @State private var vm: SavingsInterestViewModel
+    @State private var showingShare: Bool = false
 
     init(initialParams: [String: String] = [:]) {
         let vm = SavingsInterestViewModel()
@@ -28,7 +29,7 @@ struct SavingsInterestScreen: View {
             results: { resultsSection },
             infoLines: Self.infoLines,
             onSave: nil,
-            onShare: nil,
+            onShare: vm.output != nil ? { showingShare = true } : nil,
             onReset: { vm.reset() }
         )
         .onChange(of: vm.initialDeposit) { _, _ in vm.recalculate() }
@@ -36,6 +37,11 @@ struct SavingsInterestScreen: View {
         .onChange(of: vm.annualRate) { _, _ in vm.recalculate() }
         .onChange(of: vm.termYears) { _, _ in vm.recalculate() }
         .onChange(of: vm.compoundingFrequency) { _, _ in vm.recalculate() }
+        .sheet(isPresented: $showingShare) {
+            if let content = CalculatorShareBuilders.savings(vm) {
+                CalculatorShareSheet(content: content, isPresented: $showingShare)
+            }
+        }
     }
 
     @ViewBuilder
