@@ -10,6 +10,7 @@ import SwiftUI
 /// Mortgage calculator detail screen.
 struct MortgageScreen: View {
     @State private var vm: MortgageViewModel
+    @State private var showingShare: Bool = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// Creates the screen. Initial deep-link parameters are applied once at init.
@@ -31,13 +32,18 @@ struct MortgageScreen: View {
             results: { resultsSection },
             infoLines: Self.infoLines,
             onSave: nil,
-            onShare: nil,
+            onShare: vm.output != nil ? { showingShare = true } : nil,
             onReset: { vm.reset() }
         )
         .onChange(of: vm.propertyPrice) { _, _ in vm.recalculate() }
         .onChange(of: vm.depositPercent) { _, _ in vm.recalculate() }
         .onChange(of: vm.interestRate) { _, _ in vm.recalculate() }
         .onChange(of: vm.loanTermYears) { _, _ in vm.recalculate() }
+        .sheet(isPresented: $showingShare) {
+            if let content = CalculatorShareBuilders.mortgage(vm) {
+                CalculatorShareSheet(content: content, isPresented: $showingShare)
+            }
+        }
     }
 
     // MARK: - Inputs

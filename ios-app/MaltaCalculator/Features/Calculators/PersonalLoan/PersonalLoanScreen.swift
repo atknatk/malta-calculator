@@ -10,6 +10,7 @@ import SwiftUI
 /// Personal Loan calculator detail screen.
 struct PersonalLoanScreen: View {
     @State private var vm: PersonalLoanViewModel
+    @State private var showingShare: Bool = false
 
     /// Creates the screen, applying optional deep-link parameters
     /// (`amount`, `rate`, `months`).
@@ -30,12 +31,17 @@ struct PersonalLoanScreen: View {
             results: { resultsSection },
             infoLines: Self.infoLines,
             onSave: nil,
-            onShare: nil,
+            onShare: vm.output != nil ? { showingShare = true } : nil,
             onReset: { vm.reset() }
         )
         .onChange(of: vm.loanAmount) { _, _ in vm.recalculate() }
         .onChange(of: vm.interestRate) { _, _ in vm.recalculate() }
         .onChange(of: vm.termMonths) { _, _ in vm.recalculate() }
+        .sheet(isPresented: $showingShare) {
+            if let content = CalculatorShareBuilders.personalLoan(vm) {
+                CalculatorShareSheet(content: content, isPresented: $showingShare)
+            }
+        }
     }
 
     // MARK: - Inputs

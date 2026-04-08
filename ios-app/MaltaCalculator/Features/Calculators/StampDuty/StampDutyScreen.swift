@@ -10,6 +10,7 @@ import SwiftUI
 /// Stamp Duty calculator detail screen.
 struct StampDutyScreen: View {
     @State private var vm: StampDutyViewModel
+    @State private var showingShare: Bool = false
 
     init(initialParams: [String: String] = [:]) {
         let vm = StampDutyViewModel()
@@ -28,11 +29,16 @@ struct StampDutyScreen: View {
             results: { resultsSection },
             infoLines: Self.infoLines,
             onSave: nil,
-            onShare: nil,
+            onShare: vm.output != nil ? { showingShare = true } : nil,
             onReset: { vm.reset() }
         )
         .onChange(of: vm.propertyPrice) { _, _ in vm.recalculate() }
         .onChange(of: vm.isFirstTimeBuyer) { _, _ in vm.recalculate() }
+        .sheet(isPresented: $showingShare) {
+            if let content = CalculatorShareBuilders.stampDuty(vm) {
+                CalculatorShareSheet(content: content, isPresented: $showingShare)
+            }
+        }
     }
 
     @ViewBuilder
