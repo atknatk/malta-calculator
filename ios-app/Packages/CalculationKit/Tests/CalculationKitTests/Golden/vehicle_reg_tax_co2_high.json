@@ -1,0 +1,19 @@
+{
+  "input": {
+    "co2Emissions": 200,
+    "vehicleAge": 5,
+    "engineCapacity": 2000,
+    "fuelType": "diesel",
+    "vehicleValue": 25000,
+    "isEU": true
+  },
+  "expected": {
+    "totalTax": 7680,
+    "co2Tax": 7680,
+    "ageDiscount": 4320,
+    "ecoDiscount": 0,
+    "importDuty": 0,
+    "vat": 0
+  },
+  "generatedAt": "2026-04-08T08:47:28.252Z"
+}

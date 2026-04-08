@@ -1,0 +1,19 @@
+{
+  "input": {
+    "co2Emissions": 0,
+    "vehicleAge": 0,
+    "engineCapacity": 0,
+    "fuelType": "electric",
+    "vehicleValue": 40000,
+    "isEU": true
+  },
+  "expected": {
+    "totalTax": 7200,
+    "co2Tax": 0,
+    "ageDiscount": 0,
+    "ecoDiscount": 0,
+    "importDuty": 0,
+    "vat": 7200
+  },
+  "generatedAt": "2026-04-08T08:47:28.252Z"
+}
