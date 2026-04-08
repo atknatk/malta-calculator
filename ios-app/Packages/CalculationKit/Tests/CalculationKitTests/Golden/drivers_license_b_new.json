@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-08T23:00:00Z",
+  "input": {
+    "licenseType": "new",
+    "age": 25,
+    "category": "B",
+    "validityPeriod": 10,
+    "includeTheoryTest": true,
+    "includePracticalTest": true,
+    "isFirstLicense": true
+  },
+  "expected": {
+    "totalCost": 183,
+    "licenseFee": 45,
+    "theoryTestFee": 30,
+    "practicalTestFee": 60,
+    "medicalFee": 40,
+    "photoFee": 8
+  }
+}

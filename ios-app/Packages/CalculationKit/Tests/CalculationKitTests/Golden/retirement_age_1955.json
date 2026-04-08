@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-08T23:00:00Z",
+  "input": {
+    "birthYear": 1955
+  },
+  "expected": {
+    "retirementAge": 62,
+    "retirementYear": 2017,
+    "eligibleForEarlyRetirement": false
+  }
+}

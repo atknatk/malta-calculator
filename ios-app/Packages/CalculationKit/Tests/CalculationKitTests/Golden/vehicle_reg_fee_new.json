@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-08T23:00:00Z",
+  "input": {
+    "vehicleType": "car",
+    "plateType": "random",
+    "isImported": false,
+    "engineCapacity": 0,
+    "co2Emissions": 0,
+    "vehicleAge": 0,
+    "fuelType": "petrol"
+  },
+  "expected": {
+    "administrationFee": 15,
+    "platesFee": 70,
+    "vrtInspectionFee": 0,
+    "totalFee": 85
+  }
+}
