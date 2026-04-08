@@ -3,34 +3,49 @@
 //  MaltaCalculator
 //
 
-import DesignSystem
 import SwiftUI
 
-/// Placeholder root view shown by the bootstrap build.
+/// Root view containing the five-tab navigation structure.
 ///
-/// The real navigation tree (TabView with Home / Salary / Calculators /
-/// Guides / Settings) lands in Task 05. For now this view exists so the
-/// app launches with a recognisable Malta Calculator surface and so the
-/// `DesignSystem` components are exercised end-to-end.
+/// On iOS 26, the tab bar renders as a floating Liquid Glass surface.
+/// On iOS 18, it falls back to the standard UITabBar with tint applied.
+/// ``AppState`` is injected into the environment so all descendant views
+/// can access the selected tab and per-tab routers.
 struct RootView: View {
+    @State private var appState = AppState()
+
     var body: some View {
-        ZStack {
-            MeshBackground()
-            VStack(spacing: DSSpacing.md) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 60))
-                    .foregroundStyle(DSColor.maltaGold)
-                    .accessibilityHidden(true)
-                GradientText("Malta Calculator", font: DSFont.displayS)
-                Text("Coming soon")
-                    .font(DSFont.bodyM)
-                    .foregroundStyle(DSColor.textSecondary)
+        TabView(selection: $appState.selectedTab) {
+            ForEach(RootTab.allCases) { tab in
+                tabContent(for: tab)
+                    .tabItem {
+                        Label(tab.title, systemImage: tab.systemImage)
+                    }
+                    .tag(tab)
+                    .accessibilityHint(tab.accessibilityHint)
             }
-            .padding(DSSpacing.xxl)
-            .liquidGlass()
-            .padding()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Malta Calculator. Coming soon.")
+        }
+        .tabViewStyle(.sidebarAdaptable)
+        .tint(.accentColor)
+        .environment(appState)
+        .onOpenURL { url in
+            appState.handle(url: url)
+        }
+    }
+
+    @ViewBuilder
+    private func tabContent(for tab: RootTab) -> some View {
+        switch tab {
+        case .home:
+            HomeNavigationStack()
+        case .salary:
+            SalaryNavigationStack()
+        case .calculators:
+            CalculatorsNavigationStack()
+        case .guides:
+            GuidesNavigationStack()
+        case .settings:
+            SettingsNavigationStack()
         }
     }
 }

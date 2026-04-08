@@ -17,11 +17,11 @@ public enum LiquidGlassStrength: Sendable, Equatable, Hashable, CaseIterable {
     case thick
 
     #if os(iOS)
-    /// The native `GlassEffect` for iOS 26+.
+    /// The native `Glass` effect for iOS 26+.
     @available(iOS 26.0, *)
-    var glassEffect: GlassEffect {
+    var glass: Glass {
         switch self {
-        case .thin: return .regular.interactive
+        case .thin: return .regular.interactive()
         case .regular: return .regular
         case .thick: return .regular
         }
@@ -86,7 +86,7 @@ struct LiquidGlassViewModifier<S: InsettableShape>: ViewModifier {
     private func glassContent(_ content: Content) -> some View {
         #if os(iOS)
         if #available(iOS 26.0, *) {
-            content.glassEffect(strength.glassEffect.tint(tint ?? .clear), in: shape)
+            content.glassEffect(strength.glass.tint(tint ?? .clear), in: shape)
         } else {
             materialFallback(content)
         }

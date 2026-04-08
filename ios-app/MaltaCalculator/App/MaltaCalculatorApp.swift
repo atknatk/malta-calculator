@@ -3,13 +3,13 @@
 //  MaltaCalculator
 //
 
-import SwiftData
 import SwiftUI
 
 /// Application entry point.
 ///
-/// The bootstrap (Task 01) ships only the placeholder `RootView`. Real
-/// navigation, persistence, and feature wiring land in Task 05 and beyond.
+/// Hosts the ``RootView`` which contains the five-tab navigation
+/// structure. Persistence (SwiftData) and further scene configuration
+/// land in later tasks.
 @main
 struct MaltaCalculatorApp: App {
     var body: some Scene {
