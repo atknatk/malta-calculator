@@ -3,9 +3,13 @@ import os
 
 /// Thread-safe, singleton loader for the bundled Malta tax configuration JSON.
 ///
+/// The store caches the parsed ``MaltaTaxConfig`` after the first load so
+/// subsequent calls return instantly without disk I/O.
+///
 /// Usage:
 /// ```swift
 /// let config = try await TaxConfigStore.shared.load()
+/// let brackets = config.brackets(for: 2026, type: .single)
 /// ```
 public actor TaxConfigStore {
     /// Shared singleton instance.
@@ -17,18 +21,27 @@ public actor TaxConfigStore {
     )
 
     private var cached: MaltaTaxConfig?
+    private var bundleOverride: Bundle?
 
     private init() {}
 
+    /// Override the bundle used for resource lookup (for testing).
+    public func setBundle(_ bundle: Bundle) {
+        self.bundleOverride = bundle
+        self.cached = nil
+    }
+
     /// Loads and caches the tax configuration from the bundle.
     ///
-    /// Subsequent calls return the cached instance without re-reading disk.
+    /// The first call reads from disk and parses the JSON. Subsequent calls
+    /// return the cached instance without re-reading.
     public func load() throws -> MaltaTaxConfig {
         if let cached {
             return cached
         }
 
-        guard let url = Bundle.module.url(
+        let bundle = bundleOverride ?? Bundle.module
+        guard let url = bundle.url(
             forResource: "tax-config-2020-2026",
             withExtension: "json"
         ) else {
@@ -37,16 +50,28 @@ public actor TaxConfigStore {
         }
 
         let data = try Data(contentsOf: url)
-        let decoder = JSONDecoder()
-        let dto = try decoder.decode(TaxConfigDTO.self, from: data)
-        let config = dto.toDomain()
+        let dto = try JSONDecoder().decode(MaltaTaxConfigDTO.self, from: data)
+        let config = try dto.toDomain()
 
-        Self.log.info("Loaded tax config with \(config.availableYears.count) years")
+        Self.log.info(
+            "Loaded tax config v\(config.version) with \(config.availableYears.count) years"
+        )
         cached = config
         return config
     }
 
-    /// Forces a cache reload — useful for testing.
+    /// Loads a tax config from a remote URL (v1.1 preparation).
+    ///
+    /// The downloaded config replaces any cached value.
+    public func loadRemote(from url: URL) async throws -> MaltaTaxConfig {
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let dto = try JSONDecoder().decode(MaltaTaxConfigDTO.self, from: data)
+        let config = try dto.toDomain()
+        self.cached = config
+        return config
+    }
+
+    /// Clears the cached config, forcing a reload on the next `load()` call.
     public func invalidateCache() {
         cached = nil
     }

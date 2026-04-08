@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export:tax-config": "tsx scripts/export-tax-config.ts",
+    "export:all": "npm run export:tax-config"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.982.0",

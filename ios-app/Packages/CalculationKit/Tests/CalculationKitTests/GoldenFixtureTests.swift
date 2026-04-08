@@ -586,29 +586,4 @@ struct ImportVehicleGoldenTests {
     }
 }
 
-// MARK: - TaxConfigStore Concurrency Test
-
-@Suite("TaxConfigStore Concurrency")
-struct TaxConfigStoreConcurrencyTests {
-    @Test("Concurrent loads produce identical results")
-    func concurrentLoads() async throws {
-        // Load config from 10 concurrent tasks — all must return the same result
-        let results = try await withThrowingTaskGroup(of: MaltaTaxConfig.self) { group in
-            for _ in 0..<10 {
-                group.addTask {
-                    try await TaxConfigStore.shared.load()
-                }
-            }
-            var configs: [MaltaTaxConfig] = []
-            for try await config in group {
-                configs.append(config)
-            }
-            return configs
-        }
-        #expect(results.count == 10)
-        let first = results[0]
-        for config in results.dropFirst() {
-            #expect(config.availableYears == first.availableYears)
-        }
-    }
-}
+// TaxConfigStore concurrency tests moved to TaxConfigStoreTests.swift

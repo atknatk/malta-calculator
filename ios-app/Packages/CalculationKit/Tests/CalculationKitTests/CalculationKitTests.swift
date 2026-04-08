@@ -802,21 +802,4 @@ struct MoneyTests {
     }
 }
 
-@Suite("DateHelpers")
-struct DateHelpersTests {
-    @Test("Mondays in January 2026")
-    func mondaysJan2026() {
-        let count = DateHelpers.mondaysInMonth(year: 2026, monthIndex: 0)
-        // January 2026: starts Thursday, has 31 days → 4 Mondays (5,12,19,26)
-        #expect(count == 4)
-    }
-
-    @Test("isBornBefore1962")
-    func bornBefore1962() {
-        let calendar = Calendar(identifier: .gregorian)
-        let before = calendar.date(from: DateComponents(year: 1960, month: 6, day: 15))!
-        let after = calendar.date(from: DateComponents(year: 1970, month: 1, day: 1))!
-        #expect(DateHelpers.isBornBefore1962(before) == true)
-        #expect(DateHelpers.isBornBefore1962(after) == false)
-    }
-}
+// DateHelpers tests moved to TaxConfigStoreTests.swift
