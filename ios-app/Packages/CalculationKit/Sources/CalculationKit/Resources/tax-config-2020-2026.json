@@ -1,0 +1,313 @@
+{
+  "taxBracketsByYear": [
+    {
+      "year": 2020,
+      "brackets": {
+        "single": [
+          { "min": 0, "max": 9100, "rate": 0, "deduction": 0 },
+          { "min": 9101, "max": 14500, "rate": 0.15, "deduction": 1365 },
+          { "min": 14501, "max": 19500, "rate": 0.25, "deduction": 2815 },
+          { "min": 19501, "max": 60000, "rate": 0.25, "deduction": 2725 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 8725 }
+        ],
+        "married": [
+          { "min": 0, "max": 12700, "rate": 0, "deduction": 0 },
+          { "min": 12701, "max": 21200, "rate": 0.15, "deduction": 1905 },
+          { "min": 21201, "max": 28700, "rate": 0.25, "deduction": 4025 },
+          { "min": 28701, "max": 60000, "rate": 0.25, "deduction": 3905 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9905 }
+        ],
+        "parent": [
+          { "min": 0, "max": 10500, "rate": 0, "deduction": 0 },
+          { "min": 10501, "max": 15800, "rate": 0.15, "deduction": 1575 },
+          { "min": 15801, "max": 21200, "rate": 0.25, "deduction": 3155 },
+          { "min": 21201, "max": 60000, "rate": 0.25, "deduction": 3050 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9050 }
+        ]
+      }
+    },
+    {
+      "year": 2021,
+      "brackets": {
+        "single": [
+          { "min": 0, "max": 9100, "rate": 0, "deduction": 0 },
+          { "min": 9101, "max": 14500, "rate": 0.15, "deduction": 1365 },
+          { "min": 14501, "max": 19500, "rate": 0.25, "deduction": 2815 },
+          { "min": 19501, "max": 60000, "rate": 0.25, "deduction": 2725 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 8725 }
+        ],
+        "married": [
+          { "min": 0, "max": 12700, "rate": 0, "deduction": 0 },
+          { "min": 12701, "max": 21200, "rate": 0.15, "deduction": 1905 },
+          { "min": 21201, "max": 28700, "rate": 0.25, "deduction": 4025 },
+          { "min": 28701, "max": 60000, "rate": 0.25, "deduction": 3905 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9905 }
+        ],
+        "parent": [
+          { "min": 0, "max": 10500, "rate": 0, "deduction": 0 },
+          { "min": 10501, "max": 15800, "rate": 0.15, "deduction": 1575 },
+          { "min": 15801, "max": 21200, "rate": 0.25, "deduction": 3155 },
+          { "min": 21201, "max": 60000, "rate": 0.25, "deduction": 3050 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9050 }
+        ]
+      }
+    },
+    {
+      "year": 2022,
+      "brackets": {
+        "single": [
+          { "min": 0, "max": 9100, "rate": 0, "deduction": 0 },
+          { "min": 9101, "max": 14500, "rate": 0.15, "deduction": 1365 },
+          { "min": 14501, "max": 19500, "rate": 0.25, "deduction": 2815 },
+          { "min": 19501, "max": 60000, "rate": 0.25, "deduction": 2725 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 8725 }
+        ],
+        "married": [
+          { "min": 0, "max": 12700, "rate": 0, "deduction": 0 },
+          { "min": 12701, "max": 21200, "rate": 0.15, "deduction": 1905 },
+          { "min": 21201, "max": 28700, "rate": 0.25, "deduction": 4025 },
+          { "min": 28701, "max": 60000, "rate": 0.25, "deduction": 3905 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9905 }
+        ],
+        "parent": [
+          { "min": 0, "max": 10500, "rate": 0, "deduction": 0 },
+          { "min": 10501, "max": 15800, "rate": 0.15, "deduction": 1575 },
+          { "min": 15801, "max": 21200, "rate": 0.25, "deduction": 3155 },
+          { "min": 21201, "max": 60000, "rate": 0.25, "deduction": 3050 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9050 }
+        ]
+      }
+    },
+    {
+      "year": 2023,
+      "brackets": {
+        "single": [
+          { "min": 0, "max": 9100, "rate": 0, "deduction": 0 },
+          { "min": 9101, "max": 14500, "rate": 0.15, "deduction": 1365 },
+          { "min": 14501, "max": 19500, "rate": 0.25, "deduction": 2815 },
+          { "min": 19501, "max": 60000, "rate": 0.25, "deduction": 2725 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 8725 }
+        ],
+        "married": [
+          { "min": 0, "max": 12700, "rate": 0, "deduction": 0 },
+          { "min": 12701, "max": 21200, "rate": 0.15, "deduction": 1905 },
+          { "min": 21201, "max": 28700, "rate": 0.25, "deduction": 4025 },
+          { "min": 28701, "max": 60000, "rate": 0.25, "deduction": 3905 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9905 }
+        ],
+        "parent": [
+          { "min": 0, "max": 10500, "rate": 0, "deduction": 0 },
+          { "min": 10501, "max": 15800, "rate": 0.15, "deduction": 1575 },
+          { "min": 15801, "max": 21200, "rate": 0.25, "deduction": 3155 },
+          { "min": 21201, "max": 60000, "rate": 0.25, "deduction": 3050 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9050 }
+        ]
+      }
+    },
+    {
+      "year": 2024,
+      "brackets": {
+        "single": [
+          { "min": 0, "max": 9100, "rate": 0, "deduction": 0 },
+          { "min": 9101, "max": 14500, "rate": 0.15, "deduction": 1365 },
+          { "min": 14501, "max": 19500, "rate": 0.25, "deduction": 2815 },
+          { "min": 19501, "max": 60000, "rate": 0.25, "deduction": 2725 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 8725 }
+        ],
+        "married": [
+          { "min": 0, "max": 12700, "rate": 0, "deduction": 0 },
+          { "min": 12701, "max": 21200, "rate": 0.15, "deduction": 1905 },
+          { "min": 21201, "max": 28700, "rate": 0.25, "deduction": 4025 },
+          { "min": 28701, "max": 60000, "rate": 0.25, "deduction": 3905 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9905 }
+        ],
+        "parent": [
+          { "min": 0, "max": 10500, "rate": 0, "deduction": 0 },
+          { "min": 10501, "max": 15800, "rate": 0.15, "deduction": 1575 },
+          { "min": 15801, "max": 21200, "rate": 0.25, "deduction": 3155 },
+          { "min": 21201, "max": 60000, "rate": 0.25, "deduction": 3050 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9050 }
+        ]
+      }
+    },
+    {
+      "year": 2025,
+      "brackets": {
+        "single": [
+          { "min": 0, "max": 12000, "rate": 0, "deduction": 0 },
+          { "min": 12001, "max": 16000, "rate": 0.15, "deduction": 1800 },
+          { "min": 16001, "max": 60000, "rate": 0.25, "deduction": 3400 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9400 }
+        ],
+        "married": [
+          { "min": 0, "max": 15000, "rate": 0, "deduction": 0 },
+          { "min": 15001, "max": 23000, "rate": 0.15, "deduction": 2250 },
+          { "min": 23001, "max": 60000, "rate": 0.25, "deduction": 4550 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 10550 }
+        ],
+        "parent": [
+          { "min": 0, "max": 13000, "rate": 0, "deduction": 0 },
+          { "min": 13001, "max": 17500, "rate": 0.15, "deduction": 1950 },
+          { "min": 17501, "max": 60000, "rate": 0.25, "deduction": 3700 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9700 }
+        ]
+      }
+    },
+    {
+      "year": 2026,
+      "brackets": {
+        "single": [
+          { "min": 0, "max": 12000, "rate": 0, "deduction": 0 },
+          { "min": 12001, "max": 16000, "rate": 0.15, "deduction": 1800 },
+          { "min": 16001, "max": 60000, "rate": 0.25, "deduction": 3400 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9400 }
+        ],
+        "married": [
+          { "min": 0, "max": 15000, "rate": 0, "deduction": 0 },
+          { "min": 15001, "max": 23000, "rate": 0.15, "deduction": 2250 },
+          { "min": 23001, "max": 60000, "rate": 0.25, "deduction": 4550 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 10550 }
+        ],
+        "married_1child": [
+          { "min": 0, "max": 17500, "rate": 0, "deduction": 0 },
+          { "min": 17501, "max": 26500, "rate": 0.15, "deduction": 2625 },
+          { "min": 26501, "max": 60000, "rate": 0.25, "deduction": 5275 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 11275 }
+        ],
+        "married_2plus": [
+          { "min": 0, "max": 22500, "rate": 0, "deduction": 0 },
+          { "min": 22501, "max": 32000, "rate": 0.15, "deduction": 3375 },
+          { "min": 32001, "max": 60000, "rate": 0.25, "deduction": 6575 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 12575 }
+        ],
+        "parent": [
+          { "min": 0, "max": 13000, "rate": 0, "deduction": 0 },
+          { "min": 13001, "max": 17500, "rate": 0.15, "deduction": 1950 },
+          { "min": 17501, "max": 60000, "rate": 0.25, "deduction": 3700 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 9700 }
+        ],
+        "parent_1child": [
+          { "min": 0, "max": 14500, "rate": 0, "deduction": 0 },
+          { "min": 14501, "max": 21000, "rate": 0.15, "deduction": 2175 },
+          { "min": 21001, "max": 60000, "rate": 0.25, "deduction": 4275 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 10275 }
+        ],
+        "parent_2plus": [
+          { "min": 0, "max": 18500, "rate": 0, "deduction": 0 },
+          { "min": 18501, "max": 25500, "rate": 0.15, "deduction": 2775 },
+          { "min": 25501, "max": 60000, "rate": 0.25, "deduction": 5325 },
+          { "min": 60001, "max": null, "rate": 0.35, "deduction": 11325 }
+        ]
+      }
+    }
+  ],
+  "sscRatesByYear": [
+    {
+      "year": 2020,
+      "categoryA": 6.62,
+      "categoryB": 19.77,
+      "categoryCOld": 44.41,
+      "categoryCNew": 50.63,
+      "categoryDOld": 44.41,
+      "categoryDNew": 50.63,
+      "weeklyCapOld": 444.14,
+      "weeklyCapNew": 506.31,
+      "minimumWage": 175.84
+    },
+    {
+      "year": 2021,
+      "categoryA": 6.62,
+      "categoryB": 20.04,
+      "categoryCOld": 45.19,
+      "categoryCNew": 51.02,
+      "categoryDOld": 45.19,
+      "categoryDNew": 51.02,
+      "weeklyCapOld": 451.92,
+      "weeklyCapNew": 510.2,
+      "minimumWage": 181.25
+    },
+    {
+      "year": 2022,
+      "categoryA": 6.62,
+      "categoryB": 20.89,
+      "categoryCOld": 46.5,
+      "categoryCNew": 52.97,
+      "categoryDOld": 46.5,
+      "categoryDNew": 52.97,
+      "weeklyCapOld": 464.96,
+      "weeklyCapNew": 529.73,
+      "minimumWage": 187.01
+    },
+    {
+      "year": 2023,
+      "categoryA": 6.62,
+      "categoryB": 21.14,
+      "categoryCOld": 47.73,
+      "categoryCNew": 54.43,
+      "categoryDOld": 47.73,
+      "categoryDNew": 54.43,
+      "weeklyCapOld": 477.31,
+      "weeklyCapNew": 544.29,
+      "minimumWage": 192.73
+    },
+    {
+      "year": 2024,
+      "categoryA": 6.62,
+      "categoryB": 22.94,
+      "categoryCOld": 49.04,
+      "categoryCNew": 55.93,
+      "categoryDOld": 49.04,
+      "categoryDNew": 55.93,
+      "weeklyCapOld": 490.38,
+      "weeklyCapNew": 559.31,
+      "minimumWage": 213.54
+    },
+    {
+      "year": 2025,
+      "categoryA": 6.62,
+      "categoryB": 22.94,
+      "categoryCOld": 49.04,
+      "categoryCNew": 55.93,
+      "categoryDOld": 49.04,
+      "categoryDNew": 55.93,
+      "weeklyCapOld": 490.38,
+      "weeklyCapNew": 559.31,
+      "minimumWage": 221.78
+    },
+    {
+      "year": 2026,
+      "categoryA": 6.62,
+      "categoryB": 22.94,
+      "categoryCOld": 49.04,
+      "categoryCNew": 55.93,
+      "categoryDOld": 49.04,
+      "categoryDNew": 55.93,
+      "weeklyCapOld": 490.38,
+      "weeklyCapNew": 559.31,
+      "minimumWage": 225.0
+    }
+  ],
+  "colaByYear": [
+    {
+      "year": 2024,
+      "march": 121.16,
+      "june": 135.1,
+      "september": 121.16,
+      "december": 135.1
+    },
+    {
+      "year": 2025,
+      "march": 121.16,
+      "june": 135.1,
+      "september": 121.16,
+      "december": 135.1
+    },
+    {
+      "year": 2026,
+      "march": 121.16,
+      "june": 135.1,
+      "september": 121.16,
+      "december": 135.1
+    }
+  ]
+}

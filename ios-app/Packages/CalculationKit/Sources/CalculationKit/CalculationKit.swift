@@ -1,27 +1,36 @@
-//
-//  CalculationKit.swift
-//  MaltaCalculator
-//
+// Public API umbrella — a single `import CalculationKit` exposes every motor.
 
-import Foundation
+@_exported import Foundation
 
-/// Decimal-only money type used across every Malta Calculator motor.
-///
-/// `Float` and `Double` are intentionally banned for monetary values because
-/// floating-point cannot represent decimal cents exactly. Any rounding error
-/// snowballs across cumulative monthly tax calculations and ships wrong
-/// numbers to users (see failure pattern F-01).
-public typealias Money = Decimal
+// ─── CalculationKit ─────────────────────────────────────────────────────────
+//
+// Malta financial calculation motors package.
+//
+// ## Motors
+//
+// - ``SalaryCalculator`` — cumulative income tax, SSC, COLA
+// - ``MortgageCalculator`` — standard amortisation formula
+// - ``PersonalLoanCalculator`` — personal loan amortisation
+// - ``StampDutyCalculator`` — property transfer stamp duty
+// - ``SavingsCalculator`` — compound interest with 15% withholding tax
+// - ``PensionCalculator`` — two-thirds state pension
+// - ``RetirementAgeCalculator`` — statutory retirement age
+// - ``OvertimeCalculator`` — overtime pay (1.5×, 2×)
+// - ``VacationCalculator`` — vacation leave entitlement
+// - ``NoticePeriodCalculator`` — notice period by service length
+// - ``ChildrensAllowanceCalculator`` — children's allowance by income
+// - ``FamilyReunificationCalculator`` — family reunification salary
+// - ``VehicleRegistrationFeeCalculator`` — vehicle reg fees
+// - ``VehicleRegistrationTaxCalculator`` — CO2-based reg tax
+// - ``RoadLicenseCalculator`` — annual circulation tax
+// - ``DriversLicenseCalculator`` — driver's license fees
+// - ``VRTCalculator`` — vehicle roadworthiness test
+// - ``ImportVehicleCalculator`` — full import cost breakdown
+//
+// ─────────────────────────────────────────────────────────────────────────────
 
 /// Top-level namespace and version marker for the `CalculationKit` package.
-///
-/// The package itself contains pure, side-effect free calculation motors
-/// (salary, mortgage, stamp duty, …) that mirror the TypeScript utilities
-/// under `src/utils/` of the web app. Tasks 03 and beyond fill in the
-/// individual motors. Task 01 only sets up the package skeleton so the
-/// app target can `import CalculationKit` and link successfully.
 public enum CalculationKit {
-    /// Semantic version of the package, mirrored in the iOS app's bundle
-    /// version metadata for diagnostics.
-    public static let version: String = "0.1.0"
+    /// Semantic version of the package.
+    public static let version = "1.0.0"
 }
