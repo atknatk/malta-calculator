@@ -30,25 +30,23 @@ struct SalaryInsights: Equatable, Sendable {
         let rate = percent.string(
             from: summary.effectiveTaxRate as NSDecimalNumber
         ) ?? "—"
-        items.append(
-            "Your effective tax rate is \(rate)."
-        )
+        items.append(String(
+            localized: "salary.insight.effectiveRate \(rate)"
+        ))
 
         let monthlyEur = summary.averageMonthlyNet.eur
-        items.append(
-            "Expect approximately \(monthlyEur) each month after deductions."
-        )
+        items.append(String(
+            localized: "salary.insight.monthlyNet \(monthlyEur)"
+        ))
 
         if year == 2026 && simpleTaxType != .single {
             items.append(String(
-                localized: "salary.insight.childBracket",
-                defaultValue: "Tip: Claiming the child tax bracket in 2026 can reduce your tax by up to €3,000/year."
+                localized: "salary.insight.childBracket"
             ))
         }
 
         items.append(String(
-            localized: "salary.insight.privatePension",
-            defaultValue: "Consider a private pension contribution (up to €3,000/year) to claim a 25% tax credit."
+            localized: "salary.insight.privatePension"
         ))
 
         return items

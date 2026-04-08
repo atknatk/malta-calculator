@@ -37,5 +37,10 @@ struct SalaryBreakdownDonut: View {
             centerValue: summary.annualNet,
             centerLabel: "salary.chart.annualNet"
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("salary.chart.donut.a11yLabel"))
+        .accessibilityValue(Text(
+            "salary.chart.donut.a11yValue \(summary.annualNet.eur) \(summary.annualIncomeTax.eur) \(summary.annualSSC.eur)"
+        ))
     }
 }

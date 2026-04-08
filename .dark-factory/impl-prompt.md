@@ -170,6 +170,144 @@ lists every failure pattern recorded from past iterations, including the
 seeded iOS-specific rules (Decimal, force-unwrap, Liquid Glass fallback,
 etc.). Avoid repeating anything documented there.
 
+# Layer-Specific Expected Patterns
+
+The project uses a convention-driven quality gate. Each layer has specific
+naming and structural expectations that MUST be followed — these are not
+negotiable. Use the EXACT names below.
+
+## `ios-design` (DesignSystem package)
+
+File & module structure:
+
+- `Packages/DesignSystem/Sources/DesignSystem/Tokens/` —
+  `DSColor.swift`, `DSSpacing.swift`, `DSRadius.swift`, `DSFont.swift` (with
+  `Font.DS` extension), `DSMotion.swift`, `DSShadow.swift`, `DSElevation.swift`
+- `Packages/DesignSystem/Sources/DesignSystem/Components/` — each component
+  in its own file: `DSButton.swift`, `DSCard.swift`, `DSCurrencyField.swift`,
+  `DSToggleGroup.swift`, `DSAnimatedNumber.swift`, `DSEmptyState.swift`,
+  `DSErrorState.swift`, `DSSkeleton.swift`
+- `Packages/DesignSystem/Sources/DesignSystem/Effects/View+LiquidGlass.swift`
+  — the `liquidGlass(tint:cornerRadius:)` modifier with `#available(iOS 26)`
+  branch and iOS 18 `.regularMaterial` fallback
+- `Packages/DesignSystem/Resources/Colors.xcassets/` — Asset Catalog Color
+  Sets with light+dark variants for every `DSColor` token
+- `Packages/DesignSystem/Tests/DesignSystemTests/Snapshots/` — snapshot tests
+  covering light/dark/AX5/RTL for every component
+
+Required token names (exact spelling):
+
+- `DSColor`: `maltaGold`, `maltaGoldDark`, `medBlue`, `medBlueMuted`,
+  `surface`, `surfaceInverse`, `background`, `backgroundElevated`, `text`,
+  `textSecondary`, `textTertiary`, `separator`, `overlay`, `success`,
+  `warning`, `error`, `info`
+- `DSSpacing`: `xxs=2`, `xs=4`, `sm=8`, `md=16`, `lg=24`, `xl=32`,
+  `xxl=48`, `xxxl=64` (all on 4-pt grid, EXACT values)
+- `DSRadius`: `xs=4`, `sm=8`, `md=12`, `lg=16`, `xl=24`, `pill=999`
+- `DSShadow`: `low`, `medium`, `high`, `glass` (NOT card/elevated/glow)
+- `DSMotion`: `gentle`, `snappy`, `standard`, `bouncy` (use
+  `interpolatingSpring` variants), plus `motionRespectingReduceMotion()` helper
+- `DSButton` variants: `.primary`, `.secondary`, `.tertiary`, `.ghost`,
+  `.destructive` (min touch target 44pt always)
+- `DSCard` variants: `.plain`, `.elevated`, `.glass`, `.gradient`
+- `Font.DS` extension on `Font` with system text styles (largeTitle, title1,
+  title2, title3, headline, subheadline, body, callout, footnote, caption1,
+  caption2) — MUST support Dynamic Type via system styles, not fixed sizes
+- `View.dsElevation(_ level: DSElevation)` modifier
+
+## `ios-calculation` (CalculationKit package)
+
+- `Money = Decimal` typealias in `Packages/CalculationKit/Sources/CalculationKit/Money.swift`
+- Each motor is a separate file: `SalaryMotor.swift`, `MortgageMotor.swift`,
+  `PensionMotor.swift`, `StampDutyMotor.swift`, `OvertimeMotor.swift`, etc.
+- Motors take `Input` DTOs, return `Output` DTOs — both are `Decodable` and
+  use `Decimal` for all money fields
+- `TaxConfigStore` loads `MaltaTaxConfig` from bundled JSON (no hard-coded
+  brackets anywhere in motor code)
+- `Packages/CalculationKit/Tests/CalculationKitTests/Golden/` contains JSON
+  fixtures exported from the web app (one per motor) + a `GoldenLoader`
+  helper that decodes them and runs `#expect(output == expected)` within ±€0.01
+- PMT mortgage formula uses exact `pow()` with Decimal precision (no Double)
+
+## `ios-platform` (App shell + navigation)
+
+- `MaltaCalculator/App/AppState.swift` — single `@Observable @MainActor`
+  root state
+- `MaltaCalculator/App/RootTab.swift` — enum cases: `.salary`, `.calculators`,
+  `.guides`, `.settings`
+- `MaltaCalculator/App/RootView.swift` — `TabView(selection:)` with
+  `NavigationStack` per tab, uses `@SceneStorage` for state restoration
+- `MaltaCalculator/App/Router/` — one router per tab (e.g. `SalaryRouter`,
+  `CalculatorsRouter`) with `@Observable` path stacks
+- `MaltaCalculator/App/DeepLink/DeepLinkParser.swift` — parses
+  `maltacalc://calculator/<id>` + query params, returns typed `Destination`
+- `Info.plist` has `CFBundleURLTypes` for `maltacalc` scheme
+
+## `ios-feature` (User-facing screens)
+
+This is the most heavily gated layer. Each feature MUST have:
+
+- `Features/<Feature>/<Feature>ViewModel.swift` — `@Observable @MainActor final class`
+- `Features/<Feature>/<Feature>View.swift` — passive SwiftUI view, reads
+  state, calls VM actions only. ZERO business logic in the view.
+- `Features/<Feature>/<Feature>ViewState.swift` — enum with cases
+  `.loading`, `.empty`, `.error(Error)`, `.content(Data)` — the view
+  switches on this enum and renders `DSSkeleton`, `DSEmptyState`,
+  `DSErrorState`, or the content respectively
+- VM exposes `load()`, `retry()`, and feature-specific actions
+- VM uses `debounce` (Combine/async) for text input, never on every keystroke
+- All currency display uses `FormatStyle.currency(code: "EUR")` — not
+  `NumberFormatter` inline. VoiceOver reads "fourteen thousand euros" via
+  `.accessibilityValue`
+- All user strings via `String(localized: "feature.salary.title")` from
+  `Localizable.xcstrings` — no literal English in view code
+- All animations check `accessibilityReduceMotion`
+- Every interactive control has `accessibilityLabel` + `accessibilityHint`
+- Touch targets ≥ 44pt
+- Plurals use String Catalog plural variants
+
+For **share/export** features:
+
+- Define a `Shareable` protocol with `asImage() async -> UIImage` and
+  `asPDF() async -> URL`
+- Use `ImageRenderer` for image export (iOS 16+) and `PDFKit` for PDF
+- Never include PII in exports (no names, no emails)
+- Cache generated artifacts in `NSCachesDirectory`
+
+## `ios-data` (SwiftData + CloudKit)
+
+- `Persistence/SchemaV1.swift` — `@Model` classes + `VersionedSchema`
+- `Persistence/MigrationPlan.swift` — `SchemaMigrationPlan`
+- `ModelContainer` in `AppDelegate` / `App` struct, NOT global singleton
+- CloudKit is OPT-IN: user toggles in Settings, default is local-only
+- All fetch descriptors have `fetchLimit` — never unbounded queries
+- `Persistence/Stores/` — one `@Observable` Store class per entity
+  (`CalculationHistoryStore`, `FavoritesStore`)
+- `PrivacyInfo.xcprivacy` declares SwiftData + CloudKit data uses
+
+## `ios-quality` (Tests + a11y + perf)
+
+- `Tests/` has `MaltaCalculatorTests` (unit), `MaltaCalculatorUITests` (UI),
+  `DesignSystemTests/Snapshots/` (visual), `CalculationKitTests/Golden/` (parity)
+- Coverage target: 80% CalculationKit, 60% overall
+- SwiftLint `--strict` (zero warnings), SwiftFormat lint passes
+- Performance tests use `XCTMetric` + `os_signpost` — launch budget < 400ms
+- Snapshot matrix covers light/dark/AX5/RTL/iPad for every reusable component
+- No `assertSnapshot(record: true)` committed to main
+
+## `ios-release` (App Store)
+
+- `fastlane/Fastfile` has lanes: `lint`, `test`, `beta` (TestFlight),
+  `release` (App Store)
+- `fastlane/Matchfile` for code signing
+- `Info.plist` has ASO metadata: keywords, category, descriptions (EN)
+- Screenshots in `fastlane/screenshots/en-US/`
+- `PrivacyInfo.xcprivacy` complete
+
+**These patterns are not suggestions — they are the exact structure the
+quality gate expects.** Deviating from the naming or layout will cause
+holdout validation to fail.
+
 # CRITICAL — Output Format
 
 At the very end of your response, write a machine-readable result block in

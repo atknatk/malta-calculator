@@ -186,8 +186,12 @@ final class SalaryViewModel {
     func save() -> Bool {
         guard case .content(let content) = state else { return false }
         let payload = makePayload()
-        let title = "Salary \(String(year)) — \(grossAnnual.eur)"
-        let summary = "Net \(content.summary.averageMonthlyNet.eur)/mo"
+        let title = String(
+            localized: "salary.save.entryTitle \(String(year)) \(grossAnnual.eur)"
+        )
+        let summary = String(
+            localized: "salary.save.entrySummary \(content.summary.averageMonthlyNet.eur)"
+        )
         let entry = SalaryHistoryEntry(
             id: UUID(),
             title: title,
@@ -285,7 +289,9 @@ final class SalaryViewModel {
             await recalculate()
         } catch {
             log.error("Failed to load tax config: \(error.localizedDescription, privacy: .public)")
-            self.state = .error(error.localizedDescription)
+            self.state = .error(
+                String(localized: "salary.error.configLoad")
+            )
         }
     }
 
@@ -344,7 +350,9 @@ final class SalaryViewModel {
             self.state = .content(SalaryContent(monthly: outputs, summary: summary))
         } catch {
             log.error("Calculation failed: \(error.localizedDescription, privacy: .public)")
-            self.state = .error(error.localizedDescription)
+            self.state = .error(
+                String(localized: "salary.error.calculation")
+            )
         }
     }
 }

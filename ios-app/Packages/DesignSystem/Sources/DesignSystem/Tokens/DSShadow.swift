@@ -54,8 +54,25 @@ public enum DSShadow {
         radius: 0, x: 0, y: 0
     )
 
+    // MARK: - Semantic Aliases
+
+    /// Low shadow — alias for `card`.
+    public static let low = card
+
+    /// Medium shadow — alias for `elevated`.
+    public static let medium = elevated
+
+    /// High shadow — stronger elevation for prominent elements.
+    public static let high = Shadow(
+        color: Color.black.opacity(0.16),
+        radius: 40, x: 0, y: 16
+    )
+
+    /// Glass shadow — alias for `glow`.
+    public static let glass = glow
+
     /// All named shadow tokens (non-none).
-    public static let allValues: [Shadow] = [card, elevated, glow, pressed]
+    public static let allValues: [Shadow] = [card, elevated, glow, pressed, high]
 
     /// All named shadow tokens including none.
     public static let allValuesIncludingNone: [Shadow] = [card, elevated, glow, pressed, none]

@@ -80,6 +80,8 @@ struct SalaryScreen: View {
             description: "salary.empty.message",
             icon: "eurosign.circle.fill"
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("salary.empty.a11yLabel"))
     }
 
     private func errorView(message: String) -> some View {
@@ -87,7 +89,8 @@ struct SalaryScreen: View {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 40))
                 .foregroundStyle(DSColor.danger)
-            Text(message)
+                .accessibilityHidden(true)
+            Text("salary.error.message")
                 .font(DSFont.bodyM)
                 .foregroundStyle(DSColor.textSecondary)
                 .multilineTextAlignment(.center)
@@ -100,6 +103,7 @@ struct SalaryScreen: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("salary.error.a11yLabel"))
+        .accessibilityHint(Text("salary.error.a11yHint"))
     }
 
     // MARK: - Content
@@ -163,6 +167,7 @@ struct SalaryScreen: View {
             Text("salary.section.monthlyBreakdown")
                 .font(DSFont.headingM)
                 .foregroundStyle(DSColor.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             ForEach(vm.monthly, id: \.month) { output in
                 MonthlyRowCard(
                     output: output,
@@ -186,6 +191,7 @@ struct SalaryScreen: View {
                     Text("salary.section.insights")
                         .font(DSFont.headingS)
                         .foregroundStyle(DSColor.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
                     ForEach(
                         Array(bullets.enumerated()),
                         id: \.offset
@@ -218,6 +224,7 @@ struct SalaryScreen: View {
             .foregroundStyle(DSColor.textTertiary)
             .multilineTextAlignment(.center)
             .padding(.horizontal, DSSpacing.md)
+            .accessibilityLabel(Text("salary.disclaimer"))
     }
 
     // MARK: - Toolbar
@@ -280,27 +287,118 @@ struct SalaryScreen: View {
     private var shareSheet: some View {
         if let content = vm.buildShareContent() {
             let shareText = buildShareText(from: content)
-            ShareLink(
-                item: shareText,
-                subject: Text("salary.share.subject"),
-                message: Text(shareText)
-            ) {
-                Label(
-                    String(localized: "salary.action.share"),
-                    systemImage: "square.and.arrow.up"
-                )
+            NavigationStack {
+                List {
+                    Section {
+                        ShareLink(
+                            item: shareText,
+                            subject: Text("salary.share.subject"),
+                            message: Text(shareText)
+                        ) {
+                            Label(
+                                String(localized: "salary.share.asText"),
+                                systemImage: "doc.plaintext"
+                            )
+                        }
+                        .accessibilityHint(Text("salary.share.asText.hint"))
+
+                        ShareLink(
+                            item: buildCSV(from: content),
+                            subject: Text("salary.share.subject")
+                        ) {
+                            Label(
+                                String(localized: "salary.share.asCSV"),
+                                systemImage: "tablecells"
+                            )
+                        }
+                        .accessibilityHint(Text("salary.share.asCSV.hint"))
+
+                        Button {
+                            UIPasteboard.general.string = shareText
+                            vm.showingShareSheet = false
+                        } label: {
+                            Label(
+                                String(localized: "salary.share.copyClipboard"),
+                                systemImage: "doc.on.doc"
+                            )
+                        }
+                        .accessibilityHint(Text("salary.share.copyClipboard.hint"))
+                    } header: {
+                        Text("salary.share.formatHeader")
+                    }
+                }
+                .navigationTitle(String(localized: "salary.action.share"))
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(String(localized: "salary.share.dismiss")) {
+                            vm.showingShareSheet = false
+                        }
+                    }
+                }
             }
             .presentationDetents([.medium])
+        } else {
+            VStack(spacing: DSSpacing.lg) {
+                Image(systemName: "square.and.arrow.up.trianglebadge.exclamationmark")
+                    .font(.system(size: 36))
+                    .foregroundStyle(DSColor.textTertiary)
+                    .accessibilityHidden(true)
+                Text("salary.share.unavailable")
+                    .font(DSFont.bodyM)
+                    .foregroundStyle(DSColor.textSecondary)
+                Button(String(localized: "salary.share.dismiss")) {
+                    vm.showingShareSheet = false
+                }
+                .buttonStyle(.bordered)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .presentationDetents([.medium])
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(Text("salary.share.unavailable"))
         }
     }
 
     private func buildShareText(
         from content: SalaryShareContent
     ) -> String {
-        let gross = content.annualGross.eur
-        let net = content.annualNet.eur
-        let yr = String(content.year)
-        return "My \(yr) Malta Salary: \(gross) gross → \(net) net."
+        String(
+            localized: "salary.share.text \(content.annualGross.eur) \(content.annualNet.eur) \(String(content.year))"
+        )
+    }
+
+    private func buildCSV(from content: SalaryShareContent) -> String {
+        let header = String(localized: "salary.csv.header")
+        let rows = [
+            "\(String(localized: "salary.csv.year")),\(content.year)",
+            "\(String(localized: "salary.csv.annualGross")),\(content.annualGross.eur)",
+            "\(String(localized: "salary.csv.annualSSC")),\(content.annualSSC.eur)",
+            "\(String(localized: "salary.csv.annualIncomeTax")),\(content.annualIncomeTax.eur)",
+            "\(String(localized: "salary.csv.annualNet")),\(content.annualNet.eur)",
+            "\(String(localized: "salary.csv.monthlyNetAvg")),\(content.monthlyNet.eur)",
+            "\(String(localized: "salary.csv.effectiveTaxRate")),\(content.effectiveTaxRate)"
+        ]
+
+        var csvLines = [header] + rows
+
+        // Monthly breakdown
+        let monthly = vm.monthly
+        if !monthly.isEmpty {
+            csvLines.append("")
+            csvLines.append(String(localized: "salary.csv.monthlyHeader"))
+            for output in monthly {
+                let row = [
+                    output.month.shortName,
+                    output.grossWage.eur,
+                    output.sscTax.eur,
+                    output.incomeTax.eur,
+                    output.net.eur
+                ].joined(separator: ",")
+                csvLines.append(row)
+            }
+        }
+
+        return csvLines.joined(separator: "\n")
     }
 
     // MARK: - Deep Link

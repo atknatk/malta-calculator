@@ -1464,6 +1464,375 @@
       }
     },
 
+    "salary.share.asText" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share as Text"
+          }
+        }
+      }
+    },
+    "salary.share.asCSV" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share as CSV"
+          }
+        }
+      }
+    },
+    "salary.share.formatHeader" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Format"
+          }
+        }
+      }
+    },
+    "salary.share.dismiss" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "salary.share.unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No calculation results to share yet. Enter a salary to generate results."
+          }
+        }
+      }
+    },
+    "salary.insight.effectiveRate %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your effective tax rate is %@."
+          }
+        }
+      }
+    },
+    "salary.insight.monthlyNet %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expect approximately %@ each month after deductions."
+          }
+        }
+      }
+    },
+    "salary.chart.donut.a11yLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salary breakdown chart"
+          }
+        }
+      }
+    },
+    "salary.chart.donut.a11yValue %@ %@ %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net %1$@, income tax %2$@, social security %3$@"
+          }
+        }
+      }
+    },
+    "salary.chart.cumulative.a11yValue %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total cumulative net pay %@"
+          }
+        }
+      }
+    },
+    "salary.keyFigure.a11yLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Key annual figures"
+          }
+        }
+      }
+    },
+
+    "salary.empty.a11yLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No calculation yet. Enter your salary to get started."
+          }
+        }
+      }
+    },
+    "salary.error.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong loading tax data. Please try again."
+          }
+        }
+      }
+    },
+    "salary.error.a11yHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Double tap the retry button to try again"
+          }
+        }
+      }
+    },
+    "salary.error.configLoad" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load tax configuration. Please try again."
+          }
+        }
+      }
+    },
+    "salary.error.calculation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculation failed. Please adjust your inputs and try again."
+          }
+        }
+      }
+    },
+
+    "salary.save.entryTitle %@ %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salary %1$@ — %2$@"
+          }
+        }
+      }
+    },
+    "salary.save.entrySummary %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net %@/mo"
+          }
+        }
+      }
+    },
+
+    "salary.insight.childBracket" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tip: Claiming the child tax bracket in 2026 can reduce your tax by up to €3,000/year."
+          }
+        }
+      }
+    },
+    "salary.insight.privatePension" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consider a private pension contribution (up to €3,000/year) to claim a 25% tax credit."
+          }
+        }
+      }
+    },
+
+    "salary.share.copyClipboard" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy to Clipboard"
+          }
+        }
+      }
+    },
+    "salary.share.copyClipboard.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copies the salary summary text to your clipboard"
+          }
+        }
+      }
+    },
+    "salary.share.asText.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your salary breakdown as plain text"
+          }
+        }
+      }
+    },
+    "salary.share.asCSV.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your salary breakdown as a CSV spreadsheet"
+          }
+        }
+      }
+    },
+
+    "salary.csv.header" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Field,Amount"
+          }
+        }
+      }
+    },
+    "salary.csv.year" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year"
+          }
+        }
+      }
+    },
+    "salary.csv.annualGross" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annual Gross"
+          }
+        }
+      }
+    },
+    "salary.csv.annualSSC" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annual SSC"
+          }
+        }
+      }
+    },
+    "salary.csv.annualIncomeTax" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annual Income Tax"
+          }
+        }
+      }
+    },
+    "salary.csv.annualNet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annual Net"
+          }
+        }
+      }
+    },
+    "salary.csv.monthlyNetAvg" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly Net (avg)"
+          }
+        }
+      }
+    },
+    "salary.csv.effectiveTaxRate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effective Tax Rate"
+          }
+        }
+      }
+    },
+    "salary.csv.monthlyHeader" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month,Gross,SSC,Income Tax,Net"
+          }
+        }
+      }
+    },
+
     "stepper.decrease" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -31,6 +31,13 @@ struct SalaryCumulativeChart: View {
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("salary.chart.cumulativeNet"))
+        .accessibilityValue(Text(
+            "salary.chart.cumulative.a11yValue \(totalNet.eur)"
+        ))
+    }
+
+    private var totalNet: Decimal {
+        monthly.map(\.net).reduce(0, +)
     }
 
     private func cumulativeNet(through index: Int) -> Decimal {

@@ -62,7 +62,7 @@ struct FloatingNetCard: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("salary.net.title"))
-        .accessibilityValue(accessibilityValue)
+        .accessibilityValue(Text("salary.net.a11yValue \(annualNet.eur) \(monthlyNet.eur)"))
     }
 
     private var yearBadge: some View {
@@ -75,9 +75,6 @@ struct FloatingNetCard: View {
             .accessibilityLabel(Text("salary.net.yearBadge \(String(year))"))
     }
 
-    private var accessibilityValue: String {
-        "\(annualNet.eur) per year, \(monthlyNet.eur) per month"
-    }
 }
 
 #Preview {

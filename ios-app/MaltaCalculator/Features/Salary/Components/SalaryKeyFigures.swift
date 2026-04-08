@@ -40,6 +40,8 @@ struct SalaryKeyFigures: View {
                 )
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Text("salary.keyFigure.a11yLabel"))
     }
 
     private func figure(label: LocalizedStringResource, value: String, color: Color) -> some View {

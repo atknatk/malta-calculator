@@ -75,20 +75,18 @@ exit_empty_backlog_confirmations: 2
 # Implementation gets a generous budget because Swift builds are slow and the
 # tasks are non-trivial. Holdout/satisfaction are sized for Opus-powered
 # validators that need to read 15-40 behaviors against 30+ source files.
-impl_budget: 15
-# 75 minutes — Xcode builds + tests can be heavy.
-impl_timeout: 4500
-# holdout_budget is DIVIDED by holdout_runs. 9/3 = $3 per run.
-# $1/run (the default 3/3) causes "Exceeded USD budget" on scenarios
-# with 15+ behaviors because Opus needs ~40 tool calls to validate.
-# Optiway has the same issue — their retry loop handles it, but we can
-# avoid the extra retry round-trips by giving enough budget upfront.
-holdout_budget: 9
-holdout_timeout: 600
-sat_budget: 3
-sat_timeout: 600
-# Developer fix agent budget for holdout retry loop (default: 5)
-holdout_retry_budget: 5
+impl_budget: 30
+# 90 minutes — Xcode builds + tests can be heavy.
+impl_timeout: 5400
+# holdout_budget is DIVIDED by holdout_runs. 60/3 = $20 per run.
+# ios-feature layer has 5 holdouts × ~16 behaviors = ~80 behaviors.
+# Generous budget to eliminate "Exceeded USD budget" failures entirely.
+holdout_budget: 60
+holdout_timeout: 1200
+sat_budget: 10
+sat_timeout: 900
+# Developer fix agent budget for holdout retry loop (raised from 5)
+holdout_retry_budget: 15
 
 # --- Tool allowlists ---
 impl_tools: "Read,Write,Edit,Grep,Glob,Bash,Agent"

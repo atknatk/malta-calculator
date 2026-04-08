@@ -47,7 +47,7 @@ public struct DSStepper: View {
                 } label: {
                     Image(systemName: "minus")
                         .font(.system(size: 14, weight: .bold))
-                        .frame(width: 36, height: 36)
+                        .frame(width: 44, height: 44)
                         .foregroundStyle(
                             value > range.lowerBound ? DSColor.maltaGold : DSColor.textTertiary
                         )
@@ -70,7 +70,7 @@ public struct DSStepper: View {
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 14, weight: .bold))
-                        .frame(width: 36, height: 36)
+                        .frame(width: 44, height: 44)
                         .foregroundStyle(
                             value < range.upperBound ? DSColor.maltaGold : DSColor.textTertiary
                         )

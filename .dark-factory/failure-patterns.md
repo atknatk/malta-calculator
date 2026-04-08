@@ -295,3 +295,17 @@ _(record-failure.sh appends new patterns here as they happen.)_
 <!-- DARK_FACTORY_RESULT:{"success":true,"layer":"ios-design","files_changed":18,"tests_passed":90,"tests_total":90,"coverage":85,"pr_url":"https://github.com/atknatk/malta-calculator/pull/6","error":null} -->
 - **Prevention**: (to be filled by pipeline-doctor or human)
 - **Session**: task-20260408-015835-c0418dc9
+
+### [2026-04-08] [ios-feature] holdout validation failed: docs/specs/ios-feature/06-feature-salary.intent.md
+
+- **Root Cause**: **Build & tests:** `xcodebuild build` clean (zero errors, zero warnings) and `xcodebuild test` — 49 passed, 0 failed.
+<!-- DARK_FACTORY_RESULT:{"success":true,"layer":"ios-feature","files_changed":4,"tests_passed":49,"tests_total":49,"coverage":80,"pr_url":"https://github.com/atknatk/malta-calculator/pull/11","error":null} -->
+- **Prevention**: (to be filled by pipeline-doctor or human)
+- **Session**: task-20260408-140243-d702ca90
+
+### [2026-04-08] [ios-feature] exhausted after 3 attempts: docs/specs/ios-feature/06-feature-salary.intent.md
+
+- **Root Cause**: **Build & tests:** `xcodebuild build` clean (zero errors, zero warnings) and `xcodebuild test` — 49 passed, 0 failed.
+<!-- DARK_FACTORY_RESULT:{"success":true,"layer":"ios-feature","files_changed":4,"tests_passed":49,"tests_total":49,"coverage":80,"pr_url":"https://github.com/atknatk/malta-calculator/pull/11","error":null} -->
+- **Prevention**: (to be filled by pipeline-doctor or human)
+- **Session**: task-20260408-140243-d702ca90

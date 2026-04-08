@@ -30,24 +30,19 @@ from the spec before the implementation agent ever reads it.
 
 ## Queue
 
-| #   | Intent Spec                                                   | Layer           | Pipeline | Governance | Status    | Session              |
-| --- | ------------------------------------------------------------- | --------------- | -------- | ---------- | --------- | -------------------- |
-| 01  | docs/specs/ios-setup/01-project-setup.intent.md               | ios-setup       | full     | T3         | completed | task-20260407-220734 |
-| 02  | docs/specs/ios-design/02-design-system.intent.md              | ios-design      | full     | T1         | pending   |                      |
-| 03  | docs/specs/ios-calculation/03-calculation-kit.intent.md       | ios-calculation | full     | T2         | pending   |                      |
-| 04  | docs/specs/ios-calculation/04-tax-config.intent.md            | ios-calculation | full     | T2         | pending   |                      |
-| 05  | docs/specs/ios-platform/05-navigation.intent.md               | ios-platform    | standard | T1         | pending   |                      |
-| 06  | docs/specs/ios-feature/06-feature-salary.intent.md            | ios-feature     | full     | T1         | pending   |                      |
-| 07  | docs/specs/ios-feature/07-feature-calculators-hub.intent.md   | ios-feature     | standard | T1         | pending   |                      |
-| 08  | docs/specs/ios-feature/08-feature-calculator-detail.intent.md | ios-feature     | full     | T2         | pending   |                      |
-| 09  | docs/specs/ios-feature/09-feature-guides.intent.md            | ios-feature     | standard | T1         | pending   |                      |
-| 10  | docs/specs/ios-data/10-persistence.intent.md                  | ios-data        | full     | T2         | pending   |                      |
-| 11  | docs/specs/ios-feature/11-share-export.intent.md              | ios-feature     | standard | T1         | pending   |                      |
-| 12  | docs/specs/ios-feature/12-settings-localization.intent.md     | ios-feature     | standard | T1         | pending   |                      |
-| 13  | docs/specs/ios-quality/13-testing.intent.md                   | ios-quality     | full     | T1         | pending   |                      |
-| 14  | docs/specs/ios-quality/14-accessibility.intent.md             | ios-quality     | standard | T1         | pending   |                      |
-| 15  | docs/specs/ios-quality/15-performance.intent.md               | ios-quality     | standard | T2         | pending   |                      |
-| 16  | docs/specs/ios-release/16-release.intent.md                   | ios-release     | standard | T2         | pending   |                      |
+| #   | Intent Spec                                                   | Layer       | Pipeline | Governance | Status  | Session |
+| --- | ------------------------------------------------------------- | ----------- | -------- | ---------- | ------- | ------- |
+| 06  | docs/specs/ios-feature/06-feature-salary.intent.md            | ios-feature | full     | T1         | pending |         |
+| 07  | docs/specs/ios-feature/07-feature-calculators-hub.intent.md   | ios-feature | standard | T1         | pending |         |
+| 08  | docs/specs/ios-feature/08-feature-calculator-detail.intent.md | ios-feature | full     | T2         | pending |         |
+| 09  | docs/specs/ios-feature/09-feature-guides.intent.md            | ios-feature | standard | T1         | pending |         |
+| 10  | docs/specs/ios-data/10-persistence.intent.md                  | ios-data    | full     | T2         | pending |         |
+| 11  | docs/specs/ios-feature/11-share-export.intent.md              | ios-feature | standard | T1         | pending |         |
+| 12  | docs/specs/ios-feature/12-settings-localization.intent.md     | ios-feature | standard | T1         | pending |         |
+| 13  | docs/specs/ios-quality/13-testing.intent.md                   | ios-quality | full     | T1         | pending |         |
+| 14  | docs/specs/ios-quality/14-accessibility.intent.md             | ios-quality | standard | T1         | pending |         |
+| 15  | docs/specs/ios-quality/15-performance.intent.md               | ios-quality | standard | T2         | pending |         |
+| 16  | docs/specs/ios-release/16-release.intent.md                   | ios-release | standard | T2         | pending |         |
 
 ## In Progress
 
@@ -55,7 +50,13 @@ _(Auto-managed by `ralph.sh` — rows move here while a session is running.)_
 
 ## Completed
 
-_(Auto-managed — rows move here on T0/T1/T2 ship success.)_
+| #   | Intent Spec                                             | Layer           | Pipeline | Governance | Status    | Session                       |
+| --- | ------------------------------------------------------- | --------------- | -------- | ---------- | --------- | ----------------------------- |
+| 01  | docs/specs/ios-setup/01-project-setup.intent.md         | ios-setup       | full     | T3         | completed | task-20260407-220734          |
+| 02  | docs/specs/ios-design/02-design-system.intent.md        | ios-design      | full     | T1         | completed | task-20260408-092817-b893d942 |
+| 03  | docs/specs/ios-calculation/03-calculation-kit.intent.md | ios-calculation | full     | T2         | completed | task-20260408-103836-cc95096a |
+| 04  | docs/specs/ios-calculation/04-tax-config.intent.md      | ios-calculation | full     | T2         | completed | task-20260408-111756-d7736d68 |
+| 05  | docs/specs/ios-platform/05-navigation.intent.md         | ios-platform    | standard | T1         | completed | task-20260408-121605-117b78ce |
 
 ## Rejected
 
