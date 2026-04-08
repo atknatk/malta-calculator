@@ -9,16 +9,20 @@
 /* Begin PBXBuildFile section */
 		04B8D7DE591D010BA3061E03 /* SalaryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB9EA68AA0894ABB7557491 /* SalaryRouter.swift */; };
 		119ED70E5323E6E963B15D1A /* CalculatorDetailFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC201A185EE17EE9E59944 /* CalculatorDetailFactory.swift */; };
+		180DC48AF704479B28847C90 /* SalaryShareContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B55CB27A3396A252C5D97 /* SalaryShareContent.swift */; };
 		20B799FBA27C9117F1B385DA /* CalculatorsHubScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C11FDA4708C0BC4255533F /* CalculatorsHubScreen.swift */; };
 		226117E2D6212FBEF53D2A74 /* GuidesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B34B3E952B1E7D13DDF3D5 /* GuidesRouter.swift */; };
 		24E0ECEDDB34A1FA2BCAA7CB /* CalculatorID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086F7AA0DDC567416EBC92D2 /* CalculatorID.swift */; };
 		2674F2F102D4F2AFC2096603 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B2D94468F50ECFF9CA19CE6 /* Assets.xcassets */; };
 		29C80428C863DABC3703E096 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3B1EA68881C3E11627C254D6 /* PrivacyInfo.xcprivacy */; };
+		3124EE6C42BC2BF654250D03 /* MonthlyRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2967C0DC302D82D48BACCE4C /* MonthlyRowCard.swift */; };
 		3500D5404052FA1640A70CB2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C80619108982F01DEEAA9B /* DeepLinkParser.swift */; };
 		35DB034D63D71DA83154E8CA /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5548E630FA77423E6502F8 /* SettingsRouter.swift */; };
+		3BA3A47095BCBDF1971B9F02 /* SalaryBreakdownDonut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D06A27FE35AEF769E67700 /* SalaryBreakdownDonut.swift */; };
 		4847351F799DF82F29DE1512 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = C486B5057B7C9A4D8C42E3B0 /* DesignSystem */; };
 		55A8BBB6A610C51F336CC587 /* GuidesNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCAE694A6EA2741F6CC8668 /* GuidesNavigationStack.swift */; };
 		5731CA00A6B35EDE3E4DA663 /* MaltaCalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A597F849A651DA532E7EF0 /* MaltaCalculatorUITests.swift */; };
+		579FF8E931023547AC32ED78 /* FloatingNetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B54E6EF97FF05F804793F /* FloatingNetCard.swift */; };
 		6CD164EA62CE8C302C328D77 /* CalculatorsNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D81CBD21AD3E0A4DD8B6690 /* CalculatorsNavigationStack.swift */; };
 		6D900C222EB01C3329C58E30 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */; };
 		6E634251FC90FB71FB8498FF /* ComingSoonScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A925BA0C330F102F69187A4 /* ComingSoonScreen.swift */; };
@@ -28,11 +32,16 @@
 		7ED07E3995752D4DED35E61F /* CalculationKit in Frameworks */ = {isa = PBXBuildFile; productRef = C48FD61DB2226C059675FF3C /* CalculationKit */; };
 		820A4200D09BADA29AB25BDE /* RootTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A75E9102A82ECCF7448ED45 /* RootTab.swift */; };
 		82BED4CE2167852339F9B389 /* GuidesListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B587E8159BD0D50C0B0A95 /* GuidesListScreen.swift */; };
+		88526C719D29F0E1C0FBCBFE /* SalaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561285B3935AD06138B40FBD /* SalaryViewModelTests.swift */; };
+		9293750CDED3F28C4CDCC237 /* SalaryCumulativeChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E537970906C685269A3006 /* SalaryCumulativeChart.swift */; };
 		967011AD45892F28800F04AB /* HomeNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1990B80CE79226E9799B38 /* HomeNavigationStack.swift */; };
 		97E3BBB34CB523F32A572B26 /* MaltaCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */; };
 		9BE76A8D031B973E52C765E6 /* DeepLinkDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E187959EEDE17FC78E959E /* DeepLinkDestination.swift */; };
 		A1E1652DD06D4385756F0C2D /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A00B96C7E49F500243FA1D4 /* HomeRouter.swift */; };
+		A394D67B949EE23B156417C5 /* SalaryInputCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A08A5CF4B092C1C13E386A4 /* SalaryInputCard.swift */; };
 		A5DEC90016A7C04619F0DD92 /* CalculatorsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769CBA9DC5C006A496D6DA5 /* CalculatorsRouter.swift */; };
+		B3CF295AF0F42C1917B04981 /* SalaryInsights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F513E52842C7EB018445340 /* SalaryInsights.swift */; };
+		B95D628BEBF695371E962A65 /* SalaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF899578EDD4E9A79BE92085 /* SalaryViewModel.swift */; };
 		C2EE207041B0A27066C76450 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204D44EAD0E645CF48C8478F /* AppState.swift */; };
 		C6847AAB3F133B5B6419FB8B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB399DD91FD3AC40791349C /* RootView.swift */; };
 		C756109F8B4909FF9ECA3D36 /* SettingsNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A42FCF3B386343A26597D4 /* SettingsNavigationStack.swift */; };
@@ -60,7 +69,10 @@
 /* Begin PBXFileReference section */
 		086F7AA0DDC567416EBC92D2 /* CalculatorID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorID.swift; sourceTree = "<group>"; };
 		0EB399DD91FD3AC40791349C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		10E537970906C685269A3006 /* SalaryCumulativeChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryCumulativeChart.swift; sourceTree = "<group>"; };
 		204D44EAD0E645CF48C8478F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		247B55CB27A3396A252C5D97 /* SalaryShareContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryShareContent.swift; sourceTree = "<group>"; };
+		2967C0DC302D82D48BACCE4C /* MonthlyRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyRowCard.swift; sourceTree = "<group>"; };
 		29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltaCalculatorTests.swift; sourceTree = "<group>"; };
 		2FB9EA68AA0894ABB7557491 /* SalaryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryRouter.swift; sourceTree = "<group>"; };
 		2FCAE694A6EA2741F6CC8668 /* GuidesNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesNavigationStack.swift; sourceTree = "<group>"; };
@@ -70,13 +82,17 @@
 		3B1EA68881C3E11627C254D6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B2D94468F50ECFF9CA19CE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3C34073A5855C0FE024A051D /* MaltaCalculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MaltaCalculator.entitlements; sourceTree = "<group>"; };
+		3F513E52842C7EB018445340 /* SalaryInsights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryInsights.swift; sourceTree = "<group>"; };
 		3F6BEE173BA2ED9E9B2D5B11 /* SalaryNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryNavigationStack.swift; sourceTree = "<group>"; };
 		48B34B3E952B1E7D13DDF3D5 /* GuidesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesRouter.swift; sourceTree = "<group>"; };
 		5216D5E29222604CEBBE045E /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignSystem; path = Packages/DesignSystem; sourceTree = SOURCE_ROOT; };
 		54FF9ECE9B8EB3158B5AB306 /* SalaryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryScreen.swift; sourceTree = "<group>"; };
+		561285B3935AD06138B40FBD /* SalaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewModelTests.swift; sourceTree = "<group>"; };
+		6A08A5CF4B092C1C13E386A4 /* SalaryInputCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryInputCard.swift; sourceTree = "<group>"; };
 		7B1990B80CE79226E9799B38 /* HomeNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationStack.swift; sourceTree = "<group>"; };
 		88916A000CD197FC01F85107 /* MaltaCalculatorUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MaltaCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A75E9102A82ECCF7448ED45 /* RootTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTab.swift; sourceTree = "<group>"; };
+		96D06A27FE35AEF769E67700 /* SalaryBreakdownDonut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryBreakdownDonut.swift; sourceTree = "<group>"; };
 		972AB70E54A9273D408CB45C /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		99E187959EEDE17FC78E959E /* DeepLinkDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkDestination.swift; sourceTree = "<group>"; };
 		9A00B96C7E49F500243FA1D4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
@@ -86,6 +102,8 @@
 		B33DD602684DA55F016D1232 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		B769CBA9DC5C006A496D6DA5 /* CalculatorsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorsRouter.swift; sourceTree = "<group>"; };
 		B7C80619108982F01DEEAA9B /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
+		BF7B54E6EF97FF05F804793F /* FloatingNetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingNetCard.swift; sourceTree = "<group>"; };
+		CF899578EDD4E9A79BE92085 /* SalaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewModel.swift; sourceTree = "<group>"; };
 		D0B587E8159BD0D50C0B0A95 /* GuidesListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesListScreen.swift; sourceTree = "<group>"; };
 		D1C11FDA4708C0BC4255533F /* CalculatorsHubScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorsHubScreen.swift; sourceTree = "<group>"; };
 		D4EC201A185EE17EE9E59944 /* CalculatorDetailFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorDetailFactory.swift; sourceTree = "<group>"; };
@@ -195,9 +213,17 @@
 		9738D2C64A3E5073AF5C6476 /* Salary */ = {
 			isa = PBXGroup;
 			children = (
+				BF7B54E6EF97FF05F804793F /* FloatingNetCard.swift */,
+				2967C0DC302D82D48BACCE4C /* MonthlyRowCard.swift */,
+				96D06A27FE35AEF769E67700 /* SalaryBreakdownDonut.swift */,
+				10E537970906C685269A3006 /* SalaryCumulativeChart.swift */,
+				6A08A5CF4B092C1C13E386A4 /* SalaryInputCard.swift */,
+				3F513E52842C7EB018445340 /* SalaryInsights.swift */,
 				3F6BEE173BA2ED9E9B2D5B11 /* SalaryNavigationStack.swift */,
 				2FB9EA68AA0894ABB7557491 /* SalaryRouter.swift */,
 				54FF9ECE9B8EB3158B5AB306 /* SalaryScreen.swift */,
+				247B55CB27A3396A252C5D97 /* SalaryShareContent.swift */,
+				CF899578EDD4E9A79BE92085 /* SalaryViewModel.swift */,
 			);
 			path = Salary;
 			sourceTree = "<group>";
@@ -255,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */,
+				561285B3935AD06138B40FBD /* SalaryViewModelTests.swift */,
 			);
 			path = MaltaCalculatorTests;
 			sourceTree = "<group>";
@@ -454,6 +481,7 @@
 				6E634251FC90FB71FB8498FF /* ComingSoonScreen.swift in Sources */,
 				9BE76A8D031B973E52C765E6 /* DeepLinkDestination.swift in Sources */,
 				3500D5404052FA1640A70CB2 /* DeepLinkParser.swift in Sources */,
+				579FF8E931023547AC32ED78 /* FloatingNetCard.swift in Sources */,
 				82BED4CE2167852339F9B389 /* GuidesListScreen.swift in Sources */,
 				55A8BBB6A610C51F336CC587 /* GuidesNavigationStack.swift in Sources */,
 				226117E2D6212FBEF53D2A74 /* GuidesRouter.swift in Sources */,
@@ -461,11 +489,18 @@
 				A1E1652DD06D4385756F0C2D /* HomeRouter.swift in Sources */,
 				72D367D2CB7E9A85324E6E51 /* HomeScreen.swift in Sources */,
 				782AFC684A5F838ED798C515 /* MaltaCalculatorApp.swift in Sources */,
+				3124EE6C42BC2BF654250D03 /* MonthlyRowCard.swift in Sources */,
 				820A4200D09BADA29AB25BDE /* RootTab.swift in Sources */,
 				C6847AAB3F133B5B6419FB8B /* RootView.swift in Sources */,
+				3BA3A47095BCBDF1971B9F02 /* SalaryBreakdownDonut.swift in Sources */,
+				9293750CDED3F28C4CDCC237 /* SalaryCumulativeChart.swift in Sources */,
+				A394D67B949EE23B156417C5 /* SalaryInputCard.swift in Sources */,
+				B3CF295AF0F42C1917B04981 /* SalaryInsights.swift in Sources */,
 				CB41BD5D78BB1DC840E3CA6F /* SalaryNavigationStack.swift in Sources */,
 				04B8D7DE591D010BA3061E03 /* SalaryRouter.swift in Sources */,
 				DB6B8238D87C03BB9B7E0B25 /* SalaryScreen.swift in Sources */,
+				180DC48AF704479B28847C90 /* SalaryShareContent.swift in Sources */,
+				B95D628BEBF695371E962A65 /* SalaryViewModel.swift in Sources */,
 				C756109F8B4909FF9ECA3D36 /* SettingsNavigationStack.swift in Sources */,
 				35DB034D63D71DA83154E8CA /* SettingsRouter.swift in Sources */,
 				76151F4483109E2357E1B3EC /* SettingsScreen.swift in Sources */,
@@ -477,6 +512,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97E3BBB34CB523F32A572B26 /* MaltaCalculatorTests.swift in Sources */,
+				88526C719D29F0E1C0FBCBFE /* SalaryViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
