@@ -85,6 +85,7 @@ struct SpacingTests {
 struct RadiusTests {
     @Test("Radius tokens have correct values")
     func radiusValues() {
+        #expect(DSRadius.none == 0)
         #expect(DSRadius.xs == 4)
         #expect(DSRadius.sm == 8)
         #expect(DSRadius.md == 12)
@@ -92,6 +93,19 @@ struct RadiusTests {
         #expect(DSRadius.xl == 20)
         #expect(DSRadius.xxl == 28)
         #expect(DSRadius.pill == 9999)
+    }
+
+    @Test("Circle alias equals pill")
+    func circleAlias() {
+        #expect(DSRadius.circle == DSRadius.pill)
+    }
+
+    @Test("Shape helper creates RoundedRectangle")
+    func shapeHelper() {
+        let shape = DSRadius.shape(DSRadius.lg)
+        _ = shape // verifies creation without crash
+        let sharpShape = DSRadius.shape(DSRadius.none, style: .circular)
+        _ = sharpShape
     }
 }
 
@@ -121,6 +135,56 @@ struct ShadowTests {
     func pressedShadow() {
         #expect(DSShadow.pressed.radius == 8)
         #expect(DSShadow.pressed.y == 2)
+    }
+
+    @Test("None shadow has zero radius")
+    func noneShadow() {
+        #expect(DSShadow.none.radius == 0)
+        #expect(DSShadow.none.x == 0)
+        #expect(DSShadow.none.y == 0)
+    }
+
+    @Test("Shadow conforms to Equatable")
+    func shadowEquatable() {
+        let a = DSShadow.Shadow(color: .clear, radius: 0, x: 0, y: 0)
+        let b = DSShadow.Shadow(color: .clear, radius: 0, x: 0, y: 0)
+        #expect(a == b)
+    }
+}
+
+// MARK: - DSElevation Tests
+
+struct ElevationTests {
+    @Test("Elevation levels are ordered")
+    func elevationOrdering() {
+        #expect(DSElevation.flat < DSElevation.raised)
+        #expect(DSElevation.raised < DSElevation.floating)
+        #expect(DSElevation.floating < DSElevation.overlay)
+    }
+
+    @Test("All elevation levels have CaseIterable")
+    func elevationCaseIterable() {
+        #expect(DSElevation.allCases.count == 4)
+    }
+
+    @Test("Flat maps to none shadow")
+    func flatShadow() {
+        #expect(DSElevation.flat.shadow.radius == 0)
+    }
+
+    @Test("Raised maps to card shadow")
+    func raisedShadow() {
+        #expect(DSElevation.raised.shadow.radius == DSShadow.card.radius)
+    }
+
+    @Test("Floating maps to elevated shadow")
+    func floatingShadow() {
+        #expect(DSElevation.floating.shadow.radius == DSShadow.elevated.radius)
+    }
+
+    @Test("Overlay has largest shadow radius")
+    func overlayShadow() {
+        #expect(DSElevation.overlay.shadow.radius > DSElevation.floating.shadow.radius)
     }
 }
 
@@ -158,6 +222,25 @@ struct LiquidGlassStrengthTests {
     }
 }
 
+// MARK: - Accessibility Reduce Transparency Tests
+
+struct ReduceTransparencyFallbackTests {
+    @Test("LiquidGlassStrength exposes all material variants")
+    func allMaterials() {
+        let strengths: [LiquidGlassStrength] = [.thin, .regular, .thick]
+        for strength in strengths {
+            _ = strength.material
+        }
+        #expect(strengths.count == LiquidGlassStrength.allCases.count)
+    }
+
+    @Test("DSColor.surface is available as opaque fallback")
+    func surfaceFallback() {
+        // Verifies the token exists for reduce-transparency fallback paths
+        _ = DSColor.surface
+    }
+}
+
 // MARK: - DSButtonSize Tests
 
 struct ButtonSizeTests {
@@ -173,6 +256,45 @@ struct ButtonSizeTests {
         #expect(DSButtonSize.small.horizontalPadding == DSSpacing.md)
         #expect(DSButtonSize.regular.horizontalPadding == DSSpacing.lg)
         #expect(DSButtonSize.large.horizontalPadding == DSSpacing.xl)
+    }
+
+    @Test("Button sizes are CaseIterable")
+    func sizesCaseIterable() {
+        #expect(DSButtonSize.allCases.count == 3)
+    }
+}
+
+// MARK: - DSButtonVariant Tests
+
+struct ButtonVariantTests {
+    @Test("All button variants are distinct and CaseIterable")
+    func variantsCaseIterable() {
+        #expect(DSButtonVariant.allCases.count == 6)
+        let uniqueSet = Set(DSButtonVariant.allCases)
+        #expect(uniqueSet.count == 6)
+    }
+
+    @Test("Outline variant exists")
+    func outlineVariant() {
+        _ = DSButtonVariant.outline
+        #expect(DSButtonVariant.allCases.contains(.outline))
+    }
+
+    @Test("Variants are Equatable")
+    func variantsEquatable() {
+        #expect(DSButtonVariant.primary == DSButtonVariant.primary)
+        #expect(DSButtonVariant.primary != DSButtonVariant.ghost)
+    }
+
+    @Test("Foreground colors differ between filled and non-filled variants")
+    func foregroundColors() {
+        let filledColor = DSButtonStyle.foregroundColor(for: .primary)
+        let outlineColor = DSButtonStyle.foregroundColor(for: .outline)
+        let ghostColor = DSButtonStyle.foregroundColor(for: .ghost)
+
+        #expect(filledColor == .white)
+        #expect(outlineColor == DSColor.maltaGold)
+        #expect(ghostColor == DSColor.maltaGold)
     }
 }
 
@@ -222,12 +344,22 @@ struct BadgeVariantTests {
 // MARK: - DSCardVariant Tests
 
 struct CardVariantTests {
-    @Test("Card variants are distinct")
-    func variants() {
-        _ = DSCardVariant.default
-        _ = DSCardVariant.highlighted
-        _ = DSCardVariant.hero
-        _ = DSCardVariant.destructive
+    @Test("Card variants are distinct and CaseIterable")
+    func variantsCaseIterable() {
+        #expect(DSCardVariant.allCases.count == 5)
+        let uniqueSet = Set(DSCardVariant.allCases)
+        #expect(uniqueSet.count == 5)
+    }
+
+    @Test("Compact variant exists")
+    func compactVariant() {
+        #expect(DSCardVariant.allCases.contains(.compact))
+    }
+
+    @Test("Variants are Equatable")
+    func variantsEquatable() {
+        #expect(DSCardVariant.default == DSCardVariant.default)
+        #expect(DSCardVariant.default != DSCardVariant.hero)
     }
 }
 
@@ -277,14 +409,23 @@ struct AmortizationTests {
 struct MotionTests {
     @Test("Motion tokens are Animation values")
     func motionTokensExist() {
-        // Just verify these resolve without crash
         _ = DSMotion.quick
         _ = DSMotion.standard
         _ = DSMotion.slow
+        _ = DSMotion.instant
         _ = DSMotion.expressive
         _ = DSMotion.bouncy
         _ = DSMotion.float
         _ = DSMotion.glow
+    }
+
+    @Test("Duration constants have correct values")
+    func durationConstants() {
+        #expect(DSMotion.Duration.quick == 0.18)
+        #expect(DSMotion.Duration.standard == 0.32)
+        #expect(DSMotion.Duration.slow == 0.5)
+        #expect(DSMotion.Duration.float == 6)
+        #expect(DSMotion.Duration.glow == 3)
     }
 }
 
@@ -367,7 +508,6 @@ struct CurrencyFieldParseTests {
 struct FontTests {
     @Test("Display fonts are serif design")
     func displayFonts() {
-        // Verify display font variants exist without crash
         _ = DSFont.displayXL
         _ = DSFont.displayL
         _ = DSFont.displayM
@@ -389,9 +529,22 @@ struct FontTests {
         _ = DSFont.caption
     }
 
+    @Test("Label and footnote fonts exist")
+    func labelAndFootnote() {
+        _ = DSFont.label
+        _ = DSFont.footnote
+    }
+
     @Test("Custom mono font can be created")
     func monoFont() {
         _ = DSFont.mono(16, weight: .bold)
+    }
+
+    @Test("LineHeight constants have correct values")
+    func lineHeightConstants() {
+        #expect(DSFont.LineHeight.tight == 1.2)
+        #expect(DSFont.LineHeight.standard == 1.5)
+        #expect(DSFont.LineHeight.relaxed == 1.75)
     }
 }
 
@@ -465,6 +618,114 @@ struct ColorTests {
     }
 }
 
+// MARK: - DSColor Namespace Tests
+
+struct ColorNamespaceTests {
+    @Test("Brand namespace resolves all colors")
+    func brandNamespace() {
+        _ = DSColor.Brand.gold
+        _ = DSColor.Brand.goldMuted
+        _ = DSColor.Brand.blue
+        _ = DSColor.Brand.blueMuted
+        _ = DSColor.Brand.red
+        _ = DSColor.Brand.sand
+    }
+
+    @Test("Surface namespace resolves all colors")
+    func surfaceNamespace() {
+        _ = DSColor.Surface.primary
+        _ = DSColor.Surface.card
+        _ = DSColor.Surface.muted
+        _ = DSColor.Surface.elevated
+    }
+
+    @Test("Text namespace resolves all colors")
+    func textNamespace() {
+        _ = DSColor.Text.primary
+        _ = DSColor.Text.secondary
+        _ = DSColor.Text.tertiary
+        _ = DSColor.Text.inverse
+    }
+
+    @Test("Semantic namespace resolves all colors")
+    func semanticNamespace() {
+        _ = DSColor.Semantic.success
+        _ = DSColor.Semantic.warning
+        _ = DSColor.Semantic.danger
+        _ = DSColor.Semantic.info
+    }
+
+    @Test("Glass namespace resolves all colors")
+    func glassNamespace() {
+        _ = DSColor.Glass.tint
+        _ = DSColor.Glass.stroke
+    }
+}
+
+// MARK: - DSColor Asset Catalog Tests
+
+struct ColorCatalogTests {
+    @Test("allBrand has 6 tokens")
+    func brandCatalog() {
+        #expect(DSColor.allBrand.count == 6)
+        #expect(DSColor.allBrand.allSatisfy { $0.group == .brand })
+    }
+
+    @Test("allSurface has 4 tokens")
+    func surfaceCatalog() {
+        #expect(DSColor.allSurface.count == 4)
+        #expect(DSColor.allSurface.allSatisfy { $0.group == .surface })
+    }
+
+    @Test("allText has 4 tokens")
+    func textCatalog() {
+        #expect(DSColor.allText.count == 4)
+        #expect(DSColor.allText.allSatisfy { $0.group == .text })
+    }
+
+    @Test("allSemantic has 4 tokens")
+    func semanticCatalog() {
+        #expect(DSColor.allSemantic.count == 4)
+        #expect(DSColor.allSemantic.allSatisfy { $0.group == .semantic })
+    }
+
+    @Test("allGlass has 2 tokens")
+    func glassCatalog() {
+        #expect(DSColor.allGlass.count == 2)
+        #expect(DSColor.allGlass.allSatisfy { $0.group == .glass })
+    }
+
+    @Test("allTokens returns all color tokens")
+    func allTokensCatalog() {
+        let all = DSColor.allTokens
+        #expect(all.count == 20) // 6 + 4 + 4 + 4 + 2
+    }
+
+    @Test("Token names are unique")
+    func uniqueNames() {
+        let names = DSColor.allTokens.map(\.name)
+        #expect(Set(names).count == names.count)
+    }
+
+    @Test("Token lookup by name works")
+    func tokenLookup() {
+        let token = DSColor.token(named: "maltaGold")
+        #expect(token != nil)
+        #expect(token?.name == "maltaGold")
+        #expect(token?.group == .brand)
+    }
+
+    @Test("Token lookup returns nil for unknown name")
+    func tokenLookupNil() {
+        #expect(DSColor.token(named: "nonExistent") == nil)
+    }
+
+    @Test("ColorGroup is CaseIterable")
+    func colorGroupCaseIterable() {
+        #expect(ColorGroup.allCases.count == 5)
+    }
+}
+
 // MARK: - DesignSystem Version Tests
 
 struct VersionTests {
@@ -489,7 +750,44 @@ struct AnimatedNumberPercentTests {
     func largeCurrencyValue() {
         let view = DSAnimatedNumber(1_500_000, format: .currency)
         let formatted = view.formatted
-        // Should contain some representation of 1.5M
         #expect(!formatted.isEmpty, "formatted string should not be empty")
+    }
+
+    @Test("Negative currency value formats correctly")
+    func negativeCurrencyValue() {
+        let view = DSAnimatedNumber(-500, format: .currency)
+        let formatted = view.formatted
+        #expect(!formatted.isEmpty, "formatted string should not be empty")
+        // Should contain minus sign or parentheses for negative
+        #expect(formatted.contains("-") || formatted.contains("("),
+                "expected negative indicator, got: \(formatted)")
+    }
+
+    @Test("Zero value formats without crash")
+    func zeroValue() {
+        let view = DSAnimatedNumber(0, format: .currency)
+        let formatted = view.formatted
+        #expect(!formatted.isEmpty)
+    }
+
+    @Test("NumberFormat conforms to Equatable")
+    func formatEquatable() {
+        #expect(DSAnimatedNumber.NumberFormat.currency == DSAnimatedNumber.NumberFormat.currency)
+        #expect(DSAnimatedNumber.NumberFormat.percent == DSAnimatedNumber.NumberFormat.percent)
+        #expect(DSAnimatedNumber.NumberFormat.decimal(fractionDigits: 2) ==
+                DSAnimatedNumber.NumberFormat.decimal(fractionDigits: 2))
+        #expect(DSAnimatedNumber.NumberFormat.currency != DSAnimatedNumber.NumberFormat.percent)
+    }
+
+    @Test("NumberFormat conforms to Hashable")
+    func formatHashable() {
+        let set: Set<DSAnimatedNumber.NumberFormat> = [.currency, .percent, .decimal(fractionDigits: 2)]
+        #expect(set.count == 3)
+    }
+
+    @Test("accessibilityText returns a value")
+    func accessibilityText() {
+        let view = DSAnimatedNumber(14976.50, format: .currency)
+        #expect(!view.accessibilityText.isEmpty)
     }
 }

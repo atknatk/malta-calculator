@@ -8,7 +8,7 @@ import SwiftUI
 /// Strength levels for the Liquid Glass effect.
 ///
 /// Maps to native `GlassEffect` on iOS 26 and `Material` on iOS 18.
-public enum LiquidGlassStrength: Sendable {
+public enum LiquidGlassStrength: Sendable, Equatable, Hashable, CaseIterable {
     /// Thin/subtle glass effect.
     case thin
     /// Standard glass effect.

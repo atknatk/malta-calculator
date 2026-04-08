@@ -4,6 +4,9 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Animation tokens for consistent motion throughout the app.
 ///
@@ -11,14 +14,40 @@ import SwiftUI
 /// See failure pattern A-03 — always check `accessibilityReduceMotion`.
 public enum DSMotion {
 
+    // MARK: - Durations
+
+    /// Raw duration values (seconds) for use outside of `Animation` contexts.
+    public enum Duration {
+        /// Instant (zero-duration): 0s.
+        public static let instant: TimeInterval = 0
+        /// Quick interaction feedback: 0.18s.
+        public static let quick: TimeInterval = 0.18
+        /// Standard transition: 0.32s.
+        public static let standard: TimeInterval = 0.32
+        /// Slow deliberate transition: 0.5s.
+        public static let slow: TimeInterval = 0.5
+        /// Floating loop cycle: 6s.
+        public static let float: TimeInterval = 6
+        /// Glow pulse cycle: 3s.
+        public static let glow: TimeInterval = 3
+
+        /// All duration values from fastest to slowest.
+        public static let allValues: [TimeInterval] = [instant, quick, standard, slow, glow, float]
+    }
+
+    // MARK: - Animations
+
     /// Quick interaction feedback (0.18s ease-out).
-    public static let quick = Animation.easeOut(duration: 0.18)
+    public static let quick = Animation.easeOut(duration: Duration.quick)
 
     /// Standard transition (0.32s ease-in-out).
-    public static let standard = Animation.easeInOut(duration: 0.32)
+    public static let standard = Animation.easeInOut(duration: Duration.standard)
 
     /// Slow, deliberate transition (0.5s ease-in-out).
-    public static let slow = Animation.easeInOut(duration: 0.5)
+    public static let slow = Animation.easeInOut(duration: Duration.slow)
+
+    /// Instant (zero-duration) animation for immediate state changes or reduce-motion fallback.
+    public static let instant = Animation.linear(duration: 0)
 
     /// Expressive spring (response 0.5, damping 0.75).
     public static let expressive = Animation.spring(response: 0.5, dampingFraction: 0.75)
@@ -27,8 +56,21 @@ public enum DSMotion {
     public static let bouncy = Animation.spring(response: 0.45, dampingFraction: 0.65)
 
     /// Continuous floating loop (6s, autoreverses).
-    public static let float = Animation.easeInOut(duration: 6).repeatForever(autoreverses: true)
+    public static let float = Animation.easeInOut(duration: Duration.float).repeatForever(autoreverses: true)
 
     /// Continuous glow pulse loop (3s, autoreverses).
-    public static let glow = Animation.easeInOut(duration: 3).repeatForever(autoreverses: true)
+    public static let glow = Animation.easeInOut(duration: Duration.glow).repeatForever(autoreverses: true)
+
+    // MARK: - Reduce Motion Helpers
+
+    /// Returns the given animation when Reduce Motion is off, or `.instant` when on.
+    @MainActor
+    public static func preferReducedMotion(_ animation: Animation) -> Animation {
+        #if canImport(UIKit)
+        if UIAccessibility.isReduceMotionEnabled {
+            return instant
+        }
+        #endif
+        return animation
+    }
 }

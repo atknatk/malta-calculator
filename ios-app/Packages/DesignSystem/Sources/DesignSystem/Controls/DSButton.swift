@@ -6,11 +6,13 @@
 import SwiftUI
 
 /// Visual variant for `DSButton`.
-public enum DSButtonVariant: Sendable {
+public enum DSButtonVariant: Sendable, Equatable, Hashable, CaseIterable {
     /// Malta gold filled button.
     case primary
     /// Glass background with gold text.
     case secondary
+    /// Outlined button with gold border and transparent background.
+    case outline
     /// Text-only ghost button.
     case ghost
     /// Primary with shimmer and glow shadow.
@@ -20,7 +22,7 @@ public enum DSButtonVariant: Sendable {
 }
 
 /// Size configuration for `DSButton`.
-public enum DSButtonSize: Sendable {
+public enum DSButtonSize: Sendable, Equatable, Hashable, CaseIterable {
     /// Small button (36pt height).
     case small
     /// Regular button (48pt height).
@@ -29,7 +31,7 @@ public enum DSButtonSize: Sendable {
     case large
 
     /// Button height for this size.
-    var height: CGFloat {
+    public var height: CGFloat {
         switch self {
         case .small: return 36
         case .regular: return 48
@@ -38,7 +40,7 @@ public enum DSButtonSize: Sendable {
     }
 
     /// Font for this button size.
-    var font: Font {
+    public var font: Font {
         switch self {
         case .small: return DSFont.body(14, weight: .semibold)
         case .regular: return DSFont.body(16, weight: .semibold)
@@ -47,7 +49,7 @@ public enum DSButtonSize: Sendable {
     }
 
     /// Horizontal padding for this button size.
-    var horizontalPadding: CGFloat {
+    public var horizontalPadding: CGFloat {
         switch self {
         case .small: return DSSpacing.md
         case .regular: return DSSpacing.lg
@@ -91,24 +93,32 @@ public struct DSButton: View {
         self.action = action
     }
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: DSSpacing.xs) {
                 if isLoading {
-                    ProgressView().controlSize(.small)
+                    ProgressView()
+                        .controlSize(.small)
+                        .tint(DSButtonStyle.foregroundColor(for: variant))
                 } else if let icon {
                     Image(systemName: icon)
                 }
                 Text(title)
+                    .opacity(isLoading ? 0.6 : 1)
             }
             .font(size.font)
+            .animation(reduceMotion ? DSMotion.instant : DSMotion.quick, value: isLoading)
         }
         .buttonStyle(DSButtonStyle(variant: variant, size: size))
         .disabled(isLoading)
+        .accessibilityLabel(title)
+        .accessibilityValue(isLoading ? "Loading" : "")
+        .accessibilityHint(isLoading ? "Please wait" : "")
         #if os(iOS)
         .sensoryFeedback(.selection, trigger: isLoading)
         #endif
-        .accessibilityLabel(title)
     }
 }
 
@@ -118,6 +128,10 @@ public struct DSButtonStyle: ButtonStyle {
     let variant: DSButtonVariant
     /// Size configuration.
     let size: DSButtonSize
+
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     /// Creates a DS button style.
     public init(variant: DSButtonVariant = .primary, size: DSButtonSize = .regular) {
@@ -130,13 +144,14 @@ public struct DSButtonStyle: ButtonStyle {
             .foregroundStyle(foregroundColor)
             .padding(.horizontal, size.horizontalPadding)
             .frame(height: size.height)
-            .frame(maxWidth: variant == .ghost ? nil : .infinity)
+            .frame(maxWidth: (variant == .ghost || variant == .outline) ? nil : .infinity)
             .background(background)
             .overlay(border)
             .clipShape(RoundedRectangle(cornerRadius: size.height / 2))
-            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.97 : 1))
             .dsShadow(shadowFor(isPressed: configuration.isPressed))
-            .animation(DSMotion.quick, value: configuration.isPressed)
+            .opacity(isEnabled ? 1 : 0.6)
+            .animation(reduceMotion ? DSMotion.instant : DSMotion.quick, value: configuration.isPressed)
     }
 
     @ViewBuilder
@@ -145,7 +160,13 @@ public struct DSButtonStyle: ButtonStyle {
         case .primary:
             DSGradient.primary
         case .secondary:
-            Color.clear.background(.regularMaterial)
+            if reduceTransparency {
+                DSColor.surface
+            } else {
+                Color.clear.background(.regularMaterial)
+            }
+        case .outline:
+            Color.clear
         case .ghost:
             Color.clear
         case .glow:
@@ -161,26 +182,35 @@ public struct DSButtonStyle: ButtonStyle {
         case .secondary:
             RoundedRectangle(cornerRadius: size.height / 2)
                 .strokeBorder(DSColor.maltaGold.opacity(0.3), lineWidth: 1)
+        case .outline:
+            RoundedRectangle(cornerRadius: size.height / 2)
+                .strokeBorder(DSColor.maltaGold, lineWidth: 1.5)
         default:
             EmptyView()
         }
     }
 
     private var foregroundColor: Color {
+        Self.foregroundColor(for: variant)
+    }
+
+    /// Resolves the foreground color for a given variant. Exposed for ProgressView tinting.
+    nonisolated static func foregroundColor(for variant: DSButtonVariant) -> Color {
         switch variant {
         case .primary, .glow, .destructive: return .white
-        case .secondary, .ghost: return DSColor.maltaGold
+        case .secondary, .outline, .ghost: return DSColor.maltaGold
         }
     }
 
     private func shadowFor(isPressed: Bool) -> DSShadow.Shadow {
+        guard isEnabled else { return DSShadow.none }
         switch variant {
         case .glow:
             return isPressed ? DSShadow.pressed : DSShadow.glow
         case .primary, .destructive:
             return isPressed ? DSShadow.pressed : DSShadow.card
-        default:
-            return .init(color: .clear, radius: 0, x: 0, y: 0)
+        case .secondary, .outline, .ghost:
+            return DSShadow.none
         }
     }
 }

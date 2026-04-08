@@ -13,6 +13,9 @@ public struct DSStepper: View {
     let label: LocalizedStringResource
     let range: ClosedRange<Int>
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
     /// Creates a design-system stepper.
     /// - Parameters:
     ///   - label: Descriptive label.
@@ -58,7 +61,7 @@ public struct DSStepper: View {
                     .foregroundStyle(DSColor.textPrimary)
                     .frame(minWidth: 32)
                     .monospacedDigit()
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
 
                 Button {
                     if value < range.upperBound {
@@ -77,7 +80,12 @@ public struct DSStepper: View {
                 .accessibilityHint(String(localized: "stepper.increase.hint"))
             }
             .padding(.horizontal, DSSpacing.xs)
-            .background(.regularMaterial, in: Capsule())
+            .background(
+                reduceTransparency
+                    ? AnyShapeStyle(DSColor.surface)
+                    : AnyShapeStyle(.regularMaterial),
+                in: Capsule()
+            )
             .overlay(
                 Capsule().strokeBorder(DSColor.textSecondary.opacity(0.15), lineWidth: 1)
             )

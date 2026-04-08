@@ -12,6 +12,7 @@ public struct DSSearchField: View {
     @Binding var text: String
     let placeholder: LocalizedStringResource
     @FocusState private var focused: Bool
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     /// Creates a search field.
     /// - Parameters:
@@ -51,7 +52,12 @@ public struct DSSearchField: View {
         }
         .padding(.horizontal, DSSpacing.md)
         .frame(height: 44)
-        .background(.regularMaterial, in: Capsule())
+        .background(
+            reduceTransparency
+                ? AnyShapeStyle(DSColor.surface)
+                : AnyShapeStyle(.regularMaterial),
+            in: Capsule()
+        )
         .overlay(
             Capsule().strokeBorder(
                 focused ? DSColor.maltaGold.opacity(0.5) : DSColor.textSecondary.opacity(0.15),

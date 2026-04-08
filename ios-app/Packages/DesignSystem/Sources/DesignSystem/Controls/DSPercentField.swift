@@ -16,6 +16,7 @@ public struct DSPercentField: View {
     @State private var sliderValue: Double = 0
     @FocusState private var focused: Bool
     @State private var text: String = ""
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     /// Creates a percent field.
     /// - Parameters:
@@ -71,7 +72,7 @@ public struct DSPercentField: View {
                 .padding(.vertical, DSSpacing.xxs)
                 .background(
                     RoundedRectangle(cornerRadius: DSRadius.sm)
-                        .fill(.regularMaterial)
+                        .fill(reduceTransparency ? AnyShapeStyle(DSColor.surface) : AnyShapeStyle(.regularMaterial))
                 )
             }
         }

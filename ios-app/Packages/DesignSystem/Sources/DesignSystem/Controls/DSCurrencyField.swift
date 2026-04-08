@@ -16,6 +16,7 @@ public struct DSCurrencyField: View {
 
     @State private var text: String = ""
     @FocusState private var focused: Bool
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     /// Creates a currency input field.
     /// - Parameters:
@@ -65,7 +66,7 @@ public struct DSCurrencyField: View {
             .frame(height: 56)
             .background(
                 RoundedRectangle(cornerRadius: DSRadius.lg)
-                    .fill(.regularMaterial)
+                    .fill(reduceTransparency ? AnyShapeStyle(DSColor.surface) : AnyShapeStyle(.regularMaterial))
                     .overlay(
                         RoundedRectangle(cornerRadius: DSRadius.lg)
                             .strokeBorder(

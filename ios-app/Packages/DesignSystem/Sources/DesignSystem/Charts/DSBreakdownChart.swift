@@ -55,7 +55,7 @@ public struct DSBreakdownChart: View {
                 innerRadius: .ratio(0.65),
                 angularInset: 2
             )
-            .cornerRadius(6)
+            .cornerRadius(DSRadius.sm)
             .foregroundStyle(segment.color)
         }
         .chartBackground { _ in

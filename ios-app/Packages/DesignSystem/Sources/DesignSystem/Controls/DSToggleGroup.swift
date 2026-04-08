@@ -13,6 +13,8 @@ public struct DSToggleGroup<Value: Hashable & Sendable>: View {
     @Binding var selection: Value
     let label: (Value) -> String
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Namespace private var namespace
 
     /// Creates a toggle group.
@@ -34,7 +36,11 @@ public struct DSToggleGroup<Value: Hashable & Sendable>: View {
         HStack(spacing: 0) {
             ForEach(Array(options.enumerated()), id: \.offset) { _, option in
                 Button {
-                    withAnimation(DSMotion.quick) { selection = option }
+                    if reduceMotion {
+                        selection = option
+                    } else {
+                        withAnimation(DSMotion.quick) { selection = option }
+                    }
                 } label: {
                     Text(label(option))
                         .font(DSFont.body(14, weight: .medium))
@@ -55,7 +61,12 @@ public struct DSToggleGroup<Value: Hashable & Sendable>: View {
             }
         }
         .padding(DSSpacing.xxs)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: DSRadius.md))
+        .background(
+            reduceTransparency
+                ? AnyShapeStyle(DSColor.surface)
+                : AnyShapeStyle(.regularMaterial),
+            in: RoundedRectangle(cornerRadius: DSRadius.md)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: DSRadius.md)
                 .strokeBorder(DSColor.textSecondary.opacity(0.15), lineWidth: 1)

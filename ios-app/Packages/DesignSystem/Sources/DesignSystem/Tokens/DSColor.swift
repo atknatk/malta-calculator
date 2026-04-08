@@ -5,6 +5,47 @@
 
 import SwiftUI
 
+// MARK: - Color Token
+
+/// A named color token for catalog and lookup purposes.
+public struct ColorToken: Sendable, Identifiable, Equatable, Hashable {
+    /// Unique identifier (same as `name`).
+    public var id: String { name }
+    /// Token name (e.g. "maltaGold").
+    public let name: String
+    /// The resolved color value.
+    public let color: Color
+    /// Semantic group this token belongs to.
+    public let group: ColorGroup
+
+    /// Creates a named color token.
+    public init(name: String, color: Color, group: ColorGroup) {
+        self.name = name
+        self.color = color
+        self.group = group
+    }
+
+    public static func == (lhs: ColorToken, rhs: ColorToken) -> Bool {
+        lhs.name == rhs.name && lhs.group == rhs.group
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(group)
+    }
+}
+
+/// Semantic grouping for color tokens.
+public enum ColorGroup: String, Sendable, CaseIterable {
+    case brand
+    case surface
+    case text
+    case semantic
+    case glass
+}
+
+// MARK: - DSColor
+
 /// Central color token catalog for Malta Calculator.
 ///
 /// All feature code must reference these tokens — never use raw
@@ -110,4 +151,137 @@ public enum DSColor {
 
     /// Immigration & Visa category gradient colors.
     public static let categoryImmigration = [Color(hex: "#6366F1"), Color(hex: "#7C3AED")]
+
+    // MARK: - Namespaced Groups
+
+    /// Brand color namespace.
+    public enum Brand {
+        public static var gold: Color { maltaGold }
+        public static var goldMuted: Color { maltaGoldMuted }
+        public static var blue: Color { mediterraneanBlue }
+        public static var blueMuted: Color { mediterraneanBlueMuted }
+        public static var red: Color { maltaRed }
+        public static var sand: Color { warmSand }
+
+        /// All brand colors.
+        public static var allColors: [Color] {
+            [gold, goldMuted, blue, blueMuted, red, sand]
+        }
+    }
+
+    /// Surface color namespace.
+    public enum Surface {
+        public static var primary: Color { background }
+        public static var card: Color { DSColor.surface }
+        public static var muted: Color { surfaceMuted }
+        public static var elevated: Color { surfaceElevated }
+
+        /// All surface colors.
+        public static var allColors: [Color] {
+            [primary, card, muted, elevated]
+        }
+    }
+
+    /// Text color namespace.
+    public enum Text {
+        public static var primary: Color { textPrimary }
+        public static var secondary: Color { textSecondary }
+        public static var tertiary: Color { textTertiary }
+        public static var inverse: Color { textInverse }
+
+        /// All text colors.
+        public static var allColors: [Color] {
+            [primary, secondary, tertiary, inverse]
+        }
+    }
+
+    /// Semantic color namespace.
+    public enum Semantic {
+        public static var success: Color { DSColor.success }
+        public static var warning: Color { DSColor.warning }
+        public static var danger: Color { DSColor.danger }
+        public static var info: Color { DSColor.info }
+
+        /// All semantic colors.
+        public static var allColors: [Color] {
+            [success, warning, danger, info]
+        }
+    }
+
+    /// Glass color namespace.
+    public enum Glass {
+        public static var tint: Color { glassTint }
+        public static var stroke: Color { glassStroke }
+
+        /// All glass colors.
+        public static var allColors: [Color] {
+            [tint, stroke]
+        }
+    }
+
+    // MARK: - Asset Catalog
+
+    /// All brand color tokens.
+    public static let allBrand: [ColorToken] = [
+        ColorToken(name: "maltaGold", color: maltaGold, group: .brand),
+        ColorToken(name: "maltaGoldMuted", color: maltaGoldMuted, group: .brand),
+        ColorToken(name: "mediterraneanBlue", color: mediterraneanBlue, group: .brand),
+        ColorToken(name: "mediterraneanBlueMuted", color: mediterraneanBlueMuted, group: .brand),
+        ColorToken(name: "maltaRed", color: maltaRed, group: .brand),
+        ColorToken(name: "warmSand", color: warmSand, group: .brand),
+    ]
+
+    /// All surface color tokens.
+    public static let allSurface: [ColorToken] = [
+        ColorToken(name: "background", color: background, group: .surface),
+        ColorToken(name: "surface", color: surface, group: .surface),
+        ColorToken(name: "surfaceMuted", color: surfaceMuted, group: .surface),
+        ColorToken(name: "surfaceElevated", color: surfaceElevated, group: .surface),
+    ]
+
+    /// All text color tokens.
+    public static let allText: [ColorToken] = [
+        ColorToken(name: "textPrimary", color: textPrimary, group: .text),
+        ColorToken(name: "textSecondary", color: textSecondary, group: .text),
+        ColorToken(name: "textTertiary", color: textTertiary, group: .text),
+        ColorToken(name: "textInverse", color: textInverse, group: .text),
+    ]
+
+    /// All semantic color tokens.
+    public static let allSemantic: [ColorToken] = [
+        ColorToken(name: "success", color: success, group: .semantic),
+        ColorToken(name: "warning", color: warning, group: .semantic),
+        ColorToken(name: "danger", color: danger, group: .semantic),
+        ColorToken(name: "info", color: info, group: .semantic),
+    ]
+
+    /// All glass color tokens.
+    public static let allGlass: [ColorToken] = [
+        ColorToken(name: "glassTint", color: glassTint, group: .glass),
+        ColorToken(name: "glassStroke", color: glassStroke, group: .glass),
+    ]
+
+    /// Complete catalog of all color tokens.
+    public static var allTokens: [ColorToken] {
+        allBrand + allSurface + allText + allSemantic + allGlass
+    }
+
+    /// Looks up a color token by name.
+    /// - Parameter name: Token name (e.g. "maltaGold").
+    /// - Returns: The matching `ColorToken`, or `nil` if not found.
+    public static func token(named name: String) -> ColorToken? {
+        allTokens.first { $0.name == name }
+    }
+
+    /// Returns all color tokens belonging to a specific group.
+    /// - Parameter group: The `ColorGroup` to filter by.
+    /// - Returns: Array of `ColorToken` values in that group.
+    public static func tokens(in group: ColorGroup) -> [ColorToken] {
+        allTokens.filter { $0.group == group }
+    }
+
+    /// All color tokens grouped by their `ColorGroup`.
+    public static var tokensByGroup: [ColorGroup: [ColorToken]] {
+        Dictionary(grouping: allTokens, by: \.group)
+    }
 }

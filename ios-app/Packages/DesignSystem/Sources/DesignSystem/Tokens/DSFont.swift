@@ -78,6 +78,12 @@ public enum DSFont {
     /// Caption text (11pt medium).
     public static var caption: Font { body(11, weight: .medium) }
 
+    /// Label text (14pt medium) — form labels, field labels.
+    public static var label: Font { body(14, weight: .medium) }
+
+    /// Footnote text (12pt regular) — disclaimers, fine print.
+    public static var footnote: Font { body(12) }
+
     // MARK: - Monospaced
 
     /// Creates a monospaced font for numeric/currency display.
@@ -87,5 +93,68 @@ public enum DSFont {
     /// - Returns: A scalable system monospaced font.
     public static func mono(_ size: CGFloat = 14, weight: Font.Weight = .medium) -> Font {
         .system(size: size, weight: weight, design: .monospaced)
+    }
+
+    // MARK: - Line Height
+
+    /// Line-height multipliers for vertical rhythm.
+    public enum LineHeight {
+        /// Tight (1.2×) — display, heading text.
+        public static let tight: CGFloat = 1.2
+        /// Standard (1.5×) — body text.
+        public static let standard: CGFloat = 1.5
+        /// Relaxed (1.75×) — long-form reading.
+        public static let relaxed: CGFloat = 1.75
+
+        /// All line-height multiplier values ordered from tightest to most relaxed.
+        public static let allValues: [CGFloat] = [tight, standard, relaxed]
+    }
+
+    // MARK: - Text Style Mapping
+
+    /// Maps semantic text roles to `Font.TextStyle` for Dynamic Type support.
+    public enum TextStyleMapping: Sendable, CaseIterable {
+        case displayXL, displayL, displayM, displayS
+        case headingL, headingM, headingS
+        case bodyL, bodyM, bodyS
+        case caption, label, footnote
+
+        /// The `Font.TextStyle` used for Dynamic Type relative sizing.
+        public var textStyle: Font.TextStyle {
+            switch self {
+            case .displayXL: return .largeTitle
+            case .displayL: return .largeTitle
+            case .displayM: return .title
+            case .displayS: return .title2
+            case .headingL: return .title3
+            case .headingM: return .headline
+            case .headingS: return .subheadline
+            case .bodyL: return .body
+            case .bodyM: return .callout
+            case .bodyS: return .footnote
+            case .caption: return .caption
+            case .label: return .callout
+            case .footnote: return .caption2
+            }
+        }
+
+        /// The resolved `Font` for this text style mapping.
+        public var font: Font {
+            switch self {
+            case .displayXL: return DSFont.displayXL
+            case .displayL: return DSFont.displayL
+            case .displayM: return DSFont.displayM
+            case .displayS: return DSFont.displayS
+            case .headingL: return DSFont.headingL
+            case .headingM: return DSFont.headingM
+            case .headingS: return DSFont.headingS
+            case .bodyL: return DSFont.bodyL
+            case .bodyM: return DSFont.bodyM
+            case .bodyS: return DSFont.bodyS
+            case .caption: return DSFont.caption
+            case .label: return DSFont.label
+            case .footnote: return DSFont.footnote
+            }
+        }
     }
 }

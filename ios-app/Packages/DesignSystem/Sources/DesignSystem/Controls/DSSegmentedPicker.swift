@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// A styled segmented picker wrapper.
-public struct DSSegmentedPicker<Value: Hashable>: View {
+public struct DSSegmentedPicker<Value: Hashable & Sendable>: View {
     @Binding var selection: Value
     let label: LocalizedStringResource
     let options: [(value: Value, label: LocalizedStringResource)]

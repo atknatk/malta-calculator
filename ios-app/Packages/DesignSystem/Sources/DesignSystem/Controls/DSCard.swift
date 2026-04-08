@@ -6,15 +6,35 @@
 import SwiftUI
 
 /// Visual variant for `DSCard`.
-public enum DSCardVariant: Sendable {
+public enum DSCardVariant: Sendable, Equatable, Hashable, CaseIterable {
     /// Standard glass background card.
     case `default`
+    /// Compact card with tighter padding (12pt).
+    case compact
     /// Gold border + subtle glow highlight.
     case highlighted
     /// Gradient border + elevated shadow (hero sections).
     case hero
-    /// Red-tinted destructive/warning card.
+    /// Red-tinted destructive/warning card with red border.
     case destructive
+
+    /// The corner radius used for this variant.
+    public var cornerRadius: CGFloat {
+        self == .compact ? DSRadius.lg : DSRadius.xl
+    }
+
+    /// The elevation level for this variant.
+    public var elevation: DSElevation {
+        switch self {
+        case .hero: return .floating
+        case .default, .highlighted, .destructive, .compact: return .raised
+        }
+    }
+
+    /// The default inner padding for this variant.
+    public var defaultPadding: CGFloat {
+        self == .compact ? DSSpacing.sm : DSSpacing.lg
+    }
 }
 
 /// A glass-backed card container following the Malta Calculator design system.
@@ -29,7 +49,7 @@ public struct DSCard<Content: View>: View {
     /// Creates a design-system card.
     /// - Parameters:
     ///   - variant: Visual style. Defaults to `.default`.
-    ///   - padding: Inner padding. Defaults to `DSSpacing.lg`.
+    ///   - padding: Inner padding. Defaults to `DSSpacing.lg`. Ignored for `.compact` (uses `DSSpacing.sm`).
     ///   - content: Card content.
     public init(
         _ variant: DSCardVariant = .default,
@@ -37,7 +57,7 @@ public struct DSCard<Content: View>: View {
         @ViewBuilder content: () -> Content
     ) {
         self.variant = variant
-        self.padding = padding
+        self.padding = variant == .compact ? DSSpacing.sm : padding
         self.content = content()
     }
 
@@ -45,24 +65,34 @@ public struct DSCard<Content: View>: View {
         content
             .padding(padding)
             .liquidGlass(
-                shape: RoundedRectangle(cornerRadius: DSRadius.xl),
+                shape: RoundedRectangle(cornerRadius: variant.cornerRadius),
                 tint: tint
             )
-            .overlay {
-                if variant == .hero {
-                    RoundedRectangle(cornerRadius: DSRadius.xl)
-                        .strokeBorder(DSGradient.primary, lineWidth: 2)
-                } else if variant == .highlighted {
-                    RoundedRectangle(cornerRadius: DSRadius.xl)
-                        .strokeBorder(DSColor.maltaGold.opacity(0.5), lineWidth: 1.5)
-                }
-            }
-            .dsShadow(variant == .hero ? DSShadow.elevated : DSShadow.card)
+            .overlay { borderOverlay }
+            .dsElevation(variant.elevation)
+            .accessibilityElement(children: .contain)
+    }
+
+    @ViewBuilder
+    private var borderOverlay: some View {
+        switch variant {
+        case .hero:
+            RoundedRectangle(cornerRadius: variant.cornerRadius)
+                .strokeBorder(DSGradient.primary, lineWidth: 2)
+        case .highlighted:
+            RoundedRectangle(cornerRadius: variant.cornerRadius)
+                .strokeBorder(DSColor.maltaGold.opacity(0.5), lineWidth: 1.5)
+        case .destructive:
+            RoundedRectangle(cornerRadius: variant.cornerRadius)
+                .strokeBorder(DSColor.danger.opacity(0.4), lineWidth: 1.5)
+        case .default, .compact:
+            EmptyView()
+        }
     }
 
     private var tint: Color? {
         switch variant {
-        case .default, .hero: return nil
+        case .default, .hero, .compact: return nil
         case .highlighted: return DSColor.maltaGold.opacity(0.05)
         case .destructive: return DSColor.maltaRed.opacity(0.05)
         }
