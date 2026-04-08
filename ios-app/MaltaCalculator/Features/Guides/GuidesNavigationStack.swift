@@ -23,9 +23,8 @@ struct GuidesNavigationStack: View {
     @ViewBuilder
     private func destinationView(for destination: GuidesDestination) -> some View {
         switch destination {
-        case .reader:
-            ComingSoonScreen()
-                .navigationTitle(String(localized: "guides.reader.title"))
+        case .reader(let slug):
+            GuideReaderScreen(slug: slug)
         case .bookmarks:
             ComingSoonScreen()
                 .navigationTitle(String(localized: "guides.bookmarks.title"))

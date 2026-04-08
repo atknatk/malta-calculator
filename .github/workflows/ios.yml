@@ -33,8 +33,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select Xcode 26
-        run: sudo xcode-select -switch "$DEVELOPER_DIR"
+      - name: Select Xcode
+        run: |
+          if [ -d "$DEVELOPER_DIR" ]; then
+            sudo xcode-select -switch "$DEVELOPER_DIR"
+          else
+            echo "Xcode 26 not available at $DEVELOPER_DIR, using runner default"
+            xcode-select -p
+          fi
 
       - name: Install tools
         run: brew install swiftlint swiftformat
@@ -57,8 +63,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select Xcode 26
-        run: sudo xcode-select -switch "$DEVELOPER_DIR"
+      - name: Select Xcode
+        run: |
+          if [ -d "$DEVELOPER_DIR" ]; then
+            sudo xcode-select -switch "$DEVELOPER_DIR"
+          else
+            echo "Xcode 26 not available at $DEVELOPER_DIR, using runner default"
+            xcode-select -p
+          fi
 
       - name: Xcode version
         run: xcodebuild -version
