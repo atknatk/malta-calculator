@@ -1,7 +1,7 @@
 {
   "input": {
     "familyMemberCount": 3,
-    "scheme": "family_reunification"
+    "scheme": "family-member-policy"
   },
   "expected": {
     "minimumRequired": 30304,

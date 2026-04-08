@@ -28,6 +28,17 @@ public struct VehicleRegistrationFeeInput: Sendable, Codable, Equatable {
         self.co2Emissions = co2Emissions; self.vehicleAge = vehicleAge
         self.fuelType = fuelType
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        vehicleType = try container.decode(VehicleType.self, forKey: .vehicleType)
+        plateType = try container.decode(PlateType.self, forKey: .plateType)
+        isImported = try container.decode(Bool.self, forKey: .isImported)
+        engineCapacity = try container.decodeIfPresent(Int.self, forKey: .engineCapacity) ?? 1600
+        co2Emissions = try container.decodeIfPresent(Int.self, forKey: .co2Emissions) ?? 0
+        vehicleAge = try container.decodeIfPresent(Int.self, forKey: .vehicleAge) ?? 0
+        fuelType = try container.decodeIfPresent(FuelType.self, forKey: .fuelType) ?? .petrol
+    }
 }
 
 /// Result of the vehicle registration fee calculation.
