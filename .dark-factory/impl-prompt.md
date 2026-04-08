@@ -113,6 +113,43 @@ let`, `if let`, or `??` with a sensible default.
   when there is a deliberate visual change documented in the PR body.
 - Coverage target: 80%+ on `CalculationKit`, 60%+ overall.
 
+# EXISTING INFRASTRUCTURE — USE THESE, DO NOT RECREATE
+
+The following components ALREADY EXIST in the codebase. You MUST import
+and use them — do not create alternatives or inline replacements:
+
+- `DSErrorState` (DesignSystem) — `import DesignSystem` then use
+  `DSErrorState(title:description:icon:retryAction:)` for error states
+- `DSSkeleton`, `DSSkeletonCard`, `DSSkeletonList` (DesignSystem) — for
+  loading states, use instead of bare `ProgressView()`
+- `DSEmptyState` (DesignSystem) — for empty states
+- `Font.DS.*` (DesignSystem) — `Font.DS.body`, `Font.DS.headline`,
+  `Font.DS.title1` etc. Use for Dynamic Type support instead of
+  `.font(.system(size:))`. Import via `import DesignSystem`
+- `View.dsElevation(_:)` — modifier in DesignSystem for shadow elevation
+- `DSShadow.low`, `.medium`, `.high`, `.glass` — semantic shadow aliases
+- `Shareable` protocol (MaltaCalculator/Shared/Shareable.swift) — conform
+  your share content to this. Has `asImage() async -> UIImage?` and
+  `asPDF() async -> URL?`. Use `ShareCache` for caching exports
+- `@ScaledMetric` — use for spacing that should scale with Dynamic Type
+- `ViewThatFits` — use for layouts that should collapse on small screens
+- `accessibilityAddTraits(.isHeader)` — add to ALL section headers
+- `AccessibilityNotification.Announcement` — post when async calculations
+  complete so VoiceOver users know results updated
+- `FormatStyle.currency(code: "EUR")` — use instead of NumberFormatter
+- String Catalog plural variants — use for "1 child" vs "2 children"
+
+Every feature view MUST follow this ViewState pattern:
+
+```swift
+enum <Feature>ViewState {
+    case loading    // → render DSSkeletonList()
+    case empty      // → render DSEmptyState(...)
+    case error(String) // → render DSErrorState(..., retryAction: { vm.load() })
+    case content(Data) // → render actual content
+}
+```
+
 # How to Work (per task)
 
 1. **Read the intent spec** — the task file under `ios-app-plan/tasks/` is
