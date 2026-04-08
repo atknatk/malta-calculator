@@ -17,6 +17,12 @@ public enum DSCardVariant: Sendable, Equatable, Hashable, CaseIterable {
     case hero
     /// Red-tinted destructive/warning card with red border.
     case destructive
+    /// Blue-tinted informational card with blue border.
+    case info
+    /// Green-tinted success card with green border.
+    case success
+    /// Amber-tinted warning card with amber border.
+    case warning
 
     /// The corner radius used for this variant.
     public var cornerRadius: CGFloat {
@@ -27,13 +33,47 @@ public enum DSCardVariant: Sendable, Equatable, Hashable, CaseIterable {
     public var elevation: DSElevation {
         switch self {
         case .hero: return .floating
-        case .default, .highlighted, .destructive, .compact: return .raised
+        case .default, .highlighted, .destructive, .compact, .info, .success, .warning: return .raised
         }
     }
 
     /// The default inner padding for this variant.
     public var defaultPadding: CGFloat {
         self == .compact ? DSSpacing.sm : DSSpacing.lg
+    }
+
+    /// Whether this variant has a visible border overlay.
+    public var hasBorder: Bool {
+        switch self {
+        case .hero, .highlighted, .destructive, .info, .success, .warning: return true
+        case .default, .compact: return false
+        }
+    }
+
+    /// The tint color for this variant, or `nil` for no tint.
+    public var tintColor: Color? {
+        switch self {
+        case .highlighted: return DSColor.maltaGold.opacity(0.05)
+        case .destructive: return DSColor.maltaRed.opacity(0.05)
+        case .info: return DSColor.mediterraneanBlue.opacity(0.05)
+        case .success: return DSColor.success.opacity(0.05)
+        case .warning: return DSColor.warning.opacity(0.05)
+        case .default, .hero, .compact: return nil
+        }
+    }
+
+    /// Human-readable display name for this variant.
+    public var displayName: String {
+        switch self {
+        case .default: return "Default"
+        case .compact: return "Compact"
+        case .highlighted: return "Highlighted"
+        case .hero: return "Hero"
+        case .destructive: return "Destructive"
+        case .info: return "Info"
+        case .success: return "Success"
+        case .warning: return "Warning"
+        }
     }
 }
 
@@ -85,16 +125,21 @@ public struct DSCard<Content: View>: View {
         case .destructive:
             RoundedRectangle(cornerRadius: variant.cornerRadius)
                 .strokeBorder(DSColor.danger.opacity(0.4), lineWidth: 1.5)
+        case .info:
+            RoundedRectangle(cornerRadius: variant.cornerRadius)
+                .strokeBorder(DSColor.info.opacity(0.4), lineWidth: 1.5)
+        case .success:
+            RoundedRectangle(cornerRadius: variant.cornerRadius)
+                .strokeBorder(DSColor.success.opacity(0.4), lineWidth: 1.5)
+        case .warning:
+            RoundedRectangle(cornerRadius: variant.cornerRadius)
+                .strokeBorder(DSColor.warning.opacity(0.4), lineWidth: 1.5)
         case .default, .compact:
             EmptyView()
         }
     }
 
     private var tint: Color? {
-        switch variant {
-        case .default, .hero, .compact: return nil
-        case .highlighted: return DSColor.maltaGold.opacity(0.05)
-        case .destructive: return DSColor.maltaRed.opacity(0.05)
-        }
+        variant.tintColor
     }
 }

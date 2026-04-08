@@ -17,12 +17,15 @@ public struct ColorToken: Sendable, Identifiable, Equatable, Hashable {
     public let color: Color
     /// Semantic group this token belongs to.
     public let group: ColorGroup
+    /// Human-readable description of this token's purpose.
+    public let description: String
 
     /// Creates a named color token.
-    public init(name: String, color: Color, group: ColorGroup) {
+    public init(name: String, color: Color, group: ColorGroup, description: String = "") {
         self.name = name
         self.color = color
         self.group = group
+        self.description = description
     }
 
     public static func == (lhs: ColorToken, rhs: ColorToken) -> Bool {
@@ -42,6 +45,7 @@ public enum ColorGroup: String, Sendable, CaseIterable {
     case text
     case semantic
     case glass
+    case category
 }
 
 // MARK: - DSColor
@@ -219,6 +223,36 @@ public enum DSColor {
         }
     }
 
+    // MARK: - Category Namespace
+
+    /// Category color namespace for calculator category gradients.
+    public enum Category {
+        /// Employment & Salary gradient pair.
+        public static var employment: [Color] { categoryEmployment }
+        /// Family & Children gradient pair.
+        public static var family: [Color] { categoryFamily }
+        /// Property & Housing gradient pair.
+        public static var property: [Color] { categoryProperty }
+        /// Banking & Loans gradient pair.
+        public static var banking: [Color] { categoryBanking }
+        /// Retirement & Savings gradient pair.
+        public static var retirement: [Color] { categoryRetirement }
+        /// Self-Employment gradient pair.
+        public static var selfEmployment: [Color] { categorySelfEmp }
+        /// Leave & Time Off gradient pair.
+        public static var leave: [Color] { categoryLeave }
+        /// Transport & Vehicles gradient pair.
+        public static var transport: [Color] { categoryTransport }
+        /// Immigration & Visa gradient pair.
+        public static var immigration: [Color] { categoryImmigration }
+
+        /// All category gradient pairs.
+        public static var allPairs: [[Color]] {
+            [employment, family, property, banking, retirement,
+             selfEmployment, leave, transport, immigration]
+        }
+    }
+
     // MARK: - Asset Catalog
 
     /// All brand color tokens.
@@ -261,9 +295,31 @@ public enum DSColor {
         ColorToken(name: "glassStroke", color: glassStroke, group: .glass),
     ]
 
-    /// Complete catalog of all color tokens.
+    /// All category color tokens (start + end colors for each category).
+    public static let allCategory: [ColorToken] = [
+        ColorToken(name: "categoryEmployment.start", color: categoryEmployment[0], group: .category),
+        ColorToken(name: "categoryEmployment.end", color: categoryEmployment[1], group: .category),
+        ColorToken(name: "categoryFamily.start", color: categoryFamily[0], group: .category),
+        ColorToken(name: "categoryFamily.end", color: categoryFamily[1], group: .category),
+        ColorToken(name: "categoryProperty.start", color: categoryProperty[0], group: .category),
+        ColorToken(name: "categoryProperty.end", color: categoryProperty[1], group: .category),
+        ColorToken(name: "categoryBanking.start", color: categoryBanking[0], group: .category),
+        ColorToken(name: "categoryBanking.end", color: categoryBanking[1], group: .category),
+        ColorToken(name: "categoryRetirement.start", color: categoryRetirement[0], group: .category),
+        ColorToken(name: "categoryRetirement.end", color: categoryRetirement[1], group: .category),
+        ColorToken(name: "categorySelfEmp.start", color: categorySelfEmp[0], group: .category),
+        ColorToken(name: "categorySelfEmp.end", color: categorySelfEmp[1], group: .category),
+        ColorToken(name: "categoryLeave.start", color: categoryLeave[0], group: .category),
+        ColorToken(name: "categoryLeave.end", color: categoryLeave[1], group: .category),
+        ColorToken(name: "categoryTransport.start", color: categoryTransport[0], group: .category),
+        ColorToken(name: "categoryTransport.end", color: categoryTransport[1], group: .category),
+        ColorToken(name: "categoryImmigration.start", color: categoryImmigration[0], group: .category),
+        ColorToken(name: "categoryImmigration.end", color: categoryImmigration[1], group: .category),
+    ]
+
+    /// Complete catalog of all color tokens (including category tokens).
     public static var allTokens: [ColorToken] {
-        allBrand + allSurface + allText + allSemantic + allGlass
+        allBrand + allSurface + allText + allSemantic + allGlass + allCategory
     }
 
     /// Looks up a color token by name.
@@ -271,6 +327,13 @@ public enum DSColor {
     /// - Returns: The matching `ColorToken`, or `nil` if not found.
     public static func token(named name: String) -> ColorToken? {
         allTokens.first { $0.name == name }
+    }
+
+    /// Returns `true` if a color token with the given name exists in the catalog.
+    /// - Parameter name: Token name to check.
+    /// - Returns: Whether the token exists.
+    public static func contains(name: String) -> Bool {
+        allTokens.contains { $0.name == name }
     }
 
     /// Returns all color tokens belonging to a specific group.

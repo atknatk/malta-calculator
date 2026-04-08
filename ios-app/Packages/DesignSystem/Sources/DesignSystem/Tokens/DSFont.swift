@@ -95,6 +95,65 @@ public enum DSFont {
         .system(size: size, weight: weight, design: .monospaced)
     }
 
+    // MARK: - Size Constants
+
+    /// Raw point-size constants for all semantic font tokens.
+    /// Use these when you need the numeric size value outside of a `Font` context
+    /// (e.g., for layout calculations or snapshot assertions).
+    public enum Size {
+        /// Display extra-large: 48pt.
+        public static let displayXL: CGFloat = 48
+        /// Display large: 40pt.
+        public static let displayL: CGFloat = 40
+        /// Display medium: 32pt.
+        public static let displayM: CGFloat = 32
+        /// Display small: 24pt.
+        public static let displayS: CGFloat = 24
+        /// Heading large: 22pt.
+        public static let headingL: CGFloat = 22
+        /// Heading medium: 18pt.
+        public static let headingM: CGFloat = 18
+        /// Heading small: 16pt.
+        public static let headingS: CGFloat = 16
+        /// Body large: 17pt.
+        public static let bodyL: CGFloat = 17
+        /// Body medium: 15pt.
+        public static let bodyM: CGFloat = 15
+        /// Body small: 13pt.
+        public static let bodyS: CGFloat = 13
+        /// Caption: 11pt.
+        public static let caption: CGFloat = 11
+        /// Label: 14pt.
+        public static let label: CGFloat = 14
+        /// Footnote: 12pt.
+        public static let footnote: CGFloat = 12
+
+        /// All size values ordered from largest to smallest.
+        public static let allValues: [CGFloat] = [
+            displayXL, displayL, displayM, displayS,
+            headingL, headingM, headingS,
+            bodyL, bodyM, bodyS,
+            label, footnote, caption,
+        ]
+    }
+
+    // MARK: - Letter Spacing
+
+    /// Letter spacing (tracking) tokens for typography refinement.
+    public enum LetterSpacing {
+        /// Tight tracking (-0.5pt) — display headlines.
+        public static let tight: CGFloat = -0.5
+        /// Standard tracking (0pt) — body text.
+        public static let standard: CGFloat = 0
+        /// Wide tracking (0.5pt) — captions, labels.
+        public static let wide: CGFloat = 0.5
+        /// Extra-wide tracking (1.0pt) — all-caps text.
+        public static let extraWide: CGFloat = 1.0
+
+        /// All letter spacing values from tightest to widest.
+        public static let allValues: [CGFloat] = [tight, standard, wide, extraWide]
+    }
+
     // MARK: - Line Height
 
     /// Line-height multipliers for vertical rhythm.
@@ -156,5 +215,27 @@ public enum DSFont {
             case .footnote: return DSFont.footnote
             }
         }
+
+        /// The raw point size for this text style.
+        public var size: CGFloat {
+            switch self {
+            case .displayXL: return Size.displayXL
+            case .displayL: return Size.displayL
+            case .displayM: return Size.displayM
+            case .displayS: return Size.displayS
+            case .headingL: return Size.headingL
+            case .headingM: return Size.headingM
+            case .headingS: return Size.headingS
+            case .bodyL: return Size.bodyL
+            case .bodyM: return Size.bodyM
+            case .bodyS: return Size.bodyS
+            case .caption: return Size.caption
+            case .label: return Size.label
+            case .footnote: return Size.footnote
+            }
+        }
     }
+
+    /// All semantic text style mappings.
+    public static let allStyles: [TextStyleMapping] = TextStyleMapping.allCases
 }

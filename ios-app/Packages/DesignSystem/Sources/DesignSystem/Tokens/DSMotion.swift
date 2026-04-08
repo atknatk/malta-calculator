@@ -61,6 +61,60 @@ public enum DSMotion {
     /// Continuous glow pulse loop (3s, autoreverses).
     public static let glow = Animation.easeInOut(duration: Duration.glow).repeatForever(autoreverses: true)
 
+    // MARK: - Easing Curves
+
+    /// Named easing curve tokens for consistent motion character.
+    public enum Curve {
+        /// Quick feedback: ease-out.
+        public static let quickOut: Animation = .easeOut(duration: Duration.quick)
+        /// Standard transition: ease-in-out.
+        public static let standard: Animation = .easeInOut(duration: Duration.standard)
+        /// Slow deliberate: ease-in-out.
+        public static let slow: Animation = .easeInOut(duration: Duration.slow)
+        /// Linear (no easing).
+        public static let linear: Animation = .linear(duration: Duration.standard)
+    }
+
+    // MARK: - Animation Catalog
+
+    /// All named animation tokens (non-looping).
+    public static let allAnimations: [String: Animation] = [
+        "quick": quick,
+        "standard": standard,
+        "slow": slow,
+        "instant": instant,
+        "expressive": expressive,
+        "bouncy": bouncy,
+    ]
+
+    /// All named looping animation tokens.
+    public static let allLoopingAnimations: [String: Animation] = [
+        "float": float,
+        "glow": glow,
+    ]
+
+    // MARK: - Transitions
+
+    /// Named transition presets for consistent enter/exit effects.
+    public enum Transition {
+        /// Fade transition using standard timing.
+        nonisolated(unsafe) public static let fade = AnyTransition.opacity.animation(standard)
+        /// Slide from bottom with fade.
+        nonisolated(unsafe) public static let slideUp = AnyTransition.move(edge: .bottom).combined(with: .opacity).animation(standard)
+        /// Slide from top with fade.
+        nonisolated(unsafe) public static let slideDown = AnyTransition.move(edge: .top).combined(with: .opacity).animation(standard)
+        /// Scale from center with fade.
+        nonisolated(unsafe) public static let scaleUp = AnyTransition.scale.combined(with: .opacity).animation(standard)
+
+        /// All named transitions.
+        nonisolated(unsafe) public static let allTransitions: [String: AnyTransition] = [
+            "fade": fade,
+            "slideUp": slideUp,
+            "slideDown": slideDown,
+            "scaleUp": scaleUp,
+        ]
+    }
+
     // MARK: - Reduce Motion Helpers
 
     /// Returns the given animation when Reduce Motion is off, or `.instant` when on.

@@ -26,5 +26,5 @@ import AppKit
 /// - **Previews**: `ComponentGallery`, `TokensGallery`.
 public enum DesignSystem {
     /// Semantic version of the design system bundle, surfaced for diagnostics.
-    public static let version: String = "0.2.0"
+    public static let version: String = "0.3.0"
 }

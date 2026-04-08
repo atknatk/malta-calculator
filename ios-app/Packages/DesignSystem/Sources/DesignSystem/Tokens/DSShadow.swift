@@ -5,6 +5,22 @@
 
 import SwiftUI
 
+/// A named shadow token for catalog and lookup purposes.
+public struct ShadowToken: Sendable, Identifiable, Equatable, Hashable {
+    /// Unique identifier (same as `name`).
+    public var id: String { name }
+    /// Token name (e.g. "card").
+    public let name: String
+    /// The shadow specification.
+    public let shadow: DSShadow.Shadow
+
+    /// Creates a named shadow token.
+    public init(name: String, shadow: DSShadow.Shadow) {
+        self.name = name
+        self.shadow = shadow
+    }
+}
+
 /// Shadow tokens for elevation and depth effects.
 public enum DSShadow {
 
@@ -38,8 +54,32 @@ public enum DSShadow {
         radius: 0, x: 0, y: 0
     )
 
+    /// All named shadow tokens (non-none).
+    public static let allValues: [Shadow] = [card, elevated, glow, pressed]
+
+    /// All named shadow tokens including none.
+    public static let allValuesIncludingNone: [Shadow] = [card, elevated, glow, pressed, none]
+
+    // MARK: - Token Catalog
+
+    /// All named shadow tokens for catalog and lookup purposes.
+    public static let allTokens: [ShadowToken] = [
+        ShadowToken(name: "card", shadow: card),
+        ShadowToken(name: "elevated", shadow: elevated),
+        ShadowToken(name: "glow", shadow: glow),
+        ShadowToken(name: "pressed", shadow: pressed),
+        ShadowToken(name: "none", shadow: none),
+    ]
+
+    /// Looks up a shadow token by name.
+    /// - Parameter name: Token name (e.g. "card").
+    /// - Returns: The matching `ShadowToken`, or `nil` if not found.
+    public static func token(named name: String) -> ShadowToken? {
+        allTokens.first { $0.name == name }
+    }
+
     /// A shadow specification with color, radius, and offset.
-    public struct Shadow: Sendable, Equatable {
+    public struct Shadow: Sendable, Equatable, Hashable {
         /// Shadow color.
         public let color: Color
         /// Blur radius.
@@ -55,6 +95,12 @@ public enum DSShadow {
             self.radius = radius
             self.x = x
             self.y = y
+        }
+
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(radius)
+            hasher.combine(x)
+            hasher.combine(y)
         }
     }
 }

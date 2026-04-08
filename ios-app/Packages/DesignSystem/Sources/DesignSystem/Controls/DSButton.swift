@@ -19,6 +19,47 @@ public enum DSButtonVariant: Sendable, Equatable, Hashable, CaseIterable {
     case glow
     /// Red filled destructive action.
     case destructive
+
+    /// The foreground color for this variant.
+    public var foregroundColor: Color {
+        DSButtonStyle.foregroundColor(for: self)
+    }
+
+    /// Whether this variant uses a filled (opaque/gradient) background.
+    public var isFilledBackground: Bool {
+        switch self {
+        case .primary, .glow, .destructive: return true
+        case .secondary, .outline, .ghost: return false
+        }
+    }
+
+    /// Whether this variant has a visible border.
+    public var hasBorder: Bool {
+        switch self {
+        case .secondary, .outline: return true
+        case .primary, .ghost, .glow, .destructive: return false
+        }
+    }
+
+    /// Whether this variant expands to full width by default.
+    public var isFullWidth: Bool {
+        switch self {
+        case .ghost, .outline: return false
+        case .primary, .secondary, .glow, .destructive: return true
+        }
+    }
+
+    /// Human-readable display name for this variant.
+    public var displayName: String {
+        switch self {
+        case .primary: return "Primary"
+        case .secondary: return "Secondary"
+        case .outline: return "Outline"
+        case .ghost: return "Ghost"
+        case .glow: return "Glow"
+        case .destructive: return "Destructive"
+        }
+    }
 }
 
 /// Size configuration for `DSButton`.
@@ -54,6 +95,15 @@ public enum DSButtonSize: Sendable, Equatable, Hashable, CaseIterable {
         case .small: return DSSpacing.md
         case .regular: return DSSpacing.lg
         case .large: return DSSpacing.xl
+        }
+    }
+
+    /// The ProgressView control size for this button size.
+    public var progressViewControlSize: ControlSize {
+        switch self {
+        case .small: return .mini
+        case .regular: return .small
+        case .large: return .regular
         }
     }
 }
@@ -100,10 +150,12 @@ public struct DSButton: View {
             HStack(spacing: DSSpacing.xs) {
                 if isLoading {
                     ProgressView()
-                        .controlSize(.small)
-                        .tint(DSButtonStyle.foregroundColor(for: variant))
+                        .controlSize(size.progressViewControlSize)
+                        .tint(variant.foregroundColor)
+                        .transition(.opacity)
                 } else if let icon {
                     Image(systemName: icon)
+                        .transition(.opacity)
                 }
                 Text(title)
                     .opacity(isLoading ? 0.6 : 1)
@@ -113,9 +165,11 @@ public struct DSButton: View {
         }
         .buttonStyle(DSButtonStyle(variant: variant, size: size))
         .disabled(isLoading)
+        .allowsHitTesting(!isLoading)
         .accessibilityLabel(title)
         .accessibilityValue(isLoading ? "Loading" : "")
         .accessibilityHint(isLoading ? "Please wait" : "")
+        .accessibilityAddTraits(isLoading ? .updatesFrequently : [])
         #if os(iOS)
         .sensoryFeedback(.selection, trigger: isLoading)
         #endif
