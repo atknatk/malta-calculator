@@ -15,6 +15,9 @@ final class MaltaCalculatorUITests: XCTestCase {
     }
 
     func testAppLaunches() {
-        XCTAssertTrue(app.staticTexts["Malta Calculator"].exists)
+        // Verify the app launches and the tab bar is present by checking
+        // for the Salary tab button which is a fixed anchor of the navigation.
+        let salaryTab = app.tabBars.buttons["Salary"]
+        XCTAssertTrue(salaryTab.waitForExistence(timeout: 5))
     }
 }

@@ -107,6 +107,7 @@ struct SalaryInputCard: View {
             if let suggested = vm.suggestedSSCCategory {
                 HStack(spacing: DSSpacing.xs) {
                     Image(systemName: "info.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(DSColor.info)
                     Text("salary.input.sscSuggestion \(suggested.rawValue)")
                         .font(DSFont.caption)
@@ -137,6 +138,7 @@ struct SalaryInputCard: View {
                         .foregroundStyle(DSColor.textPrimary)
                     Image(systemName: vm.showingBirthDatePicker ? "chevron.up" : "chevron.down")
                         .font(.caption)
+                        .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(DSColor.textTertiary)
                 }
             }
@@ -158,6 +160,7 @@ struct SalaryInputCard: View {
             if vm.isBornBefore1962 {
                 HStack(spacing: DSSpacing.xs) {
                     Image(systemName: "exclamationmark.triangle.fill")
+                        .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(DSColor.warning)
                     Text("salary.input.birthDate.pre1962Warning")
                         .font(DSFont.caption)

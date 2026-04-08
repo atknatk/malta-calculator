@@ -102,6 +102,7 @@ struct SalaryScreen: View {
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
+                    .symbolRenderingMode(.hierarchical)
                     .accessibilityLabel(
                         String(localized: "salary.toolbar.more")
                     )
@@ -240,6 +241,7 @@ struct SalaryScreen: View {
             VStack(alignment: .leading, spacing: DSSpacing.md) {
                 HStack(spacing: DSSpacing.xs) {
                     Image(systemName: "lightbulb.fill")
+                        .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(DSColor.maltaGold)
                     Text("salary.insights.title")
                         .font(DSFont.headingS)

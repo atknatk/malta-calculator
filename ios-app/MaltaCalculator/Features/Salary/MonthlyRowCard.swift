@@ -20,6 +20,7 @@ struct MonthlyRowCard: View {
     let onToggle: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @ScaledMetric private var rowPadding: CGFloat = DSSpacing.md
 
     var body: some View {
         VStack(spacing: 0) {
@@ -39,10 +40,11 @@ struct MonthlyRowCard: View {
                     }
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                         .font(.caption)
+                        .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(DSColor.textTertiary)
                         .padding(.leading, DSSpacing.xs)
                 }
-                .padding(DSSpacing.md)
+                .padding(rowPadding)
             }
             .buttonStyle(.plain)
             #if os(iOS)
@@ -69,7 +71,7 @@ struct MonthlyRowCard: View {
                     Divider()
                     detailRow("salary.monthly.netResult", output.net.eur, isHighlighted: true)
                 }
-                .padding(DSSpacing.md)
+                .padding(rowPadding)
                 .transition(.asymmetric(
                     insertion: .opacity.combined(with: .move(edge: .top)),
                     removal: .opacity
