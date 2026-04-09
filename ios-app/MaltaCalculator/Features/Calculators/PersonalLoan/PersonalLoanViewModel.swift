@@ -34,13 +34,15 @@ final class PersonalLoanViewModel {
         let safeAmount = Swift.max(loanAmount, 0)
         let safeRate = Swift.max(interestRate, 0)
         let safeTerm = Swift.max(termMonths, 1)
-        output = calculator.calculate(
-            input: LoanInput(
-                loanAmount: safeAmount,
-                interestRate: safeRate,
-                loanTermMonths: safeTerm
+        output = AppSignpost.measure(.calculation, name: "PersonalLoanRecalculate") {
+            calculator.calculate(
+                input: LoanInput(
+                    loanAmount: safeAmount,
+                    interestRate: safeRate,
+                    loanTermMonths: safeTerm
+                )
             )
-        )
+        }
     }
 
     /// Resets inputs to defaults.

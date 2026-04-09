@@ -30,12 +30,14 @@ final class StampDutyViewModel {
     /// Recomputes the stamp duty output from the current inputs.
     func recalculate() {
         let safePrice = Swift.max(propertyPrice, 0)
-        output = calculator.calculate(
-            input: StampDutyInput(
-                propertyPrice: safePrice,
-                isFirstTimeBuyer: isFirstTimeBuyer
+        output = AppSignpost.measure(.calculation, name: "StampDutyRecalculate") {
+            calculator.calculate(
+                input: StampDutyInput(
+                    propertyPrice: safePrice,
+                    isFirstTimeBuyer: isFirstTimeBuyer
+                )
             )
-        )
+        }
     }
 
     /// Resets inputs to defaults.

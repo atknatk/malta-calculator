@@ -325,7 +325,9 @@ final class SalaryViewModel {
 
     private func loadConfigAndCalculate() async {
         do {
+            AppSignpost.begin(.calculation, name: "TaxConfigLoad")
             let config = try await configLoader()
+            AppSignpost.end(.calculation, name: "TaxConfigLoad")
             self.taxConfig = config
             await recalculate()
         } catch {
@@ -387,7 +389,9 @@ final class SalaryViewModel {
 
         do {
             let calculator = SalaryCalculator(config: config, taxConfig: taxConfig)
-            let outputs = try calculator.calculate(inputs: inputs)
+            let outputs = try AppSignpost.measure(.calculation, name: "SalaryRecalculate") {
+                try calculator.calculate(inputs: inputs)
+            }
             let summary = SalarySummary(from: outputs)
             self.state = .content(SalaryContent(monthly: outputs, summary: summary))
             self.lastHapticEvent = .calculationSuccess
