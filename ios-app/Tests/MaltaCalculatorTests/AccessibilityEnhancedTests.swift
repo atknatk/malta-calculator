@@ -15,7 +15,6 @@
 import CalculationKit
 import DesignSystem
 import Foundation
-import SwiftUI
 import Testing
 @testable import MaltaCalculator
 
