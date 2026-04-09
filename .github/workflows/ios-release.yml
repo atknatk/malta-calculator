@@ -1,0 +1,123 @@
+name: iOS Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: "Fastlane lane to run"
+        required: true
+        default: "beta"
+        type: choice
+        options:
+          - beta
+          - release
+      skip_tests:
+        description: "Skip test step (emergency only)"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: ios-release
+  cancel-in-progress: false
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_26.app/Contents/Developer
+  SCHEME: MaltaCalculator
+  WORKSPACE: MaltaCalculator.xcworkspace
+
+jobs:
+  release:
+    name: Build & Submit (${{ github.event.inputs.lane }})
+    runs-on: macos-15
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: ios-app
+    env:
+      FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
+      FASTLANE_TEAM_ID: ${{ secrets.FASTLANE_TEAM_ID }}
+      FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+      APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+      APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+      CI_BUILD_NUMBER: ${{ github.run_number }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          if [ -d "$DEVELOPER_DIR" ]; then
+            sudo xcode-select -switch "$DEVELOPER_DIR"
+          else
+            echo "Xcode 26 not available, using runner default"
+            xcode-select -p
+          fi
+
+      - name: Xcode version
+        run: xcodebuild -version
+
+      - name: Install tools
+        run: |
+          brew install xcodegen xcbeautify
+          gem install bundler
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Cache SPM
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData/**/SourcePackages
+            ios-app/Packages/*/.build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.swift', '**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME"
+
+      - name: Run tests
+        if: ${{ github.event.inputs.skip_tests != 'true' }}
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
+            -enableCodeCoverage YES \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify
+
+      - name: Install Fastlane
+        run: |
+          cd fastlane
+          bundle install
+
+      - name: Setup App Store Connect API key
+        if: env.APP_STORE_CONNECT_API_KEY != ''
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "$APP_STORE_CONNECT_API_KEY" > ~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8
+
+      - name: Run Fastlane ${{ github.event.inputs.lane }}
+        run: |
+          cd fastlane
+          bundle exec fastlane ${{ github.event.inputs.lane }}
+
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: |
+            ios-app/*.ipa
+            ios-app/*.dSYM.zip
+            ios-app/fastlane/screenshots/

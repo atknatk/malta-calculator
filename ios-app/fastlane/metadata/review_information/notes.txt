@@ -1,0 +1,12 @@
+Malta Calculator is a financial calculation tool for Malta residents.
+
+— No account or sign-up required
+— No in-app purchases
+— No subscriptions
+— No third-party tracking or analytics
+— Works fully offline
+
+The tax data is sourced from official Malta CFR (https://cfr.gov.mt) and Social Security Department (https://socialsecurity.gov.mt).
+
+If you have any questions during review, contact:
+review@maltacalculator.com

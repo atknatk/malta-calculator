@@ -1,0 +1,12 @@
+Welcome to Malta Calculator 1.0!
+
+Your comprehensive financial toolkit for Malta — salary, mortgage, stamp duty, pension and 16+ more calculators, all in one beautifully designed app.
+
+• All calculations run offline on your device
+• Tax brackets, SSC and COLA updated for 2026
+• Full VoiceOver and Dynamic Type accessibility
+• 10+ in-depth Malta finance guides
+• Optional iCloud sync across your Apple devices
+• Beautiful share cards for any calculation
+
+Built natively for iOS with Liquid Glass design.
