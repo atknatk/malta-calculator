@@ -51,6 +51,7 @@
 		55A8BBB6A610C51F336CC587 /* GuidesNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCAE694A6EA2741F6CC8668 /* GuidesNavigationStack.swift */; };
 		5731CA00A6B35EDE3E4DA663 /* MaltaCalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A597F849A651DA532E7EF0 /* MaltaCalculatorUITests.swift */; };
 		57B7E81FFA0F6B8E56E3D69D /* guide-malta-minimum-wage-2026-guide.md in Resources */ = {isa = PBXBuildFile; fileRef = 869341FEE0078594059E16AE /* guide-malta-minimum-wage-2026-guide.md */; };
+		5F8A6AD7BE59C220D2C8DA3B /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16BA02D47537DF7DD5EF742 /* ScreenshotTests.swift */; };
 		5FE67C743E9F91BF872CEC92 /* MemoryBudgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120ECB3A8CA9A24FEA279F17 /* MemoryBudgetTests.swift */; };
 		6CD164EA62CE8C302C328D77 /* CalculatorsNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D81CBD21AD3E0A4DD8B6690 /* CalculatorsNavigationStack.swift */; };
 		6D900C222EB01C3329C58E30 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */; };
@@ -228,6 +229,7 @@
 		AC9C6823592A2D45CA17215D /* PersonalLoanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalLoanViewModel.swift; sourceTree = "<group>"; };
 		ACA9A944234C11402FCB5F6A /* PerformanceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceUITests.swift; sourceTree = "<group>"; };
 		B00D2402531AC47105121240 /* MarkdownBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlock.swift; sourceTree = "<group>"; };
+		B16BA02D47537DF7DD5EF742 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		B1742807D9FAA9E9E413E153 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B19A9F3FC5F821414CBE9C9F /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B3045DD00D8F5D876F098246 /* MortgageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MortgageViewModel.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 			children = (
 				F4A597F849A651DA532E7EF0 /* MaltaCalculatorUITests.swift */,
 				ACA9A944234C11402FCB5F6A /* PerformanceUITests.swift */,
+				B16BA02D47537DF7DD5EF742 /* ScreenshotTests.swift */,
 			);
 			path = MaltaCalculatorUITests;
 			sourceTree = "<group>";
@@ -739,6 +742,7 @@
 			files = (
 				5731CA00A6B35EDE3E4DA663 /* MaltaCalculatorUITests.swift in Sources */,
 				882C6C0057CFDEB54317398A /* PerformanceUITests.swift in Sources */,
+				5F8A6AD7BE59C220D2C8DA3B /* ScreenshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
