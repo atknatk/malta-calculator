@@ -29,11 +29,14 @@ final class GenericShareRenderer: Shareable {
     /// The card is laid out at 540x540pt and rendered at 2x scale, producing
     /// a 1080x1080 raster suitable for Instagram, Twitter, or system share.
     func asImage() async -> UIImage? {
-        let view = GenericShareCard(content: content)
-        let renderer = ImageRenderer(content: view)
-        renderer.scale = 2.0
-        renderer.proposedSize = .init(width: 540, height: 540)
-        return renderer.uiImage
+        let cacheKey = "generic-\(content.id)-\(content.heroValue)"
+        return ImageRendererCache.shared.image(forKey: cacheKey) {
+            let view = GenericShareCard(content: self.content)
+            let renderer = ImageRenderer(content: view)
+            renderer.scale = 2.0
+            renderer.proposedSize = .init(width: 540, height: 540)
+            return renderer.uiImage
+        }
     }
 
     /// Renders a single-page A4 PDF summary and returns its cached file URL.

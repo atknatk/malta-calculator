@@ -15,52 +15,7 @@ import Testing
 import UIKit
 import SnapshotTesting
 
-// MARK: - Shared Helpers
-
-@MainActor
-private func hostView<V: View>(
-    _ view: V,
-    contentSizeCategory: UIContentSizeCategory = .large,
-    colorScheme: UIUserInterfaceStyle = .light,
-    width: CGFloat = 375
-) -> UIViewController {
-    let hostingController = UIHostingController(rootView: view)
-    hostingController.overrideUserInterfaceStyle = colorScheme
-
-    let traits = UITraitCollection(preferredContentSizeCategory: contentSizeCategory)
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-
-    let container = UIViewController()
-    container.overrideUserInterfaceStyle = colorScheme
-    container.addChild(hostingController)
-    container.view.addSubview(hostingController.view)
-    hostingController.didMove(toParent: container)
-
-    NSLayoutConstraint.activate([
-        hostingController.view.leadingAnchor.constraint(equalTo: container.view.leadingAnchor),
-        hostingController.view.trailingAnchor.constraint(equalTo: container.view.trailingAnchor),
-        hostingController.view.topAnchor.constraint(equalTo: container.view.topAnchor),
-    ])
-
-    container.view.frame = CGRect(x: 0, y: 0, width: width, height: 0)
-    container.view.setNeedsLayout()
-    container.view.layoutIfNeeded()
-
-    let size = hostingController.view.intrinsicContentSize
-    container.view.frame = CGRect(x: 0, y: 0, width: width, height: max(size.height, 60))
-
-    hostingController.view.frame = container.view.bounds
-    container.view.setNeedsLayout()
-    container.view.layoutIfNeeded()
-
-    let parentTraits = UITraitCollection(traitsFrom: [
-        UITraitCollection(userInterfaceStyle: colorScheme),
-        traits,
-    ])
-    container.setOverrideTraitCollection(parentTraits, forChild: hostingController)
-
-    return container
-}
+// hostView() is provided by SnapshotHelpers.swift (shared across all test files)
 
 // MARK: - DSEmptyState Snapshots
 
@@ -75,7 +30,7 @@ struct DSEmptyStateSnapshotTests {
             icon: "magnifyingglass"
         )
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Empty state renders in dark mode")
@@ -86,7 +41,7 @@ struct DSEmptyStateSnapshotTests {
             icon: "magnifyingglass"
         )
         let vc = hostView(view, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Empty state renders at AX5")
@@ -97,7 +52,7 @@ struct DSEmptyStateSnapshotTests {
             icon: "magnifyingglass"
         )
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -114,7 +69,7 @@ struct DSErrorStateSnapshotTests {
             retryAction: {}
         )
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Error state with retry — dark")
@@ -125,7 +80,7 @@ struct DSErrorStateSnapshotTests {
             retryAction: {}
         )
         let vc = hostView(view, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Error state without retry — light")
@@ -135,7 +90,7 @@ struct DSErrorStateSnapshotTests {
             description: "The input values are out of range."
         )
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Error state at AX5")
@@ -146,7 +101,7 @@ struct DSErrorStateSnapshotTests {
             retryAction: {}
         )
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -165,7 +120,7 @@ struct DSSkeletonSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Skeleton card renders — light")
@@ -174,7 +129,7 @@ struct DSSkeletonSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Skeleton list renders — light")
@@ -183,7 +138,7 @@ struct DSSkeletonSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Skeleton card renders — dark")
@@ -192,7 +147,7 @@ struct DSSkeletonSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Skeleton list renders at AX5")
@@ -201,7 +156,7 @@ struct DSSkeletonSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -220,7 +175,7 @@ struct DSCurrencyFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Currency field with value — dark")
@@ -233,7 +188,7 @@ struct DSCurrencyFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), colorScheme: .dark, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Currency field with zero — light")
@@ -246,7 +201,7 @@ struct DSCurrencyFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Currency field at AX5")
@@ -259,7 +214,7 @@ struct DSCurrencyFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), contentSizeCategory: .accessibilityExtraExtraExtraLarge, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -282,7 +237,7 @@ struct DSToggleGroupSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Toggle group — dark")
@@ -299,7 +254,7 @@ struct DSToggleGroupSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), colorScheme: .dark, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Toggle group at AX5")
@@ -316,7 +271,7 @@ struct DSToggleGroupSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), contentSizeCategory: .accessibilityExtraExtraExtraLarge, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -335,7 +290,7 @@ struct DSSearchFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Search field with text — light")
@@ -348,7 +303,7 @@ struct DSSearchFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Search field — dark")
@@ -361,7 +316,7 @@ struct DSSearchFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), colorScheme: .dark, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Search field at AX5")
@@ -374,7 +329,7 @@ struct DSSearchFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), contentSizeCategory: .accessibilityExtraExtraExtraLarge, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -393,7 +348,7 @@ struct DSSectionHeaderSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Section header — dark")
@@ -406,7 +361,7 @@ struct DSSectionHeaderSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Section header without subtitle — light")
@@ -418,7 +373,7 @@ struct DSSectionHeaderSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Section header at AX5")
@@ -431,7 +386,7 @@ struct DSSectionHeaderSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -450,7 +405,7 @@ struct DSChipSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Chip — dark")
@@ -462,7 +417,7 @@ struct DSChipSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Chip at AX5")
@@ -474,7 +429,7 @@ struct DSChipSnapshotTests {
         .padding()
         .frame(width: 375)
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -489,7 +444,7 @@ struct DSAnimatedNumberSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Percent format — light")
@@ -498,7 +453,7 @@ struct DSAnimatedNumberSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Currency format — dark")
@@ -507,7 +462,7 @@ struct DSAnimatedNumberSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view, colorScheme: .dark)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Currency format at AX5")
@@ -516,7 +471,7 @@ struct DSAnimatedNumberSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Decimal format — light")
@@ -525,7 +480,7 @@ struct DSAnimatedNumberSnapshotTests {
             .padding()
             .frame(width: 375)
         let vc = hostView(view)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -544,7 +499,7 @@ struct DSStepperSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Stepper — dark")
@@ -557,7 +512,7 @@ struct DSStepperSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), colorScheme: .dark, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Stepper at minimum — light")
@@ -570,7 +525,7 @@ struct DSStepperSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Stepper at AX5")
@@ -583,7 +538,7 @@ struct DSStepperSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), contentSizeCategory: .accessibilityExtraExtraExtraLarge, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -608,7 +563,7 @@ struct DSSliderFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Slider field — dark")
@@ -627,7 +582,7 @@ struct DSSliderFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), colorScheme: .dark, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Slider field at AX5")
@@ -647,7 +602,7 @@ struct DSSliderFieldSnapshotTests {
             }
         }
         let vc = hostView(Wrapper(), contentSizeCategory: .accessibilityExtraExtraExtraLarge, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 
@@ -671,7 +626,7 @@ struct DSBreakdownChartSnapshotTests {
         .frame(width: 300, height: 300)
         .padding()
         let vc = hostView(view, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Breakdown chart — dark")
@@ -689,7 +644,7 @@ struct DSBreakdownChartSnapshotTests {
         .frame(width: 300, height: 300)
         .padding()
         let vc = hostView(view, colorScheme: .dark, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 
     @Test("Breakdown chart at AX5")
@@ -706,7 +661,7 @@ struct DSBreakdownChartSnapshotTests {
         .frame(width: 300, height: 300)
         .padding()
         let vc = hostView(view, contentSizeCategory: .accessibilityExtraExtraExtraLarge, width: 375)
-        assertSnapshot(of: vc, as: .image, record: .missing)
+        assertSnapshot(of: vc, as: .image)
     }
 }
 

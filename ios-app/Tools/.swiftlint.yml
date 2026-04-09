@@ -1,3 +1,8 @@
+# SwiftLint Configuration — MaltaCalculator
+# Tool version: 0.56.2 (pinned in Mintfile)
+# Companion formatter: SwiftFormat 0.54.5
+# Run `swiftlint rules` for full rule descriptions.
+
 disabled_rules:
   - todo # WIP markers are acceptable during development
   - trailing_whitespace # Handled by SwiftFormat
@@ -33,6 +38,7 @@ opt_in_rules:
   - vertical_whitespace_closing_braces
   - yoda_condition
 
+# Thresholds — Warning = fix soon, Error = CI blocks merge
 line_length:
   warning: 120
   error: 150
@@ -40,7 +46,7 @@ line_length:
   ignores_comments: true
 
 type_body_length:
-  warning: 300
+  warning: 300 # Generous for SwiftUI views with many computed properties
   error: 400
 
 file_length:
@@ -56,14 +62,16 @@ cyclomatic_complexity:
   warning: 8
   error: 12
 
+# Identifier naming — short names are OK for common SwiftUI patterns
 identifier_name:
   min_length: 2
   max_length: 50
   excluded:
-    - id
-    - vm
-    - to
+    - id # SwiftUI Identifiable
+    - vm # ViewModel shorthand
+    - to # Common preposition parameter
 
+# Force-pattern severity overrides — elevated to error so CI blocks any that slip through
 force_unwrapping:
   severity: error
 
@@ -80,4 +88,5 @@ excluded:
   - .build
   - "**/.build"
 
+# Reporter format — integrates with Xcode build log; CI also parses it
 reporter: "xcode"

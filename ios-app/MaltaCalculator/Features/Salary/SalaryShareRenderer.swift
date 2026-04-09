@@ -26,11 +26,14 @@ final class SalaryShareRenderer: Shareable {
 
     /// Renders a 1080x1080 share card as a PNG image.
     func asImage() async -> UIImage? {
-        let view = SalaryShareCard(content: content)
-        let renderer = ImageRenderer(content: view)
-        renderer.scale = 2.0
-        renderer.proposedSize = .init(width: 540, height: 540)
-        return renderer.uiImage
+        let cacheKey = "salary-\(content.year)-\(content.annualGross)"
+        return ImageRendererCache.shared.image(forKey: cacheKey) {
+            let view = SalaryShareCard(content: self.content)
+            let renderer = ImageRenderer(content: view)
+            renderer.scale = 2.0
+            renderer.proposedSize = .init(width: 540, height: 540)
+            return renderer.uiImage
+        }
     }
 
     /// Renders a single-page PDF summary and returns its cached file URL.
