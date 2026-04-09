@@ -5,10 +5,18 @@ platform :ios do
     setup_ci if ENV["CI"]
   end
 
+  # ---------------------------------------------------------------------------
+  # Lint
+  # ---------------------------------------------------------------------------
+
   desc "Lint Swift code"
   lane :lint do
     sh("bash ../Tools/scripts/lint.sh")
   end
+
+  # ---------------------------------------------------------------------------
+  # Test
+  # ---------------------------------------------------------------------------
 
   desc "Run tests"
   lane :test do
@@ -21,38 +29,115 @@ platform :ios do
     )
   end
 
+  # ---------------------------------------------------------------------------
+  # Screenshots
+  # ---------------------------------------------------------------------------
+
+  desc "Capture App Store screenshots"
+  lane :screenshots do
+    capture_screenshots(
+      workspace: "MaltaCalculator.xcworkspace",
+      scheme: "MaltaCalculator",
+      devices: [
+        "iPhone 16 Pro Max",
+        "iPad Pro (13-inch) (M4)"
+      ],
+      languages: ["en-US"],
+      output_directory: "./fastlane/screenshots",
+      clear_previous_screenshots: true,
+      override_status_bar: true,
+      stop_after_first_error: false
+    )
+    frame_screenshots(
+      path: "./fastlane/screenshots",
+      silver: false
+    )
+  end
+
+  # ---------------------------------------------------------------------------
+  # Beta (TestFlight)
+  # ---------------------------------------------------------------------------
+
   desc "Build and upload to TestFlight"
   lane :beta do
     match(type: "appstore", readonly: true)
     increment_build_number(
       build_number: ENV.fetch("CI_BUILD_NUMBER", latest_testflight_build_number + 1)
     )
+
+    run_tests(
+      workspace: "MaltaCalculator.xcworkspace",
+      scheme: "MaltaCalculator",
+      devices: ["iPhone 16 Pro"],
+      code_coverage: true
+    )
+
     build_app(
       workspace: "MaltaCalculator.xcworkspace",
       scheme: "MaltaCalculator",
-      export_method: "app-store"
+      export_method: "app-store",
+      include_bitcode: false
     )
     upload_to_testflight(
-      skip_waiting_for_build_processing: true
+      skip_waiting_for_build_processing: true,
+      distribute_external: false,
+      changelog: "Beta build #{lane_context[SharedValues::BUILD_NUMBER]}"
     )
   end
 
+  # ---------------------------------------------------------------------------
+  # Release (App Store)
+  # ---------------------------------------------------------------------------
+
   desc "Release to App Store"
   lane :release do
+    ensure_git_status_clean
+    ensure_git_branch(branch: "main")
+
     match(type: "appstore", readonly: true)
-    capture_screenshots if ENV["CAPTURE_SCREENSHOTS"]
+
+    increment_build_number(
+      build_number: ENV.fetch("CI_BUILD_NUMBER", latest_testflight_build_number + 1)
+    )
+
+    # Run tests one final time before release
+    run_tests(
+      workspace: "MaltaCalculator.xcworkspace",
+      scheme: "MaltaCalculator",
+      devices: ["iPhone 16 Pro"]
+    )
+
     build_app(
       workspace: "MaltaCalculator.xcworkspace",
       scheme: "MaltaCalculator",
-      export_method: "app-store"
+      export_method: "app-store",
+      include_bitcode: false
     )
+
     upload_to_app_store(
       submit_for_review: true,
       automatic_release: false,
-      skip_screenshots: true,
-      skip_metadata: false
+      force: true,
+      skip_screenshots: false,
+      skip_metadata: false,
+      submission_information: {
+        add_id_info_uses_idfa: false,
+        export_compliance_uses_encryption: false,
+        content_rights_contains_third_party_content: false
+      }
     )
+
+    version = get_version_number(
+      xcodeproj: "MaltaCalculator.xcodeproj",
+      target: "MaltaCalculator"
+    )
+    add_git_tag(tag: "v#{version}")
+    push_git_tags
   end
+
+  # ---------------------------------------------------------------------------
+  # Error handling
+  # ---------------------------------------------------------------------------
 
   error do |lane, exception|
     UI.error("Lane #{lane} failed: #{exception.message}")

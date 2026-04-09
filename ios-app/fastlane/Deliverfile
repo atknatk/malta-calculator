@@ -1,0 +1,24 @@
+app_identifier("com.maltacalculator.app")
+username(ENV["FASTLANE_APPLE_ID"])
+
+# Pricing
+price_tier(0) # Free
+
+# Age rating
+app_rating_config_path("./fastlane/rating_config.json")
+
+# Submission information
+submission_information({
+  add_id_info_uses_idfa: false,
+  export_compliance_uses_encryption: false,
+  content_rights_contains_third_party_content: false
+})
+
+# Phased release (recommended for v1)
+phased_release(true)
+
+# Auto-release after approval
+automatic_release(false)
+
+# Copyright
+copyright("© 2026 Malta Calculator")

@@ -1,0 +1,67 @@
+Malta Calculator is the most comprehensive financial toolkit for anyone living, working, or moving to Malta. From your monthly net salary to mortgage payments, pension projections to vehicle import costs — every calculation you need, in one beautiful, offline-first app.
+
+— WHAT'S INSIDE —
+
+EMPLOYMENT & SALARY
+• Net Salary Calculator with full tax, SSC and COLA
+• Notice Period Calculator
+• Overtime Calculator (1.5x and 2x rates)
+
+PROPERTY & HOUSING
+• Mortgage Calculator with full amortization schedule
+• Stamp Duty Calculator with first-time buyer exemption
+
+BANKING & LOANS
+• Personal Loan Calculator
+• Savings Interest Calculator (with 15% withholding tax)
+
+RETIREMENT & SAVINGS
+• Pension Calculator (two-thirds + private pension credits)
+• Retirement Age Calculator
+
+FAMILY & CHILDREN
+• Children's Allowance Calculator
+
+LEAVE & TIME OFF
+• Vacation Leave Entitlement Calculator (with public holiday adjustments)
+
+TRANSPORT & VEHICLES
+• Vehicle Registration Fee
+• Vehicle Registration Tax (CO2 based)
+• Road License Calculator
+• Driver's License Fees
+• VRT (MOT) Calculator
+• Import Vehicle Total Cost Calculator
+
+IMMIGRATION & VISA
+• Family Reunification Salary Requirements
+
+— FEATURES —
+
+✦ Liquid Glass Design — Built natively for iOS 26 with the new Liquid Glass design language. Beautiful, fluid, modern.
+
+✦ 100% Offline — Every calculation runs on-device. No internet required, no data leaves your phone.
+
+✦ Accurate for 2026 — All tax brackets, SSC contributions and COLA values updated for 2026 from official Malta CFR and Social Security sources.
+
+✦ 10+ In-Depth Guides — Read comprehensive Malta finance guides offline: tax rates, mortgage requirements, pension system, public holidays, and more.
+
+✦ Save & Sync — Save your calculations and access them across all your Apple devices via iCloud (optional, opt-in).
+
+✦ Beautiful Share Cards — Share your salary breakdown, mortgage payment, or any calculation as a beautiful image or PDF.
+
+✦ Privacy First — No tracking. No analytics. No ads. Your data stays yours.
+
+✦ Accessible — Full VoiceOver support, Dynamic Type up to AX5, Reduce Motion friendly.
+
+✦ iPhone & iPad — Designed for both, with native iPad layouts.
+
+— ACCURACY DISCLAIMER —
+
+Malta Calculator provides estimates for informational purposes only. While we keep tax data current with official Malta CFR (cfr.gov.mt) and Social Security Department (socialsecurity.gov.mt) sources, individual circumstances may affect actual amounts. Always consult a licensed Maltese accountant for binding advice.
+
+— MADE IN MALTA —
+
+Built with care for Malta's vibrant community of residents, expats, and professionals.
+
+Questions? Feature requests? Reach us at support@maltacalculator.com
