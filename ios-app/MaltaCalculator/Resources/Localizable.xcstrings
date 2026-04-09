@@ -4,6 +4,19 @@
     "—" : {
 
     },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
     "%lld active, %lld coming soon, %lld categories, free forever" : {
       "localizations" : {
         "en" : {
@@ -18,6 +31,9 @@
 
     },
     "%lld percent" : {
+
+    },
+    "%lld%%" : {
 
     },
     "•" : {
@@ -41,6 +57,24 @@
     "130%" : {
 
     },
+    "About" : {
+
+    },
+    "Accuracy" : {
+
+    },
+    "Acknowledgements" : {
+
+    },
+    "Analytics" : {
+
+    },
+    "Analytics are disabled in version 1.0" : {
+
+    },
+    "App version" : {
+
+    },
     "app.name" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -51,6 +85,12 @@
           }
         }
       }
+    },
+    "Appearance" : {
+
+    },
+    "Bookmarked Guides" : {
+
     },
     "calculator.childrensAllowance.title" : {
       "extractionState" : "manual",
@@ -818,6 +858,9 @@
         }
       }
     },
+    "Cancel" : {
+
+    },
     "chart.line" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -829,6 +872,24 @@
         }
       }
     },
+    "Choose light, dark, or follow system appearance" : {
+
+    },
+    "Clear All" : {
+
+    },
+    "Clear Bookmarks" : {
+
+    },
+    "Clear Bookmarks?" : {
+
+    },
+    "Clear History" : {
+
+    },
+    "Clear History?" : {
+
+    },
     "common.ok" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -839,6 +900,48 @@
           }
         }
       }
+    },
+    "Config Version" : {
+
+    },
+    "Consult a Professional" : {
+
+    },
+    "Contact Support" : {
+
+    },
+    "Crash reporting is disabled in version 1.0" : {
+
+    },
+    "Crash Reports" : {
+
+    },
+    "Currency" : {
+
+    },
+    "Dark" : {
+
+    },
+    "Default Year" : {
+
+    },
+    "Defaults" : {
+
+    },
+    "Disclaimer" : {
+
+    },
+    "Euro" : {
+
+    },
+    "Export All Data" : {
+
+    },
+    "Export calculations and bookmarks as a JSON file" : {
+
+    },
+    "For binding tax advice, payroll administration, or legal matters, please consult a licensed Maltese accountant, tax advisor, or lawyer." : {
+
     },
     "guides.bookmarks.title" : {
       "extractionState" : "manual",
@@ -944,7 +1047,16 @@
         }
       }
     },
+    "guides.reader.bookmark" : {
+
+    },
     "guides.reader.bookmark.add" : {
+
+    },
+    "guides.reader.bookmark.off" : {
+
+    },
+    "guides.reader.bookmark.on" : {
 
     },
     "guides.reader.bookmark.remove" : {
@@ -960,6 +1072,9 @@
 
     },
     "guides.reader.share" : {
+
+    },
+    "guides.reader.share.hint" : {
 
     },
     "guides.reader.title" : {
@@ -992,6 +1107,9 @@
           }
         }
       }
+    },
+    "Help & Feedback" : {
+
     },
     "home.placeholder.accessibilityLabel" : {
       "extractionState" : "manual",
@@ -1026,6 +1144,69 @@
         }
       }
     },
+    "iCloud Sync" : {
+
+    },
+    "Light" : {
+
+    },
+    "Made in Malta" : {
+
+    },
+    "Made in Malta with love" : {
+
+    },
+    "Malta Calculator is built with the following open-source software. We gratefully acknowledge their authors." : {
+
+    },
+    "Malta Calculator provides financial calculations for informational and educational purposes only. The values calculated are estimates based on publicly available data from Malta CFR (Commissioner for Tax and Customs) and the Social Security Department." : {
+
+    },
+    "Malta CFR" : {
+
+    },
+    "Malta CFR: cfr.gov.mt" : {
+
+    },
+    "Not Tax Advice" : {
+
+    },
+    "OK" : {
+
+    },
+    "Open Malta Commissioner for Tax and Customs website" : {
+
+    },
+    "Open Malta Social Security Department website" : {
+
+    },
+    "Permanently delete guide bookmarks" : {
+
+    },
+    "Permanently delete saved calculations" : {
+
+    },
+    "Please quit and reopen the app for iCloud sync changes to take effect." : {
+
+    },
+    "Privacy" : {
+
+    },
+    "Privacy Policy" : {
+
+    },
+    "Prompt to leave a review on the App Store" : {
+
+    },
+    "Rate on App Store" : {
+
+    },
+    "Report a Bug" : {
+
+    },
+    "Restart Required" : {
+
+    },
     "salary.action.menu" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1047,6 +1228,9 @@
           }
         }
       }
+    },
+    "salary.action.reset.hint" : {
+
     },
     "salary.action.save" : {
       "extractionState" : "manual",
@@ -2466,6 +2650,9 @@
         }
       }
     },
+    "Saved Calculations" : {
+
+    },
     "screen.comingSoon.accessibilityLabel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2520,6 +2707,9 @@
           }
         }
       }
+    },
+    "Settings" : {
+
     },
     "settings.about.title" : {
       "extractionState" : "manual",
@@ -2596,6 +2786,12 @@
     "share.text.footer" : {
 
     },
+    "Social Security Department" : {
+
+    },
+    "Social Security: socialsecurity.gov.mt" : {
+
+    },
     "stepper.decrease" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2639,6 +2835,21 @@
           }
         }
       }
+    },
+    "Storage Used" : {
+
+    },
+    "Suggest a Feature" : {
+
+    },
+    "Sync & Data" : {
+
+    },
+    "Sync saved calculations across your devices. Requires app restart." : {
+
+    },
+    "System" : {
+
     },
     "tab.calculators" : {
       "extractionState" : "manual",
@@ -2749,6 +2960,36 @@
           }
         }
       }
+    },
+    "Tax Data" : {
+
+    },
+    "Tax year used by default across calculators" : {
+
+    },
+    "Terms of Service" : {
+
+    },
+    "Theme" : {
+
+    },
+    "This application does not constitute professional tax, legal, or financial advice. Individual circumstances may affect actual amounts owed or received." : {
+
+    },
+    "This will permanently remove all guide bookmarks from this device." : {
+
+    },
+    "This will permanently remove all saved calculations from this device. This cannot be undone." : {
+
+    },
+    "Version" : {
+
+    },
+    "We strive to keep the tax data current. However, regulations change frequently. Always verify with official sources before making financial decisions:" : {
+
+    },
+    "What's New" : {
+
     }
   },
   "version" : "1.0"

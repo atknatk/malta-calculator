@@ -1,4 +1,4 @@
-# Task 18 — Calculator Detail Sprint 3 (Missing from iOS — Backend Ready)
+# Task 22 — Calculator Detail Sprint 3 (Missing from iOS — Backend Ready)
 
 > **Referans**: [08-feature-calculator-detail.md](08-feature-calculator-detail.md) Sprint 3. Bu task, web'de mevcut olan ama iOS app'inde **hiç olmayan** 12 calculator'ı ekler. **Önemli bilgi**: CalculationKit motorlarının **TAMAMI zaten port edildi** ([03-calculation-kit.md](03-calculation-kit.md) tarafından) — bu task sadece `CalculatorID` enum'a yeni case'ler ekler, UI/ViewModel oluşturur ve `CalculatorsHubScreen`'e kayıt eder.
 
@@ -28,7 +28,7 @@ Aşağıdaki 12 calculator'ı iOS app'ine ekle. Backend (CalculationKit) zaten h
 ## Ön Koşullar
 
 ✅ CalculationKit motorlar mevcut (yukarıdaki tabloda doğrulandı)
-✅ `CalculatorDetailScaffold` mevcut ([Sprint 1 + 17](17-calculator-sprint-2.md))
+✅ `CalculatorDetailScaffold` mevcut ([Sprint 1 + Task 21](21-calculator-sprint-2.md))
 ✅ DSEmptyState, DSSkeletonCard, DSErrorState mevcut
 ✅ AppSignpost mevcut
 

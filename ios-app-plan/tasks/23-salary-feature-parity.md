@@ -1,4 +1,4 @@
-# Task 19 — Salary Calculator Feature Parity with Web
+# Task 23 — Salary Calculator Feature Parity with Web
 
 > **Referans**: Bu task, mevcut iOS Salary feature'ını ([06-feature-salary.md](06-feature-salary.md) tarafından oluşturulan) web salary calculator ile **1:1 feature parity**'ye getirir. Web kaynağı: `src/app/salary/_components/salary-input-form.tsx` + `src/utils/salary-calculator.ts`.
 

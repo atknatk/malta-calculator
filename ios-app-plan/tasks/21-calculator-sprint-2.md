@@ -1,4 +1,4 @@
-# Task 17 — Calculator Detail Sprint 2 (Placeholder → Real Implementation)
+# Task 21 — Calculator Detail Sprint 2 (Placeholder → Real Implementation)
 
 > **Referans**: [08-feature-calculator-detail.md](08-feature-calculator-detail.md) Sprint 2. Bu task, mevcut iOS app'inde "Coming Soon" placeholder gösteren 11 calculator'ı gerçek implementasyona çevirir. Web kaynak: `src/app/calculators/<id>/` + `src/utils/<id>-calculator.ts`. Backend motorlar **CalculationKit'te zaten mevcut** ([03-calculation-kit.md](03-calculation-kit.md) ile port edildi) — bu task sadece UI + ViewModel + tests yapar.
 

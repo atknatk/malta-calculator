@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -176,7 +176,7 @@
 		34A42FCF3B386343A26597D4 /* SettingsNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationStack.swift; sourceTree = "<group>"; };
 		38C76F4A0C7CFDC0DB3EE278 /* AnimationBudget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationBudget.swift; sourceTree = "<group>"; };
 		3A925BA0C330F102F69187A4 /* ComingSoonScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComingSoonScreen.swift; sourceTree = "<group>"; };
-		3B1EA68881C3E11627C254D6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3B1EA68881C3E11627C254D6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B2D94468F50ECFF9CA19CE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3C34073A5855C0FE024A051D /* MaltaCalculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MaltaCalculator.entitlements; sourceTree = "<group>"; };
 		3F513E52842C7EB018445340 /* SalaryInsights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryInsights.swift; sourceTree = "<group>"; };
@@ -260,7 +260,7 @@
 		F41F75F17209D8938C8B587B /* UserPreferencesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferencesStore.swift; sourceTree = "<group>"; };
 		F4A597F849A651DA532E7EF0 /* MaltaCalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltaCalculatorUITests.swift; sourceTree = "<group>"; };
 		F68A8F0EE4B09C0A43F16072 /* SavingsInterestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsInterestViewModel.swift; sourceTree = "<group>"; };
-		F7526166DC60D76EDC80388A /* MaltaCalculator.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MaltaCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7526166DC60D76EDC80388A /* MaltaCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MaltaCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD070C272554DDBFF0D21ED9 /* PersonalLoanScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalLoanScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -659,7 +659,6 @@
 						ProvisioningStyle = Automatic;
 					};
 					A9880F4DFAAD57B951AC9243 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -678,7 +677,6 @@
 				B238A6DE0FDF38A7DCE79F73 /* XCLocalSwiftPackageReference "Packages/CalculationKit" */,
 				3B36D6A2300DAFC6B6A6447F /* XCLocalSwiftPackageReference "Packages/DesignSystem" */,
 			);
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -999,6 +997,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MaltaCalculator/MaltaCalculator.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = VT3X56P4ZL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MaltaCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1086,6 +1085,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MaltaCalculator/MaltaCalculator.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = VT3X56P4ZL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MaltaCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -1,1 +1,0 @@
-../../../ios-app-plan/tasks/17-calculator-sprint-2.md

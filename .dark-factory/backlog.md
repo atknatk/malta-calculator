@@ -30,12 +30,12 @@ from the spec before the implementation agent ever reads it.
 
 ## Queue
 
-| #   | Intent Spec                                       | Layer       | Pipeline | Governance | Status  | Session                       |
-| --- | ------------------------------------------------- | ----------- | -------- | ---------- | ------- | ----------------------------- |
-| 17  | docs/specs/ios-feature/17-calculator-sprint-2.intent.md   | ios-feature | full     | T2         | pending |                               |
-| 18  | docs/specs/ios-feature/18-calculator-sprint-3.intent.md   | ios-feature | full     | T2         | pending |                               |
-| 19  | docs/specs/ios-feature/19-salary-feature-parity.intent.md | ios-feature | full     | T1         | pending |                               |
-| 20  | docs/specs/ios-feature/20-markdown-table-support.intent.md | ios-feature | standard | T1         | pending |                               |
+| #   | Intent Spec                                                | Layer       | Pipeline | Governance | Status  | Session |
+| --- | ---------------------------------------------------------- | ----------- | -------- | ---------- | ------- | ------- |
+| 21  | docs/specs/ios-feature/21-calculator-sprint-2.intent.md    | ios-feature | full     | T2         | pending |         |
+| 22  | docs/specs/ios-feature/22-calculator-sprint-3.intent.md    | ios-feature | full     | T2         | pending |         |
+| 23  | docs/specs/ios-feature/23-salary-feature-parity.intent.md  | ios-feature | full     | T1         | pending |         |
+| 24  | docs/specs/ios-feature/24-markdown-table-support.intent.md | ios-feature | standard | T1         | pending |         |
 
 ## In Progress
 

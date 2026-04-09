@@ -1,4 +1,4 @@
-# Task 20 — Markdown Table Support in Guides
+# Task 24 — Markdown Table Support in Guides
 
 > **Referans**: Bu task, [09-feature-guides.md](09-feature-guides.md) tarafından oluşturulan markdown reader'ı `swift-markdown-ui` ile değiştirir. Mevcut native `AttributedString(markdown:)` parser'ı tabloları desteklemediği için Malta tax rates gibi tablolu rehberler bozuk görünüyor.
 
