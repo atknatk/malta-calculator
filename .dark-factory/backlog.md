@@ -32,9 +32,10 @@ from the spec before the implementation agent ever reads it.
 
 | #   | Intent Spec                                       | Layer       | Pipeline | Governance | Status  | Session                       |
 | --- | ------------------------------------------------- | ----------- | -------- | ---------- | ------- | ----------------------------- |
-| 14  | docs/specs/ios-quality/14-accessibility.intent.md | ios-quality | standard | T1         | pending | task-20260409-022614-53af5fe9 |
-| 15  | docs/specs/ios-quality/15-performance.intent.md   | ios-quality | standard | T2         | pending |                               |
-| 16  | docs/specs/ios-release/16-release.intent.md       | ios-release | standard | T2         | pending |                               |
+| 17  | docs/specs/ios-feature/17-calculator-sprint-2.intent.md   | ios-feature | full     | T2         | pending |                               |
+| 18  | docs/specs/ios-feature/18-calculator-sprint-3.intent.md   | ios-feature | full     | T2         | pending |                               |
+| 19  | docs/specs/ios-feature/19-salary-feature-parity.intent.md | ios-feature | full     | T1         | pending |                               |
+| 20  | docs/specs/ios-feature/20-markdown-table-support.intent.md | ios-feature | standard | T1         | pending |                               |
 
 ## In Progress
 
@@ -57,6 +58,9 @@ _(Auto-managed by `ralph.sh` — rows move here while a session is running.)_
 | 11  | docs/specs/ios-feature/11-share-export.intent.md              | ios-feature     | standard | T1         | completed | task-20260408-222340-a3d8a613    |
 | 12  | docs/specs/ios-feature/12-settings-localization.intent.md     | ios-feature     | standard | T1         | completed | task-20260408-223948-842a00d1    |
 | 13  | docs/specs/ios-quality/13-testing.intent.md                   | ios-quality     | full     | T1         | completed | task-20260409-012906-9928face    |
+| 14  | docs/specs/ios-quality/14-accessibility.intent.md             | ios-quality     | standard | T1         | completed | task-20260409-025853-c5bfcaf2    |
+| 15  | docs/specs/ios-quality/15-performance.intent.md               | ios-quality     | standard | T2         | completed | task-20260409-033539-274f4585    |
+| 16  | docs/specs/ios-release/16-release.intent.md                   | ios-release     | standard | T2         | completed | task-20260409-040925-c65a50d9    |
 
 ## Rejected
 
