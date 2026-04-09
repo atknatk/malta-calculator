@@ -127,56 +127,64 @@ struct GuideReaderScreen: View {
     @ViewBuilder
     private func blockView(_ block: MarkdownBlock) -> some View {
         switch block.kind {
-        case .h1:
-            Text(block.attributed(fontScale: fontScale))
-                .font(.system(size: 28 * fontScale, weight: .bold))
-                .foregroundStyle(DSColor.textPrimary)
-                .padding(.top, DSSpacing.sm)
-                .accessibilityAddTraits(.isHeader)
-        case .h2:
-            Text(block.attributed(fontScale: fontScale))
-                .font(.system(size: 22 * fontScale, weight: .semibold))
-                .foregroundStyle(DSColor.textPrimary)
-                .padding(.top, DSSpacing.xs)
-                .accessibilityAddTraits(.isHeader)
-        case .h3:
-            Text(block.attributed(fontScale: fontScale))
-                .font(.system(size: 18 * fontScale, weight: .semibold))
-                .foregroundStyle(DSColor.textPrimary)
-                .accessibilityAddTraits(.isHeader)
-        case .paragraph:
+        case .h1: headingView(block, size: 28, weight: .bold, topPadding: DSSpacing.sm)
+        case .h2: headingView(block, size: 22, weight: .semibold, topPadding: DSSpacing.xs)
+        case .h3: headingView(block, size: 18, weight: .semibold, topPadding: 0)
+        case .paragraph: paragraphView(block)
+        case .bulleted: bulletView(block)
+        case .quote: quoteView(block)
+        case .code: codeView(block)
+        }
+    }
+
+    private func headingView(
+        _ block: MarkdownBlock, size: CGFloat, weight: Font.Weight, topPadding: CGFloat
+    ) -> some View {
+        Text(block.attributed(fontScale: fontScale))
+            .font(.system(size: size * fontScale, weight: weight))
+            .foregroundStyle(DSColor.textPrimary)
+            .padding(.top, topPadding)
+            .accessibilityAddTraits(.isHeader)
+    }
+
+    private func paragraphView(_ block: MarkdownBlock) -> some View {
+        Text(block.attributed(fontScale: fontScale))
+            .font(.system(size: 16 * fontScale))
+            .foregroundStyle(DSColor.textPrimary)
+            .lineSpacing(4 * fontScale)
+    }
+
+    private func bulletView(_ block: MarkdownBlock) -> some View {
+        HStack(alignment: .top, spacing: DSSpacing.xs) {
+            Text("•")
+                .font(.system(size: 16 * fontScale, weight: .bold))
+                .foregroundStyle(DSColor.maltaGold)
             Text(block.attributed(fontScale: fontScale))
                 .font(.system(size: 16 * fontScale))
                 .foregroundStyle(DSColor.textPrimary)
                 .lineSpacing(4 * fontScale)
-        case .bulleted:
-            HStack(alignment: .top, spacing: DSSpacing.xs) {
-                Text("•")
-                    .font(.system(size: 16 * fontScale, weight: .bold))
-                    .foregroundStyle(DSColor.maltaGold)
-                Text(block.attributed(fontScale: fontScale))
-                    .font(.system(size: 16 * fontScale))
-                    .foregroundStyle(DSColor.textPrimary)
-                    .lineSpacing(4 * fontScale)
-            }
-        case .quote:
-            Text(block.attributed(fontScale: fontScale))
-                .font(.system(size: 16 * fontScale).italic())
-                .foregroundStyle(DSColor.textSecondary)
-                .padding(.leading, DSSpacing.sm)
-                .overlay(alignment: .leading) {
-                    Rectangle()
-                        .fill(DSColor.maltaGold)
-                        .frame(width: 3)
-                }
-        case .code:
-            Text(block.raw)
-                .font(.system(size: 14 * fontScale, design: .monospaced))
-                .foregroundStyle(DSColor.textPrimary)
-                .padding(DSSpacing.sm)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(DSColor.surfaceMuted, in: RoundedRectangle(cornerRadius: DSRadius.sm))
         }
+    }
+
+    private func quoteView(_ block: MarkdownBlock) -> some View {
+        Text(block.attributed(fontScale: fontScale))
+            .font(.system(size: 16 * fontScale).italic())
+            .foregroundStyle(DSColor.textSecondary)
+            .padding(.leading, DSSpacing.sm)
+            .overlay(alignment: .leading) {
+                Rectangle()
+                    .fill(DSColor.maltaGold)
+                    .frame(width: 3)
+            }
+    }
+
+    private func codeView(_ block: MarkdownBlock) -> some View {
+        Text(block.raw)
+            .font(.system(size: 14 * fontScale, design: .monospaced))
+            .foregroundStyle(DSColor.textPrimary)
+            .padding(DSSpacing.sm)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(DSColor.surfaceMuted, in: RoundedRectangle(cornerRadius: DSRadius.sm))
     }
 
     private var progressBar: some View {
@@ -207,6 +215,7 @@ struct GuideReaderScreen: View {
             Image(systemName: "textformat.size")
         }
         .accessibilityLabel(Text("guides.reader.font-size"))
+        .accessibilityValue(Text("\(Int(fontScale * 100))%"))
     }
 
     private var bookmarkButton: some View {
@@ -218,7 +227,15 @@ struct GuideReaderScreen: View {
                 .foregroundStyle(isBookmarked ? DSColor.maltaGold : DSColor.textSecondary)
         }
         .sensoryFeedback(.success, trigger: isBookmarked)
-        .accessibilityLabel(
+        .accessibilityLabel(Text("guides.reader.bookmark"))
+        .accessibilityValue(
+            Text(
+                isBookmarked
+                    ? "guides.reader.bookmark.on"
+                    : "guides.reader.bookmark.off"
+            )
+        )
+        .accessibilityHint(
             Text(
                 isBookmarked
                     ? "guides.reader.bookmark.remove"
@@ -234,6 +251,7 @@ struct GuideReaderScreen: View {
                 Image(systemName: "square.and.arrow.up")
             }
             .accessibilityLabel(Text("guides.reader.share"))
+            .accessibilityHint(Text("guides.reader.share.hint"))
         }
     }
 

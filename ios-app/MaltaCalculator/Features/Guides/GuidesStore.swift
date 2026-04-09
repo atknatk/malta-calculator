@@ -98,6 +98,7 @@ final class GuidesStore {
             return try String(contentsOf: url, encoding: .utf8)
         } catch {
             log.error(
+                // swiftlint:disable:next line_length
                 "Failed to read markdown \(resourceName, privacy: .public): \(error.localizedDescription, privacy: .public)"
             )
             return String(localized: "guides.reader.missing-content")

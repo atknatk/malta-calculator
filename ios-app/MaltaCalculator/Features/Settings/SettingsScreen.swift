@@ -8,17 +8,6 @@ import StoreKit
 import SwiftData
 import SwiftUI
 
-/// Full Settings screen (Task 12).
-///
-/// Renders a grouped `Form` with sections for appearance, defaults,
-/// sync & data, privacy, tax data source, help, and about. All mutable
-/// state lives in ``SettingsViewModel``; this view is passive and only
-/// binds to its published properties.
-///
-/// String literals passed into SwiftUI text-bearing views (`Text`,
-/// `Label`, `navigationTitle`, `Picker`, `Toggle`) are automatically
-/// interpreted as `LocalizedStringKey`, so Xcode extracts them into the
-/// String Catalog at build time.
 // swiftlint:disable:next type_body_length
 struct SettingsScreen: View {
     @State private var vm: SettingsViewModel?

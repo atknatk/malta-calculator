@@ -342,7 +342,6 @@ struct SalaryViewModelTests {
         let vm = makeVM()
         #expect(vm.insightBullets.isEmpty)
     }
-
 }
 
 // Extended VM tests (load/retry, haptics, persistence, edge cases)

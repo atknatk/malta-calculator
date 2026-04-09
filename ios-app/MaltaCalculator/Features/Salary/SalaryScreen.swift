@@ -261,6 +261,7 @@ struct SalaryScreen: View {
                     )
                 }
                 .accessibilityLabel(Text("salary.action.reset"))
+                .accessibilityHint(Text("salary.action.reset.hint"))
             } label: {
                 Image(systemName: "ellipsis.circle")
                     .accessibilityLabel(Text("salary.action.menu"))

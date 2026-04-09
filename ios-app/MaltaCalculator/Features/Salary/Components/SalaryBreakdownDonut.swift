@@ -40,6 +40,7 @@ struct SalaryBreakdownDonut: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("salary.chart.donut.a11yLabel"))
         .accessibilityValue(donutAccessibilityValue)
+        .accessibilityIgnoresInvertColors(true)
     }
 
     private var donutAccessibilityValue: Text {

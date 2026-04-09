@@ -81,5 +81,20 @@ public struct DSAmortizationChart: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(String(localized: "chart.amortization"))
+        .accessibilityValue(amortizationSummary)
+        .accessibilityIgnoresInvertColors(true)
+    }
+
+    private var amortizationSummary: String {
+        guard let first = data.first, let last = data.last else { return "" }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "EUR"
+        formatter.maximumFractionDigits = 0
+        let startBalance = formatter.string(from: first.balance as NSDecimalNumber) ?? "\(first.balance)"
+        let endBalance = formatter.string(from: last.balance as NSDecimalNumber) ?? "\(last.balance)"
+        return String(
+            localized: "chart.amortization.summary \(data.count) \(startBalance) \(endBalance)"
+        )
     }
 }

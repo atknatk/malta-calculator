@@ -71,6 +71,7 @@ public struct DSBreakdownChart: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text(centerLabel))
         .accessibilityValue(accessibilityDescription)
+        .accessibilityIgnoresInvertColors(true)
     }
 
     private var accessibilityDescription: String {

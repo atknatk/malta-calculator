@@ -46,85 +46,88 @@ struct MarkdownBlock: Identifiable, Hashable {
     /// This parser is deliberately forgiving — it is designed for the
     /// well-formed markdown files bundled with the app, not arbitrary input.
     static func parse(_ markdown: String) -> [MarkdownBlock] {
-        var blocks: [MarkdownBlock] = []
-        var nextId = 0
-        func append(_ kind: Kind, _ raw: String) {
-            let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmed.isEmpty else { return }
-            blocks.append(MarkdownBlock(id: nextId, kind: kind, raw: trimmed))
-            nextId += 1
-        }
-
+        var state = ParseState()
         let lines = markdown.components(separatedBy: "\n")
         var index = 0
-        var paragraphBuffer: [String] = []
-
-        func flushParagraph() {
-            guard !paragraphBuffer.isEmpty else { return }
-            append(.paragraph, paragraphBuffer.joined(separator: " "))
-            paragraphBuffer.removeAll()
-        }
 
         while index < lines.count {
-            let line = lines[index]
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-
-            if trimmed.isEmpty {
-                flushParagraph()
-                index += 1
-                continue
-            }
-
-            if trimmed.hasPrefix("```") {
-                flushParagraph()
-                var code: [String] = []
-                index += 1
-                while index < lines.count,
-                      !lines[index].trimmingCharacters(in: .whitespaces).hasPrefix("```")
-                {
-                    code.append(lines[index])
-                    index += 1
-                }
-                append(.code, code.joined(separator: "\n"))
-                if index < lines.count { index += 1 }
-                continue
-            }
-
-            if trimmed.hasPrefix("### ") {
-                flushParagraph()
-                append(.h3, String(trimmed.dropFirst(4)))
-                index += 1
-                continue
-            }
-            if trimmed.hasPrefix("## ") {
-                flushParagraph()
-                append(.h2, String(trimmed.dropFirst(3)))
-                index += 1
-                continue
-            }
-            if trimmed.hasPrefix("# ") {
-                flushParagraph()
-                append(.h1, String(trimmed.dropFirst(2)))
-                index += 1
-                continue
-            }
-            if trimmed.hasPrefix("> ") {
-                flushParagraph()
-                append(.quote, String(trimmed.dropFirst(2)))
-                index += 1
-                continue
-            }
-            if trimmed.hasPrefix("- ") || trimmed.hasPrefix("* ") {
-                flushParagraph()
-                append(.bulleted, String(trimmed.dropFirst(2)))
-                index += 1
-                continue
-            }
-
-            paragraphBuffer.append(trimmed)
-            index += 1
+            let trimmed = lines[index].trimmingCharacters(in: .whitespaces)
+            index = parseLine(trimmed, lines: lines, at: index, state: &state)
         }
-        flushParagraph()
-        return blocks
+        state.flushParagraph()
+        return state.blocks
+    }
+
+    private static func parseLine(
+        _ trimmed: String,
+        lines: [String],
+        at index: Int,
+        state: inout ParseState
+    ) -> Int {
+        if trimmed.isEmpty {
+            state.flushParagraph()
+            return index + 1
+        }
+
+        if trimmed.hasPrefix("```") {
+            state.flushParagraph()
+            return parseCodeBlock(lines: lines, from: index + 1, state: &state)
+        }
+
+        if let (kind, drop) = headingOrBlock(trimmed) {
+            state.flushParagraph()
+            state.append(kind, String(trimmed.dropFirst(drop)))
+            return index + 1
+        }
+
+        state.paragraphBuffer.append(trimmed)
+        return index + 1
+    }
+
+    private static func headingOrBlock(_ line: String) -> (Kind, Int)? {
+        if line.hasPrefix("### ") { return (.h3, 4) }
+        if line.hasPrefix("## ") { return (.h2, 3) }
+        if line.hasPrefix("# ") { return (.h1, 2) }
+        if line.hasPrefix("> ") { return (.quote, 2) }
+        if line.hasPrefix("- ") || line.hasPrefix("* ") { return (.bulleted, 2) }
+        return nil
+    }
+
+    private static func parseCodeBlock(
+        lines: [String],
+        from start: Int,
+        state: inout ParseState
+    ) -> Int {
+        var code: [String] = []
+        var idx = start
+        while idx < lines.count,
+              !lines[idx].trimmingCharacters(in: .whitespaces).hasPrefix("```")
+        {
+            code.append(lines[idx])
+            idx += 1
+        }
+        state.append(.code, code.joined(separator: "\n"))
+        return idx < lines.count ? idx + 1 : idx
+    }
+}
+
+// MARK: - Parse State
+
+private struct ParseState {
+    var blocks: [MarkdownBlock] = []
+    var paragraphBuffer: [String] = []
+    private var nextId = 0
+
+    mutating func append(_ kind: MarkdownBlock.Kind, _ raw: String) {
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        blocks.append(MarkdownBlock(id: nextId, kind: kind, raw: trimmed))
+        nextId += 1
+    }
+
+    mutating func flushParagraph() {
+        guard !paragraphBuffer.isEmpty else { return }
+        append(.paragraph, paragraphBuffer.joined(separator: " "))
+        paragraphBuffer.removeAll()
     }
 }

@@ -49,6 +49,7 @@ public struct DSComparisonBar: View {
             barRow(label: label2, value: value2, color: color2, maxValue: maxVal)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityIgnoresInvertColors(true)
     }
 
     private func barRow(

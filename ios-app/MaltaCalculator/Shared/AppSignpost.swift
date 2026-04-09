@@ -69,7 +69,11 @@ enum AppSignpost {
     ///   - name: A descriptive name.
     ///   - block: The async work to measure.
     /// - Returns: The result of the block.
-    static func measureAsync<T>(_ category: Category, name: StaticString, block: () async throws -> T) async rethrows -> T {
+    static func measureAsync<T>(
+        _ category: Category,
+        name: StaticString,
+        block: () async throws -> T
+    ) async rethrows -> T {
         os_signpost(.begin, log: category.log, name: name)
         defer { os_signpost(.end, log: category.log, name: name) }
         return try await block()

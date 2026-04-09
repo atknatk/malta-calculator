@@ -38,7 +38,7 @@ private func hostView<V: View>(
     NSLayoutConstraint.activate([
         hostingController.view.leadingAnchor.constraint(equalTo: container.view.leadingAnchor),
         hostingController.view.trailingAnchor.constraint(equalTo: container.view.trailingAnchor),
-        hostingController.view.topAnchor.constraint(equalTo: container.view.topAnchor),
+        hostingController.view.topAnchor.constraint(equalTo: container.view.topAnchor)
     ])
 
     container.view.frame = CGRect(x: 0, y: 0, width: width, height: 0)
@@ -60,7 +60,7 @@ private func hostView<V: View>(
 
     let parentTraits = UITraitCollection(traitsFrom: [
         UITraitCollection(userInterfaceStyle: colorScheme),
-        traits,
+        traits
     ])
     container.setOverrideTraitCollection(parentTraits, forChild: hostingController)
 

@@ -74,5 +74,6 @@ public struct DSToggleGroup<Value: Hashable & Sendable>: View {
         #if os(iOS)
         .sensoryFeedback(.selection, trigger: selection)
         #endif
+        .accessibilityElement(children: .contain)
     }
 }
