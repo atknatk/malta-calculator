@@ -4,35 +4,39 @@
 # Run `swiftlint rules` for full rule descriptions.
 
 disabled_rules:
-  - todo # WIP markers (TODO/FIXME) are acceptable during development
-  - trailing_whitespace # Handled by SwiftFormat — avoid duplicate enforcement
-  - opening_brace # SwiftFormat enforces brace placement; avoid conflicting fixes
+  - todo # WIP markers are acceptable during development
+  - trailing_whitespace # Handled by SwiftFormat
+  - opening_brace # SwiftFormat enforces brace style
 
 opt_in_rules:
-  - force_unwrapping # No `!` unwraps — use guard/let or nil-coalescing (severity: error)
-  - empty_count # Prefer `.isEmpty` over `.count == 0`
-  - closure_spacing # Require spaces inside closure braces `{ stmt }`
-  - contains_over_first_not_nil # `.contains(where:)` over `.first(where:) != nil`
-  - convenience_type # Static-only types should be `enum` not `struct`
-  - discouraged_optional_boolean # `Bool?` is error-prone — use enum or default
-  - empty_string # Prefer `.isEmpty` over `== ""`
-  - explicit_init # Avoid `.init()` when the type is clear
-  - fatal_error_message # fatalError must include a descriptive message
-  - first_where # `.first(where:)` over `.filter().first`
-  - implicit_return # Single-expression closures/getters omit `return`
-  - literal_expression_end_indentation # Align multiline literal closing bracket
-  - multiline_parameters # One parameter per line when wrapping
-  - operator_usage_whitespace # Require spaces around operators: `a + b`
-  - overridden_super_call # Always call `super` in lifecycle overrides
-  - prefer_self_type_over_type_of_self # Use `Self` over `type(of: self)`
-  - redundant_nil_coalescing # Remove `?? nil` — it's a no-op
-  - single_test_class # One test class/struct per test file
-  - sorted_first_last # `.min()/.max()` over `.sorted().first/.last`
-  - toggle_bool # `.toggle()` over `x = !x`
-  - unneeded_parentheses_in_closure_argument # Remove parens around single closure param
-  # unused_import is an analyzer-only rule, listed under analyzer_rules below
-  - vertical_parameter_alignment_on_call # Align parameters in multi-line calls
-  - yoda_condition # `value == constant`, not `constant == value`
+  - force_unwrapping
+  - force_try
+  - force_cast
+  - empty_count
+  - closure_spacing
+  - contains_over_first_not_nil
+  - convenience_type
+  - discouraged_optional_boolean
+  - empty_string
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - implicit_return
+  - literal_expression_end_indentation
+  - multiline_parameters
+  - operator_usage_whitespace
+  - overridden_super_call
+  - prefer_self_type_over_type_of_self
+  - redundant_nil_coalescing
+  - redundant_string_enum_value
+  - single_test_class
+  - sorted_first_last
+  - toggle_bool
+  - unneeded_parentheses_in_closure_argument
+  - unused_closure_parameter
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
+  - yoda_condition
 
 # Thresholds — Warning = fix soon, Error = CI blocks merge
 line_length:
@@ -46,17 +50,17 @@ type_body_length:
   error: 400
 
 file_length:
-  warning: 500
-  error: 700
+  warning: 400
+  error: 600
   ignore_comment_only_lines: true
 
 function_body_length:
-  warning: 50
-  error: 80
+  warning: 40
+  error: 60
 
 cyclomatic_complexity:
-  warning: 10 # Push complex logic into helper functions
-  error: 15
+  warning: 8
+  error: 12
 
 # Identifier naming — short names are OK for common SwiftUI patterns
 identifier_name:
@@ -71,9 +75,13 @@ identifier_name:
 force_unwrapping:
   severity: error
 
-# Excluded paths — generated code, dependency caches, and tooling output
+force_try:
+  severity: error
+
+force_cast:
+  severity: error
+
 excluded:
-  - Packages
   - DerivedData
   - fastlane
   - Pods

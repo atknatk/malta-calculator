@@ -30,14 +30,12 @@ from the spec before the implementation agent ever reads it.
 
 ## Queue
 
-| #   | Intent Spec                                               | Layer       | Pipeline | Governance | Status  | Session |
-| --- | --------------------------------------------------------- | ----------- | -------- | ---------- | ------- | ------- |
-| 11  | docs/specs/ios-feature/11-share-export.intent.md          | ios-feature | standard | T1         | pending |         |
-| 12  | docs/specs/ios-feature/12-settings-localization.intent.md | ios-feature | standard | T1         | pending |         |
-| 13  | docs/specs/ios-quality/13-testing.intent.md               | ios-quality | full     | T1         | pending |         |
-| 14  | docs/specs/ios-quality/14-accessibility.intent.md         | ios-quality | standard | T1         | pending |         |
-| 15  | docs/specs/ios-quality/15-performance.intent.md           | ios-quality | standard | T2         | pending |         |
-| 16  | docs/specs/ios-release/16-release.intent.md               | ios-release | standard | T2         | pending |         |
+| #   | Intent Spec                                       | Layer       | Pipeline | Governance | Status  | Session |
+| --- | ------------------------------------------------- | ----------- | -------- | ---------- | ------- | ------- |
+| 13  | docs/specs/ios-quality/13-testing.intent.md       | ios-quality | full     | T1         | pending |         |
+| 14  | docs/specs/ios-quality/14-accessibility.intent.md | ios-quality | standard | T1         | pending |         |
+| 15  | docs/specs/ios-quality/15-performance.intent.md   | ios-quality | standard | T2         | pending |         |
+| 16  | docs/specs/ios-release/16-release.intent.md       | ios-release | standard | T2         | pending |         |
 
 ## In Progress
 
@@ -57,6 +55,8 @@ _(Auto-managed by `ralph.sh` — rows move here while a session is running.)_
 | 08  | docs/specs/ios-feature/08-feature-calculator-detail.intent.md | ios-feature     | full     | T2         | completed | task-20260408-200443-4c5d7c5a    |
 | 09  | docs/specs/ios-feature/09-feature-guides.intent.md            | ios-feature     | standard | T1         | completed | task-20260408-203308-c2eeb87e    |
 | 10  | docs/specs/ios-data/10-persistence.intent.md                  | ios-data        | full     | T2         | completed | task-20260408-205705-persistence |
+| 11  | docs/specs/ios-feature/11-share-export.intent.md              | ios-feature     | standard | T1         | completed | task-20260408-222340-a3d8a613    |
+| 12  | docs/specs/ios-feature/12-settings-localization.intent.md     | ios-feature     | standard | T1         | completed | task-20260408-223948-842a00d1    |
 
 ## Rejected
 
