@@ -74,7 +74,6 @@ struct FloatingNetCard: View {
             .foregroundStyle(DSColor.maltaGold)
             .accessibilityLabel(Text("salary.net.yearBadge \(String(year))"))
     }
-
 }
 
 #Preview {

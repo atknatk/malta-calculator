@@ -63,7 +63,6 @@ struct MortgageViewModelTests {
         #expect(vm.depositPercent == 25)
         #expect(vm.loanTermYears == 30)
     }
-
 }
 
 // MARK: - Personal Loan

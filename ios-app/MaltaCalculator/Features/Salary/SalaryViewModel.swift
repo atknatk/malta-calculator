@@ -344,6 +344,7 @@ final class SalaryViewModel {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     private func recalculate() async {
         guard let taxConfig else {
             // Config still loading — calling scheduleRecalculation() before

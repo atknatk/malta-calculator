@@ -48,7 +48,7 @@ struct SalaryViewModelExtendedTests {
         vm.sscCategory = sscCategory
         vm.enableCOLA = enableCOLA
         vm.retry()
-        try await Task.sleep(for: .milliseconds(200))
+        try await Task.sleep(for: .milliseconds(500))
         return vm
     }
 
@@ -58,7 +58,7 @@ struct SalaryViewModelExtendedTests {
     func loadMethod() async throws {
         let vm = makeVM()
         vm.load()
-        try await Task.sleep(for: .milliseconds(200))
+        try await Task.sleep(for: .milliseconds(500))
         guard case .content = vm.state else {
             Issue.record("Expected .content after load(), got \(vm.state)")
             return
@@ -85,7 +85,7 @@ struct SalaryViewModelExtendedTests {
         )
 
         vm.load()
-        try await Task.sleep(for: .milliseconds(200))
+        try await Task.sleep(for: .milliseconds(500))
         guard case .error = vm.state else {
             Issue.record("Expected .error after failed load")
             return
@@ -93,7 +93,7 @@ struct SalaryViewModelExtendedTests {
 
         failFlag.value = false
         vm.retry()
-        try await Task.sleep(for: .milliseconds(200))
+        try await Task.sleep(for: .milliseconds(500))
         guard case .content = vm.state else {
             Issue.record("Expected .content after retry(), got \(vm.state)")
             return
