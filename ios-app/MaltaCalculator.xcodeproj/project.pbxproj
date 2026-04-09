@@ -88,6 +88,7 @@
 		A5DEC90016A7C04619F0DD92 /* CalculatorsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769CBA9DC5C006A496D6DA5 /* CalculatorsRouter.swift */; };
 		A77F0F527CE7184169DF4E04 /* GuideBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544A5D9615B74C007C9FAB97 /* GuideBookmark.swift */; };
 		A9FD5F7CDB28EC49238A3951 /* ImageRendererCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029E8F93423E1927EB172AD /* ImageRendererCache.swift */; };
+		ACA2B4997A70096DB50E1706 /* MetricsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B6717B7CAE7D3473791D1 /* MetricsObserver.swift */; };
 		B3272830A3B933851135A1A3 /* SavedCalculationStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5030BA1EE3701FD03BCF18BA /* SavedCalculationStoreTests.swift */; };
 		B3CF295AF0F42C1917B04981 /* SalaryInsights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F513E52842C7EB018445340 /* SalaryInsights.swift */; };
 		B405D6274B6630F91E37D49D /* CalculatorCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B7AC1BF35224C8838E58E /* CalculatorCategory.swift */; };
@@ -520,6 +521,7 @@
 			isa = PBXGroup;
 			children = (
 				DA29CC4C2BC12D85EEC8BD84 /* AccessibilityAuditTests.swift */,
+				ABCB6E95ADE2959665EE59B6 /* AccessibilityEnhancedTests.swift */,
 				0D456B2D06DC5CDF11DF7EE8 /* CalculatorDetailViewModelTests.swift */,
 				5772923034EC8D4D41107245 /* CalculatorShareTests.swift */,
 				2115801E96D4906C06F1A3D2 /* CalculatorsViewModelTests.swift */,
@@ -527,6 +529,7 @@
 				9A8286077B8CB7B3F2D7A4BE /* GuidesStoreTests.swift */,
 				29EFF42AC30684063B300FF6 /* MaltaCalculatorTests.swift */,
 				120ECB3A8CA9A24FEA279F17 /* MemoryBudgetTests.swift */,
+				85E2EA7D17E20A14E26A8C82 /* PerformanceBudgetTests.swift */,
 				87A91AE471607EBED19C9BE0 /* SalarySupplementaryTests.swift */,
 				E0F29F70993460AA015D5397 /* SalaryViewModelExtendedTests.swift */,
 				561285B3935AD06138B40FBD /* SalaryViewModelTests.swift */,
@@ -560,12 +563,14 @@
 		FF4992E60BF599AAA0DB709F /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				38C76F4A0C7CFDC0DB3EE278 /* AnimationBudget.swift */,
 				E1E7374B026971831254B435 /* AppSignpost.swift */,
 				6D2E1BF2497B69CAD69A492F /* CalculatorShareSheet.swift */,
 				3A925BA0C330F102F69187A4 /* ComingSoonScreen.swift */,
 				69D8A52DDF38697B25FBBFBF /* GenericShareContent.swift */,
 				2B6193338E11F26405411369 /* GenericShareRenderer.swift */,
 				3029E8F93423E1927EB172AD /* ImageRendererCache.swift */,
+				1A4B6717B7CAE7D3473791D1 /* MetricsObserver.swift */,
 				1B905C2D355135D34826B966 /* Shareable.swift */,
 			);
 			path = Shared;
@@ -742,6 +747,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1DFC4340309C8A774672590 /* AcknowledgementsScreen.swift in Sources */,
+				2C12C151F42EF86716711878 /* AnimationBudget.swift in Sources */,
 				BD85238D61EEFA4EF70B5BD4 /* AppSignpost.swift in Sources */,
 				C2EE207041B0A27066C76450 /* AppState.swift in Sources */,
 				553C5188CD8199A7636FCAD7 /* CalculatorCard.swift in Sources */,
@@ -828,6 +834,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				134D8B32F6C931A6A1D87C74 /* AccessibilityAuditTests.swift in Sources */,
+				25BE45DB95F2A654BD063064 /* AccessibilityEnhancedTests.swift in Sources */,
 				D9DCC27D0F4FC5D7B0FF4A41 /* CalculatorDetailViewModelTests.swift in Sources */,
 				B6487A2E6F9964EEB5B0D182 /* CalculatorShareTests.swift in Sources */,
 				85FF79057C265816754499DC /* CalculatorsViewModelTests.swift in Sources */,
@@ -835,6 +842,7 @@
 				93D1C2CBC9765D05CCE5FF1E /* GuidesStoreTests.swift in Sources */,
 				97E3BBB34CB523F32A572B26 /* MaltaCalculatorTests.swift in Sources */,
 				5FE67C743E9F91BF872CEC92 /* MemoryBudgetTests.swift in Sources */,
+				9FE2B8C92421048451D57759 /* PerformanceBudgetTests.swift in Sources */,
 				EE7AAAC6D3422D3D2E4D8224 /* SalarySupplementaryTests.swift in Sources */,
 				269986F35BA4EB346361813B /* SalaryViewModelExtendedTests.swift in Sources */,
 				88526C719D29F0E1C0FBCBFE /* SalaryViewModelTests.swift in Sources */,
@@ -952,6 +960,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				DOCC_WARNINGS_AS_ERRORS = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
