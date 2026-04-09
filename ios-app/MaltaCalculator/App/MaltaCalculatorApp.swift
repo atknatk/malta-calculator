@@ -23,6 +23,9 @@ struct MaltaCalculatorApp: App {
 
     @AppStorage(SettingsViewModel.themeDefaultsKey) private var themeRaw: String = AppTheme.system.rawValue
 
+    /// MetricKit observer retained for the process lifetime.
+    private let metricsObserver = MetricsObserver()
+
     private var theme: AppTheme {
         AppTheme(rawValue: themeRaw) ?? .system
     }
@@ -45,6 +48,7 @@ struct MaltaCalculatorApp: App {
     private func performDeferredInit() {
         ShareCache.cleanup()
         ImageRendererCache.shared.removeAll()
+        metricsObserver.start()
         Self.logger.info("Deferred init complete")
     }
 

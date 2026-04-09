@@ -21,6 +21,15 @@ settings:
     Release:
       SWIFT_TREAT_WARNINGS_AS_ERRORS: "YES"
       DOCC_WARNINGS_AS_ERRORS: "YES"
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+      GCC_OPTIMIZATION_LEVEL: "s"
+      DEAD_CODE_STRIPPING: "YES"
+      STRIP_INSTALLED_PRODUCT: "YES"
+      STRIP_STYLE: "non-global"
+      LLVM_LTO: "YES_THIN"
+      ENABLE_BITCODE: "NO"
+      SWIFT_COMPILATION_MODE: "wholemodule"
+      ASSETCATALOG_COMPILER_OPTIMIZATION: "space"
 
 packages:
   CalculationKit:
