@@ -77,5 +77,20 @@ public struct DSLineChart: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(String(localized: "chart.line"))
+        .accessibilityValue(lineChartSummary)
+        .accessibilityIgnoresInvertColors(true)
+    }
+
+    private var lineChartSummary: String {
+        series.map { s in
+            guard let first = s.points.first, let last = s.points.last else { return s.name }
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.currencyCode = "EUR"
+            formatter.maximumFractionDigits = 0
+            let firstStr = formatter.string(from: first.y as NSDecimalNumber) ?? "\(first.y)"
+            let lastStr = formatter.string(from: last.y as NSDecimalNumber) ?? "\(last.y)"
+            return "\(s.name): \(firstStr) to \(lastStr)"
+        }.joined(separator: ". ")
     }
 }

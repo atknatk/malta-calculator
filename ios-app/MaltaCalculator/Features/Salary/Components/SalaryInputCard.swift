@@ -19,6 +19,7 @@ struct SalaryInputCard: View {
                 Text("salary.input.sectionTitle")
                     .font(DSFont.headingM)
                     .foregroundStyle(DSColor.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
                 DSCurrencyField(
                     label: "salary.input.annualGross",

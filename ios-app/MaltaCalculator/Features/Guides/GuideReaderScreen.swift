@@ -207,6 +207,7 @@ struct GuideReaderScreen: View {
             Image(systemName: "textformat.size")
         }
         .accessibilityLabel(Text("guides.reader.font-size"))
+        .accessibilityValue(Text("\(Int(fontScale * 100))%"))
     }
 
     private var bookmarkButton: some View {
@@ -218,7 +219,15 @@ struct GuideReaderScreen: View {
                 .foregroundStyle(isBookmarked ? DSColor.maltaGold : DSColor.textSecondary)
         }
         .sensoryFeedback(.success, trigger: isBookmarked)
-        .accessibilityLabel(
+        .accessibilityLabel(Text("guides.reader.bookmark"))
+        .accessibilityValue(
+            Text(
+                isBookmarked
+                    ? "guides.reader.bookmark.on"
+                    : "guides.reader.bookmark.off"
+            )
+        )
+        .accessibilityHint(
             Text(
                 isBookmarked
                     ? "guides.reader.bookmark.remove"
@@ -234,6 +243,7 @@ struct GuideReaderScreen: View {
                 Image(systemName: "square.and.arrow.up")
             }
             .accessibilityLabel(Text("guides.reader.share"))
+            .accessibilityHint(Text("guides.reader.share.hint"))
         }
     }
 

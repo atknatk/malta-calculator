@@ -195,9 +195,9 @@ struct CalculatorIDTests {
 
 // MARK: - Calculators Hub ViewModel Tests
 
-@Suite("CalculatorsViewModel")
+@Suite("CalculatorsViewModel Integration")
 @MainActor
-struct CalculatorsViewModelTests {
+struct CalculatorsViewModelIntegrationTests {
     private func makeVM() -> CalculatorsViewModel {
         let suite = "test-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suite) ?? .standard

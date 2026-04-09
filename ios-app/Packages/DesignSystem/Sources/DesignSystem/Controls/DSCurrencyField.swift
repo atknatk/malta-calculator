@@ -79,6 +79,7 @@ public struct DSCurrencyField: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(label)
         .accessibilityValue(accessibilityValueText)
+        .accessibilityHint(Text("currencyField.a11y.hint"))
     }
 
     private var accessibilityValueText: String {

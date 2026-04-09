@@ -34,6 +34,7 @@ struct SalaryCumulativeChart: View {
         .accessibilityValue(Text(
             "salary.chart.cumulative.a11yValue \(totalNet.eur)"
         ))
+        .accessibilityIgnoresInvertColors(true)
     }
 
     private var totalNet: Decimal {

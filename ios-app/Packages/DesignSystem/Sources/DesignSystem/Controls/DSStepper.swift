@@ -93,8 +93,18 @@ public struct DSStepper: View {
         #if os(iOS)
         .sensoryFeedback(.selection, trigger: value)
         #endif
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(label)
         .accessibilityValue("\(value)")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                if value < range.upperBound { value += 1 }
+            case .decrement:
+                if value > range.lowerBound { value -= 1 }
+            @unknown default:
+                break
+            }
+        }
     }
 }
