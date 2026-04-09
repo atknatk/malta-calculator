@@ -51,14 +51,16 @@ final class MortgageViewModel {
         let safePrice = Swift.max(propertyPrice, 0)
         let safeRate = Swift.max(interestRate, 0)
         let safeTerm = Swift.max(loanTermYears, 1)
-        output = calculator.calculate(
-            input: MortgageInput(
-                propertyPrice: safePrice,
-                depositPercent: depositPercent,
-                interestRate: safeRate,
-                loanTermYears: safeTerm
+        output = AppSignpost.measure(.calculation, name: "MortgageRecalculate") {
+            calculator.calculate(
+                input: MortgageInput(
+                    propertyPrice: safePrice,
+                    depositPercent: depositPercent,
+                    interestRate: safeRate,
+                    loanTermYears: safeTerm
+                )
             )
-        )
+        }
     }
 
     /// Resets all inputs to defaults and recomputes.

@@ -38,15 +38,17 @@ final class SavingsInterestViewModel {
         let safeContribution = Swift.max(monthlyContribution, 0)
         let safeRate = Swift.max(annualRate, 0)
         let safeYears = Swift.max(termYears, SavingsCalculator.minYears)
-        output = calculator.calculate(
-            input: SavingsInput(
-                initialDeposit: safeDeposit,
-                monthlyContribution: safeContribution,
-                interestRate: safeRate,
-                years: safeYears,
-                compoundingFrequency: compoundingFrequency
+        output = AppSignpost.measure(.calculation, name: "SavingsRecalculate") {
+            calculator.calculate(
+                input: SavingsInput(
+                    initialDeposit: safeDeposit,
+                    monthlyContribution: safeContribution,
+                    interestRate: safeRate,
+                    years: safeYears,
+                    compoundingFrequency: compoundingFrequency
+                )
             )
-        )
+        }
     }
 
     func reset() {
