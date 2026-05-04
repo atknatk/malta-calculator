@@ -180,6 +180,12 @@ const categories: CalculatorCategory[] = [
         description: "Personal loan repayment calculator",
         available: true,
       },
+      {
+        href: "/calculators/vehicle-finance",
+        title: "Vehicle Finance",
+        description: "Car loan & hire purchase with deposit",
+        available: true,
+      },
     ],
   },
   {

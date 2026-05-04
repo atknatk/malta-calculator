@@ -144,6 +144,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
     },
     {
+      url: `${baseUrl}/blog/malta-vehicle-finance-guide-2026`,
+      priority: 0.8,
+      changeFrequency: "yearly" as const,
+    },
+    {
       url: `${baseUrl}/blog/malta-expat-mortgage-guide-2026`,
       priority: 0.8,
       changeFrequency: "yearly" as const,
@@ -284,6 +289,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "mortgage",
     "savings-interest",
     "personal-loan",
+    "vehicle-finance",
     "family-reunification",
     "children-allowance",
     // Transport calculators
