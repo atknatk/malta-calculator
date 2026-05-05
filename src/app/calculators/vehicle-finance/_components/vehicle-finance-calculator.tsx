@@ -13,6 +13,10 @@ import {
   Banknote,
   Info,
   ChevronDown,
+  Receipt,
+  AlertTriangle,
+  ShieldAlert,
+  Eye,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
@@ -22,6 +26,7 @@ import {
   formatCurrencyPrecise,
   formatTerm,
   MALTA_LENDER_BENCHMARKS,
+  FEE_PRESETS,
   VEHICLE_FINANCE_CONSTRAINTS,
   type VehicleFinanceResult,
 } from "@/utils/vehicle-finance-calculator";
@@ -33,18 +38,25 @@ const PRICE_PRESETS = [
   { label: "Premium", value: 60_000 },
 ];
 
+// Defaults model the most common Malta dealer hire-purchase quote
+// (Finance House style: 4.75% banking + €10/mo draft) so a first-time
+// visitor immediately sees the realistic APRC, not a cleaned-up version.
+const DEFAULT_BANKING_FEE = 4.75;
+const DEFAULT_DRAFT_FEE = 10;
+const DEFAULT_MAINTENANCE_FEE = 0;
+const DEFAULT_RATE = 5.5; // tipik dealer "headline IR"
+
 export function VehicleFinanceCalculator() {
-  const [totalPrice, setTotalPrice] = useState<number>(
-    VEHICLE_FINANCE_CONSTRAINTS.DEFAULT_PRICE,
-  );
-  const [depositPercent, setDepositPercent] = useState<number>(
-    VEHICLE_FINANCE_CONSTRAINTS.DEFAULT_DEPOSIT_PERCENT,
-  );
-  const [termMonths, setTermMonths] = useState<number>(
-    VEHICLE_FINANCE_CONSTRAINTS.DEFAULT_TERM_MONTHS,
-  );
-  const [annualRate, setAnnualRate] = useState<number>(
-    VEHICLE_FINANCE_CONSTRAINTS.DEFAULT_RATE,
+  const [totalPrice, setTotalPrice] = useState<number>(19_000);
+  const [depositPercent, setDepositPercent] = useState<number>(0);
+  const [termMonths, setTermMonths] = useState<number>(60);
+  const [annualRate, setAnnualRate] = useState<number>(DEFAULT_RATE);
+  const [bankingFeePercent, setBankingFeePercent] =
+    useState<number>(DEFAULT_BANKING_FEE);
+  const [monthlyDraftFee, setMonthlyDraftFee] =
+    useState<number>(DEFAULT_DRAFT_FEE);
+  const [maintenanceFee, setMaintenanceFee] = useState<number>(
+    DEFAULT_MAINTENANCE_FEE,
   );
   const [showSchedule, setShowSchedule] = useState(false);
   const [showLenders, setShowLenders] = useState(false);
@@ -56,11 +68,33 @@ export function VehicleFinanceCalculator() {
         depositPercent,
         termMonths,
         annualInterestRate: annualRate,
+        bankingFeePercent,
+        monthlyDraftFee,
+        maintenanceFee,
       }),
-    [totalPrice, depositPercent, termMonths, annualRate],
+    [
+      totalPrice,
+      depositPercent,
+      termMonths,
+      annualRate,
+      bankingFeePercent,
+      monthlyDraftFee,
+      maintenanceFee,
+    ],
   );
 
-  // Cost breakdown bars (0-100% of largest item)
+  const hasFees =
+    bankingFeePercent > 0 || monthlyDraftFee > 0 || maintenanceFee > 0;
+  const aprcDelta = Math.max(
+    0,
+    result.effectiveAnnualRate - result.nominalAnnualRate,
+  );
+  const aprcMultiplier =
+    result.nominalAnnualRate > 0
+      ? result.effectiveAnnualRate / result.nominalAnnualRate
+      : 0;
+
+  // Cost breakdown bars
   const breakdown = [
     {
       label: "Vehicle Price",
@@ -77,6 +111,15 @@ export function VehicleFinanceCalculator() {
       value: result.totalInterest,
       tone: "bg-amber-500/70",
     },
+    ...(hasFees
+      ? [
+          {
+            label: "Total Fees",
+            value: result.totalFees,
+            tone: "bg-rose-500/70",
+          },
+        ]
+      : []),
     {
       label: "Grand Total Cost",
       value: result.grandTotal,
@@ -85,26 +128,165 @@ export function VehicleFinanceCalculator() {
   ];
   const maxBar = Math.max(...breakdown.map((b) => b.value), 1);
 
+  const applyFeePreset = (preset: (typeof FEE_PRESETS)[number]) => {
+    setBankingFeePercent(preset.bankingFeePercent);
+    setMonthlyDraftFee(preset.monthlyDraftFee);
+    setMaintenanceFee(preset.maintenanceFee);
+  };
+
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Header */}
+      {/* Header — buyer-focused */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-3 sm:space-y-4 px-2"
       >
         <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 text-xs sm:text-sm font-medium">
-          <Car className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          Malta Vehicle Finance
+          <ShieldAlert className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          Malta Buyer Protection
         </div>
         <h1 className="font-cal text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
           Vehicle Finance Calculator
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-          Estimate your deposit, monthly instalment and total cost for a car
-          loan or hire purchase agreement in Malta.
+          See the <strong className="text-foreground">true cost (APRC)</strong>{" "}
+          a Malta dealer or finance company is charging you — not just the
+          friendly-looking headline rate. Built for buyers, useful for sellers.
         </p>
       </motion.div>
+
+      {/* MAIN HERO — APRC vs IR side by side, BIG */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
+      >
+        <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-cyan-500/10 via-cyan-500/5 to-secondary/10 border border-cyan-500/30">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+            <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-700 dark:text-cyan-400" />
+            <span className="font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
+              Monthly Instalment
+            </span>
+          </div>
+          <motion.div
+            key={Math.round(result.monthlyPayment * 100)}
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.25 }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-700 dark:text-cyan-400 tabular-nums break-words"
+          >
+            {formatCurrencyPrecise(result.monthlyPayment)}
+          </motion.div>
+          <p className="text-[11px] sm:text-xs text-muted-foreground mt-1.5 sm:mt-2">
+            × {termMonths} months ={" "}
+            <strong className="text-foreground tabular-nums">
+              {formatCurrency(result.totalRepayment)}
+            </strong>
+          </p>
+        </div>
+
+        <div
+          className={cn(
+            "p-5 sm:p-6 rounded-2xl sm:rounded-3xl border-2 transition-colors relative overflow-hidden",
+            aprcDelta > 1
+              ? "bg-gradient-to-br from-rose-500/15 via-amber-500/10 to-rose-500/5 border-rose-500/40"
+              : "bg-gradient-to-br from-emerald-500/10 to-cyan-500/5 border-emerald-500/30",
+          )}
+        >
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+            <Eye
+              className={cn(
+                "h-4 w-4 sm:h-5 sm:w-5",
+                aprcDelta > 1
+                  ? "text-rose-700 dark:text-rose-400"
+                  : "text-emerald-700 dark:text-emerald-400",
+              )}
+            />
+            <span className="font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
+              True APRC
+            </span>
+            {aprcDelta > 0.1 && (
+              <span className="ml-auto px-1.5 py-0.5 rounded-md bg-rose-500/20 text-rose-700 dark:text-rose-300 text-[10px] sm:text-[11px] font-bold">
+                +{aprcDelta.toFixed(2)}%
+              </span>
+            )}
+          </div>
+          <motion.div
+            key={Math.round(result.effectiveAnnualRate * 100)}
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.25 }}
+            className={cn(
+              "text-3xl sm:text-4xl md:text-5xl font-bold tabular-nums",
+              aprcDelta > 1
+                ? "text-rose-700 dark:text-rose-400"
+                : "text-emerald-700 dark:text-emerald-400",
+            )}
+          >
+            {result.effectiveAnnualRate.toFixed(2)}%
+          </motion.div>
+          <p className="text-[11px] sm:text-xs text-muted-foreground mt-1.5 sm:mt-2">
+            Dealer says{" "}
+            <strong className="text-foreground">
+              {result.nominalAnnualRate.toFixed(2)}% IR
+            </strong>{" "}
+            ·{" "}
+            {aprcDelta > 0.1 ? (
+              <>
+                you actually pay{" "}
+                <strong className="text-rose-600 dark:text-rose-400">
+                  {aprcMultiplier.toFixed(1)}× that
+                </strong>
+              </>
+            ) : (
+              "no hidden fees detected"
+            )}
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Shock-comparison banner when APRC is significantly higher than IR */}
+      {aprcDelta > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 sm:p-5 rounded-2xl bg-rose-500/5 border border-rose-500/30"
+        >
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-rose-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1 text-xs sm:text-sm">
+              <p className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+                The {result.nominalAnnualRate.toFixed(2)}% rate on your contract
+                is{" "}
+                <span className="text-rose-700 dark:text-rose-400">
+                  really {result.effectiveAnnualRate.toFixed(2)}%
+                </span>
+              </p>
+              <p className="text-muted-foreground">
+                This finance offer adds{" "}
+                <strong className="text-foreground">
+                  {formatCurrency(result.totalFees)}
+                </strong>{" "}
+                in fees on top of{" "}
+                <strong className="text-foreground">
+                  {formatCurrency(result.totalInterest)}
+                </strong>{" "}
+                of pure interest. Total cost of borrowing:{" "}
+                <strong className="text-rose-700 dark:text-rose-400">
+                  {formatCurrency(result.totalCostOfBorrowing)}
+                </strong>{" "}
+                on a{" "}
+                <strong className="text-foreground">
+                  {formatCurrency(result.baseLoanAmount)}
+                </strong>{" "}
+                loan. Always ask the lender for the APRC in writing — under EU
+                consumer credit law it must be disclosed.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
         {/* INPUTS */}
@@ -112,15 +294,16 @@ export function VehicleFinanceCalculator() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="space-y-4 sm:space-y-6"
+          className="space-y-4 sm:space-y-5"
         >
+          {/* Loan basics */}
           <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-cyan-500/5 via-background to-secondary/5 border border-border/50 space-y-5 sm:space-y-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-2.5 rounded-xl bg-cyan-500/10">
                 <Calculator className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
               </div>
               <span className="font-semibold text-sm sm:text-base">
-                Finance Details
+                Loan Details
               </span>
             </div>
 
@@ -153,15 +336,7 @@ export function VehicleFinanceCalculator() {
                 className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-cyan-500"
                 aria-label="Vehicle price slider"
               />
-              <div className="flex justify-between text-[11px] sm:text-xs text-muted-foreground">
-                <span>
-                  {formatCurrency(VEHICLE_FINANCE_CONSTRAINTS.MIN_PRICE)}
-                </span>
-                <span>
-                  {formatCurrency(VEHICLE_FINANCE_CONSTRAINTS.MAX_PRICE)}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
                 {PRICE_PRESETS.map((preset) => (
                   <button
                     key={preset.value}
@@ -245,12 +420,22 @@ export function VehicleFinanceCalculator() {
               <label className="text-xs sm:text-sm font-medium text-foreground/70 flex items-center justify-between">
                 <span className="flex items-center gap-2">
                   <Percent className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-500/70" />
-                  Annual Interest Rate
+                  Headline Interest Rate (IR)
                 </span>
                 <span className="text-cyan-600 font-semibold tabular-nums">
-                  {annualRate.toFixed(1)}%
+                  {annualRate.toFixed(2)}%
                 </span>
               </label>
+              <NumericInput
+                value={annualRate}
+                onChange={(v) => setAnnualRate(v === "" ? 0 : v)}
+                min={VEHICLE_FINANCE_CONSTRAINTS.MIN_RATE}
+                max={VEHICLE_FINANCE_CONSTRAINTS.MAX_RATE}
+                step={0.25}
+                allowDecimals
+                suffix="%"
+                className="h-10 sm:h-11 text-sm sm:text-base px-3 sm:px-4"
+              />
               <input
                 type="range"
                 min={VEHICLE_FINANCE_CONSTRAINTS.MIN_RATE}
@@ -270,7 +455,111 @@ export function VehicleFinanceCalculator() {
             </div>
           </div>
 
-          {/* Lender benchmarks (collapsible) */}
+          {/* FEES — always visible, side-by-side inputs */}
+          <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-rose-500/5 via-background to-amber-500/5 border border-rose-500/20 space-y-4">
+            <div className="flex items-start sm:items-center gap-3 flex-wrap">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-rose-500/10">
+                <Receipt className="h-4 w-4 sm:h-5 sm:w-5 text-rose-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm sm:text-base">
+                  Fees & Hidden Charges
+                </p>
+                <p className="text-[11px] sm:text-xs text-muted-foreground">
+                  These are what turn the headline IR into the real APRC
+                </p>
+              </div>
+              {hasFees && (
+                <span className="px-2 py-1 rounded-full bg-rose-500/15 text-rose-700 dark:text-rose-400 text-[10px] sm:text-xs font-bold tabular-nums">
+                  +{formatCurrency(result.totalFees)}
+                </span>
+              )}
+            </div>
+
+            {/* Fee preset chips */}
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              {FEE_PRESETS.map((preset) => {
+                const active =
+                  Math.abs(bankingFeePercent - preset.bankingFeePercent) <
+                    0.01 &&
+                  Math.abs(monthlyDraftFee - preset.monthlyDraftFee) < 0.01 &&
+                  Math.abs(maintenanceFee - preset.maintenanceFee) < 0.5;
+                return (
+                  <button
+                    key={preset.name}
+                    type="button"
+                    onClick={() => applyFeePreset(preset)}
+                    className={cn(
+                      "px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg text-[11px] sm:text-xs font-medium transition-all border text-left",
+                      active
+                        ? "bg-rose-500 text-white border-rose-500"
+                        : "bg-background border-border hover:bg-rose-500/10",
+                    )}
+                    title={preset.description}
+                  >
+                    {preset.name}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Three fee inputs in a tight grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <FeeInput
+                label="Banking Fee"
+                sublabel="% of loan · one-off"
+                value={bankingFeePercent}
+                onChange={setBankingFeePercent}
+                suffix="%"
+                max={VEHICLE_FINANCE_CONSTRAINTS.MAX_BANKING_FEE_PERCENT}
+                step={0.25}
+                allowDecimals
+                computed={
+                  bankingFeePercent > 0
+                    ? formatCurrency(result.bankingFeeAmount)
+                    : undefined
+                }
+              />
+              <FeeInput
+                label="Draft Fee"
+                sublabel="€ per month"
+                value={monthlyDraftFee}
+                onChange={setMonthlyDraftFee}
+                suffix="€"
+                max={VEHICLE_FINANCE_CONSTRAINTS.MAX_MONTHLY_DRAFT_FEE}
+                step={1}
+                allowDecimals={false}
+                computed={
+                  monthlyDraftFee > 0
+                    ? `${formatCurrency(result.totalDraftFees)} total`
+                    : undefined
+                }
+              />
+              <FeeInput
+                label="Maintenance Fee"
+                sublabel="€ one-off"
+                value={maintenanceFee}
+                onChange={setMaintenanceFee}
+                suffix="€"
+                max={VEHICLE_FINANCE_CONSTRAINTS.MAX_MAINTENANCE_FEE}
+                step={50}
+                allowDecimals={false}
+                computed={
+                  maintenanceFee > 0
+                    ? formatCurrency(result.maintenanceFeeAmount)
+                    : undefined
+                }
+              />
+            </div>
+
+            <p className="text-[11px] sm:text-xs text-muted-foreground italic">
+              Banking + maintenance fees are added to your loan principal (so
+              you also pay interest on them). Draft fees are added to every
+              monthly bill.
+            </p>
+          </div>
+
+          {/* Lender benchmarks (collapsible — secondary info) */}
           <button
             type="button"
             onClick={() => setShowLenders(!showLenders)}
@@ -319,7 +608,7 @@ export function VehicleFinanceCalculator() {
                   </button>
                 ))}
                 <p className="text-[11px] sm:text-xs text-muted-foreground px-2 pt-1">
-                  Indicative APR/IR ranges from publicly published lender pages.
+                  Indicative IR ranges from publicly published lender pages.
                   Confirm current rates with the lender.
                 </p>
               </div>
@@ -327,12 +616,12 @@ export function VehicleFinanceCalculator() {
           )}
         </motion.div>
 
-        {/* RESULTS */}
+        {/* RESULTS column */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="space-y-4 sm:space-y-6"
+          className="space-y-4 sm:space-y-5"
         >
           {/* Top metrics — 3 cards mobile-first */}
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
@@ -344,49 +633,24 @@ export function VehicleFinanceCalculator() {
             />
             <MetricCard
               label="Financed"
-              sub="loan amount"
+              sub="incl. fees"
               value={formatCurrency(result.financedAmount)}
               tone="slate"
             />
             <MetricCard
-              label="Monthly"
-              sub={`for ${termMonths} mo`}
-              value={formatCurrency(result.monthlyPayment)}
-              tone="cyan"
+              label="Total Cost"
+              sub="of borrowing"
+              value={formatCurrency(result.totalCostOfBorrowing)}
+              tone="rose"
               highlight
             />
           </div>
 
-          {/* Hero monthly */}
-          <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-cyan-500/10 via-cyan-500/5 to-secondary/10 border border-cyan-500/20">
-            <div className="flex items-center gap-3 mb-3 sm:mb-4">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-cyan-500/20">
-                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-700 dark:text-cyan-400" />
-              </div>
-              <span className="font-semibold text-sm sm:text-base">
-                Monthly Instalment
-              </span>
-            </div>
-            <div className="text-center py-3 sm:py-5">
-              <motion.div
-                key={Math.round(result.monthlyPayment * 100)}
-                initial={{ scale: 0.85, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.25 }}
-                className="text-4xl sm:text-5xl md:text-6xl font-bold text-cyan-700 dark:text-cyan-400 tabular-nums break-words"
-              >
-                {formatCurrencyPrecise(result.monthlyPayment)}
-              </motion.div>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-2">
-                per month for{" "}
-                <strong className="text-foreground">
-                  {formatTerm(termMonths)}
-                </strong>{" "}
-                at {annualRate.toFixed(2)}%
-              </p>
-            </div>
-
-            {/* Summary rows */}
+          {/* Detailed breakdown */}
+          <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border/50">
+            <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 sm:mb-4">
+              Where your money goes
+            </p>
             <div className="space-y-2 sm:space-y-2.5">
               <SummaryRow
                 label="Vehicle price"
@@ -398,7 +662,25 @@ export function VehicleFinanceCalculator() {
                 tone="emerald"
               />
               <SummaryRow
-                label="Financed amount"
+                label="Base loan amount"
+                value={formatCurrency(result.baseLoanAmount)}
+              />
+              {bankingFeePercent > 0 && (
+                <SummaryRow
+                  label={`+ Banking fee (${bankingFeePercent.toFixed(2)}%)`}
+                  value={formatCurrency(result.bankingFeeAmount)}
+                  tone="rose"
+                />
+              )}
+              {maintenanceFee > 0 && (
+                <SummaryRow
+                  label="+ Maintenance fee"
+                  value={formatCurrency(result.maintenanceFeeAmount)}
+                  tone="rose"
+                />
+              )}
+              <SummaryRow
+                label="Financed (with fees)"
                 value={formatCurrency(result.financedAmount)}
                 strong
               />
@@ -407,6 +689,13 @@ export function VehicleFinanceCalculator() {
                 value={`+ ${formatCurrency(result.totalInterest)}`}
                 tone="amber"
               />
+              {monthlyDraftFee > 0 && (
+                <SummaryRow
+                  label={`+ Draft fees (${termMonths} × ${formatCurrency(monthlyDraftFee)})`}
+                  value={formatCurrency(result.totalDraftFees)}
+                  tone="rose"
+                />
+              )}
               <SummaryRow
                 label="Total repayment"
                 value={formatCurrency(result.totalRepayment)}
@@ -450,20 +739,22 @@ export function VehicleFinanceCalculator() {
             </div>
           </div>
 
-          {/* Info box */}
+          {/* Buyer info box */}
           <div className="p-3 sm:p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
             <div className="flex gap-2.5 sm:gap-3">
               <Info className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-xs sm:text-sm text-muted-foreground">
                 <p className="font-medium text-foreground mb-1">
-                  Malta Hire Purchase Tip
+                  Smart-buyer checklist
                 </p>
-                <p>
-                  Dealer hire-purchase typically asks for a 25% deposit with the
-                  balance over 60 months at around 6-9% interest. Maltese banks
-                  (BOV, HSBC, APS) often offer 0% deposit car loans at lower
-                  rates — but stricter credit checks.
-                </p>
+                <ul className="list-disc list-inside space-y-0.5">
+                  <li>Ask the dealer for the APRC, not just the IR</li>
+                  <li>
+                    Compare with a bank loan (BOV from 4.75%, HSBC 6.50% IR)
+                  </li>
+                  <li>Banking fee &gt; 4% on loan? Negotiate or walk away</li>
+                  <li>Confirm early-repayment fee in writing (EU cap = 1%)</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -505,7 +796,7 @@ export function VehicleFinanceCalculator() {
                       Principal
                     </th>
                     <th className="text-right py-2 px-1 sm:p-2 font-medium">
-                      Interest
+                      Interest{monthlyDraftFee > 0 ? " + Fee" : ""}
                     </th>
                     <th className="text-right py-2 px-1 sm:p-2 font-medium">
                       Balance
@@ -546,11 +837,61 @@ export function VehicleFinanceCalculator() {
   );
 }
 
+interface FeeInputProps {
+  label: string;
+  sublabel: string;
+  value: number;
+  onChange: (v: number) => void;
+  suffix: string;
+  max: number;
+  step: number;
+  allowDecimals: boolean;
+  computed?: string;
+}
+
+function FeeInput({
+  label,
+  sublabel,
+  value,
+  onChange,
+  suffix,
+  max,
+  step,
+  allowDecimals,
+  computed,
+}: FeeInputProps) {
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-baseline justify-between gap-1">
+        <p className="text-xs sm:text-sm font-medium leading-tight">{label}</p>
+      </div>
+      <p className="text-[10px] sm:text-[11px] text-muted-foreground -mt-1">
+        {sublabel}
+      </p>
+      <NumericInput
+        value={value}
+        onChange={(v) => onChange(v === "" ? 0 : v)}
+        min={0}
+        max={max}
+        step={step}
+        allowDecimals={allowDecimals}
+        suffix={suffix}
+        className="h-10 sm:h-11 text-sm px-3 sm:px-4 focus:border-rose-500 focus:ring-rose-500/20"
+      />
+      {computed && (
+        <p className="text-[10px] sm:text-[11px] font-semibold text-rose-600 dark:text-rose-400 tabular-nums">
+          = {computed}
+        </p>
+      )}
+    </div>
+  );
+}
+
 interface MetricCardProps {
   label: string;
   sub: string;
   value: string;
-  tone: "cyan" | "emerald" | "slate";
+  tone: "cyan" | "emerald" | "slate" | "rose";
   highlight?: boolean;
 }
 
@@ -561,6 +902,7 @@ function MetricCard({ label, sub, value, tone, highlight }: MetricCardProps) {
       "from-emerald-500/10 to-emerald-500/5 border-emerald-500/20 text-emerald-700 dark:text-emerald-400",
     slate:
       "from-slate-500/10 to-slate-500/5 border-slate-500/20 text-foreground",
+    rose: "from-rose-500/10 to-rose-500/5 border-rose-500/30 text-rose-700 dark:text-rose-400",
   };
 
   return (
@@ -568,7 +910,7 @@ function MetricCard({ label, sub, value, tone, highlight }: MetricCardProps) {
       className={cn(
         "p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br border text-center",
         toneClasses[tone],
-        highlight && "ring-1 ring-cyan-500/30",
+        highlight && "ring-1 ring-rose-500/30",
       )}
     >
       <p className="text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">
@@ -588,7 +930,7 @@ interface SummaryRowProps {
   label: string;
   value: string;
   strong?: boolean;
-  tone?: "amber" | "emerald" | "violet";
+  tone?: "amber" | "emerald" | "violet" | "rose";
 }
 
 function SummaryRow({ label, value, strong, tone }: SummaryRowProps) {
@@ -599,7 +941,9 @@ function SummaryRow({ label, value, strong, tone }: SummaryRowProps) {
         ? "text-emerald-700 dark:text-emerald-400"
         : tone === "violet"
           ? "text-violet-700 dark:text-violet-400"
-          : "text-foreground";
+          : tone === "rose"
+            ? "text-rose-700 dark:text-rose-400"
+            : "text-foreground";
 
   return (
     <div className="flex justify-between items-center text-xs sm:text-sm">
