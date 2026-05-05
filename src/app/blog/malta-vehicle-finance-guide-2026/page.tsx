@@ -22,6 +22,8 @@ import {
   Percent,
   ShieldCheck,
   AlertTriangle,
+  FileText,
+  Scale,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
@@ -420,6 +422,292 @@ export default function MaltaVehicleFinanceGuidePage() {
               </div>
             </section>
 
+            {/* SECCI — how to read the form */}
+            <section id="secci" className="mt-10 sm:mt-12">
+              <h2>How to Read Your Malta SECCI Form</h2>
+              <p>
+                Before any consumer credit agreement in Malta is signed, the
+                lender must give you a{" "}
+                <strong>Standard European Consumer Credit Information</strong>{" "}
+                (SECCI) form — a one-page summary of every cost, fee, right and
+                obligation. EU law requires this to make finance offers
+                comparable. Here&apos;s how to decode the seven sections:
+              </p>
+
+              <div className="not-prose p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/20 my-6">
+                <div className="flex items-center gap-2 mb-3 text-sm font-semibold">
+                  <FileText className="h-5 w-5 text-cyan-700 dark:text-cyan-400" />
+                  Real-world example: Finance House SECCI 2026
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  €13,000 motor vehicle loan over 72 months at 5.50% borrowing
+                  rate:
+                </p>
+                <div className="space-y-2 text-sm sm:text-base">
+                  <SecciRow label="Total amount of credit" value="€13,000.00" />
+                  <SecciRow label="Duration" value="72 months" />
+                  <SecciRow
+                    label="Borrowing rate (IR)"
+                    value="5.50% p.a. fixed"
+                  />
+                  <SecciRow label="Monthly instalment" value="€266.63" strong />
+                  <SecciRow
+                    label="Total amount payable"
+                    value="€19,197.36"
+                    strong
+                  />
+                  <div className="h-px bg-border my-2" />
+                  <p className="text-[11px] sm:text-xs uppercase tracking-wider text-muted-foreground font-semibold pt-1">
+                    Cost of credit (the APRC includes these)
+                  </p>
+                  <SecciRow
+                    label="Processing fee (4.75% of credit)"
+                    value="€617.50"
+                    tone="rose"
+                  />
+                  <SecciRow
+                    label="Financing & Factoring fee"
+                    value="€1,982.50"
+                    tone="rose"
+                  />
+                  <SecciRow
+                    label="Bills of exchange fee"
+                    value="€720.00"
+                    tone="rose"
+                  />
+                  <SecciRow
+                    label="Total interest"
+                    value="€2,877.36"
+                    tone="amber"
+                  />
+                  <div className="h-px bg-border my-2" />
+                  <SecciRow
+                    label="APR (true cost)"
+                    value="13.82%"
+                    strong
+                    tone="rose"
+                  />
+                  <p className="text-[11px] sm:text-xs text-muted-foreground italic mt-2">
+                    Headline IR 5.50% becomes a 13.82% APR once the three fees
+                    are amortised into the loan principal — a 2.5× hidden cost
+                    multiplier.
+                  </p>
+                </div>
+              </div>
+
+              <h3 className="mt-8">What each SECCI section means</h3>
+              <ol className="space-y-2.5">
+                <li>
+                  <strong>1. Identity & contact details</strong> — who the
+                  lender is. Verify the lender is licensed by the MFSA before
+                  signing anything.
+                </li>
+                <li>
+                  <strong>2. Description of the credit product</strong> — type
+                  (motor vehicle loan, hire purchase, personal loan), total
+                  amount, duration, monthly instalment, total payable. Compare{" "}
+                  <em>total payable</em> not just monthly.
+                </li>
+                <li>
+                  <strong>3. Costs of the credit</strong> — borrowing rate (IR)
+                  + APR with itemised fees + late payment penalties. The APR is
+                  the only fair comparison number.
+                </li>
+                <li>
+                  <strong>4. Other important legal aspects</strong> — your
+                  withdrawal right, early repayment right, database checks, and
+                  how long the offer is valid (usually 7 days from issue).
+                </li>
+              </ol>
+
+              <p className="mt-4">
+                If a Maltese dealer or finance company asks you to sign without
+                providing a SECCI, walk away — under EU consumer credit rules
+                they{" "}
+                <strong>
+                  must give it to you free of charge before any agreement is
+                  binding
+                </strong>
+                .
+              </p>
+            </section>
+
+            {/* EU rights */}
+            <section id="eu-rights" className="mt-10 sm:mt-12">
+              <h2>Your EU Consumer Credit Rights in Malta</h2>
+              <p>
+                Maltese vehicle finance is governed by Directive 2008/48/EC (the
+                EU Consumer Credit Directive) as transposed into Maltese law.
+                These rights apply to <strong>every</strong> regulated car loan,
+                hire-purchase and personal loan and cannot be signed away:
+              </p>
+
+              <div className="not-prose grid sm:grid-cols-2 gap-3 sm:gap-4 my-6">
+                <RightCard
+                  icon={<Scale className="h-5 w-5" />}
+                  title="14-day cooling-off period"
+                  body="You can withdraw from the credit agreement within 14 calendar days without giving any reason. The lender simply unwinds the deal."
+                />
+                <RightCard
+                  icon={<Calculator className="h-5 w-5" />}
+                  title="Right to repay early"
+                  body="At any time, in part or in full. Early repayment fee capped at 1% of the outstanding balance (0.5% if less than 12 months remain)."
+                />
+                <RightCard
+                  icon={<FileText className="h-5 w-5" />}
+                  title="Right to a draft agreement"
+                  body="On request, the lender must give you a free copy of the draft credit agreement so you can review it before signing."
+                />
+                <RightCard
+                  icon={<ShieldCheck className="h-5 w-5" />}
+                  title="Database disclosure"
+                  body="If your application is rejected because of a credit-database check (MACM, Credit Info), the lender must tell you immediately and free of charge."
+                />
+                <RightCard
+                  icon={<Clock className="h-5 w-5" />}
+                  title="SECCI validity (7 days)"
+                  body="The pre-contractual quote in the SECCI is binding on the lender for at least 7 days from issue — they cannot quietly change the terms."
+                />
+                <RightCard
+                  icon={<Banknote className="h-5 w-5" />}
+                  title="Itemised APR disclosure"
+                  body="The APR must include every fee that affects the cost of the credit. If a fee isn't in the APR but appears in the contract, push back."
+                />
+              </div>
+            </section>
+
+            {/* Late & default fees */}
+            <section id="default-fees" className="mt-10 sm:mt-12">
+              <h2>Late Payment & Default Fees: The Real Cost of Missing One</h2>
+              <p>
+                APR is calculated assuming you pay every instalment on time.
+                Miss one and a separate set of fees kicks in. These typical
+                Finance House SECCI rates are <strong>not in the APR</strong>{" "}
+                and can spiral fast:
+              </p>
+
+              <div className="overflow-x-auto not-prose my-6">
+                <table className="w-full border-collapse text-xs sm:text-sm">
+                  <thead>
+                    <tr className="bg-rose-500/10">
+                      <th className="border border-border p-2 sm:p-3 text-left">
+                        Months overdue
+                      </th>
+                      <th className="border border-border p-2 sm:p-3 text-right">
+                        Late fee (€)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-border p-2 sm:p-3">
+                        1 month
+                      </td>
+                      <td className="border border-border p-2 sm:p-3 text-right tabular-nums">
+                        €10
+                      </td>
+                    </tr>
+                    <tr className="bg-muted/40">
+                      <td className="border border-border p-2 sm:p-3">
+                        2 months
+                      </td>
+                      <td className="border border-border p-2 sm:p-3 text-right tabular-nums">
+                        €20
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-2 sm:p-3">
+                        3 months
+                      </td>
+                      <td className="border border-border p-2 sm:p-3 text-right tabular-nums">
+                        €30
+                      </td>
+                    </tr>
+                    <tr className="bg-muted/40">
+                      <td className="border border-border p-2 sm:p-3">
+                        4 months
+                      </td>
+                      <td className="border border-border p-2 sm:p-3 text-right tabular-nums">
+                        €40
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-2 sm:p-3">
+                        5+ months
+                      </td>
+                      <td className="border border-border p-2 sm:p-3 text-right tabular-nums">
+                        €50 + legal
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p>On top of arrears interest, lenders also charge:</p>
+              <ul>
+                <li>
+                  <strong>€15</strong> — direct debit rejected payment
+                </li>
+                <li>
+                  <strong>€20</strong> — returned cheque
+                </li>
+                <li>
+                  <strong>€20</strong> — final warning letter
+                </li>
+                <li>
+                  <strong>€25</strong> — legal letter
+                </li>
+                <li>
+                  <strong>€50</strong> — legal administration fee
+                </li>
+                <li>
+                  <strong>€14</strong> — credit-reference agency pressure letter
+                </li>
+                <li>
+                  <strong>Court costs</strong> — uncapped, if the case escalates
+                </li>
+              </ul>
+
+              <p>
+                Worst case: if you stop paying, the finance company can recover
+                the vehicle (you signed <strong>Bills of Exchange</strong> as
+                security) and pursue you for the residual debt. Always set up a
+                direct debit and make sure your account has buffer at month-end.
+              </p>
+            </section>
+
+            {/* Compulsory items */}
+            <section id="compulsory" className="mt-10 sm:mt-12">
+              <h2>What&apos;s Compulsory in a Maltese HP Agreement</h2>
+              <p>Every Maltese hire-purchase and most car loans require:</p>
+              <ul>
+                <li>
+                  <strong>Comprehensive vehicle insurance</strong> for the full
+                  finance term — third-party cover alone won&apos;t satisfy the
+                  lender.
+                </li>
+                <li>
+                  <strong>Direct debit</strong> for monthly payments —
+                  manual/standing-order payments are usually not accepted.
+                </li>
+                <li>
+                  <strong>Bills of Exchange</strong> — postdated promissory
+                  notes signed as security. Each one is a legally enforceable
+                  payment instrument.
+                </li>
+                <li>
+                  <strong>Vehicle transfer restriction</strong> — you cannot
+                  resell, gift or export the vehicle while the loan is open.
+                  Title is recorded against the lender.
+                </li>
+              </ul>
+              <p>
+                For boats and other secured assets, a{" "}
+                <strong>general hypothec registration fee (€49)</strong> is
+                added at registration.
+              </p>
+            </section>
+
             {/* How much can I borrow */}
             <section id="how-much" className="mt-10 sm:mt-12">
               <h2>How Much Can I Borrow in Malta?</h2>
@@ -695,6 +983,55 @@ function RelatedLink({
       </div>
       <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-cyan-600 group-hover:translate-x-0.5 transition-all" />
     </Link>
+  );
+}
+
+function SecciRow({
+  label,
+  value,
+  strong,
+  tone,
+}: {
+  label: string;
+  value: string;
+  strong?: boolean;
+  tone?: "rose" | "amber";
+}) {
+  const toneClass =
+    tone === "rose"
+      ? "text-rose-700 dark:text-rose-400"
+      : tone === "amber"
+        ? "text-amber-700 dark:text-amber-500"
+        : "text-foreground";
+  return (
+    <div className="flex justify-between items-center text-xs sm:text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <span
+        className={`tabular-nums ${strong ? "font-bold text-base" : "font-medium"} ${toneClass}`}
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function RightCard({
+  icon,
+  title,
+  body,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  body: string;
+}) {
+  return (
+    <div className="p-4 rounded-xl bg-card border border-emerald-500/20">
+      <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 mb-2">
+        {icon}
+        <p className="font-semibold text-sm sm:text-base">{title}</p>
+      </div>
+      <p className="text-xs sm:text-sm text-muted-foreground">{body}</p>
+    </div>
   );
 }
 

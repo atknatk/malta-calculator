@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Car,
   Euro,
   Calculator,
   Calendar,
@@ -17,6 +17,10 @@ import {
   AlertTriangle,
   ShieldAlert,
   Eye,
+  ShieldCheck,
+  BookOpen,
+  ArrowRight,
+  Scale,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
@@ -27,6 +31,8 @@ import {
   formatTerm,
   MALTA_LENDER_BENCHMARKS,
   FEE_PRESETS,
+  LATE_PAYMENT_FEES,
+  DEFAULT_FEES,
   VEHICLE_FINANCE_CONSTRAINTS,
   type VehicleFinanceResult,
 } from "@/utils/vehicle-finance-calculator";
@@ -739,7 +745,7 @@ export function VehicleFinanceCalculator() {
             </div>
           </div>
 
-          {/* Buyer info box */}
+          {/* Smart-buyer checklist */}
           <div className="p-3 sm:p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
             <div className="flex gap-2.5 sm:gap-3">
               <Info className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -748,16 +754,117 @@ export function VehicleFinanceCalculator() {
                   Smart-buyer checklist
                 </p>
                 <ul className="list-disc list-inside space-y-0.5">
-                  <li>Ask the dealer for the APRC, not just the IR</li>
+                  <li>Ask for the APRC in writing, not just the IR</li>
+                  <li>Compare with BOV (from 4.75%) or HSBC (6.50% IR)</li>
                   <li>
-                    Compare with a bank loan (BOV from 4.75%, HSBC 6.50% IR)
+                    Processing/banking fee &gt; 4% on loan? Negotiate or walk
+                    away
                   </li>
-                  <li>Banking fee &gt; 4% on loan? Negotiate or walk away</li>
                   <li>Confirm early-repayment fee in writing (EU cap = 1%)</li>
                 </ul>
               </div>
             </div>
           </div>
+
+          {/* SECCI / EU Rights — accordion */}
+          <DisclosureCard
+            icon={<Scale className="h-4 w-4 text-emerald-600" />}
+            title="Your EU Consumer Credit Rights"
+            badge="SECCI"
+            tone="emerald"
+          >
+            <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
+              <Right text="14-day cooling-off period to withdraw without giving a reason" />
+              <Right text="Right to repay early at any time (fee capped at 1% of outstanding)" />
+              <Right text="Right to a free copy of the draft credit agreement on request" />
+              <Right text="SECCI form pre-contractual info valid for 7 days" />
+              <Right text="Lender must inform you immediately and free of charge if a credit-database check (MACM, Credit Info) leads to refusal" />
+            </ul>
+            <p className="text-[11px] sm:text-xs text-muted-foreground mt-2 italic">
+              Mandatory disclosures under the EU Consumer Credit Directive
+              (Directive 2008/48/EC) as transposed into Maltese law.
+            </p>
+          </DisclosureCard>
+
+          {/* Late & default fees — accordion */}
+          <DisclosureCard
+            icon={<AlertTriangle className="h-4 w-4 text-rose-600" />}
+            title="Late Payment & Default Fees"
+            badge="info"
+            tone="rose"
+          >
+            <p className="text-[11px] sm:text-xs text-muted-foreground mb-2">
+              Typical Maltese finance company schedule (Finance House SECCI). If
+              you miss instalments these add up fast — they are{" "}
+              <strong className="text-foreground">not</strong> in the APRC
+              above:
+            </p>
+            <div className="space-y-1.5">
+              <p className="text-[11px] sm:text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                When overdue
+              </p>
+              <div className="grid grid-cols-5 gap-1 text-center">
+                {LATE_PAYMENT_FEES.map((row) => (
+                  <div
+                    key={row.months}
+                    className="p-2 rounded-lg bg-rose-500/5 border border-rose-500/10"
+                  >
+                    <p className="text-[10px] text-muted-foreground">
+                      {row.months}mo
+                    </p>
+                    <p className="text-xs sm:text-sm font-bold text-rose-700 dark:text-rose-400 tabular-nums">
+                      €{row.fee}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[11px] sm:text-xs font-medium uppercase tracking-wider text-muted-foreground mt-3">
+                Default & admin charges
+              </p>
+              <div className="grid grid-cols-2 gap-1.5">
+                {DEFAULT_FEES.map((fee) => (
+                  <div
+                    key={fee.name}
+                    className="flex items-center justify-between p-2 rounded-lg bg-muted/30 text-[11px] sm:text-xs"
+                  >
+                    <span className="text-muted-foreground truncate pr-1">
+                      {fee.name}
+                    </span>
+                    <span className="font-semibold tabular-nums whitespace-nowrap">
+                      €{fee.fee}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </DisclosureCard>
+
+          {/* What you must do — compulsory items */}
+          <DisclosureCard
+            icon={<ShieldCheck className="h-4 w-4 text-amber-600" />}
+            title="Compulsory in Maltese HP Agreements"
+            badge="must"
+            tone="amber"
+          >
+            <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
+              <Right
+                text="Comprehensive vehicle insurance for the entire finance term"
+                tone="amber"
+              />
+              <Right
+                text="Direct debit set up for monthly payments"
+                tone="amber"
+              />
+              <Right
+                text="Bills of Exchange (postdated promissory notes) signed as security"
+                tone="amber"
+              />
+              <Right
+                text="Vehicle transfer restriction — you cannot resell during HP"
+                tone="amber"
+              />
+            </ul>
+          </DisclosureCard>
 
           {/* Schedule toggle */}
           <button
@@ -768,6 +875,28 @@ export function VehicleFinanceCalculator() {
           >
             {showSchedule ? "Hide" : "Show"} first 12-month repayment schedule
           </button>
+
+          {/* Cross-link to full guide */}
+          <Link
+            href="/blog/malta-vehicle-finance-guide-2026"
+            className="group flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-blue-500/5 border border-cyan-500/30 hover:border-cyan-500/60 transition-all"
+          >
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-700 dark:text-cyan-400 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+              <BookOpen className="h-5 w-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-400 font-semibold uppercase tracking-wider">
+                Full Guide
+              </p>
+              <p className="font-semibold text-sm sm:text-base group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors">
+                Malta Vehicle Finance Guide 2026
+              </p>
+              <p className="text-[11px] sm:text-xs text-muted-foreground">
+                SECCI explained · IR vs APRC · lender comparison
+              </p>
+            </div>
+            <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-700 dark:text-cyan-400 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </motion.div>
       </div>
 
@@ -796,7 +925,7 @@ export function VehicleFinanceCalculator() {
                       Principal
                     </th>
                     <th className="text-right py-2 px-1 sm:p-2 font-medium">
-                      Interest{monthlyDraftFee > 0 ? " + Fee" : ""}
+                      Interest
                     </th>
                     <th className="text-right py-2 px-1 sm:p-2 font-medium">
                       Balance
@@ -958,5 +1087,101 @@ function SummaryRow({ label, value, strong, tone }: SummaryRowProps) {
         {value}
       </span>
     </div>
+  );
+}
+
+interface DisclosureCardProps {
+  icon: React.ReactNode;
+  title: string;
+  badge?: string;
+  tone: "emerald" | "rose" | "amber";
+  children: React.ReactNode;
+}
+
+function DisclosureCard({
+  icon,
+  title,
+  badge,
+  tone,
+  children,
+}: DisclosureCardProps) {
+  const [open, setOpen] = useState(false);
+
+  const toneClasses: Record<DisclosureCardProps["tone"], string> = {
+    emerald: "border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10",
+    rose: "border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10",
+    amber: "border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10",
+  };
+
+  const badgeClasses: Record<DisclosureCardProps["tone"], string> = {
+    emerald: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+    rose: "bg-rose-500/15 text-rose-700 dark:text-rose-400",
+    amber: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+  };
+
+  return (
+    <div
+      className={cn(
+        "rounded-xl border overflow-hidden transition-colors",
+        toneClasses[tone],
+      )}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-2.5 sm:gap-3 p-3 sm:p-4 text-left"
+        aria-expanded={open}
+      >
+        <div className="flex-shrink-0">{icon}</div>
+        <span className="flex-1 font-medium text-xs sm:text-sm">{title}</span>
+        {badge && (
+          <span
+            className={cn(
+              "px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase",
+              badgeClasses[tone],
+            )}
+          >
+            {badge}
+          </span>
+        )}
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 transition-transform flex-shrink-0",
+            open && "rotate-180",
+          )}
+        />
+      </button>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="overflow-hidden"
+        >
+          <div className="px-3 sm:px-4 pb-3 sm:pb-4 pt-1 sm:pt-2 border-t border-border/30">
+            {children}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+function Right({
+  text,
+  tone = "emerald",
+}: {
+  text: string;
+  tone?: "emerald" | "amber";
+}) {
+  return (
+    <li className="flex gap-2 items-start">
+      <span
+        className={cn(
+          "flex-shrink-0 mt-1 h-1.5 w-1.5 rounded-full",
+          tone === "amber" ? "bg-amber-500" : "bg-emerald-500",
+        )}
+      />
+      <span>{text}</span>
+    </li>
   );
 }

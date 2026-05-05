@@ -12,12 +12,15 @@
  *   - APS, BNF, Banif: 5-9% civarı
  *   - Finance House: 5.5% base rate, deposit %0-25 (araç değerine göre)
  *
- * Hire Purchase ücret yapısı (Finance House örnek):
- *   - Banking / Onboarding Fee 4.75% — kredi tutarına bindirilir
- *   - Draft Charges €10/ay — her taksite eklenir
- *   - Financing & Maintenance Fee — ek tek seferlik (opsiyonel) — finanse edilir
- *   - APRC bu ücretleri içerir; kotasyondaki "headline IR"den çok daha yüksektir
- *     (örn: 5.50% IR → 12.58% APRC)
+ * Finance House SECCI (Standard European Consumer Credit Information) yapısı:
+ *   - Processing Fee 4.75% — kredi tutarına bindirilir, ANAPARAYA AMORTIZE
+ *   - Financing & Factoring Fee — tek seferlik €, ANAPARAYA AMORTIZE
+ *   - Bills of Exchange Fee €10/ay × süre — toplamı ANAPARAYA AMORTIZE
+ *     (her ay ayrı ödeme DEĞİL — bonoların pul/tescil bedeli olarak baştan finanse edilir)
+ *   - APR = bu üç ücreti içerir; kotasyondaki "5.5% IR" → "13.82% APR"
+ *
+ * SECCI doğrulama: €13.000 / 72ay / 5.5% IR / 4.75% processing / €1.982,50 factoring
+ *                  / €720 bills (= €10×72) → P=€16.320 → PMT=€266,63 → APR 13,82% ✓
  */
 
 export interface VehicleFinanceInput {
@@ -124,26 +127,53 @@ export const MALTA_LENDER_BENCHMARKS = [
  */
 export const FEE_PRESETS = [
   {
-    name: "No fees (bank loan)",
-    description: "Pure interest cost — typical bank car loan",
+    name: "Bank loan (no fees)",
+    description: "Pure interest only — typical Maltese bank car loan",
     bankingFeePercent: 0,
     monthlyDraftFee: 0,
     maintenanceFee: 0,
   },
   {
-    name: "Finance House HP",
-    description: "4.75% banking fee + €10/mo draft charges",
+    name: "Finance House HP (light)",
+    description: "4.75% processing fee + €10/mo bills of exchange",
     bankingFeePercent: 4.75,
     monthlyDraftFee: 10,
     maintenanceFee: 0,
   },
   {
-    name: "Dealer HP (full)",
-    description: "Banking fee + draft + maintenance package",
+    name: "Finance House SECCI (full)",
+    description:
+      "Real €13k / 72mo example: 4.75% processing + €10 BoE + €1,982.50 factoring → 13.82% APR",
     bankingFeePercent: 4.75,
     monthlyDraftFee: 10,
-    maintenanceFee: 1500,
+    maintenanceFee: 1982.5,
   },
+] as const;
+
+/**
+ * Late payment fee schedule (Finance House SECCI).
+ * Sadece bilgi amaçlı — hesaplamaya dahil edilmez.
+ */
+export const LATE_PAYMENT_FEES = [
+  { months: 1, fee: 10 },
+  { months: 2, fee: 20 },
+  { months: 3, fee: 30 },
+  { months: 4, fee: 40 },
+  { months: 5, fee: 50 },
+] as const;
+
+/**
+ * Default-related (non-payment) fees from a typical Maltese SECCI.
+ * Bilgi amaçlı; hesaplamaya dahil edilmez.
+ */
+export const DEFAULT_FEES = [
+  { name: "Direct Debit rejected", fee: 15 },
+  { name: "Returned cheque", fee: 20 },
+  { name: "Final warning letter", fee: 20 },
+  { name: "Legal letter", fee: 25 },
+  { name: "Legal administration fee", fee: 50 },
+  { name: "CRA pressure letter", fee: 14 },
+  { name: "Hypothec registration (boats)", fee: 49 },
 ] as const;
 
 /** Calculate vehicle finance with deposit + fees + amortization + APRC */
@@ -161,13 +191,16 @@ export function calculateVehicleFinance(
   const depositAmount = totalPrice * (depositPercent / 100);
   const baseLoanAmount = totalPrice - depositAmount;
 
-  // Banking fee % is applied on the loan amount (Finance House convention)
+  // Banking/Processing fee % is applied on the base loan amount
   const bankingFeeAmount = baseLoanAmount * (bankingFeePct / 100);
   const maintenanceFeeAmount = maintenanceFee;
+  // Bills of exchange / draft charges: total cost is added to principal upfront
+  // (not paid alongside each instalment) — matches Finance House SECCI convention.
+  const totalDraftFees = monthlyDraftFee * termMonths;
 
-  // Faize tabi anapara = base loan + tüm finanse edilen ücretler
+  // Faize tabi anapara = base loan + TÜM ücretler (banking + maintenance + drafts)
   const financedAmount =
-    baseLoanAmount + bankingFeeAmount + maintenanceFeeAmount;
+    baseLoanAmount + bankingFeeAmount + maintenanceFeeAmount + totalDraftFees;
   const monthlyRate = annualRate / 100 / 12;
 
   let monthlyAmortizedPart: number;
@@ -181,13 +214,13 @@ export function calculateVehicleFinance(
       (financedAmount * (monthlyRate * factor)) / (factor - 1);
   }
 
-  const monthlyPayment = monthlyAmortizedPart + monthlyDraftFee;
+  // Aylık ödeme = amortize edilmiş kısım (drafts artık anaparada)
+  const monthlyPayment = monthlyAmortizedPart;
   const totalRepayment = monthlyPayment * termMonths;
   const totalInterest = Math.max(
     0,
     monthlyAmortizedPart * termMonths - financedAmount,
   );
-  const totalDraftFees = monthlyDraftFee * termMonths;
   const totalFees = bankingFeeAmount + maintenanceFeeAmount + totalDraftFees;
   const totalCostOfBorrowing = totalInterest + totalFees;
   const grandTotal = depositAmount + totalRepayment;
@@ -204,7 +237,6 @@ export function calculateVehicleFinance(
     financedAmount,
     monthlyRate,
     monthlyAmortizedPart,
-    monthlyDraftFee,
     termMonths,
   );
 
@@ -270,7 +302,6 @@ function generateSchedule(
   principal: number,
   monthlyRate: number,
   monthlyAmortizedPart: number,
-  monthlyDraftFee: number,
   termMonths: number,
 ): VehicleFinanceMonthlyRow[] {
   const schedule: VehicleFinanceMonthlyRow[] = [];
@@ -285,9 +316,9 @@ function generateSchedule(
 
     schedule.push({
       month,
-      payment: monthlyAmortizedPart + monthlyDraftFee,
+      payment: monthlyAmortizedPart,
       principal: principalPart,
-      interest: interest + monthlyDraftFee,
+      interest,
       remainingBalance: Math.max(0, balance),
     });
   }
