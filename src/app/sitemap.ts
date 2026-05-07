@@ -191,6 +191,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
     },
     {
+      url: `${baseUrl}/blog/malta-work-permit-health-screening-2026`,
+      priority: 0.9,
+      changeFrequency: "monthly" as const,
+    },
+    {
       url: `${baseUrl}/blog/malta-mysocialsecurity-app-guide-2026`,
       priority: 0.8,
       changeFrequency: "yearly" as const,

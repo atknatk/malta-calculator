@@ -376,6 +376,15 @@ const blogPosts: BlogPost[] = [
     category: "Employment",
   },
   {
+    slug: "malta-work-permit-health-screening-2026",
+    title: "Malta Work Permit Health Screening 2026: New Online System",
+    description:
+      "From 4 May 2026, Identità's work-permit health screening must be filed via the HPDP automated system. TB X-rays, vaccinations, exempt jobs, transition rules.",
+    date: "May 2026",
+    readTime: "9 min read",
+    category: "Immigration",
+  },
+  {
     slug: "malta-mysocialsecurity-app-guide-2026",
     title: "mySocialSecurity Malta App 2026: Complete Guide",
     description:
