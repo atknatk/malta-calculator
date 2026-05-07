@@ -10,15 +10,29 @@
  * - https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/non-employment-permits/family-members-policy/
  */
 
-// 2025 Malta Average/Median Wage figures (to be updated annually)
-// Source: NSO Malta - National Statistics Office
+// Malta wage figures used by the two family-sponsorship schemes.
+// - averageWageGross: NSO Malta 2025 average annual gross wage (S.L. 217.06).
+// - medianWageNet: median net wage referenced by Identità's Family Member
+//   Policy as of June 2024. "Net" means gross income minus income tax and
+//   social security contributions (Identità definition).
+// Sources:
+// - https://nso.gov.mt
+// - https://identita.gov.mt/expatriates-unit-main-page/noneu-nationals/non-employment-permits/family-members-policy/
 export const WAGE_DATA = {
   year: 2025,
-  averageWageGross: 24_976, // Average annual gross wage 2025
-  medianWageNet: 18_940, // Median net wage used in Family Member Policy
-  // Weekly/Monthly breakdown for reference
+  averageWageGross: 24_976,
+  medianWageNet: 18_940,
+  medianWageNetReference: "June 2024",
   averageWageGrossMonthly: 2_081,
   averageWageGrossWeekly: 480,
+};
+
+// Key Employee Initiative / Specialist Employee Initiative threshold under the
+// Family Member Policy. Allows sponsors to skip the 12-month tenure rule when
+// gross income meets these enhanced limits (per Identità, June 2024).
+export const KEI_THRESHOLDS = {
+  baseSponsorPlusOneDependent: 50_000,
+  perAdditionalDependent: 6_000,
 };
 
 export type SchemeType = "family-reunification" | "family-member-policy";
@@ -198,4 +212,19 @@ export function getMonthlyBreakdown(annualSalary: number): {
     monthly: Math.ceil(annualSalary / 12),
     weekly: Math.ceil(annualSalary / 52),
   };
+}
+
+/**
+ * Minimum gross income required for KEI/Specialist holders to apply for the
+ * Family Member Policy without serving the 12-month sponsor tenure period.
+ * Identità: €50,000 for sponsor + 1 dependent, €6,000 per additional dependent.
+ */
+export function calculateKeiThreshold(familyMemberCount: number): number {
+  if (familyMemberCount <= 1) {
+    return KEI_THRESHOLDS.baseSponsorPlusOneDependent;
+  }
+  return (
+    KEI_THRESHOLDS.baseSponsorPlusOneDependent +
+    KEI_THRESHOLDS.perAdditionalDependent * (familyMemberCount - 1)
+  );
 }

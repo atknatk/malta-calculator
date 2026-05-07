@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
 import {
   calculateFamilyReunification,
+  calculateKeiThreshold,
   compareBothSchemes,
   formatCurrency,
   getMonthlyBreakdown,
@@ -126,6 +127,11 @@ export function FamilyReunificationCalculator() {
 
   const monthlyBreakdown = getMonthlyBreakdown(result.minimumRequired);
 
+  const keiThreshold = useMemo(
+    () => calculateKeiThreshold(familyMemberCount),
+    [familyMemberCount],
+  );
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -181,8 +187,8 @@ export function FamilyReunificationCalculator() {
               />
               <p className="text-xs text-muted-foreground">
                 {scheme === "family-reunification"
-                  ? "For Non-EU nationals bringing family through immigration"
-                  : "For family members joining residents under specific policy"}
+                  ? "S.L. 217.06 — covers spouse (21+) and unmarried minor children only"
+                  : "Identità ex-gratia policy — also covers dependent unmarried adult relatives"}
               </p>
             </div>
 
@@ -197,7 +203,9 @@ export function FamilyReunificationCalculator() {
                 onChange={setFamilyMemberCount}
               />
               <p className="text-xs text-muted-foreground text-center">
-                Includes spouse, children, and dependent relatives
+                {scheme === "family-reunification"
+                  ? "Spouse (21+) and unmarried minor children"
+                  : "Spouse (21+), unmarried minor children, and dependent adult relatives"}
               </p>
             </div>
           </div>
@@ -212,11 +220,17 @@ export function FamilyReunificationCalculator() {
                 </p>
                 <p className="text-muted-foreground text-xs mb-2">
                   {scheme === "family-reunification" ? (
-                    <>Base: Average Wage (Gross) + 20% for each family member</>
+                    <>
+                      Base: average gross wage (NSO {WAGE_DATA.year}: €
+                      {WAGE_DATA.averageWageGross.toLocaleString("en-MT")}) +
+                      20% per family member
+                    </>
                   ) : (
                     <>
-                      Base: €18,940 Net + 20% of median wage for each family
-                      member
+                      Base: €{WAGE_DATA.medianWageNet.toLocaleString("en-MT")}{" "}
+                      net (Identità, {WAGE_DATA.medianWageNetReference}) + 20%
+                      of the median wage per family member. &quot;Net&quot; =
+                      gross minus income tax and SSC.
                     </>
                   )}
                 </p>
@@ -231,6 +245,34 @@ export function FamilyReunificationCalculator() {
               </div>
             </div>
           </div>
+
+          {/* KEI / Specialist exception (Family Member Policy only) */}
+          {scheme === "family-member-policy" && (
+            <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20">
+              <div className="flex gap-3">
+                <Info className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-foreground mb-1">
+                    KEI / Specialist Employee Initiative exception
+                  </p>
+                  <p className="text-muted-foreground text-xs mb-2">
+                    Sponsors with an approval-in-principle letter may apply
+                    without the 12-month tenure if their gross income meets the
+                    enhanced threshold: €50,000 (sponsor + 1 dependent) plus
+                    €6,000 per additional dependent.
+                  </p>
+                  <p className="text-xs">
+                    For {familyMemberCount} family member
+                    {familyMemberCount > 1 ? "s" : ""}, the KEI threshold is{" "}
+                    <strong className="text-foreground">
+                      {formatCurrency(keiThreshold)} gross/year
+                    </strong>
+                    .
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Compare Button */}
           <button
@@ -396,11 +438,28 @@ export function FamilyReunificationCalculator() {
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
                   <li>
-                    Average wage figures are from {WAGE_DATA.year} (NSO Malta)
+                    Average gross wage: NSO Malta {WAGE_DATA.year} (€
+                    {WAGE_DATA.averageWageGross.toLocaleString("en-MT")})
                   </li>
-                  <li>Wage requirements may be updated periodically by NSO</li>
-                  <li>Additional documents and conditions may apply</li>
-                  <li>Consult Identità Malta for official guidance</li>
+                  <li>
+                    Median net wage: Identità reference{" "}
+                    {WAGE_DATA.medianWageNetReference} (€
+                    {WAGE_DATA.medianWageNet.toLocaleString("en-MT")})
+                  </li>
+                  <li>
+                    Eligible income (Family Member Policy): employment, social
+                    benefits, rental, unemployment/housing, regular cash
+                    transfers — declared with the Commissioner of Revenue
+                  </li>
+                  <li>
+                    Family Member Policy permits do not grant work rights — a
+                    Single Permit is required for employment
+                  </li>
+                  <li>
+                    Excludes EU citizens, refugees, SRA holders, and certain
+                    other residence-document holders
+                  </li>
+                  <li>Always confirm current figures with Identità Malta</li>
                 </ul>
               </div>
             </div>
