@@ -71,30 +71,36 @@ export default function VehicleRegistrationFeePage() {
           {
             question: "What are the vehicle registration fees in Malta?",
             answer:
-              "Vehicle registration fees in Malta include an administration fee charged by Transport Malta, number plate costs (random plates are the cheapest option, while personalised and customised plates cost more), a VRT inspection fee if the vehicle is being imported, and the first year road license fee. The exact total depends on the vehicle type and chosen plate option.",
+              "Transport Malta charges a €15 administration fee, number plates (€70 random / €200 personalised / €1,500 customised for cars; €35 random for motorcycles), a €55 VRT inspection fee for imported vehicles, and the first year road licence (circulation tax). These are separate from the one-time CO2 + length-based registration tax, which is calculated as a percentage of the vehicle's Registration Value (CIF) and depends on the Euro emissions standard.",
+          },
+          {
+            question:
+              "Is this calculator the same as Malta's registration TAX calculator?",
+            answer:
+              "No. This calculator estimates only the fixed registration fees (admin, plates, VRT inspection, first year road tax). It does NOT calculate the one-time vehicle registration tax, which is a percentage of the make-and-model Registration Value published by Transport Malta. For an exact registration tax figure you need to look up your vehicle on the official eReg valuation tool at valuation.vehicleregistration.gov.mt, or contact Transport Malta directly.",
           },
           {
             question: "How much do personalised number plates cost in Malta?",
             answer:
-              "In Malta, number plate costs vary by type. Standard random-assigned plates are included in the basic registration fee. Personalised plates (where you choose specific letters/numbers) cost significantly more, typically several hundred euros. Customised plates with a specific format are the most expensive option. The fees are payable to Transport Malta at the time of registration.",
+              "Random number plates cost €70 for cars, vans and commercial vehicles, and €35 for motorcycles. Personalised plates (where you choose specific letters/numbers, subject to availability) cost €200. Fully customised plates with premium formats cost €1,500. All plate fees are payable to Transport Malta at the time of registration.",
           },
           {
             question:
               "What is the administration fee for vehicle registration in Malta?",
             answer:
-              "Transport Malta charges an administration fee for processing vehicle registration applications. This fee covers the administrative costs of entering the vehicle into the national register, issuing registration documents, and processing the application. The fee amount varies depending on the vehicle category (private car, motorcycle, commercial vehicle, etc.).",
+              "Transport Malta charges a flat €15 administration fee for processing a vehicle registration application. This fee is the same across vehicle categories (private car, motorcycle, van, commercial) and covers the cost of entering the vehicle into the national register and issuing the V5 (logbook).",
           },
           {
             question:
               "Is a VRT inspection required when registering a vehicle in Malta?",
             answer:
-              "A VRT (Vehicle Roadworthiness Test) inspection is required for vehicles being imported and registered in Malta for the first time, particularly second-hand vehicles. New vehicles from authorised dealers may be exempt from the initial VRT if they come with a valid Certificate of Conformity. The VRT inspection fee is part of the total registration cost for applicable vehicles.",
+              "A €55 VRT (Vehicle Roadworthiness Test) inspection is required for vehicles being imported into Malta — including from other EU countries and from the UK / non-EU. Brand-new vehicles supplied through an authorised Maltese dealer with a valid Certificate of Conformity are exempt from the initial VRT. Only Euro 6 or higher vehicles can be newly registered in Malta.",
           },
           {
             question:
-              "Do I need to pay the first year road license when registering a vehicle in Malta?",
+              "Do electric vehicles pay registration fees and road tax in Malta?",
             answer:
-              "Yes, when registering a vehicle in Malta for the first time, you are required to pay the road license (circulation tax) for the current year or a pro-rated portion of it. This is collected by Transport Malta along with other registration fees. The road license fee is based on the vehicle's CO2 emissions or engine capacity and must be renewed annually thereafter.",
+              "Battery electric vehicles and plug-in hybrids with an electric-only range of at least 50 km are fully exempt from the one-time registration tax. They also pay €0 annual road licence (circulation tax) for the first 5 years from first registration. However, they still pay the fixed fees: €15 admin, €70 plates, and €55 VRT inspection if imported. New EV buyers in 2026 can also claim grants of €8,000 (vehicles ≤€40,000) or €6,000 (€40K–€100K) plus a €1,000 scrappage bonus (+€1,000 in Gozo).",
           },
         ]}
       />

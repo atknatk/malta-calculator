@@ -393,36 +393,70 @@ export function VehicleRegistrationFeeCalculator() {
             </div>
           )}
 
+          {/* Tax vs Fee disclaimer */}
+          <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+            <div className="flex gap-3">
+              <Info className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-muted-foreground">
+                <p className="font-medium text-foreground mb-1">
+                  This is the fixed fees, not the registration tax
+                </p>
+                <p className="text-xs leading-relaxed">
+                  Malta&apos;s one-time vehicle registration tax is a percentage
+                  of your vehicle&apos;s official{" "}
+                  <strong>Registration Value (CIF)</strong> based on CO2, length
+                  and Euro standard, with a €2,000 minimum for M1 cars. This
+                  calculator estimates only the <strong>fixed fees</strong>{" "}
+                  (admin, plates, VRT, first year road licence). For an exact
+                  registration tax figure, look up your make/model on the
+                  official{" "}
+                  <a
+                    href="https://www.valuation.vehicleregistration.gov.mt/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-foreground"
+                  >
+                    eReg valuation tool
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Info Box */}
           <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
             <div className="flex gap-3">
               <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-muted-foreground">
                 <p className="font-medium text-foreground mb-1">
-                  Important Notes
+                  Fee Reference (Transport Malta)
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
                   <li>
-                    <strong>Random plates (€70):</strong> Standard plates
-                    assigned by Transport Malta
+                    <strong>Administration:</strong> €15 flat
                   </li>
                   <li>
-                    <strong>Personalised (€200):</strong> Choose your own
-                    letters/numbers (subject to availability)
+                    <strong>Random plates:</strong> €70 (car / van /
+                    commercial), €35 (motorcycle)
                   </li>
                   <li>
-                    <strong>Customised (€1,500):</strong> Premium customisation
-                    options
+                    <strong>Personalised plates:</strong> €200 (your choice of
+                    letters/numbers, subject to availability)
                   </li>
                   <li>
-                    <strong>VRT Inspection:</strong> Required for all imported
-                    vehicles (€55)
+                    <strong>Customised plates:</strong> €1,500 (premium format)
                   </li>
                   <li>
-                    <strong>Road Tax:</strong> Calculated based on engine size,
-                    CO2 emissions, and vehicle age
+                    <strong>VRT inspection:</strong> €55, required for all
+                    imported vehicles
                   </li>
-                  <li>Additional documentation fees may apply</li>
+                  <li>
+                    <strong>First year road licence:</strong> estimate based on
+                    engine size, CO2 and age (€100–€650 petrol / €100–€749
+                    diesel range; EVs and qualifying PHEVs €0 for 5 years)
+                  </li>
+                  <li>Only Euro 6 or newer vehicles can be registered</li>
                 </ul>
               </div>
             </div>
