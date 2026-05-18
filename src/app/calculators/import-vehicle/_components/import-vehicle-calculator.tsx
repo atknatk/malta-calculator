@@ -96,6 +96,9 @@ export function ImportVehicleCalculator() {
   const [rvOverride, setRvOverride] = useState<number | null>(null);
   const [applyEvGrant, setApplyEvGrant] = useState(false);
   const [evGrantWithScrappage, setEvGrantWithScrappage] = useState(false);
+  const [transferOfResidence, setTransferOfResidence] = useState(false);
+  const [isLeftHandDrive, setIsLeftHandDrive] = useState(false);
+  const [mileageKm, setMileageKm] = useState<number | null>(null);
 
   const result = useMemo<ImportVehicleOutput>(() => {
     return calculateImportVehicle({
@@ -112,6 +115,9 @@ export function ImportVehicleCalculator() {
       registrationValue: rvOverride ?? undefined,
       applyEvGrant,
       evGrantWithScrappage,
+      transferOfResidence,
+      isLeftHandDrive,
+      mileageKm: mileageKm ?? undefined,
     });
   }, [
     purchasePrice,
@@ -127,6 +133,9 @@ export function ImportVehicleCalculator() {
     rvOverride,
     applyEvGrant,
     evGrantWithScrappage,
+    transferOfResidence,
+    isLeftHandDrive,
+    mileageKm,
   ]);
 
   const ageYears = CURRENT_YEAR - modelYear;
@@ -400,6 +409,70 @@ export function ImportVehicleCalculator() {
                 and paste the RV here.
               </p>
             </div>
+
+            <div className="space-y-3 p-4 rounded-xl bg-background/60 border border-border/50">
+              <p className="text-sm font-medium text-foreground/70">
+                Special cases
+              </p>
+
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={transferOfResidence}
+                  onChange={(e) => setTransferOfResidence(e.target.checked)}
+                  className="mt-0.5 accent-primary"
+                />
+                <div className="text-xs">
+                  <div className="font-medium text-foreground">
+                    Transfer of Residence (TORE) — full RegTax exemption
+                  </div>
+                  <div className="text-muted-foreground">
+                    Eligible when you're moving residence to Malta, you owned
+                    the vehicle ≥ 24 months and lived outside Malta ≥ 24 months.
+                    Form VEH 007. 1-year resale restriction post-import.
+                  </div>
+                </div>
+              </label>
+
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isLeftHandDrive}
+                  onChange={(e) => setIsLeftHandDrive(e.target.checked)}
+                  className="mt-0.5 accent-primary"
+                />
+                <div className="text-xs">
+                  <div className="font-medium text-foreground">
+                    Left-hand drive (LHD)
+                  </div>
+                  <div className="text-muted-foreground">
+                    Legal in Malta but Malta is RHD. Affects parking,
+                    overtaking, and may need headlight adjustment for VRT.
+                  </div>
+                </div>
+              </label>
+
+              <div className="flex items-end gap-3 pt-1">
+                <div className="flex-1">
+                  <label className="text-xs font-medium text-foreground/70 block mb-1">
+                    Odometer (km) — optional, drives VRT requirement
+                  </label>
+                  <NumericInput
+                    value={mileageKm ?? ""}
+                    onChange={(v) =>
+                      setMileageKm(v === "" || v <= 0 ? null : v)
+                    }
+                    min={0}
+                    allowDecimals={false}
+                    placeholder="e.g. 80000"
+                    className="h-9 px-3 text-sm"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground pb-1">
+                  VRT trigger: &gt; 4 y or &gt; 160 000 km
+                </p>
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -423,6 +496,26 @@ export function ImportVehicleCalculator() {
                     Detected: <strong>{result.euroStandard}</strong>. The
                     vintage / classic path (FMVA + Form VEH 15) is the only
                     available route for this vehicle.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {result.toreApplied && (
+            <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <div className="flex gap-3">
+                <Sparkles className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-semibold text-emerald-700 dark:text-emerald-400">
+                    Transfer of Residence — Registration Tax waived
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Form VEH 007 grants full RegTax + VAT-on-RegTax exemption
+                    for one M1 vehicle when moving residence to Malta. Apply
+                    within 30 days of arrival. The vehicle is{" "}
+                    <strong>locked for resale for 12 months</strong> after
+                    import (recorded in the logbook).
                   </p>
                 </div>
               </div>

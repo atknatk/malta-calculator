@@ -66,6 +66,19 @@ export interface ImportVehicleInput {
    */
   applyEvGrant?: boolean;
   evGrantWithScrappage?: boolean;
+  /**
+   * Transfer of Residence exemption (TORE). Applies when the importer is
+   * moving residence to Malta and meets both conditions:
+   *  - vehicle has been registered in their name for ≥ 24 months
+   *  - they have lived outside Malta for ≥ 24 months
+   * On approval (Form VEH 007), RegTax + VAT on RegTax are fully waived.
+   * Vehicle cannot be sold/transferred within 1 year of import.
+   */
+  transferOfResidence?: boolean;
+  /** True if the vehicle is left-hand drive (uncommon in Malta which is RHD). */
+  isLeftHandDrive?: boolean;
+  /** Odometer reading at import in km — drives VRT requirement logic. */
+  mileageKm?: number;
 }
 
 export interface BreakdownItem {
@@ -99,6 +112,10 @@ export interface ImportVehicleOutput {
   isFullEvExempt: boolean;
   /** Estimated 5-year annual road-tax savings vs ICE equivalent (BEV / PHEV) */
   fiveYearRoadTaxSavings: number;
+  /** True if TORE exemption was applied (RegTax + VAT-on-RegTax = 0) */
+  toreApplied: boolean;
+  /** True if a VRT inspection is mandatory (>4 y or >160 000 km) */
+  vrtRequired: boolean;
   /**
    * Indicative FMVA flat RegTax range for vintage cars when the standard
    * SOPV-02 formula does not apply (i.e. ≥30 years). Empty when not vintage.
@@ -422,6 +439,15 @@ export function calculateImportVehicle(
     registrationTax = Math.round(registrationTax * 0.5);
   }
 
+  // Transfer of Residence Exemption (Form VEH 007) — overrides all other
+  // RegTax computations. Vehicle must have been owned ≥24 months and the
+  // applicant must have lived outside Malta ≥24 months. 1-year resale
+  // restriction applies post-import.
+  const toreApplied = input.transferOfResidence === true;
+  if (toreApplied) {
+    registrationTax = 0;
+  }
+
   if (registrationTax > 0) {
     breakdown.push({
       label: vintage50Discount
@@ -432,6 +458,13 @@ export function calculateImportVehicle(
       note: registrationValueWasManual
         ? `Computed with manual RV = €${registrationValueUsed.toLocaleString("en-MT")}.`
         : `Computed with RV ≈ €${registrationValueUsed.toLocaleString("en-MT")} (estimated from purchase price; official RV from valuation.vehicleregistration.gov.mt may differ).`,
+    });
+  } else if (toreApplied) {
+    breakdown.push({
+      label: "Registration Tax — TORE Exemption",
+      amount: 0,
+      category: "tax",
+      note: "Transfer of Residence exemption applied (Form VEH 007). Vehicle cannot be sold or transferred within 12 months of import.",
     });
   }
 
@@ -475,8 +508,26 @@ export function calculateImportVehicle(
     });
   }
 
-  // Standard fees
-  breakdown.push({ label: "VRT Inspection", amount: VRT_FEE, category: "fee" });
+  // Standard fees. VRT is only mandatory if the vehicle is older than 4
+  // years from its model year, or if its odometer exceeds 160 000 km.
+  const VRT_AGE_TRIGGER = 4;
+  const VRT_MILEAGE_TRIGGER = 160000;
+  const vrtRequired =
+    !isNew &&
+    (ageYears >= VRT_AGE_TRIGGER ||
+      (input.mileageKm ?? 0) >= VRT_MILEAGE_TRIGGER);
+  const vrtFeeActual = vrtRequired ? VRT_FEE : 0;
+  if (vrtRequired) {
+    breakdown.push({
+      label: "VRT Inspection",
+      amount: VRT_FEE,
+      category: "fee",
+      note:
+        ageYears >= VRT_AGE_TRIGGER
+          ? `Required because the vehicle is ${ageYears} years old (≥ 4 y trigger).`
+          : `Required because the odometer (${input.mileageKm?.toLocaleString("en-MT")} km) exceeds the 160 000 km trigger.`,
+    });
+  }
   const platesFee = vintageEligible
     ? NUMBER_PLATES_FEE_VINTAGE
     : NUMBER_PLATES_FEE;
@@ -531,7 +582,7 @@ export function calculateImportVehicle(
     vatOnCustoms +
     registrationTax +
     vatOnRegTax +
-    VRT_FEE +
+    vrtFeeActual +
     platesFee +
     REGISTRATION_FEE +
     vintageCertificationFee -
@@ -577,6 +628,53 @@ export function calculateImportVehicle(
   if (fuelType === "diesel" && ageYears > 6) {
     warnings.push(
       `Older diesel vehicles incur a particulate-matter (PM) surcharge of ~15 % on the CO2 component, and may face stricter VRT inspection.`,
+    );
+  }
+
+  // 30-day registration deadline — applies to every import (EU and non-EU).
+  // Article 21(4) of the Motor Vehicle Registration and Licensing Act
+  // (Cap 368) imposes an administrative fine of €30 per day past day 30.
+  warnings.push(
+    `30-day deadline: the entire process (customs, valuation, VRT, registration) must be completed within 30 days of the vehicle's arrival in Malta. Unjustified delays trigger a €30/day administrative fine under Art. 21(4) of Cap 368.`,
+  );
+
+  // Transfer of Residence (TORE) — show the value if not yet applied
+  if (!toreApplied && !isNew && ageYears <= 10 && registrationTax > 500) {
+    warnings.push(
+      `If you're moving residence to Malta, you may qualify for the Transfer of Residence exemption (Form VEH 007) — full waiver of registration tax. Conditions: vehicle owned ≥ 24 months and you lived outside Malta ≥ 24 months. Worth checking before paying €${registrationTax.toLocaleString("en-MT")} in RegTax.`,
+    );
+  }
+  if (toreApplied) {
+    warnings.push(
+      `TORE exemption applied. Remember: the vehicle CANNOT be sold or transferred for 12 months from import — this restriction is recorded in the logbook.`,
+    );
+  }
+
+  // Left-hand-drive imports
+  if (input.isLeftHandDrive) {
+    warnings.push(
+      `Left-hand-drive vehicle: legally importable but Malta drives on the left, so visibility for overtaking and parking-booth access is awkward. Some right-hand-drive specific equipment (headlight aim, fog-light position) may need adjustment to pass VRT.`,
+    );
+  }
+
+  // UK / post-Brexit Rules of Origin (informational note for non-EU imports)
+  if (!isEU) {
+    warnings.push(
+      `If importing from the UK: the EU-UK Trade and Cooperation Agreement can give zero customs duty for vehicles that meet UK rules of origin — but most used cars don't qualify because the manufacturing happened outside the UK. Worth confirming with a customs broker.`,
+    );
+  }
+
+  // Minimum tax floor for non-EU used vehicles > 5 years
+  if (!isEU && !isNew && ageYears > 5 && !isFullEvExempt) {
+    warnings.push(
+      `Non-EU used import older than 5 years: a "minimum tax" may apply per the Motor Vehicle Registration & Licensing Act tables (the exact floor is not openly published). Verify with Transport Malta licensing before shipping.`,
+    );
+  }
+
+  // VRT skipped
+  if (!isNew && !vrtRequired) {
+    warnings.push(
+      `VRT not mandatory at import for this vehicle (under 4 years old and below 160 000 km). It will become mandatory at the 4-year mark from first registration.`,
     );
   }
 
@@ -636,7 +734,7 @@ export function calculateImportVehicle(
     registrationValueWasManual,
     registrationTax,
     vatOnRegTax,
-    vrtFee: VRT_FEE,
+    vrtFee: vrtFeeActual,
     numberPlatesFee: platesFee,
     registrationFee: REGISTRATION_FEE,
     vintageCertificationFee,
@@ -644,6 +742,8 @@ export function calculateImportVehicle(
     evGrant,
     isFullEvExempt,
     fiveYearRoadTaxSavings,
+    toreApplied,
+    vrtRequired,
     totalCost,
     totalTaxesFees,
     euroStandard,
