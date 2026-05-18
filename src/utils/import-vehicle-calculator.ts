@@ -56,6 +56,16 @@ export interface ImportVehicleInput {
    * If not supplied, we derive a sensible default from purchase price.
    */
   registrationValue?: number;
+  /**
+   * Apply the Transport Malta sustainable-mobility grant for new electric /
+   * plug-in-hybrid vehicles (€11k, or €13k with scrappage of a ≥10 y ICE
+   * vehicle at an Authorised Treatment Facility). Or, for a used EV
+   * registered in Malta after 1 Jan 2025, the smaller used-EV grant
+   * (€1k, +€1k with scrappage). Only applied when fuelType is electric
+   * or plugin_hybrid.
+   */
+  applyEvGrant?: boolean;
+  evGrantWithScrappage?: boolean;
 }
 
 export interface BreakdownItem {
@@ -83,6 +93,12 @@ export interface ImportVehicleOutput {
   numberPlatesFee: number;
   registrationFee: number;
   vintageCertificationFee: number;
+  /** Government EV grant deducted from total (0 unless applyEvGrant + eligible) */
+  evGrant: number;
+  /** True if BEV / PHEV (≥50 km range) — exempt from RegTax + 5 y road tax */
+  isFullEvExempt: boolean;
+  /** Estimated 5-year annual road-tax savings vs ICE equivalent (BEV / PHEV) */
+  fiveYearRoadTaxSavings: number;
   /**
    * Indicative FMVA flat RegTax range for vintage cars when the standard
    * SOPV-02 formula does not apply (i.e. ≥30 years). Empty when not vintage.
@@ -188,14 +204,35 @@ const MAX_DEPRECIATION = 0.7;
  */
 const DIESEL_PM_SURCHARGE = 0.15;
 
-/** Fuel-type adjustments on the CO2 component. */
+/**
+ * Fuel-type discount on the CO2 component. Note that BEV and PHEV (with
+ * electric range ≥ 50 km) are FULLY RegTax-exempt in Malta — both CO2 and
+ * length components are waived — so we handle them by short-circuiting
+ * the formula entirely rather than via a discount.
+ */
 const FUEL_DISCOUNT: Record<FuelType, number> = {
-  electric: 1, // CO2 = 0 anyway
-  plugin_hybrid: 0.75,
-  hybrid: 0.25,
+  electric: 1, // handled by exemption short-circuit
+  plugin_hybrid: 1, // handled by exemption short-circuit (≥50 km electric range)
+  hybrid: 0.25, // 25 % CO2-tax discount
   petrol: 0,
   diesel: 0, // diesel surcharge handled separately
 };
+
+/**
+ * Sustainable-mobility incentives (Transport Malta 2026 schemes).
+ * NEW BEV / PHEV grant: €11,000 base, with optional scrappage bonus when
+ * deregistering an old ICE vehicle (≥10 y) at an Authorised Treatment Facility.
+ * Used BEV (registered in Malta after 1 Jan 2025): separate, smaller grant.
+ */
+const EV_GRANT_NEW_BASE = 11000;
+const EV_GRANT_NEW_WITH_SCRAPPAGE = 13000;
+const EV_GRANT_USED_BASE = 1000;
+const EV_GRANT_USED_WITH_SCRAPPAGE = 2000;
+/** Years of zero annual circulation tax for BEV / PHEV (≥50 km). */
+const EV_ROAD_TAX_FREE_YEARS = 5;
+/** Indicative typical annual road tax for a similar-class ICE car, used to
+ *  show the 5-year savings figure. */
+const TYPICAL_ICE_ANNUAL_ROAD_TAX = 200;
 
 const VAT_RATE = 0.18;
 const IMPORT_DUTY_RATE = 0.1;
@@ -358,11 +395,13 @@ export function calculateImportVehicle(
   // SOPV-02: rates are expressed as percentages, so divide by 100 once at
   // the call site. CO2 rate is already pre-divided (see co2Rate above);
   // length rate is the raw SOPV-02 percentage (0.0020 – 0.0034) and must
-  // be divided here. Electric vehicles are 100 % RegTax-exempt in Malta —
-  // both CO2 and length components are waived.
+  // be divided here. BEV and PHEV (≥50 km electric range) are 100 %
+  // RegTax-exempt in Malta — both CO2 and length components are waived.
+  const isFullEvExempt =
+    fuelType === "electric" || fuelType === "plugin_hybrid";
   let co2TaxGross = 0;
   let lengthTaxGross = 0;
-  if (fuelType !== "electric") {
+  if (!isFullEvExempt) {
     co2TaxGross = co2Emissions * registrationValueUsed * co2Rate * fuelAdj;
     if (fuelType === "diesel") {
       co2TaxGross *= 1 + DIESEL_PM_SURCHARGE;
@@ -452,6 +491,41 @@ export function calculateImportVehicle(
     category: "fee",
   });
 
+  // Transport Malta EV / PHEV grant — only applied when the user explicitly
+  // opts in via applyEvGrant (eligibility depends on documentation, ATF
+  // scrappage certificate, and 36-month retention which we can't verify).
+  let evGrant = 0;
+  if (input.applyEvGrant && isFullEvExempt) {
+    if (isNew) {
+      evGrant = input.evGrantWithScrappage
+        ? EV_GRANT_NEW_WITH_SCRAPPAGE
+        : EV_GRANT_NEW_BASE;
+    } else {
+      // Used-EV grant only applies to vehicles registered in Malta after
+      // 1 Jan 2025. We accept the user's opt-in as their confirmation.
+      evGrant = input.evGrantWithScrappage
+        ? EV_GRANT_USED_WITH_SCRAPPAGE
+        : EV_GRANT_USED_BASE;
+    }
+    breakdown.push({
+      label: input.evGrantWithScrappage
+        ? "Malta EV Grant (with scrappage)"
+        : "Malta EV Grant",
+      amount: -evGrant,
+      category: "fee",
+      note: isNew
+        ? "Transport Malta 2026 New EV/Pedelec Scheme. Requires 36-month retention; refundable if vehicle is transferred sooner."
+        : "Transport Malta 2026 Used EV Scheme. Requires vehicle registered in Malta after 1 Jan 2025.",
+    });
+  }
+
+  // Five-year annual road-tax exemption: indicative savings vs an ICE car
+  // of similar class (BEV/PHEV ≥50 km only). Not part of import cost, but
+  // surfaced to help users compare total cost of ownership.
+  const fiveYearRoadTaxSavings = isFullEvExempt
+    ? TYPICAL_ICE_ANNUAL_ROAD_TAX * EV_ROAD_TAX_FREE_YEARS
+    : 0;
+
   const totalTaxesFees =
     importDuty +
     vatOnCustoms +
@@ -460,7 +534,8 @@ export function calculateImportVehicle(
     VRT_FEE +
     platesFee +
     REGISTRATION_FEE +
-    vintageCertificationFee;
+    vintageCertificationFee -
+    evGrant;
   const totalCost =
     vehicleValueEUR + shippingCostEUR + insuranceCostEUR + totalTaxesFees;
 
@@ -524,7 +599,24 @@ export function calculateImportVehicle(
     description = `New vehicle: customs/VAT (if applicable) + full registration tax based on CO2 + length.`;
   }
   if (fuelType === "electric") {
-    description += " Electric vehicle: zero CO2 component.";
+    description +=
+      " Battery EV: 100 % RegTax exempt, plus €0 annual road licence for the first 5 years from registration.";
+  } else if (fuelType === "plugin_hybrid") {
+    description +=
+      " Plug-in hybrid: 100 % RegTax exempt and €0 annual road licence for 5 years — provided the electric-only range is ≥ 50 km (check the Certificate of Conformity).";
+  } else if (fuelType === "hybrid") {
+    description += " Regular hybrid: 25 % discount on the CO2 component.";
+  }
+
+  if (isFullEvExempt && fuelType === "plugin_hybrid") {
+    warnings.push(
+      `PHEV exemption requires an electric-only range of ≥ 50 km (per Transport Malta SOPV-02). Below that threshold the standard CO2 + length RegTax applies.`,
+    );
+  }
+  if (isFullEvExempt && !input.applyEvGrant) {
+    warnings.push(
+      `Malta runs a sustainable-mobility grant scheme — up to €11,000 for a new BEV/PHEV (+ scrappage bonus), or a smaller used-EV grant for vehicles registered in Malta after 1 Jan 2025. Toggle "Apply EV grant" to subtract it.`,
+    );
   }
 
   breakdown.push({
@@ -549,6 +641,9 @@ export function calculateImportVehicle(
     registrationFee: REGISTRATION_FEE,
     vintageCertificationFee,
     vintageFmvaEstimate,
+    evGrant,
+    isFullEvExempt,
+    fiveYearRoadTaxSavings,
     totalCost,
     totalTaxesFees,
     euroStandard,

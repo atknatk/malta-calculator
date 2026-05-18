@@ -94,6 +94,8 @@ export function ImportVehicleCalculator() {
   const [insuranceCost, setInsuranceCost] = useState(0);
   const [isNew, setIsNew] = useState(false);
   const [rvOverride, setRvOverride] = useState<number | null>(null);
+  const [applyEvGrant, setApplyEvGrant] = useState(false);
+  const [evGrantWithScrappage, setEvGrantWithScrappage] = useState(false);
 
   const result = useMemo<ImportVehicleOutput>(() => {
     return calculateImportVehicle({
@@ -108,6 +110,8 @@ export function ImportVehicleCalculator() {
       insuranceCost,
       isNew,
       registrationValue: rvOverride ?? undefined,
+      applyEvGrant,
+      evGrantWithScrappage,
     });
   }, [
     purchasePrice,
@@ -121,6 +125,8 @@ export function ImportVehicleCalculator() {
     insuranceCost,
     isNew,
     rvOverride,
+    applyEvGrant,
+    evGrantWithScrappage,
   ]);
 
   const ageYears = CURRENT_YEAR - modelYear;
@@ -543,17 +549,87 @@ export function ImportVehicleCalculator() {
             </div>
           )}
 
-          {fuelType === "electric" && (
-            <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20">
+          {result.isFullEvExempt && (
+            <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20 space-y-3">
               <div className="flex gap-3">
-                <Leaf className="h-5 w-5 text-green-500" />
-                <div className="text-sm">
-                  <p className="font-medium">Electric Vehicle Benefits</p>
-                  <p className="text-xs text-muted-foreground">
-                    No CO2 component on registration tax. Additional grants may
-                    be available from Transport Malta.
+                <Leaf className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm space-y-2">
+                  <p className="font-medium">
+                    {fuelType === "electric"
+                      ? "Battery EV — full Malta incentive package"
+                      : "Plug-in Hybrid — full incentive (if electric range ≥ 50 km)"}
                   </p>
+                  <ul className="list-disc list-inside text-xs text-muted-foreground space-y-1">
+                    <li>
+                      <strong>RegTax: €0</strong> — both CO2 and length
+                      components waived
+                    </li>
+                    <li>
+                      <strong>Annual road tax: €0 for the first 5 years</strong>{" "}
+                      (~{formatCurrency(result.fiveYearRoadTaxSavings)} of
+                      circulation-tax savings over 5 y vs an ICE equivalent)
+                    </li>
+                    <li>
+                      <strong>
+                        Government grant: up to{" "}
+                        {formatCurrency(isNew ? 13000 : 2000)}
+                      </strong>{" "}
+                      (Transport Malta 2026 scheme, see toggle below)
+                    </li>
+                  </ul>
+                  {fuelType === "plugin_hybrid" && (
+                    <p className="text-xs text-amber-700 dark:text-amber-400">
+                      ⚠ PHEV exemption applies only if electric-only range is ≥
+                      50 km. Below that the standard CO2 + length RegTax kicks
+                      in.
+                    </p>
+                  )}
                 </div>
+              </div>
+
+              <div className="space-y-2 pt-3 border-t border-green-500/20">
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={applyEvGrant}
+                    onChange={(e) => setApplyEvGrant(e.target.checked)}
+                    className="mt-0.5 accent-primary"
+                  />
+                  <div className="text-xs">
+                    <div className="font-medium text-foreground">
+                      Apply Transport Malta EV grant
+                    </div>
+                    <div className="text-muted-foreground">
+                      {isNew
+                        ? "€11,000 base for new BEV/PHEV. 36-month retention required; refundable if vehicle is transferred sooner."
+                        : "€1,000 base for used BEV registered in Malta after 1 Jan 2025."}
+                    </div>
+                  </div>
+                </label>
+
+                {applyEvGrant && (
+                  <label className="flex items-start gap-2 cursor-pointer ml-6">
+                    <input
+                      type="checkbox"
+                      checked={evGrantWithScrappage}
+                      onChange={(e) =>
+                        setEvGrantWithScrappage(e.target.checked)
+                      }
+                      className="mt-0.5 accent-primary"
+                    />
+                    <div className="text-xs">
+                      <div className="font-medium text-foreground">
+                        + Scrappage bonus ({formatCurrency(isNew ? 2000 : 1000)}
+                        )
+                      </div>
+                      <div className="text-muted-foreground">
+                        Requires deregistering a ≥ 10 y ICE vehicle at an
+                        Authorised Treatment Facility (Destruction Certificate
+                        dated 2025 or 2026).
+                      </div>
+                    </div>
+                  </label>
+                )}
               </div>
             </div>
           )}
