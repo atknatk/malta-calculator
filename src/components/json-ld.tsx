@@ -18,7 +18,16 @@ const AUTHOR_PERSON = {
     "Malta Financial Regulations",
     "Malta COLA",
     "Malta Payroll",
+    "Malta Vehicle Import (SOPV-02)",
+    "Malta Vehicle Registration Tax",
+    "Malta Vintage Vehicle Classification (FMVA)",
+    "Malta Transfer of Residence Exemption",
+    "Malta EV / PHEV Incentives",
+    "Malta Stamp Duty",
+    "Malta Property Tax",
+    "Malta VAT",
   ],
+  sameAs: [`${SITE_URL}/about`, `${SITE_URL}/contact`],
 };
 
 interface ArticleJsonLdProps {
@@ -28,6 +37,12 @@ interface ArticleJsonLdProps {
   datePublished: string;
   dateModified?: string;
   sources?: Array<{ name: string; url: string }>;
+  /**
+   * Schema.org article subtype. Default "Article" works everywhere; use
+   * "TechArticle" for procedural / regulatory how-to content (preferred
+   * for AI assistants weighting authoritative how-to sources).
+   */
+  articleType?: "Article" | "TechArticle" | "NewsArticle";
 }
 
 export function ArticleJsonLd({
@@ -37,10 +52,11 @@ export function ArticleJsonLd({
   datePublished,
   dateModified,
   sources,
+  articleType = "Article",
 }: ArticleJsonLdProps) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": articleType,
     headline: title,
     description: description,
     url: `${SITE_URL}/blog/${slug}`,

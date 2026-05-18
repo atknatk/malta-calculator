@@ -15,7 +15,10 @@ import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
   CustomFAQJsonLd,
+  HowToJsonLd,
 } from "@/components/json-ld";
+
+const LAST_UPDATED = "2026-05-18";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
@@ -140,6 +143,8 @@ export default function ImportVehicleGuidePage() {
         description="Full 2026 guide to importing a car to Malta — SOPV-02 registration tax, customs duty, VAT, EV grants, vintage rules, Transfer of Residence exemption, and the 30-day deadline."
         slug="malta-import-vehicle-guide-2026"
         datePublished="2026-01-01"
+        dateModified={LAST_UPDATED}
+        articleType="TechArticle"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -153,6 +158,33 @@ export default function ImportVehicleGuidePage() {
         ]}
       />
       <CustomFAQJsonLd questions={FAQ_ITEMS} />
+      <HowToJsonLd
+        name="How to import a vehicle to Malta in 2026"
+        description="Official Maltese process for importing and registering an M1 passenger vehicle, from arrival at port to receiving the logbook and plates."
+        totalTime="P30D"
+        steps={[
+          {
+            name: "Customs clearance (non-EU imports only)",
+            text: "On arrival at Valletta Freeport or Marsaxlokk, a customs broker submits the declaration. Customs Malta calculates 10% duty on the CIF value (vehicle + insurance + freight) and 18% VAT on (CIF + duty). Payment must clear before the vehicle is released. EU imports skip this step.",
+          },
+          {
+            name: "Obtain the official Registration Value (RV)",
+            text: "Look up the vehicle at valuation.vehicleregistration.gov.mt — Transport Malta's official valuation portal driven by CAP Motor Research trade values. RV is the basis for registration tax, not the purchase price. Vehicles not in the database require Form VEH 14 for a manual valuation.",
+          },
+          {
+            name: "Pay registration tax (and 18% VAT on RegTax for non-EU)",
+            text: "Pay the SOPV-02 registration tax at Transport Malta's Licensing and Testing Directorate. Apply the Transfer of Residence exemption (Form VEH 007) here if eligible — it waives RegTax and the VAT charged on top of it.",
+          },
+          {
+            name: "Pass the VRT inspection (if required)",
+            text: "VRT is mandatory at import only when the vehicle is over 4 years old or its odometer exceeds 160,000 km. Fee: €36. Book ahead and bring all import documents on the day.",
+          },
+          {
+            name: "Collect number plates and finalise registration",
+            text: "Standard plates €35, vintage black plates €70, first registration fee €50. You walk out with the Maltese logbook and plates the same day in most cases. The entire process must complete within 30 days of arrival or you pay €30/day in administrative fines (Cap 368, Art. 21(4)).",
+          },
+        ]}
+      />
       <main role="main">
         <Shell className="max-w-4xl py-12">
           <Link
@@ -164,13 +196,24 @@ export default function ImportVehicleGuidePage() {
 
           <article className="prose prose-neutral dark:prose-invert max-w-none">
             <header className="mb-12 not-prose">
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
                 <span className="px-3 py-1 bg-slate-500/10 text-slate-600 text-sm font-semibold rounded-full">
                   Transport
                 </span>
                 <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4" /> January 2026
+                  <Calendar className="h-4 w-4" /> Published January 2026
                 </span>
+                <time
+                  dateTime={LAST_UPDATED}
+                  className="flex items-center gap-1 text-sm text-muted-foreground"
+                >
+                  <Calendar className="h-4 w-4" /> Last updated{" "}
+                  {new Date(LAST_UPDATED).toLocaleDateString("en-MT", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </time>
                 <span className="flex items-center gap-1 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" /> 15 min read
                 </span>
@@ -424,7 +467,7 @@ export default function ImportVehicleGuidePage() {
                 </div>
               </div>
 
-              <h3>Registration Value (RV)</h3>
+              <h3 id="registration-value">Registration Value (RV)</h3>
               <p>
                 The RV is{" "}
                 <strong>
@@ -450,7 +493,9 @@ export default function ImportVehicleGuidePage() {
                 you actually register the vehicle.
               </p>
 
-              <h3>Euro emission standard rule (critical for older cars)</h3>
+              <h3 id="euro-standard-rule">
+                Euro emission standard rule (critical for older cars)
+              </h3>
               <p>
                 Under SOPV-02 — aligned with EU Directive 2007/46/EC — Malta
                 only registers passenger vehicles meeting{" "}
@@ -584,7 +629,7 @@ export default function ImportVehicleGuidePage() {
                 (Federazzjoni Maltija Vetturi Antiki) through Form VEH 15.
               </p>
 
-              <h3>Three age bands</h3>
+              <h3 id="vintage-age-bands">Three age bands</h3>
               <ul>
                 <li>
                   <strong>30–34 years:</strong> eligible for classic status.
@@ -604,7 +649,7 @@ export default function ImportVehicleGuidePage() {
                 </li>
               </ul>
 
-              <h3>Certification process</h3>
+              <h3 id="vintage-certification">Certification process</h3>
               <p>
                 The FMVA application fee is €250, of which €200 is refunded upon
                 successful certification. Transport Malta charges €50
@@ -632,7 +677,7 @@ export default function ImportVehicleGuidePage() {
                 €7,000.
               </p>
 
-              <h3>Eligibility</h3>
+              <h3 id="tore-eligibility">Eligibility</h3>
               <ul>
                 <li>
                   The vehicle must have been registered in your name for{" "}
@@ -653,7 +698,7 @@ export default function ImportVehicleGuidePage() {
                 </li>
               </ul>
 
-              <h3>Application</h3>
+              <h3 id="tore-application">Application</h3>
               <p>
                 Submit Form VEH 007 within{" "}
                 <strong>30 days of your residency transfer</strong> (or within
@@ -661,7 +706,7 @@ export default function ImportVehicleGuidePage() {
                 first). You can apply up to 2 months before the vehicle arrives.
               </p>
 
-              <h3>The catch</h3>
+              <h3 id="tore-resale-restriction">The catch</h3>
               <p>
                 A condition is recorded in the vehicle&apos;s logbook: you
                 cannot sell or transfer the vehicle for{" "}
@@ -673,7 +718,9 @@ export default function ImportVehicleGuidePage() {
             <section id="pitfalls" className="mt-12">
               <h2>Common pitfalls (and how to avoid them)</h2>
 
-              <h3>1. Missing the 30-day deadline</h3>
+              <h3 id="pitfall-30-day-deadline">
+                1. Missing the 30-day deadline
+              </h3>
               <p>
                 The single most expensive mistake. €30/day adds up to €900 in a
                 month, and Transport Malta has no goodwill discount for shipping
@@ -682,7 +729,9 @@ export default function ImportVehicleGuidePage() {
                 lands.
               </p>
 
-              <h3>2. Buying a Euro 1–4 vehicle for normal road use</h3>
+              <h3 id="pitfall-pre-euro-5">
+                2. Buying a Euro 1–4 vehicle for normal road use
+              </h3>
               <p>
                 A 2003 BMW you fell in love with in Italy cannot be registered
                 for general road use in Malta — it&apos;s Euro 4. The only path
@@ -691,7 +740,9 @@ export default function ImportVehicleGuidePage() {
                 paying for the car or the shipping.
               </p>
 
-              <h3>3. Assuming the UK route is still cheap post-Brexit</h3>
+              <h3 id="pitfall-uk-brexit">
+                3. Assuming the UK route is still cheap post-Brexit
+              </h3>
               <p>
                 The UK has been treated as a third country since 1 January 2021.
                 The EU-UK Trade and Cooperation Agreement gives zero customs
