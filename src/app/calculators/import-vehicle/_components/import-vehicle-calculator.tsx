@@ -10,6 +10,7 @@ import {
   Leaf,
   AlertTriangle,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
@@ -23,6 +24,64 @@ import {
 
 const CURRENT_YEAR = new Date().getFullYear();
 
+/**
+ * Inline slider+number-input that keeps the two in sync. Numeric input is
+ * authoritative — slider just provides quick visual adjustment.
+ */
+function SliderInput({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step = 1,
+  suffix,
+  hint,
+}: {
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+  min: number;
+  max: number;
+  step?: number;
+  suffix?: string;
+  hint?: React.ReactNode;
+}) {
+  const clamp = (n: number) => Math.min(max, Math.max(min, n));
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between items-end gap-3">
+        <label className="text-sm font-medium text-foreground/70">
+          {label}
+        </label>
+        <div className="flex items-center gap-1">
+          <NumericInput
+            value={value}
+            onChange={(v) => onChange(v === "" ? min : clamp(v))}
+            min={min}
+            max={max}
+            allowDecimals={false}
+            className="h-9 w-24 text-right text-sm px-2"
+          />
+          {suffix && (
+            <span className="text-xs text-muted-foreground">{suffix}</span>
+          )}
+        </div>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(parseInt(e.target.value))}
+        className="w-full accent-primary"
+      />
+      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+    </div>
+  );
+}
+
 export function ImportVehicleCalculator() {
   const [purchasePrice, setPurchasePrice] = useState(20000);
   const [currency, setCurrency] = useState<Currency>("EUR");
@@ -34,6 +93,7 @@ export function ImportVehicleCalculator() {
   const [shippingCost, setShippingCost] = useState(500);
   const [insuranceCost, setInsuranceCost] = useState(0);
   const [isNew, setIsNew] = useState(false);
+  const [rvOverride, setRvOverride] = useState<number | null>(null);
 
   const result = useMemo<ImportVehicleOutput>(() => {
     return calculateImportVehicle({
@@ -47,6 +107,7 @@ export function ImportVehicleCalculator() {
       shippingCost,
       insuranceCost,
       isNew,
+      registrationValue: rvOverride ?? undefined,
     });
   }, [
     purchasePrice,
@@ -59,6 +120,7 @@ export function ImportVehicleCalculator() {
     shippingCost,
     insuranceCost,
     isNew,
+    rvOverride,
   ]);
 
   const ageYears = CURRENT_YEAR - modelYear;
@@ -195,28 +257,20 @@ export function ImportVehicleCalculator() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70">
-                Model Year: {modelYear}{" "}
-                <span className="text-muted-foreground">
-                  ({ageYears} year{ageYears === 1 ? "" : "s"} old —{" "}
-                  {result.euroStandard})
-                </span>
-              </label>
-              <input
-                type="range"
-                min={CURRENT_YEAR - 60}
-                max={CURRENT_YEAR}
-                value={modelYear}
-                onChange={(e) => setModelYear(parseInt(e.target.value))}
-                className="w-full accent-primary"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>{CURRENT_YEAR - 60}</span>
-                <span>{CURRENT_YEAR - 30} (vintage threshold)</span>
-                <span>{CURRENT_YEAR}</span>
-              </div>
-            </div>
+            <SliderInput
+              label="Model Year"
+              value={modelYear}
+              onChange={setModelYear}
+              min={CURRENT_YEAR - 60}
+              max={CURRENT_YEAR}
+              hint={
+                <>
+                  {ageYears} year{ageYears === 1 ? "" : "s"} old · auto-detected
+                  emission standard: <strong>{result.euroStandard}</strong>
+                  {ageYears >= 30 && " · vintage-eligible"}
+                </>
+              }
+            />
 
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/70">
@@ -258,40 +312,27 @@ export function ImportVehicleCalculator() {
             </div>
 
             {fuelType !== "electric" && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground/70">
-                  CO2: {co2Emissions} g/km
-                </label>
-                <input
-                  type="range"
-                  min={50}
-                  max={400}
-                  value={co2Emissions}
-                  onChange={(e) => setCo2Emissions(parseInt(e.target.value))}
-                  className="w-full accent-primary"
-                />
-              </div>
+              <SliderInput
+                label="CO2 Emissions"
+                value={co2Emissions}
+                onChange={setCo2Emissions}
+                min={20}
+                max={400}
+                suffix="g/km"
+                hint="From the vehicle's Certificate of Conformity (NEDC or WLTP)."
+              />
             )}
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70">
-                Vehicle Length: {lengthMm} mm
-              </label>
-              <input
-                type="range"
-                min={3000}
-                max={5500}
-                step={10}
-                value={lengthMm}
-                onChange={(e) => setLengthMm(parseInt(e.target.value))}
-                className="w-full accent-primary"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>City car</span>
-                <span>Saloon (~4400)</span>
-                <span>SUV / 7-seat</span>
-              </div>
-            </div>
+            <SliderInput
+              label="Vehicle Length"
+              value={lengthMm}
+              onChange={setLengthMm}
+              min={3000}
+              max={5500}
+              step={10}
+              suffix="mm"
+              hint="City car ≈ 3 700 · Saloon ≈ 4 400 · SUV ≈ 4 700+"
+            />
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -318,6 +359,40 @@ export function ImportVehicleCalculator() {
                   className="h-12 px-4"
                 />
               </div>
+            </div>
+
+            <div className="space-y-2 p-4 rounded-xl bg-background/60 border border-border/50">
+              <div className="flex justify-between items-end gap-3">
+                <label className="text-sm font-medium text-foreground/70">
+                  Registration Value (RV){" "}
+                  <span className="text-muted-foreground font-normal">
+                    — optional
+                  </span>
+                </label>
+                <NumericInput
+                  value={rvOverride ?? ""}
+                  onChange={(v) => setRvOverride(v === "" || v <= 0 ? null : v)}
+                  min={0}
+                  allowDecimals={false}
+                  placeholder={result.registrationValueUsed.toString()}
+                  className="h-9 w-32 text-right text-sm px-2"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Leave blank to auto-derive ({" "}
+                {formatCurrency(result.registrationValueUsed)} used). For exact
+                RegTax, look up your vehicle on{" "}
+                <a
+                  href="https://www.valuation.vehicleregistration.gov.mt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary inline-flex items-center gap-0.5 underline"
+                >
+                  valuation.vehicleregistration.gov.mt
+                  <ExternalLink className="h-3 w-3" />
+                </a>{" "}
+                and paste the RV here.
+              </p>
             </div>
           </div>
         </motion.div>
@@ -367,6 +442,19 @@ export function ImportVehicleCalculator() {
                     3 000 km/year · must remain in original condition ·
                     re-certified every 5 years.
                   </p>
+                  {result.vintageFmvaEstimate && (
+                    <p className="text-xs mt-2 p-2 rounded bg-amber-500/10 border border-amber-500/20">
+                      <strong>Real-world RegTax for vintage:</strong> the
+                      SOPV-02 formula below is an upper bound — once classified
+                      by FMVA, Transport Malta typically assigns a flat low
+                      RegTax in the range of{" "}
+                      <strong>
+                        {formatCurrency(result.vintageFmvaEstimate.min)} –{" "}
+                        {formatCurrency(result.vintageFmvaEstimate.max)}
+                      </strong>{" "}
+                      instead.
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -392,6 +480,11 @@ export function ImportVehicleCalculator() {
               </motion.div>
               <p className="text-muted-foreground mt-2">
                 Taxes & Fees: {formatCurrency(result.totalTaxesFees)}
+              </p>
+              <p className="text-xs text-muted-foreground/80 mt-1">
+                RV used in formula:{" "}
+                <strong>{formatCurrency(result.registrationValueUsed)}</strong>{" "}
+                {result.registrationValueWasManual ? "(manual)" : "(estimated)"}
               </p>
             </div>
             <div className="space-y-2">
@@ -480,8 +573,8 @@ export function ImportVehicleCalculator() {
                     </code>
                   </li>
                   <li>
-                    Registration Value (RV) is approximated with CIF + duty +
-                    VAT; the official RV comes from{" "}
+                    Default RV is approximated from purchase price; for the
+                    official figure use{" "}
                     <a
                       href="https://www.valuation.vehicleregistration.gov.mt"
                       target="_blank"
@@ -498,7 +591,8 @@ export function ImportVehicleCalculator() {
                   </li>
                   <li>
                     Vintage rules: ≥30 y eligible (FMVA / VEH 15), 35–50 y → 50
-                    % RegTax discount, ≥50 y → zero RegTax.
+                    % RegTax discount, ≥50 y → zero RegTax. For vintage cars
+                    FMVA typically assigns a flat low RegTax.
                   </li>
                   <li>
                     All vehicles must pass VRT and meet Malta minimum emission

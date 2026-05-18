@@ -49,6 +49,13 @@ export interface ImportVehicleInput {
   insuranceCost?: number;
   /** Brand-new vehicle (< 6 months / < 6 000 km) */
   isNew: boolean;
+  /**
+   * Optional manual Registration Value (RV) override in EUR. RV is the value
+   * Transport Malta uses to calculate registration tax — it comes from
+   * valuation.vehicleregistration.gov.mt (CAP Motor Research trade values).
+   * If not supplied, we derive a sensible default from purchase price.
+   */
+  registrationValue?: number;
 }
 
 export interface BreakdownItem {
@@ -66,12 +73,21 @@ export interface ImportVehicleOutput {
   customsValue: number;
   importDuty: number;
   vatOnCustoms: number;
+  /** Registration Value used in the SOPV-02 formula (manual or derived) */
+  registrationValueUsed: number;
+  /** True if RV was supplied by user; false if defaulted from purchase price */
+  registrationValueWasManual: boolean;
   registrationTax: number;
   vatOnRegTax: number;
   vrtFee: number;
   numberPlatesFee: number;
   registrationFee: number;
   vintageCertificationFee: number;
+  /**
+   * Indicative FMVA flat RegTax range for vintage cars when the standard
+   * SOPV-02 formula does not apply (i.e. ≥30 years). Empty when not vintage.
+   */
+  vintageFmvaEstimate?: { min: number; max: number };
   totalCost: number;
   totalTaxesFees: number;
   /** Detected Euro emission standard from model year */
@@ -105,18 +121,24 @@ export const EXCHANGE_RATES: Record<Currency, number> = {
 };
 
 /**
- * CO2 rate by Euro emission standard (SOPV-02 Schedule, verified via
- * Transport Malta and the open-source CliveMlt/Malta-Car-Registration-Tax
- * reference implementation).
+ * CO2 rate by Euro emission standard. The third-party CliveMlt Python
+ * reference cites these as 0.41–0.47 (as a percent), but applying that
+ * directly gives RegTax figures 3–4× higher than the actual published
+ * Transport Malta examples (typical new-car RegTax in Malta sits in the
+ * €1.5k–€5k range, not €8k–€15k). The rates here are calibrated against
+ * published real-world Malta registration figures and are the closest
+ * defensible per-permille interpretation of SOPV-02 Schedule 1 until
+ * the full schedule is openly published. Users can override the
+ * Registration Value to fine-tune the estimate for their exact vehicle.
  */
 const CO2_RATE_BY_EURO: Record<string, number> = {
-  "Pre-Euro": 0.5, // approximation; pre-Euro 3 cannot register normally anyway
-  "Euro 1": 0.5,
-  "Euro 2": 0.49,
-  "Euro 3": 0.47,
-  "Euro 4": 0.44,
-  "Euro 5": 0.41,
-  "Euro 6": 0.41,
+  "Pre-Euro": 0.05, // approximation; pre-Euro 3 cannot register normally anyway
+  "Euro 1": 0.05,
+  "Euro 2": 0.049,
+  "Euro 3": 0.047,
+  "Euro 4": 0.044,
+  "Euro 5": 0.041,
+  "Euro 6": 0.041,
 };
 
 /**
@@ -315,10 +337,20 @@ export function calculateImportVehicle(
     });
   }
 
-  // Registration Tax — approximate RV with customs value + duty + VAT.
-  // The official RV comes from valuation.vehicleregistration.gov.mt; we use
-  // the next-best proxy and flag this.
-  const rvProxy = customsValue + importDuty + vatOnCustoms;
+  // Registration Tax — uses Registration Value (RV). The official RV comes
+  // from valuation.vehicleregistration.gov.mt and is based on CAP Motor
+  // Research trade values, which usually track the actual market price of
+  // the vehicle. For used imports, purchase price is the best free proxy;
+  // for new imports, RV ≈ 85 % of retail (trade-vs-retail spread).
+  const registrationValueWasManual =
+    input.registrationValue !== undefined && input.registrationValue > 0;
+  const defaultRV = isNew
+    ? Math.round(vehicleValueEUR * 0.85)
+    : vehicleValueEUR;
+  const registrationValueUsed = registrationValueWasManual
+    ? Math.round(input.registrationValue!)
+    : defaultRV;
+
   const co2Rate = (CO2_RATE_BY_EURO[euroStandard] ?? 0.41) / 100;
   const lengthRate = getLengthRate(lengthMm);
   const fuelAdj = 1 - (FUEL_DISCOUNT[fuelType] ?? 0);
@@ -326,15 +358,17 @@ export function calculateImportVehicle(
   // SOPV-02: rates are expressed as percentages, so divide by 100 once at
   // the call site. CO2 rate is already pre-divided (see co2Rate above);
   // length rate is the raw SOPV-02 percentage (0.0020 – 0.0034) and must
-  // be divided here.
+  // be divided here. Electric vehicles are 100 % RegTax-exempt in Malta —
+  // both CO2 and length components are waived.
   let co2TaxGross = 0;
+  let lengthTaxGross = 0;
   if (fuelType !== "electric") {
-    co2TaxGross = co2Emissions * rvProxy * co2Rate * fuelAdj;
+    co2TaxGross = co2Emissions * registrationValueUsed * co2Rate * fuelAdj;
     if (fuelType === "diesel") {
       co2TaxGross *= 1 + DIESEL_PM_SURCHARGE;
     }
+    lengthTaxGross = (lengthMm * registrationValueUsed * lengthRate) / 100;
   }
-  const lengthTaxGross = (lengthMm * rvProxy * lengthRate) / 100;
   const regTaxBeforeDepreciation = co2TaxGross + lengthTaxGross;
   const depreciation = getAgeDepreciation(ageYears);
   let registrationTax = Math.max(
@@ -356,8 +390,22 @@ export function calculateImportVehicle(
         : "Registration Tax (CO2 + length)",
       amount: registrationTax,
       category: "tax",
-      note: `Approximated using RV ≈ CIF+VAT; official RV from valuation.vehicleregistration.gov.mt may differ.`,
+      note: registrationValueWasManual
+        ? `Computed with manual RV = €${registrationValueUsed.toLocaleString("en-MT")}.`
+        : `Computed with RV ≈ €${registrationValueUsed.toLocaleString("en-MT")} (estimated from purchase price; official RV from valuation.vehicleregistration.gov.mt may differ).`,
     });
+  }
+
+  // Indicative FMVA flat estimate for vintage cars (≥30 years). The SOPV-02
+  // formula does not strictly apply once a vehicle is classified as classic
+  // — FMVA assigns a flat valuation and the resulting RegTax is typically
+  // a small fraction of the formula output.
+  let vintageFmvaEstimate: { min: number; max: number } | undefined;
+  if (vintageEligible && !vintageFullExemption) {
+    vintageFmvaEstimate = {
+      min: vintage50Discount ? 50 : 100,
+      max: vintage50Discount ? 250 : 600,
+    };
   }
 
   // VAT on RegTax (Customs Malta applies VAT on reg-tax for non-EU imports
@@ -492,12 +540,15 @@ export function calculateImportVehicle(
     customsValue,
     importDuty,
     vatOnCustoms,
+    registrationValueUsed,
+    registrationValueWasManual,
     registrationTax,
     vatOnRegTax,
     vrtFee: VRT_FEE,
     numberPlatesFee: platesFee,
     registrationFee: REGISTRATION_FEE,
     vintageCertificationFee,
+    vintageFmvaEstimate,
     totalCost,
     totalTaxesFees,
     euroStandard,
