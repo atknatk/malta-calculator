@@ -5,12 +5,11 @@ import { motion } from "framer-motion";
 import {
   Ship,
   Car,
-  Fuel,
-  Calendar,
   Euro,
-  Globe,
   Info,
   Leaf,
+  AlertTriangle,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
@@ -18,43 +17,51 @@ import {
   calculateImportVehicle,
   formatCurrency,
   type ImportVehicleOutput,
+  type FuelType,
+  type Currency,
 } from "@/utils/import-vehicle-calculator";
 
-type FuelType = "petrol" | "diesel" | "hybrid" | "plugin_hybrid" | "electric";
-type Currency = "EUR" | "GBP" | "USD" | "JPY";
+const CURRENT_YEAR = new Date().getFullYear();
 
 export function ImportVehicleCalculator() {
   const [purchasePrice, setPurchasePrice] = useState(20000);
   const [currency, setCurrency] = useState<Currency>("EUR");
-  const [vehicleAge, setVehicleAge] = useState(3);
+  const [modelYear, setModelYear] = useState(CURRENT_YEAR - 3);
   const [co2Emissions, setCo2Emissions] = useState(130);
+  const [lengthMm, setLengthMm] = useState(4400);
   const [fuelType, setFuelType] = useState<FuelType>("petrol");
   const [isEU, setIsEU] = useState(true);
   const [shippingCost, setShippingCost] = useState(500);
+  const [insuranceCost, setInsuranceCost] = useState(0);
   const [isNew, setIsNew] = useState(false);
 
   const result = useMemo<ImportVehicleOutput>(() => {
     return calculateImportVehicle({
       purchasePrice,
       currency,
-      vehicleAge,
+      modelYear,
       co2Emissions: fuelType === "electric" ? 0 : co2Emissions,
-      engineCapacity: 1600,
+      lengthMm,
       fuelType,
       isEU,
       shippingCost,
+      insuranceCost,
       isNew,
     });
   }, [
     purchasePrice,
     currency,
-    vehicleAge,
+    modelYear,
     co2Emissions,
+    lengthMm,
     fuelType,
     isEU,
     shippingCost,
+    insuranceCost,
     isNew,
   ]);
+
+  const ageYears = CURRENT_YEAR - modelYear;
 
   return (
     <div className="space-y-8">
@@ -65,13 +72,15 @@ export function ImportVehicleCalculator() {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
           <Ship className="h-4 w-4" />
-          Transport Malta
+          Transport Malta — SOPV-02 (2026)
         </div>
         <h1 className="font-cal text-3xl md:text-4xl font-bold">
           Import Vehicle Calculator
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Calculate the total cost of importing a vehicle to Malta.
+          Estimate the total cost of importing a vehicle to Malta, including
+          customs duty, VAT, the SOPV-02 CO2 + length registration tax, and
+          vintage concessions for cars ≥ 30 years old.
         </p>
       </motion.div>
 
@@ -105,7 +114,7 @@ export function ImportVehicleCalculator() {
                   />
                 </div>
                 <div className="flex rounded-xl border border-border overflow-hidden">
-                  {(["EUR", "GBP", "USD"] as const).map((c) => (
+                  {(["EUR", "GBP", "USD", "JPY"] as const).map((c) => (
                     <button
                       key={c}
                       onClick={() => setCurrency(c)}
@@ -148,7 +157,7 @@ export function ImportVehicleCalculator() {
                       : "bg-background border-border hover:bg-muted",
                   )}
                 >
-                  🌍 Non-EU
+                  🌍 Non-EU (Japan, UK, US, CH…)
                 </button>
               </div>
             </div>
@@ -161,7 +170,7 @@ export function ImportVehicleCalculator() {
                 <button
                   onClick={() => {
                     setIsNew(true);
-                    setVehicleAge(0);
+                    setModelYear(CURRENT_YEAR);
                   }}
                   className={cn(
                     "flex-1 p-3 rounded-lg text-sm font-medium transition-all border",
@@ -170,7 +179,7 @@ export function ImportVehicleCalculator() {
                       : "bg-background border-border hover:bg-muted",
                   )}
                 >
-                  🆕 New
+                  🆕 New (&lt; 6 mo / 6 000 km)
                 </button>
                 <button
                   onClick={() => setIsNew(false)}
@@ -186,21 +195,28 @@ export function ImportVehicleCalculator() {
               </div>
             </div>
 
-            {!isNew && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground/70">
-                  Vehicle Age: {vehicleAge} years
-                </label>
-                <input
-                  type="range"
-                  min="1"
-                  max="15"
-                  value={vehicleAge}
-                  onChange={(e) => setVehicleAge(parseInt(e.target.value))}
-                  className="w-full accent-primary"
-                />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground/70">
+                Model Year: {modelYear}{" "}
+                <span className="text-muted-foreground">
+                  ({ageYears} year{ageYears === 1 ? "" : "s"} old —{" "}
+                  {result.euroStandard})
+                </span>
+              </label>
+              <input
+                type="range"
+                min={CURRENT_YEAR - 60}
+                max={CURRENT_YEAR}
+                value={modelYear}
+                onChange={(e) => setModelYear(parseInt(e.target.value))}
+                className="w-full accent-primary"
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>{CURRENT_YEAR - 60}</span>
+                <span>{CURRENT_YEAR - 30} (vintage threshold)</span>
+                <span>{CURRENT_YEAR}</span>
               </div>
-            )}
+            </div>
 
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/70">
@@ -248,8 +264,8 @@ export function ImportVehicleCalculator() {
                 </label>
                 <input
                   type="range"
-                  min="50"
-                  max="300"
+                  min={50}
+                  max={400}
                   value={co2Emissions}
                   onChange={(e) => setCo2Emissions(parseInt(e.target.value))}
                   className="w-full accent-primary"
@@ -259,15 +275,49 @@ export function ImportVehicleCalculator() {
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground/70">
-                Shipping Cost ({currency})
+                Vehicle Length: {lengthMm} mm
               </label>
-              <NumericInput
-                value={shippingCost}
-                onChange={(v) => setShippingCost(v === "" ? 0 : v)}
-                min={0}
-                allowDecimals={false}
-                className="h-12 px-4"
+              <input
+                type="range"
+                min={3000}
+                max={5500}
+                step={10}
+                value={lengthMm}
+                onChange={(e) => setLengthMm(parseInt(e.target.value))}
+                className="w-full accent-primary"
               />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>City car</span>
+                <span>Saloon (~4400)</span>
+                <span>SUV / 7-seat</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70">
+                  Shipping ({currency})
+                </label>
+                <NumericInput
+                  value={shippingCost}
+                  onChange={(v) => setShippingCost(v === "" ? 0 : v)}
+                  min={0}
+                  allowDecimals={false}
+                  className="h-12 px-4"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70">
+                  Transit Insurance ({currency})
+                </label>
+                <NumericInput
+                  value={insuranceCost}
+                  onChange={(v) => setInsuranceCost(v === "" ? 0 : v)}
+                  min={0}
+                  allowDecimals={false}
+                  className="h-12 px-4"
+                />
+              </div>
             </div>
           </div>
         </motion.div>
@@ -278,12 +328,58 @@ export function ImportVehicleCalculator() {
           transition={{ delay: 0.2 }}
           className="space-y-6"
         >
+          {result.registrationBlocked && (
+            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30">
+              <div className="flex gap-3">
+                <AlertTriangle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-semibold text-red-600 dark:text-red-400">
+                    Normal registration not permitted
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Under SOPV-02 / Directive 2007/46/EC, Malta only registers
+                    vehicles meeting Euro 5b/6b or higher emission standards.
+                    Detected: <strong>{result.euroStandard}</strong>. The
+                    vintage / classic path (FMVA + Form VEH 15) is the only
+                    available route for this vehicle.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {(result.vintageEligible ||
+            result.vintage50Discount ||
+            result.vintageFullExemption) && (
+            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
+              <div className="flex gap-3">
+                <Sparkles className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-semibold text-amber-700 dark:text-amber-400">
+                    {result.vintageFullExemption
+                      ? "Full vintage exemption (50+ years)"
+                      : result.vintage50Discount
+                        ? "50 % vintage concession (35–50 years)"
+                        : "Vintage-eligible (30+ years)"}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Black plates · €0 annual road licence · €8 admin/year · max
+                    3 000 km/year · must remain in original condition ·
+                    re-certified every 5 years.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 space-y-6">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-xl bg-primary/20">
                 <Euro className="h-5 w-5 text-primary" />
               </div>
-              <span className="font-semibold">Total On-Road Cost</span>
+              <span className="font-semibold">
+                Estimated Total On-Road Cost
+              </span>
             </div>
             <div className="text-center py-6">
               <motion.div
@@ -299,26 +395,35 @@ export function ImportVehicleCalculator() {
               </p>
             </div>
             <div className="space-y-2">
-              {result.breakdown.map((item, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "flex justify-between items-center p-3 rounded-xl",
-                    item.category === "tax"
-                      ? "bg-amber-500/10"
-                      : item.category === "fee"
-                        ? "bg-blue-500/10"
-                        : "bg-background/50",
-                  )}
-                >
-                  <span className="text-sm text-muted-foreground">
-                    {item.label}
-                  </span>
-                  <span className="font-semibold">
-                    {formatCurrency(item.amount)}
-                  </span>
-                </div>
-              ))}
+              {result.breakdown
+                .filter((item) => item.category !== "info")
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className={cn(
+                      "flex justify-between items-start p-3 rounded-xl",
+                      item.category === "tax"
+                        ? "bg-amber-500/10"
+                        : item.category === "fee"
+                          ? "bg-blue-500/10"
+                          : "bg-background/50",
+                    )}
+                  >
+                    <div className="flex-1 pr-2">
+                      <span className="text-sm text-muted-foreground">
+                        {item.label}
+                      </span>
+                      {item.note && (
+                        <p className="text-xs text-muted-foreground/70 mt-0.5">
+                          {item.note}
+                        </p>
+                      )}
+                    </div>
+                    <span className="font-semibold whitespace-nowrap">
+                      {formatCurrency(item.amount)}
+                    </span>
+                  </div>
+                ))}
             </div>
             <div className="p-4 rounded-xl bg-background/50">
               <p className="text-sm text-muted-foreground">
@@ -327,6 +432,24 @@ export function ImportVehicleCalculator() {
             </div>
           </div>
 
+          {result.warnings.length > 0 && (
+            <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
+              <div className="flex gap-3">
+                <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm space-y-2">
+                  <p className="font-medium text-foreground">
+                    Things to verify
+                  </p>
+                  <ul className="list-disc list-outside ml-4 text-xs text-muted-foreground space-y-1">
+                    {result.warnings.map((w, i) => (
+                      <li key={i}>{w}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
           {fuelType === "electric" && (
             <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20">
               <div className="flex gap-3">
@@ -334,7 +457,8 @@ export function ImportVehicleCalculator() {
                 <div className="text-sm">
                   <p className="font-medium">Electric Vehicle Benefits</p>
                   <p className="text-xs text-muted-foreground">
-                    No CO2 registration tax! Additional grants may be available.
+                    No CO2 component on registration tax. Additional grants may
+                    be available from Transport Malta.
                   </p>
                 </div>
               </div>
@@ -345,12 +469,41 @@ export function ImportVehicleCalculator() {
             <div className="flex gap-3">
               <Info className="h-5 w-5 text-blue-500" />
               <div className="text-sm text-muted-foreground">
-                <p className="font-medium text-foreground mb-1">Notes</p>
+                <p className="font-medium text-foreground mb-1">
+                  Methodology &amp; Sources
+                </p>
                 <ul className="list-disc list-inside text-xs space-y-1">
-                  <li>EU used vehicles: No VAT, No import duty</li>
-                  <li>Non-EU: 10% import duty + 18% VAT</li>
-                  <li>VRT inspection required for all imports</li>
-                  <li>Exchange rates are approximate</li>
+                  <li>
+                    Registration tax: SOPV-02 formula —{" "}
+                    <code>
+                      (CO2 × RV × CO2-rate) + (Length × RV × Length-rate)
+                    </code>
+                  </li>
+                  <li>
+                    Registration Value (RV) is approximated with CIF + duty +
+                    VAT; the official RV comes from{" "}
+                    <a
+                      href="https://www.valuation.vehicleregistration.gov.mt"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
+                      valuation.vehicleregistration.gov.mt
+                    </a>
+                    .
+                  </li>
+                  <li>
+                    Non-EU: 10 % customs duty on CIF + 18 % VAT on (CIF + duty)
+                    + 18 % VAT on registration tax.
+                  </li>
+                  <li>
+                    Vintage rules: ≥30 y eligible (FMVA / VEH 15), 35–50 y → 50
+                    % RegTax discount, ≥50 y → zero RegTax.
+                  </li>
+                  <li>
+                    All vehicles must pass VRT and meet Malta minimum emission
+                    standard (Euro 5b/6b for normal registration).
+                  </li>
                 </ul>
               </div>
             </div>
