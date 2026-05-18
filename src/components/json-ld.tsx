@@ -27,7 +27,17 @@ const AUTHOR_PERSON = {
     "Malta Property Tax",
     "Malta VAT",
   ],
-  sameAs: [`${SITE_URL}/about`, `${SITE_URL}/contact`],
+  // sameAs links anchor the author entity to corroborating identities. For
+  // a brand-led editorial team the strongest available signals are the
+  // organisation's verified profiles. Pages that warrant a stronger
+  // individual byline (e.g., a contributor specialising in a niche) can
+  // override this via a per-page Person definition.
+  sameAs: [
+    `${SITE_URL}/about`,
+    "https://github.com/atknatk/malta-calculator",
+    "https://www.linkedin.com/company/malta-calculator/",
+    "https://x.com/maltacalculator",
+  ],
 };
 
 interface ArticleJsonLdProps {
@@ -87,6 +97,72 @@ export function ArticleJsonLd({
           })),
         }
       : {}),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+/**
+ * DefinedTermSet — schema.org structured data for a glossary of acronyms /
+ * jargon. Lets AI assistants (Claude, ChatGPT, Perplexity, Gemini) map
+ * domain-specific terms (SOPV-02, VRT, TORE, FMVA, CIF, RV…) to authoritative
+ * definitions hosted on this site. Anchor each term with `slug` so AI can
+ * cite the canonical fragment URL.
+ */
+interface DefinedTermItem {
+  /** The term as it appears in prose (e.g., "SOPV-02") */
+  name: string;
+  /** Plain-language definition (one or two sentences) */
+  description: string;
+  /** Anchor slug — used to build a stable @id URL */
+  slug: string;
+  /** Optional URL to authoritative source (Transport Malta, etc.) */
+  sourceUrl?: string;
+}
+
+interface DefinedTermJsonLdProps {
+  /** Page URL where this glossary lives (used as termSet @id) */
+  pageUrl: string;
+  /** Human-readable name of the glossary */
+  setName: string;
+  /** Short description of what this term-set covers */
+  setDescription: string;
+  terms: DefinedTermItem[];
+}
+
+export function DefinedTermJsonLd({
+  pageUrl,
+  setName,
+  setDescription,
+  terms,
+}: DefinedTermJsonLdProps) {
+  const setId = `${pageUrl}#glossary`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "@id": setId,
+    name: setName,
+    description: setDescription,
+    inLanguage: "en",
+    hasDefinedTerm: terms.map((t) => ({
+      "@type": "DefinedTerm",
+      "@id": `${pageUrl}#${t.slug}`,
+      name: t.name,
+      termCode: t.name,
+      description: t.description,
+      inDefinedTermSet: setId,
+      ...(t.sourceUrl
+        ? {
+            url: t.sourceUrl,
+            sameAs: t.sourceUrl,
+          }
+        : {}),
+    })),
   };
 
   return (

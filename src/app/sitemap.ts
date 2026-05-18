@@ -1,8 +1,23 @@
 import type { MetadataRoute } from "next";
 
+/**
+ * Per-page lastModified overrides. Entries here take precedence over the
+ * global `defaultLastUpdated` fallback below — touch this when a specific
+ * page has had a substantive content refresh. URLs are absolute (with
+ * baseUrl) so they're exact-match against the sitemap entries.
+ */
+const PAGE_LAST_UPDATED: Record<string, string> = {
+  "/calculators/import-vehicle": "2026-05-18",
+  "/blog/malta-import-vehicle-guide-2026": "2026-05-18",
+  "/calculators/vehicle-finance": "2026-04-15",
+  "/blog/malta-vehicle-finance-guide-2026": "2026-04-15",
+  "/blog/malta-work-permit-health-screening-2026": "2026-05-01",
+  "/blog/malta-family-reunification-guide-2026": "2026-04-28",
+};
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://maltacalculator.com";
-  const lastUpdated = new Date("2026-02-04"); // Content last updated date
+  const defaultLastUpdated = new Date("2026-02-04");
 
   // Main pages
   const mainPages = [
@@ -316,8 +331,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogPages,
     ...companyPages,
     ...activeCalculators,
-  ].map((page) => ({
-    ...page,
-    lastModified: lastUpdated,
-  }));
+  ].map((page) => {
+    const path = page.url.replace(baseUrl, "") || "/";
+    const override = PAGE_LAST_UPDATED[path];
+    return {
+      ...page,
+      lastModified: override ? new Date(override) : defaultLastUpdated,
+    };
+  });
 }

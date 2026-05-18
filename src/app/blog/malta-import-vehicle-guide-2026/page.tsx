@@ -15,8 +15,10 @@ import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
   CustomFAQJsonLd,
+  DefinedTermJsonLd,
   HowToJsonLd,
 } from "@/components/json-ld";
+import { VEHICLE_IMPORT_GLOSSARY } from "@/app/calculators/import-vehicle/_glossary";
 
 const LAST_UPDATED = "2026-05-18";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
@@ -158,6 +160,12 @@ export default function ImportVehicleGuidePage() {
         ]}
       />
       <CustomFAQJsonLd questions={FAQ_ITEMS} />
+      <DefinedTermJsonLd
+        pageUrl={`${SITE_URL}/blog/malta-import-vehicle-guide-2026`}
+        setName="Malta Vehicle Import — Glossary"
+        setDescription="Authoritative definitions for the acronyms and statutory forms referenced throughout this guide: SOPV-02, RV, VRT, CIF, TORE, FMVA, CoC, and the VEH 007 / 14 / 15 application forms."
+        terms={VEHICLE_IMPORT_GLOSSARY}
+      />
       <HowToJsonLd
         name="How to import a vehicle to Malta in 2026"
         description="Official Maltese process for importing and registering an M1 passenger vehicle, from arrival at port to receiving the logbook and plates."
@@ -222,10 +230,12 @@ export default function ImportVehicleGuidePage() {
                 Importing a Vehicle to Malta 2026 — The Complete Guide
               </h1>
               <p className="text-xl text-muted-foreground">
-                Everything you actually need to know: the SOPV-02 registration
-                tax formula, customs and VAT chain, EV incentives, vintage
-                pathway, the Transfer of Residence exemption, and the expensive
-                30-day deadline most people miss.
+                Everything you actually need to know: the SOPV-02 (Malta&apos;s
+                vehicle registration tax framework) formula, the customs and VAT
+                chain on CIF (Cost + Insurance + Freight) value, EV incentives,
+                the vintage pathway through FMVA (Malta&apos;s classic-vehicle
+                classification body), the Transfer of Residence (TORE)
+                exemption, and the expensive 30-day deadline most people miss.
               </p>
             </header>
 

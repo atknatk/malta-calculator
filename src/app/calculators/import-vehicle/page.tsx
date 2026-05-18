@@ -15,8 +15,10 @@ import {
   BreadcrumbJsonLd,
   CalculatorJsonLd,
   CustomFAQJsonLd,
+  DefinedTermJsonLd,
   HowToJsonLd,
 } from "@/components/json-ld";
+import { VEHICLE_IMPORT_GLOSSARY } from "./_glossary";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -132,6 +134,12 @@ export default function ImportVehiclePage() {
             text: "Standard plates cost €35, vintage black plates €70. The first registration fee is €50. You leave with the Maltese logbook and plates the same day in most cases. The entire process — from arrival to plates — must complete within 30 days or a €30/day administrative fine applies.",
           },
         ]}
+      />
+      <DefinedTermJsonLd
+        pageUrl={`${SITE_URL}/calculators/import-vehicle`}
+        setName="Malta Vehicle Import — Glossary"
+        setDescription="Authoritative definitions for the acronyms and forms referenced by Malta's vehicle import calculator: SOPV-02, RV, VRT, CIF, TORE, FMVA, CoC, and the VEH 007 / VEH 14 / VEH 15 forms."
+        terms={VEHICLE_IMPORT_GLOSSARY}
       />
       <main role="main" aria-label="Import Vehicle Calculator">
         <BackButton href="/calculators" />
