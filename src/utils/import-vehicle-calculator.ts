@@ -482,7 +482,8 @@ export function calculateImportVehicle(
 
   // VAT on RegTax (Customs Malta applies VAT on reg-tax for non-EU imports
   // when the importer is a private individual). We add it conservatively
-  // only for non-EU imports.
+  // only for non-EU imports — and it auto-zeros when TORE waives the
+  // underlying RegTax, since the `registrationTax > 0` gate below handles it.
   let vatOnRegTax = 0;
   if (!isEU && registrationTax > 0) {
     vatOnRegTax = Math.round(registrationTax * VAT_RATE);
@@ -593,7 +594,7 @@ export function calculateImportVehicle(
   // Warnings
   if (registrationBlocked) {
     warnings.push(
-      `1994-era ${euroStandard} vehicle: under SOPV-02 / Directive 2007/46/EC, Malta only accepts Euro 5b/6b or higher for normal first-time registration. This vehicle can ONLY be registered through the vintage/classic path (FMVA + VEH 15).`,
+      `${modelYear}-model ${euroStandard} vehicle: under SOPV-02 / Directive 2007/46/EC, Malta only accepts Euro 5b/6b or higher for normal first-time registration. This vehicle can ONLY be registered through the vintage/classic path (FMVA + VEH 15).`,
     );
   } else if (!isNew && (euroRank[euroStandard] ?? 0) < 5 && !vintageEligible) {
     warnings.push(
