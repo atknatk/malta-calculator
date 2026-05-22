@@ -143,7 +143,10 @@ function bisectGross(
   }
 
   const finalError = Math.abs(achieved - target);
-  const converged = finalError < TOLERANCE * 2;
+  // Forward calc rounds each month to 2 decimals; cumulative rounding can leave
+  // up to ~0.5 € residual even when bisection has converged on the gross.
+  // Use a practical "1 € on annual basis" threshold for the converged flag.
+  const converged = finalError < 1;
 
   return {
     gross: mid,

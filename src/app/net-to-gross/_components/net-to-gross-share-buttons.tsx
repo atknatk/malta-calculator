@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Copy, Check, Twitter, Share2 } from "lucide-react";
+import { Copy, Check, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
@@ -119,14 +119,17 @@ export function NetToGrossShareButtons({
           </svg>
         </Button>
 
+        {/* X (formerly Twitter) */}
         <Button
           variant="ghost"
           size="icon"
           onClick={handleTwitterShare}
-          className="h-8 w-8 rounded-lg hover:bg-[#1DA1F2]/10 hover:text-[#1DA1F2]"
-          title="Share on Twitter"
+          className="h-8 w-8 rounded-lg hover:bg-foreground/10"
+          title="Share on X"
         >
-          <Twitter className="h-4 w-4" />
+          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
         </Button>
 
         <Button
