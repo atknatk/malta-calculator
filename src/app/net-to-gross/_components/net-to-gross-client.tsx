@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import {
   Gauge,
   TrendingUp,
@@ -7,7 +6,9 @@ import {
   Receipt,
   Wallet,
   FileText,
+  Target,
 } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 import { useState, useMemo, useEffect } from "react";
 import {
@@ -18,22 +19,30 @@ import {
 } from "@/types/salary-calculator-type";
 import { SalaryFormCard } from "@/components/salary/form-card";
 import { CalculatorModeToggle } from "@/components/salary/mode-toggle";
-import { serializeNetToGrossParams } from "@/app/net-to-gross/search-params";
-import { SalaryCalculatorForm, type MonthlyBonuses } from "./salary-input-form";
-import { SalaryTable } from "./salary-table";
-import { MobileMonthlyCards } from "./mobile-monthly-cards";
-import { SalaryShareButtons } from "./salary-share-buttons";
+import {
+  NetToGrossCalculatorForm,
+  type MonthlyBonuses,
+  type NetToGrossFormValues,
+} from "./net-to-gross-input-form";
+import { SalaryTable } from "@/app/salary/_components/salary-table";
+import { MobileMonthlyCards } from "@/app/salary/_components/mobile-monthly-cards";
+import { NetToGrossShareButtons } from "./net-to-gross-share-buttons";
 import { calculateMonthlyDeductions } from "@/utils/salary-calculator";
+import { calculateGrossFromNet } from "@/utils/net-to-gross-calculator";
 import {
   SSCCategory,
   TaxRateType,
   SimpleTaxType,
   ChildCount,
 } from "@/config/malta-tax-config";
-import type { SalarySearchParams } from "../search-params";
-import { AnimatedCounter } from "./animated-counter";
-import { SummaryCard, type Summary } from "./summary-card";
-import { FloatingNetCard } from "./floating-net-card";
+import type { NetToGrossSearchParams } from "../search-params";
+import { AnimatedCounter } from "@/app/salary/_components/animated-counter";
+import {
+  SummaryCard,
+  type Summary,
+} from "@/app/salary/_components/summary-card";
+import { FloatingNetCard } from "@/app/salary/_components/floating-net-card";
+import { serializeSalaryParams } from "@/app/salary/search-params";
 
 // ---------------------------------------------------------------------------
 // Hooks
@@ -71,38 +80,22 @@ function useSummaryVisibility(ref: React.RefObject<HTMLDivElement | null>) {
 }
 
 // ---------------------------------------------------------------------------
-// Salary calculation helpers
+// Helpers
 // ---------------------------------------------------------------------------
 
-function buildMonthlySalaries(
-  formValues: ReturnType<typeof useFormValues>,
-): MonthlySalaryInput[] {
-  const grossSalary = formValues.grossSalary ?? 25000;
-  const allowanceBonus = formValues.allowanceBonus || 0;
-  const monthlyGross =
-    grossSalary > 0 ? Number((grossSalary / 12).toFixed(2)) : 0;
-
-  return Object.values(Month).map((month) => ({
-    month,
-    allowanceBonus,
-    bonus: formValues.monthlyBonuses[month] || 0,
-    grossWage: monthlyGross,
-  }));
-}
-
 function buildConfig(
-  formValues: ReturnType<typeof useFormValues>,
+  values: ReturnType<typeof useFormValues>,
 ): SalaryCalculatorConfig {
   return {
-    year: parseInt(formValues.year),
-    taxRateType: formValues.taxRateType as TaxRateType,
-    simpleTaxType: formValues.taxRateType as SimpleTaxType,
-    childCount: formValues.childCount as ChildCount,
-    sscCategory: formValues.sscCategory as SSCCategory,
-    birthDate: new Date(formValues.birthYear, 0, 1),
-    yearlyNonTaxBenefit: formValues.yearlyNonTaxBenefit,
-    yearlyTaxableBenefit: formValues.yearlyTaxableBenefit,
-    monthlyBonus: formValues.monthlyBonus,
+    year: parseInt(values.year),
+    taxRateType: values.taxRateType as TaxRateType,
+    simpleTaxType: values.taxRateType as SimpleTaxType,
+    childCount: values.childCount as ChildCount,
+    sscCategory: values.sscCategory as SSCCategory,
+    birthDate: new Date(values.birthYear, 0, 1),
+    yearlyNonTaxBenefit: values.yearlyNonTaxBenefit,
+    yearlyTaxableBenefit: values.yearlyTaxableBenefit,
+    monthlyBonus: values.monthlyBonus,
     enableCOLA: true,
   };
 }
@@ -127,10 +120,10 @@ function calculateSummary(data: MonthlySalaryOutput[]): Summary | null {
 }
 
 // ---------------------------------------------------------------------------
-// Form values hook - localParams → form field mapping
+// Form values hook
 // ---------------------------------------------------------------------------
 
-function useFormValues(localParams: SalarySearchParams) {
+function useFormValues(localParams: NetToGrossSearchParams) {
   const parsedMonthlyBonuses = useMemo((): MonthlyBonuses => {
     if (!localParams.monthlyBonuses) return {};
     try {
@@ -142,7 +135,7 @@ function useFormValues(localParams: SalarySearchParams) {
 
   return useMemo(
     () => ({
-      grossSalary: localParams.salary,
+      targetNet: localParams.net,
       year: localParams.year,
       taxRateType: localParams.taxType,
       childCount: (localParams.childCount ?? 0) as 0 | 1 | 2,
@@ -155,6 +148,7 @@ function useFormValues(localParams: SalarySearchParams) {
       monthlyBonus: localParams.monthlyBonus,
       allowanceBonus: localParams.allowanceBonus,
       monthlyBonuses: parsedMonthlyBonuses,
+      includeBonusesInTarget: localParams.includeBonusesInTarget,
     }),
     [localParams, parsedMonthlyBonuses],
   );
@@ -164,54 +158,74 @@ function useFormValues(localParams: SalarySearchParams) {
 // Main component
 // ---------------------------------------------------------------------------
 
-interface SalaryCalculatorClientProps {
-  children: React.ReactNode;
+interface NetToGrossCalculatorClientProps {
   initialData: MonthlySalaryOutput[];
-  initialSummary: Summary | null;
-  initialParams: SalarySearchParams;
+  initialAnnualGross: number;
+  initialMonthlyGross: number;
+  initialParams: NetToGrossSearchParams;
 }
 
-export function SalaryCalculatorClient({
-  children,
+export function NetToGrossCalculatorClient({
   initialData,
-  initialSummary,
+  initialAnnualGross,
+  initialMonthlyGross,
   initialParams,
-}: SalaryCalculatorClientProps) {
-  // --- State ---
+}: NetToGrossCalculatorClientProps) {
   const [localParams, setLocalParams] =
-    useState<SalarySearchParams>(initialParams);
+    useState<NetToGrossSearchParams>(initialParams);
   const [data, setData] = useState<MonthlySalaryOutput[]>(initialData);
-  const [isSalaryInputFocused, setIsSalaryInputFocused] = useState(false);
+  const [derivedGross, setDerivedGross] = useState({
+    annual: initialAnnualGross,
+    monthly: initialMonthlyGross,
+  });
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const [hasUserMadeChanges, setHasUserMadeChanges] = useState(false);
 
-  // --- Refs ---
   const isUpdatingRef = React.useRef(false);
   const previousDataRef = React.useRef<MonthlySalaryOutput[]>(data);
   const summaryCardRef = React.useRef<HTMLDivElement>(null);
 
-  // --- Hooks ---
   const isMobile = useIsMobile();
   const isSummaryVisible = useSummaryVisibility(summaryCardRef);
   const formValues = useFormValues(localParams);
 
-  // --- Derived calculations ---
   const config = useMemo(() => buildConfig(formValues), [formValues]);
 
-  const calculatedData = useMemo(
-    () => calculateMonthlyDeductions(buildMonthlySalaries(formValues), config),
-    [formValues, config],
+  // Form değişince → bisection ile target net'i veren gross'u yeniden hesapla
+  const reverseResult = useMemo(
+    () =>
+      calculateGrossFromNet(
+        {
+          targetAnnualNet: formValues.targetNet ?? 0,
+          includeBonusesInTarget: formValues.includeBonusesInTarget,
+          allowanceBonus: formValues.allowanceBonus,
+          monthlyBonuses: formValues.monthlyBonuses,
+        },
+        config,
+      ),
+    [
+      formValues.targetNet,
+      formValues.includeBonusesInTarget,
+      formValues.allowanceBonus,
+      formValues.monthlyBonuses,
+      config,
+    ],
   );
 
-  // Sync calculated data → state (derived state pattern)
-  const prevCalcRef = React.useRef(calculatedData);
+  // Form-driven update sync
+  const prevReverseRef = React.useRef(reverseResult);
   const isFormDrivenUpdate = React.useRef(false);
-  if (prevCalcRef.current !== calculatedData) {
-    prevCalcRef.current = calculatedData;
+  if (prevReverseRef.current !== reverseResult) {
+    prevReverseRef.current = reverseResult;
     isFormDrivenUpdate.current = true;
-    setData(calculatedData);
+    setData(reverseResult.monthly);
+    setDerivedGross({
+      annual: reverseResult.annualGross,
+      monthly: reverseResult.monthlyGross,
+    });
   }
 
-  // Table-driven grossWage fill-down
+  // Table-driven grossWage fill-down (manual override)
   useEffect(() => {
     if (isFormDrivenUpdate.current) {
       isFormDrivenUpdate.current = false;
@@ -247,7 +261,12 @@ export function SalaryCalculatorClient({
         bonus: formValues.monthlyBonuses[line.month] || 0,
         grossWage: isNaN(Number(line.grossWage)) ? 0 : Number(line.grossWage),
       }));
-      setData(calculateMonthlyDeductions(monthlySalaries, config));
+      const recalculated = calculateMonthlyDeductions(monthlySalaries, config);
+      setData(recalculated);
+
+      // Derived gross güncelle (manual override sonrası)
+      const annual = recalculated.reduce((sum, d) => sum + d.grossWage, 0);
+      setDerivedGross({ annual, monthly: annual / 12 });
     }
 
     previousDataRef.current = data;
@@ -255,8 +274,8 @@ export function SalaryCalculatorClient({
 
   const summary = useMemo(() => calculateSummary(data), [data]);
 
-  // --- Handlers ---
-  const handleValuesChange = (values: Partial<typeof formValues>) => {
+  // Form handler
+  const handleValuesChange = (values: Partial<NetToGrossFormValues>) => {
     setHasUserMadeChanges(true);
 
     const monthlyBonusesJson =
@@ -266,20 +285,21 @@ export function SalaryCalculatorClient({
 
     setLocalParams((prev) => ({
       ...prev,
-      salary: values.grossSalary ?? prev.salary,
+      net: values.targetNet ?? prev.net,
       year: values.year ?? prev.year,
       taxType:
-        (values.taxRateType as SalarySearchParams["taxType"]) ?? prev.taxType,
+        (values.taxRateType as NetToGrossSearchParams["taxType"]) ??
+        prev.taxType,
       childCount: values.childCount ?? prev.childCount,
       sscCategory:
-        (values.sscCategory as SalarySearchParams["sscCategory"]) ??
+        (values.sscCategory as NetToGrossSearchParams["sscCategory"]) ??
         prev.sscCategory,
       birthYear: values.birthYear ?? prev.birthYear,
       startOfMonth:
-        (values.startOfMonth as SalarySearchParams["startOfMonth"]) ??
+        (values.startOfMonth as NetToGrossSearchParams["startOfMonth"]) ??
         prev.startOfMonth,
       endOfMonth:
-        (values.endOfMonth as SalarySearchParams["endOfMonth"]) ??
+        (values.endOfMonth as NetToGrossSearchParams["endOfMonth"]) ??
         prev.endOfMonth,
       yearlyNonTaxBenefit:
         values.yearlyNonTaxBenefit ?? prev.yearlyNonTaxBenefit,
@@ -291,6 +311,8 @@ export function SalaryCalculatorClient({
         monthlyBonusesJson !== undefined
           ? monthlyBonusesJson
           : prev.monthlyBonuses,
+      includeBonusesInTarget:
+        values.includeBonusesInTarget ?? prev.includeBonusesInTarget,
     }));
   };
 
@@ -304,18 +326,11 @@ export function SalaryCalculatorClient({
     handleValuesChange({ ...formValues, monthlyBonuses: newBonuses });
   };
 
-  // --- Floating card visibility ---
-  const showFloatingCard =
-    isMobile &&
-    hasUserMadeChanges &&
-    (isSalaryInputFocused || !isSummaryVisible) &&
-    !!summary;
-
-  // --- Switch-to-net-to-gross link with carried-over params ---
-  const switchToNetHref = React.useMemo(() => {
-    const targetNet = summary ? Math.round(summary.annual.net) : 20000;
-    return serializeNetToGrossParams("/net-to-gross", {
-      net: targetNet,
+  // Build the "switch to gross→net" link with carried-over params.
+  // /salary expects `salary` (annual gross) — pass the derived annual gross.
+  const switchToGrossHref = useMemo(() => {
+    return serializeSalaryParams("/salary", {
+      salary: Math.round(derivedGross.annual),
       year: localParams.year,
       taxType: localParams.taxType,
       childCount: localParams.childCount,
@@ -328,40 +343,50 @@ export function SalaryCalculatorClient({
       monthlyBonus: localParams.monthlyBonus,
       allowanceBonus: localParams.allowanceBonus,
       monthlyBonuses: localParams.monthlyBonuses,
-      includeBonusesInTarget: true,
     });
-  }, [localParams, summary]);
+  }, [localParams, derivedGross.annual]);
 
-  // --- Render ---
+  const showFloatingCard =
+    isMobile &&
+    hasUserMadeChanges &&
+    (isInputFocused || !isSummaryVisible) &&
+    !!summary;
+
   return (
     <div className="space-y-6">
-      {/* Mode Toggle: gross→net (active) | net→gross */}
-      <CalculatorModeToggle active="gross-to-net" otherHref={switchToNetHref} />
+      {/* Mode Toggle */}
+      <div className="lg:col-span-2">
+        <CalculatorModeToggle
+          active="net-to-gross"
+          otherHref={switchToGrossHref}
+        />
+      </div>
 
       {/* Two Column Layout: Form + Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column: Calculator Form */}
         <SalaryFormCard
-          title="Salary Calculator"
+          title="Net to Gross Calculator"
           variant="primary"
-          icon={Gauge}
+          icon={Target}
         >
-          <SalaryCalculatorForm
+          <NetToGrossCalculatorForm
             values={formValues}
             onValuesChange={handleValuesChange}
-            onFocusChange={(focused) => setIsSalaryInputFocused(focused)}
+            onFocusChange={(focused) => setIsInputFocused(focused)}
           />
         </SalaryFormCard>
 
         {/* Right Column: Summary */}
         {summary && (
           <div ref={summaryCardRef}>
-            <SalaryFormCard title="Summary" icon={Wallet}>
+            <SalaryFormCard title="Required Gross" icon={Gauge}>
               <div className="grid grid-cols-2 gap-2">
                 <SummaryCard
                   icon={TrendingUp}
-                  label="Gross"
+                  label="Annual Gross"
                   value={`€${Math.round(summary.annual.gross).toLocaleString()}`}
+                  variant="success"
                 />
                 <SummaryCard
                   icon={Coins}
@@ -379,19 +404,18 @@ export function SalaryCalculatorClient({
                   icon={Wallet}
                   label="Net"
                   value={`€${Math.round(summary.annual.net).toLocaleString()}`}
-                  variant="success"
                 />
               </div>
 
-              {/* Monthly Net Highlight */}
-              <div className="mt-3 p-4 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+              {/* Monthly Gross Highlight */}
+              <div className="mt-3 p-4 bg-gradient-to-r from-green-500/20 via-emerald-500/10 to-green-500/10 rounded-xl border border-green-500/20">
                 <div className="text-center">
                   <span className="text-sm text-muted-foreground block mb-1">
-                    Monthly Net
+                    Monthly Gross Salary Required
                   </span>
                   <AnimatedCounter
-                    value={summary.monthly.net}
-                    className="text-2xl sm:text-3xl font-bold text-primary"
+                    value={summary.monthly.gross}
+                    className="text-2xl sm:text-3xl font-bold text-green-700 dark:text-green-400"
                     prefix="€"
                     decimals={2}
                   />
@@ -407,18 +431,15 @@ export function SalaryCalculatorClient({
                 Generate Payslip for Your Team
               </Link>
 
-              {/* Share Buttons */}
-              <SalaryShareButtons
-                monthlyNet={summary.monthly.net}
-                annualNet={summary.annual.net}
+              <NetToGrossShareButtons
+                annualGross={summary.annual.gross}
+                monthlyGross={summary.monthly.gross}
                 calculatorParams={localParams}
               />
             </SalaryFormCard>
           </div>
         )}
       </div>
-
-      {children}
 
       {/* Full Width Table */}
       <SalaryFormCard title="Monthly Breakdown" className="w-full">

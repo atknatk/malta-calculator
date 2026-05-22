@@ -10,6 +10,7 @@ import {
   ArrowRight,
   Sparkles,
   Users,
+  Target,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -31,6 +32,17 @@ interface CalculatorCard {
 }
 
 const calculators: CalculatorCard[] = [
+  {
+    href: "/net-to-gross",
+    title: "Net to Gross Salary Calculator",
+    description:
+      "Reverse salary calculator — enter the net you want to take home and see the gross salary needed under Malta 2026 tax brackets.",
+    icon: Target,
+    gradient: "from-green-500/20 via-emerald-500/10 to-teal-500/5",
+    iconBg: "bg-gradient-to-br from-green-500 to-emerald-600",
+    available: true,
+    badge: "New",
+  },
   {
     href: "/calculators/family-reunification",
     title: "Family Reunification Calculator",

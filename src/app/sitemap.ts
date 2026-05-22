@@ -28,6 +28,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
     },
     {
+      url: `${baseUrl}/net-to-gross`,
+      priority: 0.9,
+      changeFrequency: "yearly" as const,
+    },
+    {
       url: `${baseUrl}/calculators`,
       priority: 0.9,
       changeFrequency: "monthly" as const,
