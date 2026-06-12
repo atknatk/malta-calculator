@@ -1,4 +1,7 @@
-import { ComingSoonPage } from "@/components/coming-soon-page";
+import { MarketingLayout } from "@/components/layout/marketing-layout";
+import { Shell } from "@/components/dashboard/shell";
+import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -6,8 +9,9 @@ import {
   twitterMetadata,
   SITE_URL,
   pageAlternates,
+  getDynamicOgImage,
 } from "@/app/shared-metadata";
-import { Home } from "lucide-react";
+import { FirstTimeBuyerCalculator } from "./_components/first-time-buyer-calculator";
 import {
   BreadcrumbJsonLd,
   CalculatorJsonLd,
@@ -16,25 +20,36 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "First-Time Buyer Scheme Calculator | Malta Calculator",
+  title: "First-Time Buyer Calculator Malta 2026 | Malta Calculator",
   description:
-    "Calculate first-time buyer benefits in Malta. Stamp duty reductions and grants for first property purchase.",
+    "Add up Malta's first-time buyer benefits for 2026: stamp duty exemption on €200,000, the €10,000 grant, and UCA incentives up to €30,000. Free tool.",
+  keywords: [
+    "malta first time buyer calculator",
+    "first time buyer scheme malta 2026",
+    "stamp duty exemption €200000 malta",
+    "€10000 grant first time buyer malta",
+    "UCA property grant malta",
+    "deposit assistance scheme malta",
+    "first home malta benefits",
+    "gozo first time buyer grant",
+  ],
   alternates: pageAlternates("/calculators/first-time-buyer"),
   openGraph: {
     ...ogMetadata,
-    title: "First-Time Buyer Scheme Calculator | Malta Calculator",
+    title: "First-Time Buyer Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/first-time-buyer`,
+    images: [getDynamicOgImage("First-Time Buyer Calculator Malta 2026")],
   },
   twitter: {
     ...twitterMetadata,
-    title: "First-Time Buyer Scheme Calculator | Malta Calculator",
+    title: "First-Time Buyer Calculator Malta 2026 | Malta Calculator",
+    images: [getDynamicOgImage("First-Time Buyer Calculator Malta 2026")],
   },
-  robots: { index: false, follow: true },
 };
 
 export default function FirstTimeBuyerPage() {
   return (
-    <>
+    <MarketingLayout>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: SITE_URL },
@@ -47,62 +62,60 @@ export default function FirstTimeBuyerPage() {
       />
       <CalculatorJsonLd
         name="First-Time Buyer Calculator Malta"
-        description="Calculate stamp duty exemptions, grants, and total savings available to first-time property buyers in Malta under the government scheme."
+        description="Calculate the combined value of Malta's first-time buyer incentives: stamp duty exemption, the €10,000 grant, and UCA/vacant property benefits."
         slug="first-time-buyer"
         category="Property Calculator"
         features={[
-          "Stamp duty exemption on first €200,000",
-          "Reduced stamp duty calculation",
-          "First-time buyer grant eligibility",
-          "Property value limit check",
-          "Total savings summary",
+          "Stamp duty exemption on first €200,000 (permanent)",
+          "€10,000 grant over 10 years",
+          "UCA/vacant property exemption to €750,000",
+          "€15,000 / €30,000 (Gozo) UCA cash grants",
+          "Deposit Assistance Scheme eligibility check",
         ]}
       />
       <CustomFAQJsonLd
         questions={[
           {
             question:
-              "What stamp duty exemption applies to first-time buyers in Malta?",
+              "What benefits do first-time buyers get in Malta in 2026?",
             answer:
-              "First-time buyers in Malta benefit from a stamp duty exemption on the first €200,000 of the property purchase price. The normal stamp duty rate of 5% applies only to the portion above €200,000. This means a saving of up to €10,000 on the first €200,000 of the property value.",
-          },
-          {
-            question: "Who qualifies as a first-time buyer in Malta?",
-            answer:
-              "To qualify as a first-time buyer in Malta, you must be purchasing your first residential property and must not have previously owned any immovable property in Malta or Gozo. Both Maltese citizens and EU nationals who are long-term residents may qualify. The property must be used as your primary residence.",
+              "First-time buyers in Malta get a stamp duty exemption on the first €200,000 of the property value (made permanent in Budget 2026), a €10,000 cash grant paid as €1,000 per year for 10 years for properties bought with a bank loan, and — for UCA or long-vacant properties — a duty exemption up to €750,000 plus cash grants of €15,000 in Malta or €30,000 in Gozo.",
           },
           {
             question:
-              "Is there a government grant for first-time buyers in Malta?",
+              "How much stamp duty does a first-time buyer save in Malta?",
             answer:
-              "Yes. The Maltese government offers a grant of €10,000 to first-time buyers purchasing a property that requires restoration in an Urban Conservation Area (UCA), or a €2,000 grant for purchases of new or existing properties meeting the scheme criteria. Grant amounts and conditions may change annually with the Budget.",
+              "The exemption on the first €200,000 saves up to €10,000 (5% × €200,000). For a €300,000 property, a first-time buyer pays duty only on €100,000 — €5,000 instead of €15,000. For qualifying UCA or vacant properties the exemption extends to the first €750,000.",
           },
           {
-            question:
-              "Is there a maximum property value limit for the first-time buyer scheme in Malta?",
+            question: "Who qualifies for the €10,000 first-time buyer grant?",
             answer:
-              "There is no strict maximum property value to use the stamp duty exemption on the first €200,000. However, certain grant schemes do have property value caps. Always verify the current conditions with the Malta Commissioner for Revenue or a licensed notary before proceeding.",
+              "Buyers acquiring their first primary residence in Malta or Gozo with a bank loan, for purchases made between 1 January 2024 and 31 December 2026. The grant is paid in ten yearly instalments of €1,000 by the Commissioner for Tax and Customs.",
           },
           {
-            question: "How do I apply for first-time buyer benefits in Malta?",
+            question: "What is the Deposit Assistance Scheme in Malta?",
             answer:
-              "The stamp duty exemption is applied automatically at the time of the final deed of sale, through your notary. The notary is responsible for calculating and applying the correct stamp duty. For grants, you need to submit an application to the relevant government department (typically Housing Authority) with supporting documentation including the deed of sale, identity documents, and proof that it is your first property purchase.",
+              "A Housing Authority scheme helping buyers under 40 who can afford a loan but lack the 10% deposit: the government guarantees and finances the deposit through participating banks. From Budget 2026 it applies to properties valued up to €250,000.",
+          },
+          {
+            question: "What counts as a UCA property in Malta?",
+            answer:
+              "Properties within an Urban Conservation Area, properties vacant for more than 7 years (commonly cited as long-vacant older stock), or new properties built in traditional Maltese style. These qualify for the extended duty exemption, the €15,000/€30,000 grant for first-time buyers, and a VAT refund of up to €54,000 on restoration costs.",
           },
         ]}
       />
-      <ComingSoonPage
-        title="First-Time Buyer Scheme"
-        description="Calculate benefits available to first-time property buyers in Malta including stamp duty reductions and grants."
-        icon={<Home className="h-12 w-12 text-primary" />}
-        category="Property"
-        features={[
-          "Reduced stamp duty (3.5%)",
-          "Property value limits",
-          "Grant eligibility",
-          "Residency requirements",
-        ]}
-      />
-    </>
+      <main role="main" aria-label="First-Time Buyer Calculator">
+        <BackButton href="/calculators" />
+        <Shell className="max-w-4xl py-8">
+          <FirstTimeBuyerCalculator />
+          <RelatedGuide
+            href="/blog/malta-first-time-buyer-scheme-2026"
+            title="Malta First-Time Buyer Scheme 2026"
+            description="Full eligibility rules, application steps and deadlines for every first-time buyer incentive."
+          />
+        </Shell>
+      </main>
+    </MarketingLayout>
   );
 }
 

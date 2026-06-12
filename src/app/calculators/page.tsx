@@ -95,9 +95,9 @@ const categories: CalculatorCategory[] = [
       },
       {
         href: "/calculators/expatriate-tax",
-        title: "Expatriate Tax (HQP)",
-        description: "15% flat tax for highly qualified persons",
-        available: false,
+        title: "Highly Skilled Individuals Tax",
+        description: "15% flat rate (LN 20/2026, ex-HQP)",
+        available: true,
       },
     ],
   },
@@ -108,9 +108,9 @@ const categories: CalculatorCategory[] = [
     items: [
       {
         href: "/calculators/childcare",
-        title: "Childcare Subsidy",
-        description: "Childcare support based on income",
-        available: false,
+        title: "Free Childcare",
+        description: "Free hours from your working hours",
+        available: true,
       },
       {
         href: "/calculators/maternity",
@@ -158,8 +158,8 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/first-time-buyer",
         title: "First-Time Buyer",
-        description: "First-time buyer scheme benefits",
-        available: false,
+        description: "Duty exemption + €10k grant + UCA",
+        available: true,
       },
     ],
   },
@@ -221,8 +221,8 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/self-employed-tax",
         title: "Self-Employed Tax",
-        description: "Income tax for self-employed",
-        available: false,
+        description: "Tax + Class 2 SSC + PT instalments",
+        available: true,
       },
       {
         href: "/calculators/self-employed-ssc",

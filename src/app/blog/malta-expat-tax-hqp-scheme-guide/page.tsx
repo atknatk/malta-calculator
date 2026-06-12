@@ -125,6 +125,31 @@ export default function MaltaHQPPage() {
               </p>
             </header>
 
+            <div className="not-prose mb-10 p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/10 border border-amber-500/30">
+              <p className="text-sm font-semibold text-foreground mb-2">
+                ⚠️ Update — January 2026
+              </p>
+              <p className="text-sm text-muted-foreground">
+                From <strong>1 January 2026</strong>, the HQP scheme described
+                in this guide was consolidated into the new{" "}
+                <strong>
+                  Tax Treatment of Highly Skilled Individuals Rules
+                </strong>{" "}
+                (L.N. 20 of 2026): the 15% flat rate now applies to eligible
+                employment income of <strong>€65,000+</strong> across financial
+                services, gaming, aviation, maritime, oil &amp; gas, family
+                offices and back-office operations, for 5 years renewable twice
+                (sunset 31 December 2040). Use our updated{" "}
+                <a
+                  href="/calculators/expatriate-tax"
+                  className="text-primary hover:underline font-medium"
+                >
+                  Highly Skilled Individuals Tax Calculator
+                </a>{" "}
+                for current figures.
+              </p>
+            </div>
+
             <nav className="p-6 bg-muted/30 rounded-2xl mb-12 not-prose">
               <h2 className="text-lg font-semibold mb-4">Table of Contents</h2>
               <ul className="space-y-2 text-sm">
