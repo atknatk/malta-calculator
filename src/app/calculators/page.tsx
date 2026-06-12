@@ -115,8 +115,8 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/maternity",
         title: "Maternity/Paternity Leave",
-        description: "Leave duration and pay calculation",
-        available: false,
+        description: "18 weeks pay: employer + €213.54 benefit",
+        available: true,
       },
       {
         href: "/calculators/children-allowance",
@@ -127,8 +127,8 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/in-work-benefit",
         title: "In-Work Benefit",
-        description: "Support for low-income working families",
-        available: false,
+        description: "Up to €1,627 per child for workers",
+        available: true,
       },
     ],
   },
@@ -246,8 +246,8 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/sick-leave",
         title: "Sick Leave",
-        description: "Sick leave duration and pay",
-        available: false,
+        description: "Employer days + sickness benefit 2026",
+        available: true,
       },
     ],
   },

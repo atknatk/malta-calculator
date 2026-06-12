@@ -1,4 +1,7 @@
-import { ComingSoonPage } from "@/components/coming-soon-page";
+import { MarketingLayout } from "@/components/layout/marketing-layout";
+import { Shell } from "@/components/dashboard/shell";
+import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -6,8 +9,9 @@ import {
   twitterMetadata,
   SITE_URL,
   pageAlternates,
+  getDynamicOgImage,
 } from "@/app/shared-metadata";
-import { Stethoscope } from "lucide-react";
+import { SickLeaveCalculator } from "./_components/sick-leave-calculator";
 import {
   BreadcrumbJsonLd,
   CalculatorJsonLd,
@@ -16,25 +20,36 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Sick Leave Calculator | Malta Calculator",
+  title: "Sick Leave Calculator Malta 2026 | Malta Calculator",
   description:
-    "Calculate sick leave entitlement and sickness benefit in Malta. Free leave and payment calculator.",
+    "Calculate sick pay in Malta: employer full-pay days plus the 2026 sickness benefit (€25.81 or €17.21 daily) from the 4th day, capped at 156 days a year.",
+  keywords: [
+    "malta sick leave calculator",
+    "sickness benefit malta 2026",
+    "sick pay malta",
+    "sick leave entitlement malta",
+    "sickness benefit daily rate malta",
+    "156 days sickness benefit",
+    "wage regulation order sick leave",
+    "blue form malta sick",
+  ],
   alternates: pageAlternates("/calculators/sick-leave"),
   openGraph: {
     ...ogMetadata,
-    title: "Sick Leave Calculator | Malta Calculator",
+    title: "Sick Leave Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/sick-leave`,
+    images: [getDynamicOgImage("Sick Leave Calculator Malta 2026")],
   },
   twitter: {
     ...twitterMetadata,
-    title: "Sick Leave Calculator | Malta Calculator",
+    title: "Sick Leave Calculator Malta 2026 | Malta Calculator",
+    images: [getDynamicOgImage("Sick Leave Calculator Malta 2026")],
   },
-  robots: { index: false, follow: true },
 };
 
 export default function SickLeavePage() {
   return (
-    <>
+    <MarketingLayout>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: SITE_URL },
@@ -47,61 +62,60 @@ export default function SickLeavePage() {
       />
       <CalculatorJsonLd
         name="Sick Leave Calculator Malta"
-        description="Calculate sick leave entitlement, employer-paid sick leave days, and sickness benefit payments for employees in Malta."
+        description="Estimate income while off sick in Malta: employer-paid sick days at full wage plus the social security sickness benefit at 2026 daily rates."
         slug="sick-leave"
         category="Employment Calculator"
         features={[
-          "Annual sick leave entitlement calculation",
-          "Employer-paid sick leave days",
-          "SSC sickness benefit rate",
-          "Medical certificate requirements",
-          "Maximum benefit period limits",
+          "Employer full-pay sick days (WRO adjustable)",
+          "2026 sickness benefit rates (€25.81 / €17.21 daily)",
+          "3 waiting days and 156-day annual cap",
+          "Income loss vs full salary",
+          "Increased benefit after 156 continuous days",
         ]}
       />
       <CustomFAQJsonLd
         questions={[
           {
-            question:
-              "How many sick leave days are employees entitled to in Malta?",
+            question: "How many paid sick days do I get in Malta?",
             answer:
-              "Full-time employees in Malta are entitled to 2 weeks (14 calendar days or 10 working days) of sick leave per year, fully paid by the employer. This is the statutory minimum under the Organisation of Working Time Regulations. Many employers offer additional sick leave beyond this statutory minimum in their employment contracts.",
+              "The statutory minimum for most employees is 2 working weeks (10 days) of sick leave on full pay per year. However, many sector Wage Regulation Orders grant considerably more — some sectors get additional weeks at full or half pay. Check your WRO or employment contract for your exact entitlement.",
+          },
+          {
+            question: "How much is the sickness benefit in Malta in 2026?",
+            answer:
+              "The 2026 sickness benefit is €25.81 per day for a married person maintaining a spouse not in full-time employment, and €17.21 per day for single persons or those whose spouse works full-time. After 156 continuous benefit days, the claim converts to the Increased Sickness Benefit of €34.42/€25.81 per day.",
           },
           {
             question:
-              "When is a medical certificate required for sick leave in Malta?",
+              "When does the sickness benefit start being paid in Malta?",
             answer:
-              "In Malta, a medical certificate from a registered doctor is generally required to certify illness. For Social Security sickness benefit purposes, a sick leave certificate (medical certificate) must be submitted to the Department of Social Security. Employers may also require a doctor's note for any absence due to illness, even for short periods, depending on the employment contract.",
+              "Sickness benefit is paid from the 4th day of sickness — the first 3 days are waiting days with no benefit. You need a medical certificate (the blue form) from the first day, submitted to the Department of Social Security within 10 days, normally via mysocialsecurity.gov.mt.",
           },
           {
-            question: "What is the sickness benefit rate in Malta?",
+            question: "How long can I receive sickness benefit in Malta?",
             answer:
-              "The SSC-funded sickness benefit in Malta is a daily flat-rate benefit paid by the Department of Social Security after the employer-paid sick leave entitlement is exhausted. The benefit is payable for up to 156 days (approximately 6 months) in any 2-year period. The rate for 2026 is set based on the applicable Social Security legislation and is subject to annual review.",
+              "Sickness benefit is payable for a maximum of 156 days in a calendar year. Longer continuous claims convert to the Increased Sickness Benefit, and extended incapacity may qualify for invalidity pension instead.",
           },
           {
-            question: "How long does the employer pay sick leave in Malta?",
+            question:
+              "Does my employer pay full salary while I am sick in Malta?",
             answer:
-              "The employer is required to pay the employee's full salary for the statutory 2 weeks (10 working days) of sick leave entitlement per year. Once this entitlement is exhausted, the employee may apply for the SSC sickness benefit from the Department of Social Security, provided they have made sufficient SSC contributions and meet eligibility criteria.",
-          },
-          {
-            question: "Can sick leave accumulate from year to year in Malta?",
-            answer:
-              "Under the minimum statutory provisions in Malta, sick leave entitlement does not automatically accumulate from one year to the next. Each year, employees receive a fresh entitlement. However, individual employment contracts or collective agreements may provide more favourable terms, including the carry-over of unused sick leave. You should check your specific employment contract for the applicable rules.",
+              "During your sick leave entitlement, yes — your employer pays your full wage (often less the sickness benefit amount, which the employer may recover). Once your employer-paid entitlement is exhausted, your income drops to the social security sickness benefit only, which this calculator shows.",
           },
         ]}
       />
-      <ComingSoonPage
-        title="Sick Leave Calculator"
-        description="Calculate sick leave entitlement and sickness benefit payments in Malta."
-        icon={<Stethoscope className="h-12 w-12 text-primary" />}
-        category="Leave"
-        features={[
-          "Employer-paid sick leave",
-          "SSC-funded sickness benefit",
-          "Medical certificate requirements",
-          "Maximum benefit periods",
-        ]}
-      />
-    </>
+      <main role="main" aria-label="Sick Leave Calculator">
+        <BackButton href="/calculators" />
+        <Shell className="max-w-4xl py-8">
+          <SickLeaveCalculator />
+          <RelatedGuide
+            href="/blog/malta-mysocialsecurity-app-guide-2026"
+            title="mySocialSecurity Malta App 2026: Complete Guide"
+            description="How to submit sickness benefit claims, medical certificates and track payments online."
+          />
+        </Shell>
+      </main>
+    </MarketingLayout>
   );
 }
 

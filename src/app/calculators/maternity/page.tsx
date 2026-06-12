@@ -1,4 +1,7 @@
-import { ComingSoonPage } from "@/components/coming-soon-page";
+import { MarketingLayout } from "@/components/layout/marketing-layout";
+import { Shell } from "@/components/dashboard/shell";
+import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -6,8 +9,9 @@ import {
   twitterMetadata,
   SITE_URL,
   pageAlternates,
+  getDynamicOgImage,
 } from "@/app/shared-metadata";
-import { Baby } from "lucide-react";
+import { MaternityCalculator } from "./_components/maternity-calculator";
 import {
   BreadcrumbJsonLd,
   CalculatorJsonLd,
@@ -16,25 +20,36 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Maternity & Paternity Leave Calculator | Malta Calculator",
+  title: "Maternity Leave Calculator Malta 2026 | Malta Calculator",
   description:
-    "Calculate maternity and paternity leave in Malta. Free tool for leave duration and pay calculations.",
+    "Calculate your income during Malta's 18-week maternity leave: 14 weeks employer full pay + 4 weeks at €213.54. Self-occupied rates and paternity leave.",
+  keywords: [
+    "malta maternity leave calculator",
+    "maternity leave pay malta 2026",
+    "18 weeks maternity leave malta",
+    "maternity leave benefit €213.54",
+    "maternity benefit malta",
+    "paternity leave malta 10 days",
+    "self-occupied maternity malta",
+    "maternity pay calculator malta",
+  ],
   alternates: pageAlternates("/calculators/maternity"),
   openGraph: {
     ...ogMetadata,
-    title: "Maternity & Paternity Leave Calculator | Malta Calculator",
+    title: "Maternity Leave Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/maternity`,
+    images: [getDynamicOgImage("Maternity Leave Calculator Malta 2026")],
   },
   twitter: {
     ...twitterMetadata,
-    title: "Maternity & Paternity Leave Calculator | Malta Calculator",
+    title: "Maternity Leave Calculator Malta 2026 | Malta Calculator",
+    images: [getDynamicOgImage("Maternity Leave Calculator Malta 2026")],
   },
-  robots: { index: false, follow: true },
 };
 
 export default function MaternityPage() {
   return (
-    <>
+    <MarketingLayout>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: SITE_URL },
@@ -47,61 +62,60 @@ export default function MaternityPage() {
       />
       <CalculatorJsonLd
         name="Maternity Leave Calculator Malta"
-        description="Calculate maternity leave duration, maternity benefit payments, and employer obligations for employees in Malta."
+        description="Calculate income during Malta's 18-week maternity leave: employer-paid weeks, the government Maternity Leave Benefit and rates for self-occupied mothers."
         slug="maternity"
         category="Employment Calculator"
         features={[
-          "18 weeks maternity leave entitlement",
-          "Maternity benefit rate calculation",
-          "Employer-paid vs SSC-paid periods",
-          "Paternity and parental leave details",
-          "Adoption leave entitlement",
+          "18-week maternity leave breakdown",
+          "14 weeks employer full pay",
+          "4-week government benefit at €213.54/week",
+          "Self-occupied rate €221.78/week",
+          "10 working days paternity leave info",
         ]}
       />
       <CustomFAQJsonLd
         questions={[
           {
+            question: "How long is maternity leave in Malta?",
+            answer:
+              "Maternity leave in Malta is 18 weeks. The first 14 weeks are paid in full by the employer; the final 4 weeks are unpaid by the employer but covered by the government's Maternity Leave Benefit of €213.54 per week. At least 6 weeks must be taken after the birth.",
+          },
+          {
+            question: "Who pays for maternity leave in Malta?",
+            answer:
+              "The employer pays the first 14 weeks at the employee's full salary. The remaining 4 weeks are paid by the government through the Maternity Leave Benefit (€213.54/week in 2026), which both employed and self-employed mothers can claim via mysocialsecurity.gov.mt.",
+          },
+          {
             question:
-              "How many weeks of maternity leave are employees entitled to in Malta?",
+              "How much maternity benefit does a self-employed mother get in Malta?",
             answer:
-              "Employees in Malta are entitled to 18 weeks of maternity leave. This includes a compulsory period of 4 weeks before the expected birth and 4 weeks after birth. The remaining 10 weeks can be taken at the employee's discretion before or after the birth, subject to giving proper notice to the employer.",
+              "Self-occupied mothers do not receive employer pay; instead they get the Maternity Benefit of €221.78 per week for 14 weeks, plus the 4-week Maternity Leave Benefit of €213.54 per week — a total of around €3,959 over 18 weeks in 2026.",
           },
           {
-            question: "What is the maternity benefit rate in Malta?",
+            question: "How long is paternity leave in Malta?",
             answer:
-              "The maternity benefit in Malta is paid by the Department of Social Security at a flat weekly rate based on the national minimum wage. For 2026, the benefit is paid for the full 18 weeks of maternity leave. The employer is responsible for topping up the benefit to the employee's full salary for the first 14 weeks, with the remaining weeks covered by the Social Security benefit.",
+              "Fathers in Malta are entitled to 10 working days of paternity leave on full pay, funded by the employer, on the birth or adoption of their child. This applies equally to all employees regardless of length of service.",
           },
           {
             question:
-              "What are employer obligations during maternity leave in Malta?",
+              "Do I get maternity benefit if I am not employed in Malta?",
             answer:
-              "Employers in Malta must grant 18 weeks of maternity leave and are required to pay the employee's full salary for the first 14 weeks of leave (this includes the Social Security maternity benefit). Employers cannot dismiss an employee during maternity leave or for a reason connected to pregnancy. The employee's position must be kept available upon return.",
-          },
-          {
-            question: "How much paternity leave is available in Malta?",
-            answer:
-              "Fathers in Malta are entitled to 2 days of paid paternity leave immediately following the birth of a child. Additionally, under the parental leave provisions, parents are entitled to 4 months of parental leave (unpaid, unless the employer agrees otherwise) per child, which can be taken until the child reaches the age of 8.",
-          },
-          {
-            question: "Is adoption leave available in Malta?",
-            answer:
-              "Yes, Malta provides adoption leave. The adopting mother is entitled to maternity leave equivalent to that of a biological mother (18 weeks), provided the child is under 3 years of age at the time of adoption. The adopting father is entitled to the same paternity leave rights as a biological father. Both parents may also avail of parental leave rights.",
+              "Women who are not entitled to employer-paid maternity leave (for example those not in employment but satisfying social security conditions) may qualify for the flat-rate Maternity Benefit of €140.29 per week for 14 weeks in 2026.",
           },
         ]}
       />
-      <ComingSoonPage
-        title="Maternity & Paternity Leave"
-        description="Calculate your entitled maternity leave (18 weeks) and paternity leave duration and payment in Malta."
-        icon={<Baby className="h-12 w-12 text-primary" />}
-        category="Family"
-        features={[
-          "18 weeks maternity leave",
-          "10 days paternity leave",
-          "Maternity benefit calculation",
-          "Employer contribution periods",
-        ]}
-      />
-    </>
+      <main role="main" aria-label="Maternity Leave Calculator">
+        <BackButton href="/calculators" />
+        <Shell className="max-w-4xl py-8">
+          <MaternityCalculator />
+          <RelatedGuide
+            href="/blog/malta-maternity-leave-2026-guide"
+            title="Malta Maternity Leave 2026: Complete Guide"
+            description="Full rules on the 18 weeks, employer obligations, the government benefit and how to apply."
+          />
+        </Shell>
+      </main>
+    </MarketingLayout>
   );
 }
 
