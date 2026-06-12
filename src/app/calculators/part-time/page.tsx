@@ -1,4 +1,7 @@
-import { ComingSoonPage } from "@/components/coming-soon-page";
+import { MarketingLayout } from "@/components/layout/marketing-layout";
+import { Shell } from "@/components/dashboard/shell";
+import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -6,8 +9,9 @@ import {
   twitterMetadata,
   SITE_URL,
   pageAlternates,
+  getDynamicOgImage,
 } from "@/app/shared-metadata";
-import { Clock } from "lucide-react";
+import { PartTimeCalculator } from "./_components/part-time-calculator";
 import {
   BreadcrumbJsonLd,
   CalculatorJsonLd,
@@ -16,95 +20,101 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Part-Time Salary Calculator | Malta Calculator",
+  title: "Part-Time Tax Calculator Malta | Malta Calculator",
   description:
-    "Calculate part-time salary in Malta. Free pro-rata calculations for tax, SSC, and salary for part-time employees.",
+    "Calculate Malta's 10% part-time tax on the first €10,000 (TA23) or €12,000 (TA22) and compare it with progressive rates to find the cheaper option.",
+  keywords: [
+    "malta part-time tax calculator",
+    "10% part-time tax malta",
+    "TA23 malta",
+    "TA22 malta",
+    "part-time self-employed tax malta",
+    "part-time employment tax malta",
+    "second job tax malta",
+    "part-time 10 percent malta 2026",
+  ],
   alternates: pageAlternates("/calculators/part-time"),
   openGraph: {
     ...ogMetadata,
-    title: "Part-Time Salary Calculator | Malta Calculator",
+    title: "Part-Time Tax Calculator Malta | Malta Calculator",
     url: `${SITE_URL}/calculators/part-time`,
+    images: [getDynamicOgImage("Part-Time Tax Calculator Malta")],
   },
   twitter: {
     ...twitterMetadata,
-    title: "Part-Time Salary Calculator | Malta Calculator",
+    title: "Part-Time Tax Calculator Malta | Malta Calculator",
+    images: [getDynamicOgImage("Part-Time Tax Calculator Malta")],
   },
-  robots: { index: false, follow: true },
 };
 
 export default function PartTimePage() {
   return (
-    <>
+    <MarketingLayout>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: SITE_URL },
           { name: "Calculators", url: `${SITE_URL}/calculators` },
           {
-            name: "Part-Time Salary Calculator",
+            name: "Part-Time Tax Calculator",
             url: `${SITE_URL}/calculators/part-time`,
           },
         ]}
       />
       <CalculatorJsonLd
-        name="Part-Time Salary Calculator Malta"
-        description="Calculate pro-rata salary, tax, and SSC Category B contributions for part-time employees in Malta."
+        name="Part-Time Tax Calculator Malta"
+        description="Calculate the optional 10% final tax on part-time work in Malta (TA22/TA23) and compare it with declaring the income at progressive rates."
         slug="part-time"
-        category="Employment Calculator"
+        category="Tax Calculator"
         features={[
-          "SSC Category B contributions for part-time workers",
-          "Pro-rata salary and tax calculation",
-          "Minimum wage compliance check",
-          "Annual leave pro-rata entitlement",
-          "Part-time vs full-time comparison",
+          "10% rate on first €10,000 of part-time employment (TA23)",
+          "10% rate on first €12,000 of part-time self-employment (TA22)",
+          "Excess-over-cap marginal tax calculation",
+          "Comparison with full progressive declaration",
+          "2026 Malta tax brackets",
         ]}
       />
       <CustomFAQJsonLd
         questions={[
           {
-            question:
-              "What SSC category applies to part-time workers in Malta?",
+            question: "How is part-time work taxed in Malta?",
             answer:
-              "Part-time workers in Malta who earn below a certain weekly threshold fall under SSC Category B. For 2026, Category B applies to employed persons working part-time whose weekly basic wage does not exceed €179.33. The maximum weekly SSC contribution under Category B is €22.94, split between the employee and employer. Part-time workers earning above this threshold are classified under Category A (full-time rates).",
+              "Income from part-time work in Malta can optionally be taxed at a flat 10% final rate, separate from your other income. The rate applies to the first €10,000 per year from part-time employment (form TA23) or the first €12,000 from part-time self-employment (form TA22). Anything above the cap is declared at normal progressive rates.",
+          },
+          {
+            question: "Who qualifies for the 10% part-time tax rate in Malta?",
+            answer:
+              "You generally qualify if you also have a full-time job, are a pensioner, or are a full-time student or apprentice, and the part-time work is performed for an employer different from your full-time employer. Part-time self-employed persons must be registered with Jobsplus, engage no more than 2 employees, and keep proper records.",
           },
           {
             question:
-              "Are part-time employees entitled to pro-rata benefits in Malta?",
+              "Is the 10% part-time rate always cheaper than declaring the income?",
             answer:
-              "Yes, part-time employees in Malta are entitled to pro-rata entitlements under the Part-Time Employees (Prevention of Less Favourable Treatment) Regulations. This includes pro-rata annual leave, public holidays, sick leave, and other benefits proportional to the hours worked compared to a comparable full-time employee. Part-time workers cannot be treated less favourably than full-time workers on a pro-rata basis.",
+              "No. The 10% is a flat final tax, while declaring adds the income on top of your other earnings at your marginal rate. If your total income falls in Malta's 0% band (first €12,000 for singles in 2026) or partly in the 15% band, declaring can result in less tax than the flat 10%. This calculator compares both options.",
           },
           {
-            question:
-              "What is the minimum number of hours for part-time employment in Malta?",
+            question: "When is the TA22 or TA23 form due in Malta?",
             answer:
-              "There is no statutory minimum number of hours for part-time employment in Malta. Any employment that is less than the standard full-time working hours (typically 40 hours per week) may be considered part-time. However, the classification for SSC purposes (Category A vs Category B) depends on the weekly wage threshold rather than a specific number of hours.",
+              "Both the TA22 (part-time self-employment) and TA23 (part-time employment) forms, together with the 10% payment, are due by 30 April of the year following the year in which the income was earned. Filing is done electronically through the MTCA portal.",
           },
           {
-            question:
-              "How is income tax calculated for part-time workers in Malta?",
+            question: "Do I pay social security on part-time income in Malta?",
             answer:
-              "Part-time income in Malta is subject to income tax at a flat rate of 15% (with a minimum tax of €400 per year), provided the part-time work is secondary employment and the individual elects to be taxed at the reduced rate. This option must be exercised by submitting the appropriate form to the Commissioner for Revenue. Alternatively, the income can be declared in the annual tax return and taxed at the standard progressive rates.",
-          },
-          {
-            question:
-              "Can part-time workers in Malta access unemployment and social benefits?",
-            answer:
-              "Part-time workers in Malta who pay SSC Category B contributions have access to a more limited range of social security benefits compared to full-time Category A contributors. Category B contributors may not qualify for all benefits available to Category A contributors. Eligibility for specific benefits such as sickness benefit, unemployment benefit, or maternity benefit depends on the contribution class and whether sufficient contributions have been made.",
+              "If you already pay Class 1 SSC through your full-time job, no additional Class 1 contribution is due on a part-time second job's 10% scheme income. Part-time self-occupied persons may fall under Class 2 rules — certain groups (students under 25, pensioners, part-time self-occupied women) can pay 15% of actual earnings instead of the standard minimum.",
           },
         ]}
       />
-      <ComingSoonPage
-        title="Part-Time Salary Calculator"
-        description="Calculate pro-rata salary, tax, and SSC contributions for part-time employees in Malta."
-        icon={<Clock className="h-12 w-12 text-primary" />}
-        category="Employment"
-        features={[
-          "Pro-rata salary calculation",
-          "Proportional SSC contributions",
-          "Minimum wage compliance check",
-          "Annual leave pro-rata entitlement",
-        ]}
-      />
-    </>
+      <main role="main" aria-label="Part-Time Tax Calculator">
+        <BackButton href="/calculators" />
+        <Shell className="max-w-4xl py-8">
+          <PartTimeCalculator />
+          <RelatedGuide
+            href="/blog/malta-part-time-employment-rights"
+            title="Malta Part-Time Employment Rights 2026"
+            description="Pro-rata leave, SSC rules, the 10% tax option and everything else part-time workers in Malta should know."
+          />
+        </Shell>
+      </main>
+    </MarketingLayout>
   );
 }
 

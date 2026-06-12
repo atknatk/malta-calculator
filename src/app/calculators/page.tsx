@@ -84,14 +84,14 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/bonus-tax",
         title: "Bonus Tax",
-        description: "Tax on one-time bonuses",
-        available: false,
+        description: "Marginal tax on bonuses & 13th salary",
+        available: true,
       },
       {
         href: "/calculators/part-time",
-        title: "Part-Time Salary",
-        description: "Pro-rata calculations for part-time",
-        available: false,
+        title: "Part-Time Tax",
+        description: "10% rate (TA22/TA23) vs declaring",
+        available: true,
       },
       {
         href: "/calculators/expatriate-tax",
@@ -152,8 +152,8 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/rental-tax",
         title: "Rental Tax",
-        description: "15% flat rate rental income tax",
-        available: false,
+        description: "15% flat rate vs progressive comparison",
+        available: true,
       },
       {
         href: "/calculators/first-time-buyer",
@@ -227,8 +227,8 @@ const categories: CalculatorCategory[] = [
       {
         href: "/calculators/self-employed-ssc",
         title: "Self-Employed SSC",
-        description: "Class 2 SSC contributions",
-        available: false,
+        description: "Class 2 SSC: SA/SB/SC rates 2026",
+        available: true,
       },
     ],
   },

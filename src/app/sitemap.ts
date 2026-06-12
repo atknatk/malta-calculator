@@ -8,6 +8,10 @@ import type { MetadataRoute } from "next";
  */
 const PAGE_LAST_UPDATED: Record<string, string> = {
   "/calculators/property-transfer-tax": "2026-06-12",
+  "/calculators/rental-tax": "2026-06-12",
+  "/calculators/bonus-tax": "2026-06-12",
+  "/calculators/part-time": "2026-06-12",
+  "/calculators/self-employed-ssc": "2026-06-12",
   "/blog/malta-pay-transparency-rules-2026": "2026-06-12",
   "/calculators/import-vehicle": "2026-05-18",
   "/blog/malta-import-vehicle-guide-2026": "2026-05-18",
@@ -316,6 +320,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "overtime",
     "stamp-duty",
     "property-transfer-tax",
+    "rental-tax",
+    "bonus-tax",
+    "part-time",
+    "self-employed-ssc",
     "retirement-age",
     "pension",
     "vacation",
@@ -327,6 +335,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "children-allowance",
     // Transport calculators
     "vehicle-registration-tax",
+    "vehicle-registration-fee",
     "road-license",
     "drivers-license",
     "import-vehicle",

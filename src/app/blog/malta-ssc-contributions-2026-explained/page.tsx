@@ -479,7 +479,9 @@ export default function MaltaSSCPage() {
               slug="malta-ssc-contributions-2026-explained"
               title="Malta SSC Contributions 2026: Rates, Caps & Categories Explained"
               ctaTitle="Calculate Your SSC Automatically"
-              ctaDescription="Our Malta Salary Calculator automatically determines your SSC category and calculates your exact contributions for 2026."
+              ctaDescription="Employees: our Salary Calculator works out your Class 1 SSC. Self-occupied? Use the dedicated Class 2 SSC calculator for SA/SB/SC rates."
+              ctaLink="/calculators/self-employed-ssc"
+              ctaLinkText="Try Class 2 SSC Calculator"
             />
           </article>
         </Shell>

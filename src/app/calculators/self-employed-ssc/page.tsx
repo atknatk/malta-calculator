@@ -1,4 +1,7 @@
-import { ComingSoonPage } from "@/components/coming-soon-page";
+import { MarketingLayout } from "@/components/layout/marketing-layout";
+import { Shell } from "@/components/dashboard/shell";
+import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -6,8 +9,9 @@ import {
   twitterMetadata,
   SITE_URL,
   pageAlternates,
+  getDynamicOgImage,
 } from "@/app/shared-metadata";
-import { Calculator } from "lucide-react";
+import { SelfEmployedSSCCalculator } from "./_components/self-employed-ssc-calculator";
 import {
   BreadcrumbJsonLd,
   CalculatorJsonLd,
@@ -16,25 +20,36 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Self-Employed SSC Calculator | Malta Calculator",
+  title: "Self-Employed SSC Calculator Malta 2026 | Malta Calculator",
   description:
-    "Calculate Class 2 SSC for self-employed in Malta. Free social security contribution calculator.",
+    "Calculate Malta Class 2 SSC for 2026. SA, SB and SC categories, 15% of net income, €36.18–€83.89 weekly rates and April, August, December instalments.",
+  keywords: [
+    "malta class 2 ssc calculator",
+    "self-employed ssc malta 2026",
+    "self-occupied social security malta",
+    "class 2 contributions malta",
+    "SA SB SC rates malta",
+    "15% ssc self-employed malta",
+    "malta ni self-employed",
+    "social security instalments malta",
+  ],
   alternates: pageAlternates("/calculators/self-employed-ssc"),
   openGraph: {
     ...ogMetadata,
-    title: "Self-Employed SSC Calculator | Malta Calculator",
+    title: "Self-Employed SSC Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/self-employed-ssc`,
+    images: [getDynamicOgImage("Self-Employed SSC Calculator Malta 2026")],
   },
   twitter: {
     ...twitterMetadata,
-    title: "Self-Employed SSC Calculator | Malta Calculator",
+    title: "Self-Employed SSC Calculator Malta 2026 | Malta Calculator",
+    images: [getDynamicOgImage("Self-Employed SSC Calculator Malta 2026")],
   },
-  robots: { index: false, follow: true },
 };
 
 export default function SelfEmployedSSCPage() {
   return (
-    <>
+    <MarketingLayout>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: SITE_URL },
@@ -47,63 +62,61 @@ export default function SelfEmployedSSCPage() {
       />
       <CalculatorJsonLd
         name="Self-Employed SSC Calculator Malta"
-        description="Calculate Class D Social Security Contributions (SSC) for self-employed persons in Malta, including weekly caps, minimum contributions, and annual totals."
+        description="Calculate Class 2 social security contributions for self-occupied persons in Malta: SA, SB and SC categories, weekly rates and the three yearly instalments."
         slug="self-employed-ssc"
         category="Social Security Calculator"
         features={[
-          "Class D SSC rate calculation",
-          "Weekly contribution cap",
-          "Minimum annual contribution",
-          "Annual and quarterly payment breakdown",
-          "2026 SSC thresholds",
+          "Official 2026 Class 2 rates (SA, SB, SC)",
+          "15% of previous year's net income formula",
+          "Born before/after 1962 thresholds",
+          "April, August and December instalment amounts",
+          "Reduced rate for students, pensioners and part-timers",
         ]}
       />
       <CustomFAQJsonLd
         questions={[
           {
             question:
-              "What SSC class applies to self-employed persons in Malta?",
+              "How much social security does a self-employed person pay in Malta?",
             answer:
-              "Self-employed persons in Malta pay Class 2 Social Security Contributions under Category D. The contribution rate is 15% of net annual income, split between the self-employed person (10%) and a notional employer contribution (5%). The weekly contribution is capped at €55.93 for new entrants and €49.04 for those under older rules in 2026.",
+              "Self-occupied persons in Malta pay Class 2 SSC equal to 15% of the annual net income earned in the previous year, expressed as a weekly rate. In 2026 the minimum (category SA) is €36.18 per week for income up to €12,543.72, and the maximum (category SC) is €83.89 per week for those born in 1962 or later, or €73.56 for those born before 1962.",
           },
           {
-            question: "What is the weekly SSC cap for self-employed in Malta?",
+            question: "What are the Class 2 SSC categories SA, SB and SC?",
             answer:
-              "For 2026, the weekly SSC cap for self-employed (Category D) is €55.93 for persons who joined the scheme under current rules. This means the maximum annual SSC payable is approximately €2,908 regardless of how high the income is above the cap threshold of €559.31 weekly income.",
+              "SA is the flat minimum rate for annual net income up to €12,543.72 (€36.18/week in 2026). SB covers the middle band, paying exactly 15% of annual net income divided by 52. SC is the capped maximum: above €25,500 (born before 1962, €73.56/week) or above €29,083.36 (born 1962 or later, €83.89/week).",
           },
           {
-            question:
-              "Is there a minimum SSC contribution for self-employed in Malta?",
+            question: "When are Class 2 contributions paid in Malta?",
             answer:
-              "Yes. Self-employed persons in Malta must pay a minimum annual SSC even if their income is very low or nil. The minimum contribution ensures continued eligibility for social security benefits. For 2026, the minimum weekly SSC for Category D is based on the minimum contributory wage. Contact the Social Security Department for the exact current minimum.",
-          },
-          {
-            question:
-              "Can self-employed persons make voluntary SSC contributions in Malta?",
-            answer:
-              "Yes. If a self-employed person's income falls below the minimum threshold, they can make voluntary contributions to maintain their social security benefit record. Voluntary contributions help protect eligibility for retirement pension, sickness benefits, and other social security entitlements.",
+              "Class 2 SSC is paid to the Malta Tax & Customs Administration in three instalments per year — by the end of April, August and December. Each instalment covers a third of the annual amount; this calculator shows the exact figure per instalment.",
           },
           {
             question:
-              "How does self-employed SSC affect pension entitlement in Malta?",
+              "Can students or pensioners pay reduced SSC in Malta when self-occupied?",
             answer:
-              "Every year of SSC contributions as a self-employed person counts as a qualifying year towards your Malta retirement pension. You need a minimum number of contribution years to qualify for the full two-thirds pension. Gaps in contributions reduce pension entitlement, so maintaining contributions even during low-income periods is advisable.",
+              "Yes. Part-time self-occupied women, full-time students under 25 and pensioners whose earnings fall below the SA threshold can opt to pay 15% of their actual basic weekly income instead of the standard SA minimum of €36.18 per week.",
+          },
+          {
+            question:
+              "Do Class 2 contributions count towards a pension in Malta?",
+            answer:
+              "Yes. Class 2 contributions count towards the contributory state pension and other contributory benefits exactly like employee Class 1 contributions. Paying below the full applicable rate may proportionally reduce your future pension entitlement.",
           },
         ]}
       />
-      <ComingSoonPage
-        title="Self-Employed SSC Calculator"
-        description="Calculate Class 2 Social Security Contributions for self-employed persons in Malta."
-        icon={<Calculator className="h-12 w-12 text-primary" />}
-        category="Self-Employment"
-        features={[
-          "Class 2 contribution rates",
-          "Income-based calculation",
-          "Minimum/maximum thresholds",
-          "Payment schedule",
-        ]}
-      />
-    </>
+      <main role="main" aria-label="Self-Employed SSC Calculator">
+        <BackButton href="/calculators" />
+        <Shell className="max-w-4xl py-8">
+          <SelfEmployedSSCCalculator />
+          <RelatedGuide
+            href="/blog/malta-ssc-contributions-2026-explained"
+            title="Malta SSC Contributions 2026: Rates, Caps & Categories"
+            description="The full guide to Malta's social security system — Class 1 and Class 2, weekly caps and the 1962 threshold."
+          />
+        </Shell>
+      </main>
+    </MarketingLayout>
   );
 }
 
