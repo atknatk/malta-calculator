@@ -440,7 +440,7 @@ export function VehicleFinanceCalculator() {
                 step={0.25}
                 allowDecimals
                 suffix="%"
-                className="h-10 sm:h-11 text-sm sm:text-base px-3 sm:px-4"
+                className="h-11 text-base px-3 sm:px-4"
               />
               <input
                 type="range"
@@ -1005,7 +1005,7 @@ function FeeInput({
         step={step}
         allowDecimals={allowDecimals}
         suffix={suffix}
-        className="h-10 sm:h-11 text-sm px-3 sm:px-4 focus:border-rose-500 focus:ring-rose-500/20"
+        className="h-11 text-base sm:text-sm px-3 sm:px-4 focus:border-rose-500 focus:ring-rose-500/20"
       />
       {computed && (
         <p className="text-[10px] sm:text-[11px] font-semibold text-rose-600 dark:text-rose-400 tabular-nums">

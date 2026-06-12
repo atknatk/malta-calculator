@@ -225,7 +225,7 @@ export function VehicleRegistrationFeeCalculator() {
                     key={value}
                     onClick={() => setFuelType(value)}
                     className={cn(
-                      "p-2 rounded-lg text-xs font-medium transition-all border",
+                      "min-h-11 p-2 rounded-lg text-xs font-medium transition-all border",
                       fuelType === value
                         ? "bg-primary text-primary-foreground border-primary"
                         : "bg-background border-border hover:bg-muted",

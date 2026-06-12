@@ -203,7 +203,7 @@ export function ChildrenAllowanceCalculator() {
                     max={99999}
                     allowDecimals={false}
                     suffix="€"
-                    className="h-10 text-base px-4"
+                    className="h-12 text-base px-4"
                     suffixClassName="text-sm"
                   />
                 </div>
@@ -220,7 +220,7 @@ export function ChildrenAllowanceCalculator() {
                     max={99999}
                     allowDecimals={false}
                     suffix="€"
-                    className="h-10 text-base px-4"
+                    className="h-12 text-base px-4"
                     suffixClassName="text-sm"
                   />
                 </div>
@@ -237,7 +237,7 @@ export function ChildrenAllowanceCalculator() {
                     max={99999}
                     allowDecimals={false}
                     suffix="€"
-                    className="h-10 text-base px-4"
+                    className="h-12 text-base px-4"
                     suffixClassName="text-sm"
                   />
                 </div>
@@ -254,7 +254,7 @@ export function ChildrenAllowanceCalculator() {
                     max={99999}
                     allowDecimals={false}
                     suffix="€"
-                    className="h-10 text-base px-4"
+                    className="h-12 text-base px-4"
                     suffixClassName="text-sm"
                   />
                 </div>
@@ -271,7 +271,7 @@ export function ChildrenAllowanceCalculator() {
                     max={99999}
                     allowDecimals={false}
                     suffix="€"
-                    className="h-10 text-base px-4"
+                    className="h-12 text-base px-4"
                     suffixClassName="text-sm"
                   />
                 </div>

@@ -114,7 +114,7 @@ function MonthCard({
                       onKeyDown={handleKeyDown}
                       onBlur={handleSave}
                       onFocus={(e) => e.target.select()}
-                      className="w-20 sm:w-24 h-6 sm:h-7 text-xs sm:text-sm px-2"
+                      className="w-28 h-10 text-base sm:text-sm px-2"
                       autoFocus
                     />
                     <button
@@ -122,9 +122,9 @@ function MonthCard({
                         e.stopPropagation();
                         handleSave();
                       }}
-                      className="p-1 rounded bg-primary text-primary-foreground flex-shrink-0"
+                      className="p-2.5 rounded-lg bg-primary text-primary-foreground flex-shrink-0"
                     >
-                      <Check className="w-3 h-3" />
+                      <Check className="w-4 h-4" />
                     </button>
                   </div>
                 ) : (
@@ -224,7 +224,7 @@ function MonthCard({
                         onKeyDown={handleBonusKeyDown}
                         onBlur={handleBonusSave}
                         onFocus={(e) => e.target.select()}
-                        className="w-20 h-6 text-xs px-2"
+                        className="w-28 h-10 text-base sm:text-sm px-2"
                         autoFocus
                       />
                       <button
@@ -232,9 +232,9 @@ function MonthCard({
                           e.stopPropagation();
                           handleBonusSave();
                         }}
-                        className="p-1 rounded bg-primary text-primary-foreground flex-shrink-0"
+                        className="p-2.5 rounded-lg bg-primary text-primary-foreground flex-shrink-0"
                       >
-                        <Check className="w-3 h-3" />
+                        <Check className="w-4 h-4" />
                       </button>
                     </div>
                   ) : (

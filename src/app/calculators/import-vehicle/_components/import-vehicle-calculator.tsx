@@ -61,7 +61,7 @@ function SliderInput({
             min={min}
             max={max}
             allowDecimals={false}
-            className="h-9 w-24 text-right text-sm px-2"
+            className="h-11 w-28 text-right text-base sm:text-sm px-2"
           />
           {suffix && (
             <span className="text-xs text-muted-foreground">{suffix}</span>
@@ -180,7 +180,8 @@ export function ImportVehicleCalculator() {
               <label className="text-sm font-medium text-foreground/70">
                 Purchase Price
               </label>
-              <div className="flex gap-2">
+              {/* Mobilde alt alta: fiyat alanı tam genişlik, kurlar 4'lü grid */}
+              <div className="flex flex-col sm:flex-row gap-2">
                 <div className="relative flex-1">
                   <NumericInput
                     value={purchasePrice}
@@ -190,13 +191,13 @@ export function ImportVehicleCalculator() {
                     className="h-14 text-xl px-5"
                   />
                 </div>
-                <div className="flex rounded-xl border border-border overflow-hidden">
+                <div className="grid grid-cols-4 sm:flex rounded-xl border border-border overflow-hidden">
                   {(["EUR", "GBP", "USD", "JPY"] as const).map((c) => (
                     <button
                       key={c}
                       onClick={() => setCurrency(c)}
                       className={cn(
-                        "px-3 h-14 text-sm font-medium transition-all",
+                        "px-3 h-12 sm:h-14 text-sm font-medium transition-all",
                         currency === c
                           ? "bg-primary text-primary-foreground"
                           : "bg-background hover:bg-muted",
@@ -305,7 +306,7 @@ export function ImportVehicleCalculator() {
                     key={f}
                     onClick={() => setFuelType(f)}
                     className={cn(
-                      "p-2 rounded-lg text-xs font-medium transition-all border",
+                      "min-h-11 p-2 rounded-lg text-xs font-medium transition-all border",
                       fuelType === f
                         ? "bg-primary text-primary-foreground border-primary"
                         : "bg-background border-border hover:bg-muted",
@@ -349,7 +350,7 @@ export function ImportVehicleCalculator() {
               hint="City car ≈ 3 700 · Saloon ≈ 4 400 · SUV ≈ 4 700+"
             />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground/70">
                   Shipping ({currency})
@@ -390,7 +391,7 @@ export function ImportVehicleCalculator() {
                   min={0}
                   allowDecimals={false}
                   placeholder={result.registrationValueUsed.toString()}
-                  className="h-9 w-32 text-right text-sm px-2"
+                  className="h-11 w-32 text-right text-base sm:text-sm px-2"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
@@ -465,7 +466,7 @@ export function ImportVehicleCalculator() {
                     min={0}
                     allowDecimals={false}
                     placeholder="e.g. 80000"
-                    className="h-9 px-3 text-sm"
+                    className="h-11 px-3 text-base sm:text-sm"
                   />
                 </div>
                 <p className="text-xs text-muted-foreground pb-1">
