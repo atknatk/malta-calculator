@@ -31,6 +31,16 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-pay-transparency-rules-2026",
+    title: "Malta Pay Transparency Rules 2026: New Law From 7 June",
+    description:
+      "LN 173/2026 is in force from 7 June 2026. Salary ranges in job ads, salary history ban, pay information rights, and gender pay gap reporting explained.",
+    date: "June 2026",
+    readTime: "9 min read",
+    category: "Employment",
+    featured: true,
+  },
+  {
     slug: "malta-single-permit-employer-compliance-2026",
     title: "Malta Single Permit — Employer Compliance Guide 2026",
     description:

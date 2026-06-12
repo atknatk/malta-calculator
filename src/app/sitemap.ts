@@ -7,6 +7,8 @@ import type { MetadataRoute } from "next";
  * baseUrl) so they're exact-match against the sitemap entries.
  */
 const PAGE_LAST_UPDATED: Record<string, string> = {
+  "/calculators/property-transfer-tax": "2026-06-12",
+  "/blog/malta-pay-transparency-rules-2026": "2026-06-12",
   "/calculators/import-vehicle": "2026-05-18",
   "/blog/malta-import-vehicle-guide-2026": "2026-05-18",
   "/calculators/vehicle-finance": "2026-04-15",
@@ -50,6 +52,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/blog`,
       priority: 0.8,
       changeFrequency: "weekly" as const,
+    },
+    {
+      url: `${baseUrl}/blog/malta-pay-transparency-rules-2026`,
+      priority: 0.9,
+      changeFrequency: "yearly" as const,
     },
     {
       url: `${baseUrl}/blog/malta-crypto-digital-asset-tax-guide-2026`,
@@ -308,6 +315,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "notice-period",
     "overtime",
     "stamp-duty",
+    "property-transfer-tax",
     "retirement-age",
     "pension",
     "vacation",

@@ -665,6 +665,16 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                 </a>
                 .
               </p>
+
+              <p>
+                Selling a property? Use our{" "}
+                <Link href="/calculators/property-transfer-tax">
+                  Property Transfer Tax Calculator
+                </Link>{" "}
+                to work out your exact tax — including the reduced 5% and 2%
+                rates, the sole residence exemption, and the 12% rate on
+                inherited property.
+              </p>
             </section>
 
             <section id="additional-costs" className="mt-12">

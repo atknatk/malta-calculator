@@ -144,6 +144,12 @@ const categories: CalculatorCategory[] = [
         available: true,
       },
       {
+        href: "/calculators/property-transfer-tax",
+        title: "Property Transfer Tax",
+        description: "Seller's 8% final withholding tax",
+        available: true,
+      },
+      {
         href: "/calculators/rental-tax",
         title: "Rental Tax",
         description: "15% flat rate rental income tax",
