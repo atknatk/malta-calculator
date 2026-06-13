@@ -21,9 +21,9 @@ import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Malta Bank Interest Tax 2026: 15% Withholding or Declare Gross?",
+  title: "Malta Bank Interest Tax 2026: 15% or Declare Gross?",
   description:
-    "Do you pay 15% tax on Maltese bank interest? Learn when the 15% final withholding tax applies, when to declare interest gross at progressive rates, and why low earners pay €0.",
+    "Do you pay 15% tax on Maltese bank interest? When the 15% withholding tax applies, when to declare it gross at progressive rates, and why low earners pay €0.",
   keywords: [
     "Malta bank interest tax",
     "Malta 15% withholding tax interest",
