@@ -31,6 +31,16 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-bank-interest-tax-guide-2026",
+    title: "Malta Bank Interest Tax 2026: 15% Withholding or Declare Gross?",
+    description:
+      "Do you pay 15% tax on Maltese bank interest? When the 15% final withholding tax applies, when to declare interest gross at progressive rates, and why low earners pay €0.",
+    date: "June 2026",
+    readTime: "8 min read",
+    category: "Banking",
+    featured: true,
+  },
+  {
     slug: "malta-pay-transparency-rules-2026",
     title: "Malta Pay Transparency Rules 2026: New Law From 7 June",
     description:

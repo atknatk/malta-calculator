@@ -181,6 +181,12 @@ const categories: CalculatorCategory[] = [
         available: true,
       },
       {
+        href: "/calculators/bank-interest-tax",
+        title: "Bank Interest Tax",
+        description: "15% withholding vs declaring gross",
+        available: true,
+      },
+      {
         href: "/calculators/personal-loan",
         title: "Personal Loan",
         description: "Personal loan repayment calculator",
@@ -410,7 +416,7 @@ export default function CalculatorsPage() {
           <div className="mt-20 p-8 rounded-3xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="text-3xl font-bold text-gradient">18</div>
+                <div className="text-3xl font-bold text-gradient">19</div>
                 <div className="text-sm text-muted-foreground">
                   Active Calculators
                 </div>
