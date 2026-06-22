@@ -27,13 +27,21 @@ export interface MortgageRate {
   lastVerified: string;
 }
 
-/** Mevduat / birikim oranı satırı. */
-export interface SavingsRate {
+/**
+ * Mevduat / birikim sağlayıcısı — vadeli mevduat (fixed term deposit)
+ * oranları vade bazında. Pivot tablo için: 1 satır = 1 sağlayıcı,
+ * sütunlar = vadeler. Bir vade sunulmuyorsa/teyit edilmediyse alan atlanır
+ * (tabloda "—" gösterilir).
+ */
+export interface SavingsProvider {
   provider: string;
-  /** örn. "Fixed term — 1 year" */
-  product: string;
-  /** Yıllık brüt faiz, % */
-  ratePa: number;
+  /** Yıllık brüt faiz (%) — vade bazında; eksik = teklif yok/teyitsiz */
+  rates: {
+    m6?: number;
+    y1?: number;
+    y2?: number;
+    y3?: number;
+  };
   /** örn. "€100" */
   minDeposit: string | null;
   sourceUrl: string;
@@ -41,7 +49,11 @@ export interface SavingsRate {
 }
 
 /**
- * Konut kredisi oranları. Yalnızca birincil kaynaktan doğrulananlar.
+ * Konut kredisi oranları. Sayısal oranlar yalnızca birincil kaynaktan
+ * doğrulanır. Bazı bankalar (BOV, Lombard) oranlarını online yayınlamaz;
+ * bunlar tabloda "On request" olarak gösterilir (rateSummary), aprc/example
+ * null bırakılır, sourceUrl bankanın kendi konut kredisi sayfasına gider.
+ * Böylece tüm büyük yerel bankalar listede yer alır, uydurma sayı olmadan.
  */
 export const MORTGAGE_RATES: MortgageRate[] = [
   {
@@ -72,76 +84,60 @@ export const MORTGAGE_RATES: MortgageRate[] = [
     sourceUrl: "https://www.apsbank.com.mt/home-loans/",
     lastVerified: "2026-06-22",
   },
+  {
+    bank: "Bank of Valletta (BOV)",
+    product: "Home Loan",
+    rateSummary: "On request",
+    aprc: null,
+    example: null,
+    sourceUrl: "https://www.bov.com/home-loans-landing-page",
+    lastVerified: "2026-06-22",
+  },
+  {
+    bank: "Lombard Bank",
+    product: "Home Loan",
+    rateSummary: "On request",
+    aprc: null,
+    example: null,
+    sourceUrl: "https://www.lombardmalta.com/home-loans",
+    lastVerified: "2026-06-22",
+  },
 ];
 
 /**
- * Mevduat / birikim oranları (birincil kaynaktan doğrulanmış): MeDirect ve
- * APS vadeli mevduat merdivenleri. Lombard ve BOV güncel mevduat oranlarını
+ * Vadeli mevduat oranları (hepsi birincil kaynaktan doğrulanmış):
+ * MeDirect, BNF, APS, HSBC. Lombard ve BOV vadeli mevduat oranlarını
  * sitelerinde net yayınlamadığı için EKLENMEDİ (teyit edilince eklenecek).
+ * En yüksekten en düşüğe kabaca 1 yıl oranına göre sıralı.
  */
-export const SAVINGS_RATES: SavingsRate[] = [
+export const SAVINGS_RATES: SavingsProvider[] = [
   {
     provider: "MeDirect",
-    product: "Fixed Term Deposit — 6 months",
-    ratePa: 1.9,
+    rates: { m6: 1.9, y1: 2.35, y2: 2.4, y3: 2.4 },
     minDeposit: "€100",
     sourceUrl: "https://www.medirect.com.mt/save/fixed-term-deposit/",
     lastVerified: "2026-06-22",
   },
   {
-    provider: "MeDirect",
-    product: "Fixed Term Deposit — 1 year",
-    ratePa: 2.35,
-    minDeposit: "€100",
-    sourceUrl: "https://www.medirect.com.mt/save/fixed-term-deposit/",
-    lastVerified: "2026-06-22",
-  },
-  {
-    provider: "MeDirect",
-    product: "Fixed Term Deposit — 2 years",
-    ratePa: 2.4,
-    minDeposit: "€100",
-    sourceUrl: "https://www.medirect.com.mt/save/fixed-term-deposit/",
-    lastVerified: "2026-06-22",
-  },
-  {
-    provider: "MeDirect",
-    product: "Fixed Term Deposit — 3 years",
-    ratePa: 2.4,
-    minDeposit: "€100",
-    sourceUrl: "https://www.medirect.com.mt/save/fixed-term-deposit/",
+    provider: "BNF Bank",
+    rates: { m6: 1.0, y1: 2.0, y2: 1.5, y3: 1.5 },
+    minDeposit: "€500",
+    sourceUrl: "https://www.bnf.bank/interest_rates",
     lastVerified: "2026-06-22",
   },
   {
     provider: "APS Bank",
-    product: "Term Deposit — 6 months",
-    ratePa: 0.5,
+    rates: { m6: 0.5, y1: 1.2, y2: 1.3, y3: 1.4 },
     minDeposit: "€1,000",
     sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
     lastVerified: "2026-06-22",
   },
   {
-    provider: "APS Bank",
-    product: "Term Deposit — 1 year",
-    ratePa: 1.2,
+    provider: "HSBC Malta",
+    rates: { m6: 0.5, y1: 1.0, y2: 1.05, y3: 1.2 },
     minDeposit: "€1,000",
-    sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
-    lastVerified: "2026-06-22",
-  },
-  {
-    provider: "APS Bank",
-    product: "Term Deposit — 2 years",
-    ratePa: 1.3,
-    minDeposit: "€1,000",
-    sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
-    lastVerified: "2026-06-22",
-  },
-  {
-    provider: "APS Bank",
-    product: "Term Deposit — 3 years",
-    ratePa: 1.4,
-    minDeposit: "€1,000",
-    sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
+    sourceUrl:
+      "https://www.hsbc.com.mt/savings-accounts/products/term-deposit/",
     lastVerified: "2026-06-22",
   },
 ];

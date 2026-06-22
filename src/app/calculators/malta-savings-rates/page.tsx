@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Malta Savings & Deposit Rates 2026 | Compare",
   description:
-    "Compare savings and fixed-term deposit interest rates in Malta for 2026, including MeDirect's term-deposit ladder, with minimum deposits and verified sources.",
+    "Compare fixed-term deposit interest rates in Malta for 2026 across MeDirect, BNF, APS and HSBC — by term (6 months to 3 years), with minimum deposits and sources.",
   alternates: pageAlternates("/calculators/malta-savings-rates"),
   openGraph: {
     ...ogMetadata,
@@ -39,16 +39,22 @@ export const metadata: Metadata = {
 
 const columns = [
   { key: "provider", label: "Provider" },
-  { key: "product", label: "Product" },
-  { key: "rate", label: "Rate (p.a.)", numeric: true },
+  { key: "m6", label: "6 months", numeric: true },
+  { key: "y1", label: "1 year", numeric: true },
+  { key: "y2", label: "2 years", numeric: true },
+  { key: "y3", label: "3 years", numeric: true },
   { key: "min", label: "Min deposit", numeric: true },
 ];
+
+const pct = (v: number | undefined) => (v !== undefined ? `${v}%` : "—");
 
 const rows: RateRow[] = SAVINGS_RATES.map((r) => ({
   cells: {
     provider: r.provider,
-    product: r.product,
-    rate: `${r.ratePa}%`,
+    m6: pct(r.rates.m6),
+    y1: pct(r.rates.y1),
+    y2: pct(r.rates.y2),
+    y3: pct(r.rates.y3),
     min: r.minDeposit ?? "—",
   },
   sourceUrl: r.sourceUrl,
