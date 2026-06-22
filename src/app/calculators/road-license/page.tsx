@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Road License Calculator | Malta Calculator",
   description:
-    "Calculate annual road license (circulation tax) fees in Malta. Based on engine capacity, CO2 emissions, vehicle type, and fuel type.",
+    "Calculate your annual road license (circulation tax) fee in Malta. Based on engine capacity, CO2 emissions, vehicle type, fuel type, and registration year.",
   alternates: pageAlternates("/calculators/road-license"),
   openGraph: {
     ...ogMetadata,

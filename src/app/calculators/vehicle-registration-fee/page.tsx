@@ -1,6 +1,7 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
+import { RelatedGuide } from "@/components/marketing/related-guide";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -56,7 +57,7 @@ export default function VehicleRegistrationFeePage() {
       />
       <CalculatorJsonLd
         name="Vehicle Registration Fee Calculator"
-        description="Calculate all vehicle registration fees in Malta"
+        description="Calculate all vehicle registration fees in Malta — administration fee, number plates, VRT inspection, and first-year road tax — separate from the one-time CO2-based registration tax."
         slug="vehicle-registration-fee"
         category="Vehicle Registration Calculator"
         features={[
@@ -108,6 +109,11 @@ export default function VehicleRegistrationFeePage() {
         <BackButton href="/calculators" />
         <Shell className="max-w-4xl py-8">
           <VehicleRegistrationFeeCalculator />
+          <RelatedGuide
+            href="/blog/malta-vehicle-registration-tax-guide-2026"
+            title="Malta Vehicle Registration Tax Guide 2026"
+            description="Understand how Malta's one-time vehicle registration tax is calculated from CO2 emissions and vehicle value, plus all the fixed fees."
+          />
         </Shell>
       </main>
     </MarketingLayout>

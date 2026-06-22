@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Overtime Calculator | Malta Calculator",
   description:
-    "Calculate overtime pay in Malta at 1.5x and 2x rates. Free tool for weekday, weekend, and holiday overtime calculations.",
+    "Calculate overtime pay in Malta at 1.5x and 2x rates. Free tool covering weekday, weekend, and public holiday overtime, with gross and net take-home estimates.",
   alternates: pageAlternates("/calculators/overtime"),
   openGraph: {
     ...ogMetadata,

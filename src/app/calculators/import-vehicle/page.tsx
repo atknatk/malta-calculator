@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Import Vehicle Calculator | Malta Calculator",
   description:
-    "Calculate the total cost of importing a vehicle to Malta. Includes registration tax, import duty, VAT, shipping, and all fees.",
+    "Calculate the total cost of importing a vehicle to Malta. Includes registration tax, import duty, VAT, shipping, plus all fees for EU and non-EU imports.",
   alternates: pageAlternates("/calculators/import-vehicle"),
   openGraph: {
     ...ogMetadata,

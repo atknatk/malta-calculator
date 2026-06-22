@@ -25,7 +25,7 @@ import { CompactHero } from "@/components/marketing/compact-hero";
 export const revalidate = false;
 export const dynamic = "force-static";
 
-const title = `Malta Salary Calculator 2026 | Free Tax & Net Pay Calculator`;
+const title = `Malta Salary Calculator 2026 | Free Tax & Net Pay`;
 const description = `Calculate your Malta net salary for 2026. Accurate income tax deductions, SSC contributions, and COLA adjustments. Free online calculator for single, married & parent tax rates. Malta's #1 salary calculator.`;
 
 export const metadata: Metadata = {

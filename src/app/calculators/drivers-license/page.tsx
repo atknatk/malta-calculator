@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Driver's License Fees Calculator | Malta Calculator",
   description:
-    "Calculate driving license fees in Malta. New license, renewal, international permit, and category upgrade costs including tests and medical.",
+    "Calculate driving license fees in Malta — new licenses, renewals, international permits, and category upgrades, including test and medical certificate costs.",
   alternates: pageAlternates("/calculators/drivers-license"),
   openGraph: {
     ...ogMetadata,

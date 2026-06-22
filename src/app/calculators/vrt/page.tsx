@@ -19,9 +19,9 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "VRT Calculator (Vehicle Roadworthiness Test) | Malta Calculator",
+  title: "VRT Calculator Malta 2026 | Vehicle Test",
   description:
-    "Calculate VRT (MOT) inspection fees in Malta. Test costs for cars, motorcycles, commercial vehicles, and buses with frequency information.",
+    "Calculate VRT (MOT) roadworthiness inspection fees in Malta. Test costs for cars, motorcycles, commercial vehicles, and buses, plus how often each is tested.",
   alternates: pageAlternates("/calculators/vrt"),
   openGraph: {
     ...ogMetadata,

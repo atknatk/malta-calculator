@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Stamp Duty Calculator | Malta Calculator",
   description:
-    "Calculate stamp duty on property purchase in Malta. 5% standard rate or first-time buyer exemption on €200,000.",
+    "Calculate Malta stamp duty on your property purchase. Covers the 5% standard rate, first-time buyer exemption on the first €200,000, and promise-of-sale duty.",
   alternates: pageAlternates("/calculators/stamp-duty"),
   openGraph: {
     ...ogMetadata,

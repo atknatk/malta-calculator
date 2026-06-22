@@ -24,6 +24,8 @@ const PAGE_LAST_UPDATED: Record<string, string> = {
   "/blog/malta-pay-transparency-rules-2026": "2026-06-12",
   "/calculators/import-vehicle": "2026-05-18",
   "/blog/malta-import-vehicle-guide-2026": "2026-05-18",
+  "/calculators/vehicle-registration-fee": "2026-05-18",
+  "/calculators/vrt": "2026-05-18",
   "/calculators/vehicle-finance": "2026-04-15",
   "/blog/malta-vehicle-finance-guide-2026": "2026-04-15",
   "/blog/malta-work-permit-health-screening-2026": "2026-05-01",
@@ -37,11 +39,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Main pages
   const mainPages = [
     { url: baseUrl, priority: 1, changeFrequency: "monthly" as const },
-    {
-      url: `${baseUrl}/salary`,
-      priority: 0.9,
-      changeFrequency: "yearly" as const,
-    },
+    // Note: /salary is intentionally excluded — it is canonicalised to the
+    // homepage and set to noindex (shareable dynamic URL), so it must not
+    // appear in the sitemap.
     {
       url: `${baseUrl}/net-to-gross`,
       priority: 0.9,

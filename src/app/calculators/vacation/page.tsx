@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Vacation Days Calculator | Malta Calculator",
   description:
-    "Calculate your annual leave entitlement in Malta. Minimum 192 hours (24 days) plus public holiday additions.",
+    "Calculate your annual leave entitlement in Malta — your minimum 192 hours (24 days), pro-rata part-time leave, and extra days added for public holidays.",
   alternates: pageAlternates("/calculators/vacation"),
   openGraph: {
     ...ogMetadata,

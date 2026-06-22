@@ -19,7 +19,7 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Family Reunification Calculator Malta 2026 | Malta Calculator",
+  title: "Family Reunification Calculator | Malta 2026",
   description:
     "Malta family reunification calculator: minimum salary for S.L. 217.06 (gross average wage + 20%) and the Family Member Policy (€18,940 net + 20%). Includes the KEI/Specialist enhanced threshold (€50,000 + €6,000 per dependent).",
   keywords: [

@@ -19,7 +19,7 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Children's Allowance Calculator Malta 2026 | Family Benefits",
+  title: "Children's Allowance Calculator | Malta 2026",
   description:
     "Calculate your Malta Children's Allowance based on household income. Free calculator for families with children under 16. Includes birth bonus calculation.",
   keywords: [

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Retirement Age Calculator | Malta Calculator",
   description:
-    "Calculate your statutory retirement age in Malta based on your date of birth. Free retirement planning tool based on Social Security Act.",
+    "Calculate your statutory retirement age in Malta from your date of birth. A free planning tool based on the Social Security Act and your pension start year.",
   alternates: pageAlternates("/calculators/retirement-age"),
   openGraph: {
     ...ogMetadata,

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Notice Period Calculator | Malta Calculator",
   description:
-    "Calculate your required notice period in Malta based on years of service. Free tool based on Employment and Industrial Relations Act.",
+    "Calculate your required notice period in Malta from your years of service. Based on the Employment and Industrial Relations Act, with staff and employer rules.",
   alternates: pageAlternates("/calculators/notice-period"),
   openGraph: {
     ...ogMetadata,
