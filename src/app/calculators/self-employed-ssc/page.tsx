@@ -2,6 +2,8 @@ import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -114,6 +116,8 @@ export default function SelfEmployedSSCPage() {
             title="Malta SSC Contributions 2026: Rates, Caps & Categories"
             description="The full guide to Malta's social security system — Class 1 and Class 2, weekly caps and the 1962 threshold."
           />
+          <AffiliateCard slug="self-employed-ssc" />
+          <RelatedCalculators slug="self-employed-ssc" />
         </Shell>
       </main>
     </MarketingLayout>

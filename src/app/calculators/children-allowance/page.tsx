@@ -10,6 +10,8 @@ import {
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import { ChildrenAllowanceCalculator } from "./_components/children-allowance-calculator";
 import {
   BreadcrumbJsonLd,
@@ -115,6 +117,8 @@ export default function ChildrenAllowancePage() {
             title="Malta Children's Allowance Guide 2026"
             description="Complete guide to children's allowance eligibility, rates, and application process."
           />
+          <AffiliateCard slug="children-allowance" />
+          <RelatedCalculators slug="children-allowance" />
         </Shell>
       </main>
     </MarketingLayout>

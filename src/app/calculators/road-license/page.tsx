@@ -2,6 +2,8 @@ import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -99,6 +101,8 @@ export default function RoadLicensePage() {
             title="Malta Road License Guide 2026"
             description="Everything about annual road license fees, renewal process, and exemptions."
           />
+          <AffiliateCard slug="road-license" />
+          <RelatedCalculators slug="road-license" />
         </Shell>
       </main>
     </MarketingLayout>

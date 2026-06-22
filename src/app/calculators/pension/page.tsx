@@ -2,6 +2,8 @@ import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -160,6 +162,8 @@ export default function PensionPage() {
             title="Malta Pension System 2026 Guide"
             description="Understand Malta's state pension system, eligibility rules and how to maximise your retirement benefits."
           />
+          <AffiliateCard slug="pension" />
+          <RelatedCalculators slug="pension" />
         </Shell>
       </main>
     </MarketingLayout>

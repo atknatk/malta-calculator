@@ -2,6 +2,8 @@ import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -112,6 +114,8 @@ export default function PartTimePage() {
             title="Malta Part-Time Employment Rights 2026"
             description="Pro-rata leave, SSC rules, the 10% tax option and everything else part-time workers in Malta should know."
           />
+          <AffiliateCard slug="part-time" />
+          <RelatedCalculators slug="part-time" />
         </Shell>
       </main>
     </MarketingLayout>
