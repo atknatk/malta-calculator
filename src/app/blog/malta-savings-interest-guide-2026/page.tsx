@@ -213,6 +213,15 @@ export default function MaltaSavingsInterestGuidePage() {
               >
                 Try Savings Calculator <ArrowRight className="h-5 w-5" />
               </Link>
+              <div className="mt-4">
+                <Link
+                  href="/calculators/malta-savings-rates"
+                  className="inline-flex items-center justify-center gap-2 text-primary font-medium hover:underline"
+                >
+                  Or compare current savings &amp; deposit rates{" "}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
             <BlogArticleAuthor
               datePublished="2026-01-01"

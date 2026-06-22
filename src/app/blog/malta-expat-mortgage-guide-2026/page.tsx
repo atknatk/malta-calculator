@@ -394,6 +394,15 @@ export default function MaltaExpatMortgageGuidePage() {
                   Stamp Duty Calculator <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
+              <div className="mt-4">
+                <Link
+                  href="/calculators/malta-mortgage-rates"
+                  className="inline-flex items-center justify-center gap-2 text-primary font-medium hover:underline"
+                >
+                  Or compare current mortgage rates by bank{" "}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
             <BlogArticleAuthor
               datePublished="2026-01-01"
