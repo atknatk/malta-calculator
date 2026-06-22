@@ -27,9 +27,11 @@
 
 ## 🔧 Ben yapabilirim (söylediğinde)
 
-- [ ] **Media kit** (1 sayfalık içerik → PDF'e çevirirsin)
+- [x] **Media kit** — [docs/media-kit.html](./media-kit.html) (tarayıcıda aç → PDF kaydet, stat placeholder'larını doldur)
 - [ ] **Faz 3 lead-gen formları:** mortgage broker / tax danışmanı için form + yönlendirme
 - [ ] **Canlı ECB MIR entegrasyonu** (build-time fetch + try/catch fallback) — şimdilik statik sabit kullanıyoruz (build güvenliği için)
 - [ ] **Tabloları zenginleştir:** doğrulandıkça daha çok banka/ürün (kişisel kredi, green home loan vb.)
-- [ ] **Blog → oran sayfası iç bağlantıları** (mortgage/savings guide'lardan)
-- [ ] **Kalan düşük-öncelik SEO:** salary/net-to-gross `SoftwareApplication`→`CalculatorJsonLd`; çok kısa title'lara "Malta 2026"; `/salary`'ye Wise slotu (opsiyonel)
+- [x] **Blog → oran sayfası iç bağlantıları** — mortgage, expat-mortgage, savings guide'lara eklendi (bank-interest & first-time-buyer templated CTA kullanıyor; transitif link var, atlandı)
+- [x] **Kısa title'lara "Malta 2026"** — mortgage, savings-interest, overtime, vacation, notice-period
+- [x] **`/salary` dormant Wise slotu** — homepage ile tutarlı
+- [ ] **(Atlandı, gerekçeli)** salary/net-to-gross `SoftwareApplication`→`CalculatorJsonLd`: mevcut şema geçerli/çalışıyor, değer düşük
