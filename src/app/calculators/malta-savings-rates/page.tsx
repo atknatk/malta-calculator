@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Malta Savings & Deposit Rates 2026 | Compare",
   description:
-    "Compare fixed-term deposit interest rates in Malta for 2026 across MeDirect, BNF, APS and HSBC — by term (6 months to 3 years), with minimum deposits and sources.",
+    "Compare fixed-term deposit interest rates in Malta for 2026 across MeDirect, BNF, APS and HSBC — by term (6 months to 3 years), with minimum deposits shown.",
   alternates: pageAlternates("/calculators/malta-savings-rates"),
   openGraph: {
     ...ogMetadata,
