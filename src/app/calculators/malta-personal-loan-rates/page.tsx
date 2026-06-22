@@ -4,6 +4,7 @@ import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
 import { RelatedCalculators } from "@/components/marketing/related-calculators";
 import { AffiliateCard } from "@/components/affiliate/affiliate-card";
+import { LeadCapture } from "@/components/leadgen/lead-capture";
 import { AdSlot } from "@/components/ads/ad-slot";
 import {
   RateComparisonTable,
@@ -132,6 +133,10 @@ export default function MaltaPersonalLoanRatesPage() {
           </p>
 
           <AffiliateCard slug="malta-personal-loan-rates" />
+          <LeadCapture
+            purpose="personal-loan"
+            sourcePage="/calculators/malta-personal-loan-rates"
+          />
           <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RATES} />
 
           <RelatedGuide
