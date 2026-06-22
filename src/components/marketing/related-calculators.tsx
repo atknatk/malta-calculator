@@ -38,9 +38,9 @@ export function RelatedCalculators({ slug }: RelatedCalculatorsProps) {
             )}
           >
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
+              <div className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
                 {calc.title}
-              </h3>
+              </div>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                 {calc.tagline}
               </p>

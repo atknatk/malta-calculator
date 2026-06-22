@@ -45,6 +45,7 @@ export function AffiliateCard({ slug }: AffiliateCardProps) {
           <ArrowUpRight className="h-4 w-4 flex-shrink-0 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
         </div>
         <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+          <span className="sr-only">Sponsored: </span>
           {offer.headline}
         </h3>
         <p className="text-sm text-muted-foreground mt-1">{offer.subtext}</p>

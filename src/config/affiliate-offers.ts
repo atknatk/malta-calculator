@@ -37,7 +37,7 @@ export interface AffiliateOffer {
   rel: string;
 }
 
-const SPONSORED_REL = "sponsored noopener noreferrer";
+const SPONSORED_REL = "sponsored nofollow noopener noreferrer";
 
 export const AFFILIATE_OFFERS: Record<string, AffiliateOffer> = {
   wise: {
