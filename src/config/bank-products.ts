@@ -63,13 +63,21 @@ export const MORTGAGE_RATES: MortgageRate[] = [
       "https://www.bnf.bank/support/articles/home-loan-general-information",
     lastVerified: "2026-06-22",
   },
+  {
+    bank: "APS Bank",
+    product: "Home Loan (fixed then variable)",
+    rateSummary: "2.45% fixed for 60 months, then 2.90% variable",
+    aprc: 2.8,
+    example: "€200,000 over 40 years ≈ €657.80/mo, then ≈ €703.69/mo",
+    sourceUrl: "https://www.apsbank.com.mt/home-loans/",
+    lastVerified: "2026-06-22",
+  },
 ];
 
 /**
- * Mevduat / birikim oranları. MeDirect'in vadeli mevduat merdiveni
- * (birincil kaynaktan doğrulanmış). Geleneksel bankaların anlık-erişim
- * birikim oranları genelde çok düşüktür; oranları birincil kaynaktan
- * teyit edildikçe buraya eklenecektir.
+ * Mevduat / birikim oranları (birincil kaynaktan doğrulanmış): MeDirect ve
+ * APS vadeli mevduat merdivenleri. Lombard ve BOV güncel mevduat oranlarını
+ * sitelerinde net yayınlamadığı için EKLENMEDİ (teyit edilince eklenecek).
  */
 export const SAVINGS_RATES: SavingsRate[] = [
   {
@@ -102,6 +110,38 @@ export const SAVINGS_RATES: SavingsRate[] = [
     ratePa: 2.4,
     minDeposit: "€100",
     sourceUrl: "https://www.medirect.com.mt/save/fixed-term-deposit/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    provider: "APS Bank",
+    product: "Term Deposit — 6 months",
+    ratePa: 0.5,
+    minDeposit: "€1,000",
+    sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    provider: "APS Bank",
+    product: "Term Deposit — 1 year",
+    ratePa: 1.2,
+    minDeposit: "€1,000",
+    sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    provider: "APS Bank",
+    product: "Term Deposit — 2 years",
+    ratePa: 1.3,
+    minDeposit: "€1,000",
+    sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    provider: "APS Bank",
+    product: "Term Deposit — 3 years",
+    ratePa: 1.4,
+    minDeposit: "€1,000",
+    sourceUrl: "https://www.apsbank.com.mt/term-deposit-accounts/",
     lastVerified: "2026-06-22",
   },
 ];
