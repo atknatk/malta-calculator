@@ -28,4 +28,8 @@ export const CALCULATOR_OFFERS: Record<string, string[]> = {
 
   // Banka faizi → broker (mevduat alternatifi)
   "bank-interest-tax": ["etoro", "xtb"],
+
+  // Banka oran kıyaslama sayfaları
+  "malta-savings-rates": ["etoro", "xtb"],
+  "malta-mortgage-rates": ["revolut"],
 };

@@ -26,6 +26,8 @@ const PAGE_LAST_UPDATED: Record<string, string> = {
   "/blog/malta-import-vehicle-guide-2026": "2026-05-18",
   "/calculators/vehicle-registration-fee": "2026-05-18",
   "/calculators/vrt": "2026-05-18",
+  "/calculators/malta-mortgage-rates": "2026-06-22",
+  "/calculators/malta-savings-rates": "2026-06-22",
   "/calculators/vehicle-finance": "2026-04-15",
   "/blog/malta-vehicle-finance-guide-2026": "2026-04-15",
   "/blog/malta-work-permit-health-screening-2026": "2026-05-01",
@@ -353,6 +355,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "bank-interest-tax",
     "personal-loan",
     "vehicle-finance",
+    "malta-mortgage-rates",
+    "malta-savings-rates",
     "family-reunification",
     "children-allowance",
     // Transport calculators

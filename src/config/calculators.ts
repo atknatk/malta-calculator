@@ -176,6 +176,20 @@ export const CALCULATORS: CalculatorInfo[] = [
     tagline: "Car loan & hire purchase with deposit",
     category: "Banking & Loans",
   },
+  {
+    slug: "malta-mortgage-rates",
+    href: "/calculators/malta-mortgage-rates",
+    title: "Mortgage Rates Comparison",
+    tagline: "Compare home loan rates by Malta bank",
+    category: "Banking & Loans",
+  },
+  {
+    slug: "malta-savings-rates",
+    href: "/calculators/malta-savings-rates",
+    title: "Savings Rates Comparison",
+    tagline: "Compare deposit & savings rates in Malta",
+    category: "Banking & Loans",
+  },
 
   // Retirement & Savings
   {
@@ -302,10 +316,24 @@ export const RELATED_CALCULATORS: Record<string, string[]> = {
   "stamp-duty": ["first-time-buyer", "property-transfer-tax", "mortgage"],
   "property-transfer-tax": ["stamp-duty", "rental-tax", "first-time-buyer"],
   "rental-tax": ["property-transfer-tax", "bank-interest-tax", "stamp-duty"],
-  "first-time-buyer": ["stamp-duty", "mortgage", "property-transfer-tax"],
-  mortgage: ["first-time-buyer", "stamp-duty", "savings-interest"],
-  "savings-interest": ["bank-interest-tax", "mortgage", "pension"],
-  "bank-interest-tax": ["savings-interest", "rental-tax", "expatriate-tax"],
+  "first-time-buyer": ["stamp-duty", "mortgage", "malta-mortgage-rates"],
+  mortgage: ["malta-mortgage-rates", "first-time-buyer", "stamp-duty"],
+  "savings-interest": ["malta-savings-rates", "bank-interest-tax", "pension"],
+  "bank-interest-tax": [
+    "malta-savings-rates",
+    "savings-interest",
+    "rental-tax",
+  ],
+  "malta-mortgage-rates": [
+    "mortgage",
+    "first-time-buyer",
+    "malta-savings-rates",
+  ],
+  "malta-savings-rates": [
+    "savings-interest",
+    "bank-interest-tax",
+    "malta-mortgage-rates",
+  ],
   "personal-loan": ["vehicle-finance", "mortgage", "savings-interest"],
   "vehicle-finance": ["personal-loan", "import-vehicle", "road-license"],
   pension: ["retirement-age", "savings-interest", "salary"],
