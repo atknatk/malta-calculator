@@ -129,6 +129,15 @@ export const PERSONAL_LOAN_RATES: MortgageRate[] = [
     lastVerified: "2026-06-22",
   },
   {
+    bank: "APS Bank",
+    product: "Eco Loan (unsecured)",
+    rateSummary: "4.00% variable",
+    aprc: 4.1,
+    example: "€25,000 over 15 years ≈ €185.62/mo",
+    sourceUrl: "https://www.apsbank.com.mt/eco-loans/",
+    lastVerified: "2026-06-22",
+  },
+  {
     bank: "BNF Bank",
     product: "Personal Loan (variable, limited-time offer)",
     rateSummary: "4.85% variable",

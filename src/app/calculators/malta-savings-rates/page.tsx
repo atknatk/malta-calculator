@@ -54,18 +54,21 @@ const columns = [
 
 const pct = (v: number | undefined) => (v !== undefined ? `${v}%` : "—");
 
-const rows: RateRow[] = SAVINGS_RATES.map((r) => ({
-  cells: {
-    provider: r.provider,
-    m6: pct(r.rates.m6),
-    y1: pct(r.rates.y1),
-    y2: pct(r.rates.y2),
-    y3: pct(r.rates.y3),
-    min: r.minDeposit ?? "—",
-  },
-  sourceUrl: r.sourceUrl,
-  lastVerified: r.lastVerified,
-}));
+// En iyi getiri (en yüksek 1 yıl oranı) önce.
+const rows: RateRow[] = [...SAVINGS_RATES]
+  .sort((a, b) => (b.rates.y1 ?? -1) - (a.rates.y1 ?? -1))
+  .map((r) => ({
+    cells: {
+      provider: r.provider,
+      m6: pct(r.rates.m6),
+      y1: pct(r.rates.y1),
+      y2: pct(r.rates.y2),
+      y3: pct(r.rates.y3),
+      min: r.minDeposit ?? "—",
+    },
+    sourceUrl: r.sourceUrl,
+    lastVerified: r.lastVerified,
+  }));
 
 const flexColumns = [
   { key: "provider", label: "Provider" },

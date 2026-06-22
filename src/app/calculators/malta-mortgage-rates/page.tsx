@@ -48,17 +48,20 @@ const columns = [
   { key: "example", label: "Representative example" },
 ];
 
-const rows: RateRow[] = MORTGAGE_RATES.map((r) => ({
-  cells: {
-    bank: r.bank,
-    product: r.product,
-    rate: r.rateSummary,
-    aprc: r.aprc !== null ? `${r.aprc}%` : "—",
-    example: r.example ?? "—",
-  },
-  sourceUrl: r.sourceUrl,
-  lastVerified: r.lastVerified,
-}));
+// En iyi oran (en düşük APRC) önce; "On request" (aprc null) en sona.
+const rows: RateRow[] = [...MORTGAGE_RATES]
+  .sort((a, b) => (a.aprc ?? Infinity) - (b.aprc ?? Infinity))
+  .map((r) => ({
+    cells: {
+      bank: r.bank,
+      product: r.product,
+      rate: r.rateSummary,
+      aprc: r.aprc !== null ? `${r.aprc}%` : "—",
+      example: r.example ?? "—",
+    },
+    sourceUrl: r.sourceUrl,
+    lastVerified: r.lastVerified,
+  }));
 
 export default async function MaltaMortgageRatesPage() {
   const market = await getMarketContext();
