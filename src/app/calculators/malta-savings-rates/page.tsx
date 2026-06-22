@@ -18,9 +18,11 @@ import {
   pageAlternates,
 } from "@/app/shared-metadata";
 import { BreadcrumbJsonLd, CustomFAQJsonLd } from "@/components/json-ld";
+import { MarketContext } from "@/components/marketing/market-context";
 import {
   SAVINGS_RATES,
   FLEXIBLE_SAVINGS,
+  MARKET_CONTEXT,
   OFFICIAL_RATE_SOURCES,
 } from "@/config/bank-products";
 
@@ -129,6 +131,8 @@ export default function MaltaSavingsRatesPage() {
               live rate before you apply.
             </p>
           </header>
+
+          <MarketContext {...MARKET_CONTEXT.householdDepositRate} />
 
           <section className="space-y-3">
             <h2 className="text-lg font-semibold">Fixed-term deposits</h2>

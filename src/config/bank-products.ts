@@ -190,6 +190,26 @@ export const FLEXIBLE_SAVINGS: FlexibleSavings[] = [
   },
 ];
 
+/**
+ * Resmî piyasa-ortalaması (ECB MIR) — kaynaklı + tarihli STATİK değerler.
+ * Build anında canlı fetch YOK (statik üretimi/derlemeyi riske atmamak için);
+ * değerler ECB Data Portal'dan elle alınır ve çeyreklik güncellenir.
+ */
+export const MARKET_CONTEXT = {
+  mortgageBorrowingCost: {
+    value: 2.05,
+    period: "2026-04",
+    label: "Average cost of borrowing for house purchase (households), Malta",
+    url: "https://data.ecb.europa.eu/data/datasets/MIR/MIR.M.MT.B.A2C.AM.R.A.2250.EUR.N",
+  },
+  householdDepositRate: {
+    value: 2.31,
+    period: "2026-04",
+    label: "Average rate on new household deposits with agreed maturity, Malta",
+    url: "https://data.ecb.europa.eu/data/datasets/MIR/MIR.M.MT.B.L22.A.R.A.2250.EUR.N",
+  },
+} as const;
+
 /** Resmî piyasa-ortalaması veri kaynakları (canlı entegrasyon için kanca). */
 export const OFFICIAL_RATE_SOURCES = {
   ecbMir: {

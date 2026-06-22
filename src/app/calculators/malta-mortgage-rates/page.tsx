@@ -18,7 +18,12 @@ import {
   pageAlternates,
 } from "@/app/shared-metadata";
 import { BreadcrumbJsonLd, CustomFAQJsonLd } from "@/components/json-ld";
-import { MORTGAGE_RATES, OFFICIAL_RATE_SOURCES } from "@/config/bank-products";
+import { MarketContext } from "@/components/marketing/market-context";
+import {
+  MORTGAGE_RATES,
+  MARKET_CONTEXT,
+  OFFICIAL_RATE_SOURCES,
+} from "@/config/bank-products";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -103,6 +108,8 @@ export default function MaltaMortgageRatesPage() {
               apply.
             </p>
           </header>
+
+          <MarketContext {...MARKET_CONTEXT.mortgageBorrowingCost} />
 
           <RateComparisonTable
             caption="Comparison of Malta home loan interest rates by bank"
