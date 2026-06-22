@@ -22,9 +22,9 @@ import { MarketContext } from "@/components/marketing/market-context";
 import {
   SAVINGS_RATES,
   FLEXIBLE_SAVINGS,
-  MARKET_CONTEXT,
   OFFICIAL_RATE_SOURCES,
 } from "@/config/bank-products";
+import { getMarketContext } from "@/lib/market-rates";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -85,7 +85,8 @@ const flexRows: RateRow[] = FLEXIBLE_SAVINGS.map((r) => ({
   lastVerified: r.lastVerified,
 }));
 
-export default function MaltaSavingsRatesPage() {
+export default async function MaltaSavingsRatesPage() {
+  const market = await getMarketContext();
   return (
     <MarketingLayout>
       <BreadcrumbJsonLd
@@ -132,7 +133,7 @@ export default function MaltaSavingsRatesPage() {
             </p>
           </header>
 
-          <MarketContext {...MARKET_CONTEXT.householdDepositRate} />
+          <MarketContext {...market.householdDepositRate} />
 
           <section className="space-y-3">
             <h2 className="text-lg font-semibold">Fixed-term deposits</h2>

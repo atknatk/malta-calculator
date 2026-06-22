@@ -19,11 +19,8 @@ import {
 } from "@/app/shared-metadata";
 import { BreadcrumbJsonLd, CustomFAQJsonLd } from "@/components/json-ld";
 import { MarketContext } from "@/components/marketing/market-context";
-import {
-  MORTGAGE_RATES,
-  MARKET_CONTEXT,
-  OFFICIAL_RATE_SOURCES,
-} from "@/config/bank-products";
+import { MORTGAGE_RATES, OFFICIAL_RATE_SOURCES } from "@/config/bank-products";
+import { getMarketContext } from "@/lib/market-rates";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -62,7 +59,8 @@ const rows: RateRow[] = MORTGAGE_RATES.map((r) => ({
   lastVerified: r.lastVerified,
 }));
 
-export default function MaltaMortgageRatesPage() {
+export default async function MaltaMortgageRatesPage() {
+  const market = await getMarketContext();
   return (
     <MarketingLayout>
       <BreadcrumbJsonLd
@@ -109,7 +107,7 @@ export default function MaltaMortgageRatesPage() {
             </p>
           </header>
 
-          <MarketContext {...MARKET_CONTEXT.mortgageBorrowingCost} />
+          <MarketContext {...market.mortgageBorrowingCost} />
 
           <RateComparisonTable
             caption="Comparison of Malta home loan interest rates by bank"
