@@ -18,7 +18,11 @@ import {
   pageAlternates,
 } from "@/app/shared-metadata";
 import { BreadcrumbJsonLd, CustomFAQJsonLd } from "@/components/json-ld";
-import { SAVINGS_RATES, OFFICIAL_RATE_SOURCES } from "@/config/bank-products";
+import {
+  SAVINGS_RATES,
+  FLEXIBLE_SAVINGS,
+  OFFICIAL_RATE_SOURCES,
+} from "@/config/bank-products";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -56,6 +60,24 @@ const rows: RateRow[] = SAVINGS_RATES.map((r) => ({
     y2: pct(r.rates.y2),
     y3: pct(r.rates.y3),
     min: r.minDeposit ?? "—",
+  },
+  sourceUrl: r.sourceUrl,
+  lastVerified: r.lastVerified,
+}));
+
+const flexColumns = [
+  { key: "provider", label: "Provider" },
+  { key: "rate", label: "Rate (p.a.)", numeric: true },
+  { key: "access", label: "Access" },
+  { key: "notes", label: "Notes" },
+];
+
+const flexRows: RateRow[] = FLEXIBLE_SAVINGS.map((r) => ({
+  cells: {
+    provider: r.provider,
+    rate: r.rateLabel,
+    access: r.access,
+    notes: r.notes,
   },
   sourceUrl: r.sourceUrl,
   lastVerified: r.lastVerified,
@@ -108,11 +130,31 @@ export default function MaltaSavingsRatesPage() {
             </p>
           </header>
 
-          <RateComparisonTable
-            caption="Comparison of Malta savings and fixed-term deposit interest rates"
-            columns={columns}
-            rows={rows}
-          />
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold">Fixed-term deposits</h2>
+            <RateComparisonTable
+              caption="Comparison of Malta fixed-term deposit interest rates by bank and term"
+              columns={columns}
+              rows={rows}
+            />
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold">
+              Flexible &amp; instant-access savings
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Neobanks and digital providers usually pay variable,
+              instant-access interest rather than a fixed term. Rates change
+              often and depend on your plan, currency and region — always check
+              the live rate.
+            </p>
+            <RateComparisonTable
+              caption="Comparison of flexible and instant-access savings in Malta"
+              columns={flexColumns}
+              rows={flexRows}
+            />
+          </section>
 
           <p className="text-xs leading-relaxed text-muted-foreground">
             Rates are <strong>indicative</strong> and were last verified on the

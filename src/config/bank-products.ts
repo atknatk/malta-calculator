@@ -142,6 +142,54 @@ export const SAVINGS_RATES: SavingsProvider[] = [
   },
 ];
 
+/**
+ * Esnek / anlık-erişim (instant-access) birikim — neobank & dijital
+ * sağlayıcılar dâhil. Bu ürünlerin oranları DEĞİŞKENdir (plana/bölgeye göre
+ * değişir, sık güncellenir), bu yüzden vade-bazlı tabloya konmaz. Sabit bir
+ * oran teyit edilemiyorsa rateLabel "Variable" yazılır ve indikatif bilgi
+ * notes alanında TARİHLİ olarak verilir.
+ */
+export interface FlexibleSavings {
+  provider: string;
+  /** "2.00%" gibi sabit, ya da "Variable" */
+  rateLabel: string;
+  /** örn. "Instant access" */
+  access: string;
+  notes: string;
+  sourceUrl: string;
+  lastVerified: string;
+}
+
+export const FLEXIBLE_SAVINGS: FlexibleSavings[] = [
+  {
+    provider: "MeDirect — MeMax",
+    rateLabel: "2.00%",
+    access: "Instant access",
+    notes:
+      "Paid monthly and compounded. Max €2,000 deposit per month, €50,000 balance.",
+    sourceUrl: "https://www.medirect.com.mt/save/me-max/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    provider: "Revolut",
+    rateLabel: "Variable",
+    access: "Instant access",
+    notes:
+      "EUR Instant Access Savings; rate depends on your plan (≈2% on Standard, higher on paid plans / promos). Varies — as of Jun 2026.",
+    sourceUrl: "https://www.revolut.com/savings/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    provider: "Wise",
+    rateLabel: "Variable",
+    access: "On EUR balance",
+    notes:
+      "Interest on your EUR balance via money-market funds where eligible (≈1.7% recently, set by partner banks). Varies — as of Jun 2026.",
+    sourceUrl: "https://wise.com/",
+    lastVerified: "2026-06-22",
+  },
+];
+
 /** Resmî piyasa-ortalaması veri kaynakları (canlı entegrasyon için kanca). */
 export const OFFICIAL_RATE_SOURCES = {
   ecbMir: {
