@@ -26,9 +26,16 @@ Malta Calculator (maltacalculator.com) offers 30+ free financial calculators and
 
 ---
 
-## Content and interests (tags — comma separated, NO spaces)
+## Content and interests / Keywords (alphanumeric, comma separated, NO spaces)
+
+Works for "Content and interests" tags and "Keywords" fields (same rule:
+alphanumeric only, no special characters, no spaces, comma separated).
 
 malta,personalfinance,fintech,banking,expat,relocation,salarycalculator,incometax,mortgage,savings,deposits,moneytransfer,investing,neobank,maltatax
+
+Extended (more matches):
+
+malta,personalfinance,fintech,banking,expat,relocation,salarycalculator,incometax,mortgage,savings,deposits,moneytransfer,investing,neobank,maltatax,payroll,taxcalculator,homeloan,creditcard,budgeting
 
 ---
 
