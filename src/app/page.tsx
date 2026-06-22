@@ -20,6 +20,7 @@ import { SalaryCalculatorServer } from "./salary/_components/salary-calculator-s
 import SalaryPlaygroundCards from "./salary/_components/play-ground-cart";
 import { defaultSalaryParams } from "./salary/search-params";
 import { CompactHero } from "@/components/marketing/compact-hero";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 
 // Static page - SEO için force-static
 export const revalidate = false;
@@ -68,6 +69,9 @@ export default function Home() {
             <SalaryPlaygroundCards />
           </SalaryCalculatorServer>
         </div>
+
+        {/* Contextual affiliate suggestion (dormant until offers are activated) */}
+        <AffiliateCard slug="salary" />
 
         {/* Other Calculators */}
         <MenuBox />
