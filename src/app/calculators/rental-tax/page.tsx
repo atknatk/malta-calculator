@@ -2,6 +2,8 @@ import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -117,6 +119,8 @@ export default function RentalTaxPage() {
             title="Malta Rental Income Tax 2026: 15% Flat Rate Guide"
             description="Everything about the TA24 option, deadlines, deductions under the progressive route, and how to register your lease."
           />
+          <AffiliateCard slug="rental-tax" />
+          <RelatedCalculators slug="rental-tax" />
         </Shell>
       </main>
     </MarketingLayout>

@@ -2,6 +2,8 @@ import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -118,6 +120,8 @@ export default function VehicleFinancePage() {
             title="Malta Vehicle Finance Guide 2026"
             description="Compare car loans, hire purchase and dealer finance in Malta — deposit rules, interest rates and the true cost of borrowing for your next vehicle."
           />
+          <AffiliateCard slug="vehicle-finance" />
+          <RelatedCalculators slug="vehicle-finance" />
         </Shell>
       </main>
     </MarketingLayout>

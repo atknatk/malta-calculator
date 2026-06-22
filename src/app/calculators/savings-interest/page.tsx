@@ -2,6 +2,8 @@ import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { Shell } from "@/components/dashboard/shell";
 import { BackButton } from "@/components/layout/back-button";
 import { RelatedGuide } from "@/components/marketing/related-guide";
+import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
   defaultMetadata,
@@ -108,6 +110,8 @@ export default function SavingsInterestPage() {
             title="Malta Savings Interest Guide 2026"
             description="Learn about savings accounts, interest rates, and withholding tax in Malta."
           />
+          <AffiliateCard slug="savings-interest" />
+          <RelatedCalculators slug="savings-interest" />
         </Shell>
       </main>
     </MarketingLayout>
