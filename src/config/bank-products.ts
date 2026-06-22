@@ -85,6 +85,15 @@ export const MORTGAGE_RATES: MortgageRate[] = [
     lastVerified: "2026-06-22",
   },
   {
+    bank: "APS Bank",
+    product: "Green Home Loan (fixed then variable)",
+    rateSummary: "1.50% fixed for 60 months, then 2.90% variable",
+    aprc: 2.6,
+    example: "€300,000 over 35 years ≈ €921.62/mo, then ≈ €1,114.05/mo",
+    sourceUrl: "https://www.apsbank.com.mt/green-homeloan/",
+    lastVerified: "2026-06-22",
+  },
+  {
     bank: "Bank of Valletta (BOV)",
     product: "Home Loan",
     rateSummary: "On request",
