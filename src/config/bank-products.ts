@@ -114,6 +114,50 @@ export const MORTGAGE_RATES: MortgageRate[] = [
 ];
 
 /**
+ * Kişisel kredi (personal loan) oranları — yapı mortgage satırıyla aynı.
+ * Sayısal oranlar birincil kaynaktan doğrulanır; yayınlamayan banka
+ * "On request" gösterilir.
+ */
+export const PERSONAL_LOAN_RATES: MortgageRate[] = [
+  {
+    bank: "APS Bank",
+    product: "Personal Loan (variable)",
+    rateSummary: "4.75% variable",
+    aprc: 4.9,
+    example: "€20,000 over 10 years ≈ €210.34/mo",
+    sourceUrl: "https://www.apsbank.com.mt/personal-loans/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    bank: "BNF Bank",
+    product: "Personal Loan (variable, limited-time offer)",
+    rateSummary: "4.85% variable",
+    aprc: 5.09,
+    example: "€20,000 over 7 years",
+    sourceUrl: "https://www.bnf.bank/personal/personal-loan",
+    lastVerified: "2026-06-22",
+  },
+  {
+    bank: "HSBC Malta",
+    product: "Personal Loan (fixed)",
+    rateSummary: "6.50% fixed",
+    aprc: 6.7,
+    example: "€15,000 over 7 years ≈ €222.74/mo",
+    sourceUrl: "https://www.hsbc.com.mt/loans/products/personal/",
+    lastVerified: "2026-06-22",
+  },
+  {
+    bank: "Bank of Valletta (BOV)",
+    product: "Personal Loan",
+    rateSummary: "On request",
+    aprc: null,
+    example: null,
+    sourceUrl: "https://www.bov.com/content/borrowing-money",
+    lastVerified: "2026-06-22",
+  },
+];
+
+/**
  * Vadeli mevduat oranları (hepsi birincil kaynaktan doğrulanmış):
  * MeDirect, BNF, APS, HSBC. Lombard ve BOV vadeli mevduat oranlarını
  * sitelerinde net yayınlamadığı için EKLENMEDİ (teyit edilince eklenecek).

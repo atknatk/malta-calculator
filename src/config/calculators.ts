@@ -190,6 +190,13 @@ export const CALCULATORS: CalculatorInfo[] = [
     tagline: "Compare deposit & savings rates in Malta",
     category: "Banking & Loans",
   },
+  {
+    slug: "malta-personal-loan-rates",
+    href: "/calculators/malta-personal-loan-rates",
+    title: "Personal Loan Rates Comparison",
+    tagline: "Compare personal loan rates by Malta bank",
+    category: "Banking & Loans",
+  },
 
   // Retirement & Savings
   {
@@ -334,7 +341,12 @@ export const RELATED_CALCULATORS: Record<string, string[]> = {
     "bank-interest-tax",
     "malta-mortgage-rates",
   ],
-  "personal-loan": ["vehicle-finance", "mortgage", "savings-interest"],
+  "personal-loan": ["malta-personal-loan-rates", "vehicle-finance", "mortgage"],
+  "malta-personal-loan-rates": [
+    "personal-loan",
+    "vehicle-finance",
+    "malta-mortgage-rates",
+  ],
   "vehicle-finance": ["personal-loan", "import-vehicle", "road-license"],
   pension: ["retirement-age", "savings-interest", "salary"],
   "retirement-age": ["pension", "salary", "savings-interest"],

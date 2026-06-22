@@ -32,4 +32,5 @@ export const CALCULATOR_OFFERS: Record<string, string[]> = {
   // Banka oran kıyaslama sayfaları
   "malta-savings-rates": ["etoro", "xtb"],
   "malta-mortgage-rates": ["revolut"],
+  "malta-personal-loan-rates": ["revolut"],
 };
