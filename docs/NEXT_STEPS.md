@@ -28,9 +28,9 @@
 ## 🔧 Ben yapabilirim (söylediğinde)
 
 - [x] **Media kit** — [docs/media-kit.html](./media-kit.html) (tarayıcıda aç → PDF kaydet, stat placeholder'larını doldur)
-- [ ] **Faz 3 lead-gen formları:** mortgage broker / tax danışmanı için form + yönlendirme
-- [ ] **Canlı ECB MIR entegrasyonu** (build-time fetch + try/catch fallback) — şimdilik statik sabit kullanıyoruz (build güvenliği için)
-- [ ] **Tabloları zenginleştir:** doğrulandıkça daha çok banka/ürün (kişisel kredi, green home loan vb.)
+- [x] **Faz 3 lead-gen formu** — dormant (`NEXT_PUBLIC_LEADGEN_ENABLED`), mortgage & personal-loan oran sayfalarında. Aktive için: partner anlaşması + gizlilik gözden geçirme + `leads` tablosu migration'ı (docs/migrations/002_leads.sql)
+- [x] **Canlı ECB MIR entegrasyonu** — build-time fetch + statik fallback (build kırılamaz)
+- [x] **Tabloları zenginleştir** — APS Green Home Loan + personal loan sayfası (APS/BNF/HSBC oranlı, BOV on request)
 - [x] **Blog → oran sayfası iç bağlantıları** — mortgage, expat-mortgage, savings guide'lara eklendi (bank-interest & first-time-buyer templated CTA kullanıyor; transitif link var, atlandı)
 - [x] **Kısa title'lara "Malta 2026"** — mortgage, savings-interest, overtime, vacation, notice-period
 - [x] **`/salary` dormant Wise slotu** — homepage ile tutarlı
