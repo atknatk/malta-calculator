@@ -43,3 +43,20 @@ Malta residents, expats relocating to Malta, and remote workers — plus EU-base
 ## Traffic source
 
 Primarily organic search (SEO).
+
+---
+
+## Marketplace / influencer profile fields
+
+- **Personal info:** optional. Set Location = Malta (helps matching to
+  Malta/EU brands); rest can be left blank — this is a content site, not a
+  personal influencer profile.
+- **Shipping address:** skip — finance/fintech partners don't ship products.
+- **Links (max 3):**
+  1. https://maltacalculator.com
+  2. https://maltacalculator.com/calculators
+  3. https://maltacalculator.com/blog
+     (fintech-focused alternative: https://maltacalculator.com/calculators/malta-savings-rates)
+- **Point of contact:** Atakan Atik
+- **Media kit file name:** malta-calculator-media-kit.pdf (no spaces)
+- **Pause profile:** leave OFF (stay visible to new brands).
