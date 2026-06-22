@@ -21,7 +21,7 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Savings Interest Calculator | Malta Calculator",
+  title: "Savings Interest Calculator Malta 2026 | Malta Calculator",
   description:
     "Calculate compound interest on your savings in Malta. Including 15% withholding tax, monthly contributions, and yearly breakdown. Free savings calculator.",
   keywords: [
@@ -34,12 +34,12 @@ export const metadata: Metadata = {
   alternates: pageAlternates("/calculators/savings-interest"),
   openGraph: {
     ...ogMetadata,
-    title: "Savings Interest Calculator | Malta Calculator",
+    title: "Savings Interest Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/savings-interest`,
   },
   twitter: {
     ...twitterMetadata,
-    title: "Savings Interest Calculator | Malta Calculator",
+    title: "Savings Interest Calculator Malta 2026 | Malta Calculator",
   },
 };
 

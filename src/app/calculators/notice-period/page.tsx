@@ -21,18 +21,18 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Notice Period Calculator | Malta Calculator",
+  title: "Notice Period Calculator Malta 2026 | Malta Calculator",
   description:
     "Calculate your required notice period in Malta from your years of service. Based on the Employment and Industrial Relations Act, with staff and employer rules.",
   alternates: pageAlternates("/calculators/notice-period"),
   openGraph: {
     ...ogMetadata,
-    title: "Notice Period Calculator | Malta Calculator",
+    title: "Notice Period Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/notice-period`,
   },
   twitter: {
     ...twitterMetadata,
-    title: "Notice Period Calculator | Malta Calculator",
+    title: "Notice Period Calculator Malta 2026 | Malta Calculator",
   },
 };
 

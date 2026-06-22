@@ -21,18 +21,18 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Vacation Days Calculator | Malta Calculator",
+  title: "Vacation Days Calculator Malta 2026 | Malta Calculator",
   description:
     "Calculate your annual leave entitlement in Malta — your minimum 192 hours (24 days), pro-rata part-time leave, and extra days added for public holidays.",
   alternates: pageAlternates("/calculators/vacation"),
   openGraph: {
     ...ogMetadata,
-    title: "Vacation Days Calculator | Malta Calculator",
+    title: "Vacation Days Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/vacation`,
   },
   twitter: {
     ...twitterMetadata,
-    title: "Vacation Days Calculator | Malta Calculator",
+    title: "Vacation Days Calculator Malta 2026 | Malta Calculator",
   },
 };
 

@@ -21,18 +21,18 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Overtime Calculator | Malta Calculator",
+  title: "Overtime Calculator Malta 2026 | Malta Calculator",
   description:
     "Calculate overtime pay in Malta at 1.5x and 2x rates. Free tool covering weekday, weekend, and public holiday overtime, with gross and net take-home estimates.",
   alternates: pageAlternates("/calculators/overtime"),
   openGraph: {
     ...ogMetadata,
-    title: "Overtime Calculator | Malta Calculator",
+    title: "Overtime Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/overtime`,
   },
   twitter: {
     ...twitterMetadata,
-    title: "Overtime Calculator | Malta Calculator",
+    title: "Overtime Calculator Malta 2026 | Malta Calculator",
   },
 };
 

@@ -5,6 +5,7 @@ import { BreadcrumbJsonLd } from "@/components/json-ld";
 import type { SearchParams } from "nuqs/server";
 import type { Metadata } from "next";
 import { SITE_URL } from "../shared-metadata";
+import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 
 // Query params okudugu icin dynamic
 export const dynamic = "force-dynamic";
@@ -70,6 +71,8 @@ export default async function SalaryCalculatorPage({
           <SalaryPlaygroundCards />
         </SalaryCalculatorServer>
       </div>
+
+      <AffiliateCard slug="salary" />
     </main>
   );
 }

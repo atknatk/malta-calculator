@@ -21,7 +21,7 @@ import {
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  title: "Mortgage Calculator | Malta Calculator",
+  title: "Mortgage Calculator Malta 2026 | Malta Calculator",
   description:
     "Calculate your mortgage payments in Malta. 10% minimum deposit, monthly payments, total interest, and amortization schedule. Free mortgage calculator.",
   keywords: [
@@ -34,12 +34,12 @@ export const metadata: Metadata = {
   alternates: pageAlternates("/calculators/mortgage"),
   openGraph: {
     ...ogMetadata,
-    title: "Mortgage Calculator | Malta Calculator",
+    title: "Mortgage Calculator Malta 2026 | Malta Calculator",
     url: `${SITE_URL}/calculators/mortgage`,
   },
   twitter: {
     ...twitterMetadata,
-    title: "Mortgage Calculator | Malta Calculator",
+    title: "Mortgage Calculator Malta 2026 | Malta Calculator",
   },
 };
 
