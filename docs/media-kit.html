@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Malta Calculator — Media Kit</title>
+    <style>
+      /* ---- Print to PDF: open in a browser, then Print → Save as PDF ----
+         Save as: malta-calculator-media-kit.pdf  (no spaces in file name)
+         Fill in the [bracketed] stats from Google Analytics / Search Console.
+      */
+      :root {
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: #e2e8f0;
+        --brand: #2563eb;
+        --brand-soft: #eff6ff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        color: var(--ink);
+        line-height: 1.5;
+        background: #f1f5f9;
+      }
+      .page {
+        width: 794px; /* ~A4 at 96dpi */
+        min-height: 1123px;
+        margin: 24px auto;
+        background: #fff;
+        padding: 56px 56px 48px;
+      }
+      h1 {
+        font-size: 30px;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      h2 {
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--brand);
+        margin: 28px 0 10px;
+      }
+      p {
+        margin: 0 0 10px;
+        color: var(--muted);
+      }
+      a {
+        color: var(--brand);
+        text-decoration: none;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        border-bottom: 3px solid var(--brand);
+        padding-bottom: 16px;
+      }
+      .tagline {
+        font-size: 15px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .url {
+        font-weight: 600;
+        color: var(--brand);
+        font-size: 14px;
+      }
+      .lead {
+        font-size: 15px;
+        color: var(--ink);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 6px 0 4px;
+      }
+      .stat {
+        background: var(--brand-soft);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+      }
+      .stat .num {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .stat .lbl {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      ul {
+        margin: 6px 0 10px;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+      li {
+        margin: 4px 0;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .chip {
+        font-size: 12px;
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 10px;
+        color: var(--ink);
+      }
+      .foot {
+        margin-top: 30px;
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+      }
+      .note {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 4px;
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .page {
+          margin: 0;
+          width: auto;
+          min-height: auto;
+          padding: 28px 32px;
+        }
+        @page {
+          size: A4;
+          margin: 12mm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="top">
+        <div>
+          <h1>Malta Calculator</h1>
+          <div class="tagline">
+            Malta's free financial calculators &amp; money guides
+          </div>
+        </div>
+        <div class="url">maltacalculator.com</div>
+      </div>
+
+      <h2>About</h2>
+      <p class="lead">
+        Malta Calculator is Malta's most comprehensive free financial-tools
+        platform. We help residents, expats and remote workers understand their
+        money in Malta with 30+ calculators — salary &amp; income tax, social
+        security, mortgages, stamp duty, savings and bank-interest tax — plus
+        40+ in-depth, source-cited guides and bank rate-comparison pages.
+      </p>
+
+      <h2>By the numbers</h2>
+      <div class="grid">
+        <div class="stat">
+          <div class="num">30+</div>
+          <div class="lbl">Free calculators</div>
+        </div>
+        <div class="stat">
+          <div class="num">40+</div>
+          <div class="lbl">In-depth guides</div>
+        </div>
+        <div class="stat">
+          <div class="num">2026</div>
+          <div class="lbl">Rates kept current</div>
+        </div>
+        <div class="stat">
+          <div class="num">[ADD]</div>
+          <div class="lbl">Monthly visits</div>
+        </div>
+        <div class="stat">
+          <div class="num">[ADD]</div>
+          <div class="lbl">Monthly page views</div>
+        </div>
+        <div class="stat">
+          <div class="num">[ADD]</div>
+          <div class="lbl">Email / newsletter</div>
+        </div>
+      </div>
+      <p class="note">
+        [ADD] = fill in from Google Analytics / Search Console before sharing.
+      </p>
+
+      <div class="cols">
+        <div>
+          <h2>Audience</h2>
+          <ul>
+            <li>Malta residents managing pay, tax &amp; benefits</li>
+            <li>Expats &amp; remote workers relocating to Malta</li>
+            <li>Property buyers, savers &amp; investors</li>
+            <li>High purchase-intent, financial decision moments</li>
+            <li>Primarily organic search (SEO) traffic</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Ideal partners</h2>
+          <ul>
+            <li>Money transfer &amp; multi-currency (e.g. Wise)</li>
+            <li>Neobanks &amp; everyday banking (e.g. Revolut)</li>
+            <li>Investment &amp; brokerage platforms</li>
+            <li>Banks, mortgage &amp; deposit products</li>
+            <li>Tax, relocation &amp; residency services</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>Why partner with us</h2>
+      <p>
+        We promote partners <strong>contextually and transparently</strong> —
+        the right offer on the right calculator or guide, never intrusive ads.
+        All content is accurate, source-cited and SEO-optimised, and every
+        partner link carries clear disclosure. This protects user trust and
+        drives genuinely qualified clicks.
+      </p>
+
+      <h2>Topics &amp; keywords</h2>
+      <div class="chips">
+        <span class="chip">Malta</span>
+        <span class="chip">Personal finance</span>
+        <span class="chip">Fintech</span>
+        <span class="chip">Banking</span>
+        <span class="chip">Expat &amp; relocation</span>
+        <span class="chip">Salary &amp; tax</span>
+        <span class="chip">Mortgages</span>
+        <span class="chip">Savings &amp; deposits</span>
+        <span class="chip">Money transfer</span>
+        <span class="chip">Investing</span>
+      </div>
+
+      <div class="foot">
+        <div>
+          <strong>Contact:</strong> Atakan Atik ·
+          [your-email@maltacalculator.com]
+        </div>
+        <div>maltacalculator.com</div>
+      </div>
+    </div>
+  </body>
+</html>
