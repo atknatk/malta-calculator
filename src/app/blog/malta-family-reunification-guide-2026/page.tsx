@@ -22,8 +22,14 @@ import {
   CheckCircle2,
   AlertCircle,
   Globe,
+  Sparkles,
+  Hourglass,
 } from "lucide-react";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import {
+  ArticleJsonLd,
+  BreadcrumbJsonLd,
+  CustomFAQJsonLd,
+} from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
@@ -32,7 +38,7 @@ export const metadata: Metadata = {
   title:
     "Malta Family Reunification 2026: Complete Salary Guide | Malta Calculator",
   description:
-    "Malta family reunification 2026: salary thresholds for S.L. 217.06 and the Family Member Policy, KEI/Specialist exception (€50,000 + €6,000), eligible income sources, documents and 60-day decision timeline.",
+    "Malta family reunification 2026: new NSO wage thresholds, waiting periods (12 months, 2 years, KEI/SEI immediate), salary tables, documents, health screening.",
   keywords: [
     "Malta family reunification",
     "Malta family visa",
@@ -48,7 +54,9 @@ export const metadata: Metadata = {
     "Malta Specialist Employee Initiative family",
     "Malta dependent parent visa",
     "Malta dependent adult family member",
-    "Malta median wage 2024",
+    "Malta median wage 2025",
+    "Malta family reunification waiting period",
+    "Malta bring children KEI SEI",
   ],
   alternates: pageAlternates("/blog/malta-family-reunification-guide-2026"),
   openGraph: {
@@ -65,6 +73,8 @@ export const metadata: Metadata = {
     title: "Malta Family Reunification 2026: Complete Salary Guide",
   },
 };
+
+const LAST_UPDATED = "2026-10-20";
 
 const ARTICLE_SOURCES = [
   {
@@ -83,6 +93,52 @@ const ARTICLE_SOURCES = [
     name: "Subsidiary Legislation 217.06 - Family Reunification Regulations",
     url: "https://legislation.mt/eli/sl/217.6/eng/pdf",
   },
+  {
+    name: "Identità - FAQs SIGMA 2025/26: Residence Permits & Family Reunification",
+    url: "https://identita.gov.mt/wp-content/uploads/2025/09/FAQs-Residence-Permits-Malta-002.pdf",
+  },
+  {
+    name: "Identità - FAQs SIGMA 2025/26: Highly Qualified Permits (KEI, SEI, Blue Card)",
+    url: "https://identita.gov.mt/wp-content/uploads/2025/09/FAQs-Highly-Qualified-1.pdf",
+  },
+  {
+    name: "NSO Malta - Labour Market (mean and median annual basic salary)",
+    url: "https://nso.gov.mt/labour_market/",
+  },
+  {
+    name: "Health Promotion & Disease Prevention - Family Reunification Health Screening",
+    url: "https://hpdp.gov.mt/idcu/health_screening/family_reunification",
+  },
+];
+
+const FAQS = [
+  {
+    question: "How long do I have to wait before bringing my family to Malta?",
+    answer:
+      "Under the Family Member Policy you must wait 12 calendar months from the date your first residence permit was issued. Under S.L. 217.06 Identità requires 2 years of lawful residence. KEI and SEI holders with an Approval in Principle can apply immediately if they earn at least €50,000 gross (+€6,000 per extra dependant), and EU Blue Card holders have no waiting period.",
+  },
+  {
+    question:
+      "Can KEI or SEI holders bring their children to Malta immediately?",
+    answer:
+      "Yes, if they hold an Approval in Principle, earn at least €50,000 gross for themselves and one dependant plus €6,000 for each additional dependant, have €100,000 health cover per dependant and have applied for a private school place for school-age children. The SEI permit itself needs only €30,000, so SEI holders below the €50,000 fast-track must wait 12 months.",
+  },
+  {
+    question:
+      "What is the minimum salary for family reunification in Malta in 2026?",
+    answer:
+      "Under S.L. 217.06 you need the NSO average gross basic wage (€25,730 for 2025) plus 20% per family member — €30,876 gross for one family member. Under the Family Member Policy your net income must reach €22,728 for one family member, based on Identità's €18,940 median wage figure.",
+  },
+  {
+    question: "Will the Family Member Policy threshold increase?",
+    answer:
+      "Probably. NSO has published a 2025 median annual basic salary of €22,266, while Identità still quotes €18,940. If Identità adopts the new median, the net requirement for one family member would rise from €22,728 to about €26,719.",
+  },
+  {
+    question: "Do family members need health screening in Malta?",
+    answer:
+      "Yes. All third-country nationals entering under family reunification must complete health screening once. Since 29 June 2026 only the new screening forms are accepted. Children from high TB-risk countries take a Mantoux test and, from age 11, a chest X-ray.",
+  },
 ];
 
 export default function FamilyReunificationGuidePage() {
@@ -93,8 +149,10 @@ export default function FamilyReunificationGuidePage() {
         description="Complete guide to family reunification salary requirements in Malta."
         slug="malta-family-reunification-guide-2026"
         datePublished="2026-02-02"
+        dateModified={LAST_UPDATED}
         sources={ARTICLE_SOURCES}
       />
+      <CustomFAQJsonLd questions={FAQS} />
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: SITE_URL },
@@ -123,11 +181,11 @@ export default function FamilyReunificationGuidePage() {
                 </span>
                 <span className="flex items-center gap-1 text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4" />
-                  February 2026
+                  Updated <time dateTime={LAST_UPDATED}>October 2026</time>
                 </span>
                 <span className="flex items-center gap-1 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" />
-                  10 min read
+                  12 min read
                 </span>
               </div>
               <h1 className="font-cal text-4xl md:text-5xl font-bold mb-6">
@@ -135,16 +193,22 @@ export default function FamilyReunificationGuidePage() {
                 Guide
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                Planning to bring your family to Malta? This comprehensive guide
-                explains the two main schemes for family reunification, their
-                salary requirements, and how to calculate the minimum income you
-                need.
+                Planning to bring your family to Malta? This guide explains the
+                two main schemes for family reunification, how long you have to
+                wait before applying, the salary you need with the latest NSO
+                wage data, and the fast-track for KEI, SEI and Blue Card
+                holders.
               </p>
             </header>
 
             <nav className="p-6 bg-muted/30 rounded-2xl mb-12 not-prose">
               <h2 className="text-lg font-semibold mb-4">Table of Contents</h2>
               <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#whats-new" className="text-primary hover:underline">
+                    What&apos;s New — October 2026 Update
+                  </a>
+                </li>
                 <li>
                   <a href="#overview" className="text-primary hover:underline">
                     1. Overview
@@ -160,20 +224,28 @@ export default function FamilyReunificationGuidePage() {
                 </li>
                 <li>
                   <a
+                    href="#waiting-periods"
+                    className="text-primary hover:underline"
+                  >
+                    3. Waiting Periods: When Can You Apply?
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="#salary-requirements"
                     className="text-primary hover:underline"
                   >
-                    3. Salary Requirements & Eligible Income
+                    4. Salary Requirements & Eligible Income
                   </a>
                 </li>
                 <li>
                   <a href="#examples" className="text-primary hover:underline">
-                    4. Calculation Examples
+                    5. Calculation Examples
                   </a>
                 </li>
                 <li>
                   <a href="#documents" className="text-primary hover:underline">
-                    5. Required Documents
+                    6. Required Documents
                   </a>
                 </li>
                 <li>
@@ -181,7 +253,7 @@ export default function FamilyReunificationGuidePage() {
                     href="#application"
                     className="text-primary hover:underline"
                   >
-                    6. Application Process
+                    7. Application Process
                   </a>
                 </li>
                 <li>
@@ -189,16 +261,91 @@ export default function FamilyReunificationGuidePage() {
                     href="#exclusions"
                     className="text-primary hover:underline"
                   >
-                    7. Who Is Excluded
+                    8. Who Is Excluded
                   </a>
                 </li>
                 <li>
                   <a href="#faqs" className="text-primary hover:underline">
-                    8. FAQs
+                    9. FAQs
                   </a>
                 </li>
               </ul>
             </nav>
+
+            <section
+              id="whats-new"
+              className="not-prose p-6 rounded-2xl bg-gradient-to-br from-primary/5 via-background to-secondary/5 border border-primary/20 mb-12"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                </div>
+                <h2 className="text-xl font-semibold">
+                  What&apos;s New — October 2026 Update
+                </h2>
+              </div>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li>
+                  <strong className="text-foreground">
+                    Higher S.L. 217.06 threshold.
+                  </strong>{" "}
+                  NSO&apos;s Labour Force Survey puts the 2025 average annual
+                  basic salary at <strong>€25,730</strong> (up from €23,596 in
+                  2024). S.L. 217.06 defines the &quot;average wage&quot; as
+                  exactly this figure, so sponsoring one family member now needs{" "}
+                  <strong>€30,876 gross</strong>.
+                </li>
+                <li>
+                  <strong className="text-foreground">
+                    Family Member Policy figure may rise.
+                  </strong>{" "}
+                  Identità still quotes a median of <strong>€18,940</strong>,
+                  but NSO&apos;s 2025 median annual basic salary is{" "}
+                  <strong>€22,266</strong>. If Identità adopts it, the net
+                  requirement for one family member goes from €22,728 to about{" "}
+                  <strong>€26,719</strong>.
+                </li>
+                <li>
+                  <strong className="text-foreground">
+                    KEI and SEI holders can bring spouse and children
+                    immediately
+                  </strong>{" "}
+                  with an Approval in Principle and €50,000 gross (+€6,000 per
+                  extra dependant). Identità confirmed this in its September
+                  2025 SIGMA FAQs. Since August 2025 the KEI permit needs
+                  €45,000 and the SEI permit €30,000, so many SEI holders earn
+                  too little for the family fast-track.
+                </li>
+                <li>
+                  <strong className="text-foreground">
+                    Two-year rule for S.L. 217.06.
+                  </strong>{" "}
+                  Identità applies the full 2 years of lawful residence allowed
+                  by Regulation 13 before a statutory family reunification
+                  application. The Family Member Policy needs 12 months.
+                </li>
+                <li>
+                  <strong className="text-foreground">
+                    New health screening forms.
+                  </strong>{" "}
+                  Since <strong>29 June 2026</strong> the Health Screening Unit
+                  only accepts the new family reunification forms. Submissions
+                  on old forms are not processed.
+                </li>
+              </ul>
+              <p className="text-xs text-muted-foreground mt-4">
+                No new legal notice amending S.L. 217.06 or the Family Members
+                Policy (v5.3, last updated April 2025) has been published as of
+                October 2026. The calculator now includes a{" "}
+                <Link
+                  href="/calculators/family-reunification"
+                  className="text-primary hover:underline"
+                >
+                  waiting period and salary check
+                </Link>{" "}
+                for Single Permit, KEI, SEI and Blue Card holders.
+              </p>
+            </section>
 
             <section id="overview">
               <h2>1. Overview</h2>
@@ -264,8 +411,8 @@ export default function FamilyReunificationGuidePage() {
                   </ul>
                   <p className="text-xs text-muted-foreground mt-3 italic">
                     This wider scope is the main practical difference from S.L.
-                    217.06 — adult dependants (e.g. an elderly parent or a
-                    dependent sibling) may be considered.
+                    217.06 — adult dependants (e.g. an adult child or, in
+                    exceptional cases, an elderly parent) may be considered.
                   </p>
                 </div>
               </div>
@@ -277,7 +424,8 @@ export default function FamilyReunificationGuidePage() {
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Non-EU workers in Malta (Third Country Nationals)</li>
-                  <li>• Single Permit holders with 1+ year residence</li>
+                  <li>• Single Permit holders with 12+ months of residence</li>
+                  <li>• KEI, SEI and EU Blue Card holders (fast-track)</li>
                   <li>• Long-term residents</li>
                   <li>• Sponsors with reasonable prospects of permanence</li>
                 </ul>
@@ -295,6 +443,11 @@ export default function FamilyReunificationGuidePage() {
                   <li>
                     • Have <strong>reasonable prospects</strong> of obtaining
                     permanent residence
+                  </li>
+                  <li>
+                    • Under <strong>S.L. 217.06</strong>: have lived lawfully in
+                    Malta for <strong>2 years</strong> before applying (Reg. 13;
+                    Identità SIGMA FAQ 2025/26)
                   </li>
                   <li>
                     • Under <strong>Family Members Policy</strong>: wait{" "}
@@ -348,8 +501,15 @@ export default function FamilyReunificationGuidePage() {
                     <p className="text-lg font-bold text-blue-600">
                       Average Wage (Gross) + 20% per family member
                     </p>
+                    <p className="text-xs text-muted-foreground">
+                      Average wage = NSO Labour Force Survey average annual
+                      gross basic salary: <strong>€25,730 (2025)</strong>. Only
+                      basic salary from your main job counts — no overtime,
+                      bonuses or allowances.
+                    </p>
                     <p className="text-xs text-muted-foreground pt-2 border-t border-border/50">
-                      ⏱ Decision: up to <strong>9 months</strong> · 📋 Forms{" "}
+                      ⏳ <strong>2 years</strong> lawful residence · ⏱ Decision:
+                      up to <strong>9 months</strong> · 📋 Forms{" "}
                       <strong>G.01</strong> (new) / <strong>G.02</strong>{" "}
                       (renewal) · 💶 Fee: <strong>€50</strong>
                     </p>
@@ -386,10 +546,13 @@ export default function FamilyReunificationGuidePage() {
                     </p>
                     <p className="text-xs text-muted-foreground">
                       Median wage reference:{" "}
-                      <strong>€18,940 (Identità, June 2024)</strong>.
-                      &quot;Net&quot; = gross income minus income tax and social
-                      security contributions, declared with the Commissioner of
-                      Revenue.
+                      <strong>
+                        €18,940 (Identità, NSO release of June 2024)
+                      </strong>
+                      . NSO&apos;s newer 2025 median is €22,266 — Identità has
+                      not adopted it yet. &quot;Net&quot; = gross income minus
+                      income tax and social security contributions, declared
+                      with the Commissioner of Revenue.
                     </p>
                     <p className="text-xs text-muted-foreground pt-2 border-t border-border/50">
                       ⏱ Decision: within <strong>60 days</strong> · 🏥 Health
@@ -426,14 +589,128 @@ export default function FamilyReunificationGuidePage() {
               </div>
             </section>
 
-            <section id="salary-requirements" className="mt-12">
-              <h2>3. Salary Requirements</h2>
+            <section id="waiting-periods" className="mt-12">
+              <h2>3. Waiting Periods: When Can You Apply?</h2>
+              <p>
+                How soon you can bring your spouse and children depends on the
+                permit you hold and the route you use. Months count from the
+                date your <strong>first residence permit was issued</strong>,
+                and applications filed too early are inadmissible.
+              </p>
+
+              <div className="overflow-x-auto not-prose my-8">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-muted">
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Sponsor
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Waiting period
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Income test
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-border p-3 font-medium">
+                        Single Permit — S.L. 217.06
+                      </td>
+                      <td className="border border-border p-3">2 years</td>
+                      <td className="border border-border p-3">
+                        €25,730 gross + 20% per member
+                      </td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3 font-medium">
+                        Single Permit — Family Member Policy
+                      </td>
+                      <td className="border border-border p-3">12 months</td>
+                      <td className="border border-border p-3">
+                        €18,940 net + 20% per member
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3 font-medium">
+                        KEI holder (Approval in Principle)
+                      </td>
+                      <td className="border border-border p-3">
+                        None — apply immediately
+                      </td>
+                      <td className="border border-border p-3">
+                        €50,000 gross + €6,000 per extra dependant
+                      </td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3 font-medium">
+                        SEI holder (Approval in Principle)
+                      </td>
+                      <td className="border border-border p-3">
+                        None if €50,000+; otherwise 12 months
+                      </td>
+                      <td className="border border-border p-3">
+                        €50,000 gross + €6,000 per extra dependant
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3 font-medium">
+                        EU Blue Card / ICT holder
+                      </td>
+                      <td className="border border-border p-3">
+                        None — once Approval in Principle is issued
+                      </td>
+                      <td className="border border-border p-3">
+                        Assessed under the Blue Card / ICT rules
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="p-6 bg-amber-500/10 border border-amber-500/30 rounded-2xl not-prose my-6">
+                <div className="flex gap-3">
+                  <Hourglass className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-muted-foreground space-y-2">
+                    <p className="font-medium text-foreground">
+                      KEI / SEI fast-track: extra conditions for children
+                    </p>
+                    <p>
+                      • Health insurance of at least <strong>€100,000</strong>{" "}
+                      per dependant, covering inpatient and outpatient care in
+                      Malta and Europe for the whole permit period
+                    </p>
+                    <p>
+                      • For children of compulsory school age, proof of an
+                      application to a <strong>private school</strong> in Malta
+                    </p>
+                    <p>
+                      • All other Family Member Policy conditions (documents,
+                      accommodation, vetting) still apply
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <p className="text-sm text-muted-foreground">
-                Figures below use the <strong>2025 average gross wage</strong>{" "}
-                published by NSO Malta (€24,976) for S.L. 217.06, and the{" "}
-                <strong>median net wage of €18,940</strong> referenced by
-                Identità as of <strong>June 2024</strong> for the Family Member
-                Policy.
+                Blue Card and ICT family members may also work straight away.
+                Under S.L. 217.06, family members face a labour market test for
+                their first 12 months. Family Member Policy dependants need
+                their own Single Permit to work.
+              </p>
+            </section>
+
+            <section id="salary-requirements" className="mt-12">
+              <h2>4. Salary Requirements</h2>
+              <p className="text-sm text-muted-foreground">
+                Figures below use the{" "}
+                <strong>2025 average gross basic wage</strong> from NSO&apos;s
+                Labour Force Survey (€25,730) for S.L. 217.06, and
+                Identità&apos;s <strong>median wage figure of €18,940</strong>{" "}
+                for the Family Member Policy. The last column shows the Family
+                Member Policy requirement if Identità adopts NSO&apos;s 2025
+                median (€22,266).
               </p>
 
               <div className="overflow-x-auto not-prose my-8">
@@ -449,6 +726,9 @@ export default function FamilyReunificationGuidePage() {
                       <th className="border border-border p-3 text-left font-semibold">
                         Family Member Policy (Net)
                       </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        If NSO 2025 Median Adopted (Net)
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -457,10 +737,13 @@ export default function FamilyReunificationGuidePage() {
                         1 member
                       </td>
                       <td className="border border-border p-3">
-                        €29,971/year (€2,498/month)
+                        €30,876/year (€2,573/month)
                       </td>
                       <td className="border border-border p-3">
                         €22,728/year (€1,894/month)
+                      </td>
+                      <td className="border border-border p-3">
+                        €26,719/year (€2,227/month)
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -468,10 +751,13 @@ export default function FamilyReunificationGuidePage() {
                         2 members
                       </td>
                       <td className="border border-border p-3">
-                        €34,966/year (€2,914/month)
+                        €36,022/year (€3,002/month)
                       </td>
                       <td className="border border-border p-3">
                         €26,516/year (€2,210/month)
+                      </td>
+                      <td className="border border-border p-3">
+                        €31,172/year (€2,598/month)
                       </td>
                     </tr>
                     <tr>
@@ -479,10 +765,13 @@ export default function FamilyReunificationGuidePage() {
                         3 members
                       </td>
                       <td className="border border-border p-3">
-                        €39,962/year (€3,330/month)
+                        €41,168/year (€3,431/month)
                       </td>
                       <td className="border border-border p-3">
                         €30,304/year (€2,525/month)
+                      </td>
+                      <td className="border border-border p-3">
+                        €35,626/year (€2,969/month)
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -490,10 +779,13 @@ export default function FamilyReunificationGuidePage() {
                         4 members
                       </td>
                       <td className="border border-border p-3">
-                        €44,957/year (€3,746/month)
+                        €46,314/year (€3,860/month)
                       </td>
                       <td className="border border-border p-3">
                         €34,092/year (€2,841/month)
+                      </td>
+                      <td className="border border-border p-3">
+                        €40,079/year (€3,340/month)
                       </td>
                     </tr>
                   </tbody>
@@ -501,10 +793,11 @@ export default function FamilyReunificationGuidePage() {
               </div>
 
               <p className="text-sm text-muted-foreground">
-                * Family Reunification figures use the 2025 NSO average gross
-                wage (€24,976). Family Member Policy figures use Identità&apos;s
-                median net wage (€18,940, June 2024). Both are updated
-                periodically — verify against the official sources before
+                * Family Member Policy amounts are <strong>net</strong> income.
+                As a guide, €22,728 net needs roughly €27,970 gross on married
+                tax rates or €29,650 on single rates (2026 tax and SSC, no
+                bonuses). For a spouse + 2 children (€30,304 net) that is about
+                €38,220 gross (married). Verify figures with Identità before
                 applying.
               </p>
 
@@ -541,7 +834,7 @@ export default function FamilyReunificationGuidePage() {
             </section>
 
             <section id="examples" className="mt-12">
-              <h2>4. Calculation Examples</h2>
+              <h2>5. Calculation Examples</h2>
 
               <div className="space-y-6 not-prose my-8">
                 <div className="p-6 bg-muted/30 rounded-2xl">
@@ -554,8 +847,8 @@ export default function FamilyReunificationGuidePage() {
                       <strong>Family Reunification:</strong>
                     </p>
                     <p className="pl-4">
-                      €24,976 + (€24,976 × 20%) ={" "}
-                      <strong>€29,971 gross/year</strong>
+                      €25,730 + (€25,730 × 20%) ={" "}
+                      <strong>€30,876 gross/year</strong>
                     </p>
                     <p className="mt-4">
                       <strong>Family Member Policy:</strong>
@@ -577,8 +870,8 @@ export default function FamilyReunificationGuidePage() {
                       <strong>Family Reunification:</strong>
                     </p>
                     <p className="pl-4">
-                      €24,976 + (€24,976 × 20% × 3) ={" "}
-                      <strong>€39,962 gross/year</strong>
+                      €25,730 + (€25,730 × 20% × 3) ={" "}
+                      <strong>€41,168 gross/year</strong>
                     </p>
                     <p className="mt-4">
                       <strong>Family Member Policy:</strong>
@@ -589,11 +882,36 @@ export default function FamilyReunificationGuidePage() {
                     </p>
                   </div>
                 </div>
+
+                <div className="p-6 bg-muted/30 rounded-2xl">
+                  <h4 className="font-semibold mb-4 flex items-center gap-2">
+                    <AlertCircle className="h-5 w-5 text-amber-600" />
+                    Example 3: SEI Holder on €38,000 with Spouse + 1 Child
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <p>
+                      <strong>KEI/SEI fast-track:</strong>
+                    </p>
+                    <p className="pl-4">
+                      €50,000 + €6,000 = <strong>€56,000 gross/year</strong> —
+                      not met, so no immediate application.
+                    </p>
+                    <p className="mt-4">
+                      <strong>Family Member Policy (after 12 months):</strong>
+                    </p>
+                    <p className="pl-4">
+                      €18,940 + (€18,940 × 20% × 2) ={" "}
+                      <strong>€26,516 net/year</strong>. €38,000 gross is about
+                      €30,000 net on married rates, so this sponsor qualifies
+                      once 12 months have passed.
+                    </p>
+                  </div>
+                </div>
               </div>
             </section>
 
             <section id="documents" className="mt-12">
-              <h2>5. Required Documents</h2>
+              <h2>6. Required Documents</h2>
               <p>When applying for family reunification, you typically need:</p>
 
               <div className="grid md:grid-cols-2 gap-4 not-prose my-8">
@@ -625,7 +943,7 @@ export default function FamilyReunificationGuidePage() {
                   <h4 className="font-semibold mb-3">For Family Members</h4>
                   <ul className="text-sm text-muted-foreground space-y-2">
                     <li>
-                      • Valid passport (min. <strong>8 months validity</strong>{" "}
+                      • Valid passport (min. <strong>6 months validity</strong>{" "}
                       at submission)
                     </li>
                     <li>
@@ -639,7 +957,10 @@ export default function FamilyReunificationGuidePage() {
                       dependants under the Family Member Policy)
                     </li>
                     <li>• Police clearance certificates</li>
-                    <li>• Medical certificates</li>
+                    <li>
+                      • Health screening approval email (new HPDP forms since 29
+                      June 2026)
+                    </li>
                     <li>• Photos (passport size)</li>
                   </ul>
                 </div>
@@ -659,7 +980,7 @@ export default function FamilyReunificationGuidePage() {
             </section>
 
             <section id="application" className="mt-12">
-              <h2>6. Application Process</h2>
+              <h2>7. Application Process</h2>
 
               <div className="space-y-4 not-prose my-8">
                 <div className="flex gap-4 p-4 bg-muted/30 rounded-xl">
@@ -725,11 +1046,45 @@ export default function FamilyReunificationGuidePage() {
                     </p>
                   </div>
                 </div>
+                <div className="flex gap-4 p-4 bg-muted/30 rounded-xl">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+                    5
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Complete Health Screening</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Every family member must pass health screening once, and
+                      only the{" "}
+                      <a
+                        href="https://hpdp.gov.mt/idcu/health_screening/family_reunification"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        new HPDP forms
+                      </a>{" "}
+                      have been accepted since 29 June 2026. Adults get a form
+                      completed by a private doctor plus diphtheria, tetanus and
+                      polio vaccines (rubella for women). Children from high
+                      TB-risk countries take a Mantoux test and, from age 11, a
+                      chest X-ray at the Floriana Health Screening Unit. Keep
+                      the approval email for Identità and future renewals. See
+                      our{" "}
+                      <Link
+                        href="/blog/malta-work-permit-health-screening-2026"
+                        className="text-primary hover:underline"
+                      >
+                        health screening guide
+                      </Link>{" "}
+                      for the full process.
+                    </p>
+                  </div>
+                </div>
               </div>
             </section>
 
             <section id="exclusions" className="mt-12">
-              <h2>7. Who Is Excluded</h2>
+              <h2>8. Who Is Excluded</h2>
               <p>
                 The Family Member Policy does <strong>not</strong> apply to the
                 following groups, who fall under separate legal frameworks:
@@ -759,12 +1114,15 @@ export default function FamilyReunificationGuidePage() {
                 </div>
                 <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
                   <h4 className="font-semibold text-base mb-3">
-                    Student Exceptions
+                    Student Dependants: Work Exception
                   </h4>
                   <p className="text-sm text-muted-foreground mb-2">
-                    The 12-month sponsor tenure waiting period{" "}
-                    <strong>may not apply</strong> to students of specified
-                    institutions, including:
+                    Family Member Policy dependants cannot normally work, but
+                    those studying at the institutions below{" "}
+                    <strong>
+                      may take up an apprenticeship, placement or internship
+                    </strong>{" "}
+                    (Cap. 576) without changing permit:
                   </p>
                   <ul className="text-sm text-muted-foreground space-y-2">
                     <li>• Institute of Tourism Studies (ITS)</li>
@@ -774,15 +1132,15 @@ export default function FamilyReunificationGuidePage() {
                     <li>• University of Malta</li>
                   </ul>
                   <p className="text-xs text-muted-foreground mt-3 italic">
-                    Always confirm directly with Identità — student status alone
-                    does not guarantee approval.
+                    This does not shorten the sponsor&apos;s 12-month waiting
+                    period. Always confirm details directly with Identità.
                   </p>
                 </div>
               </div>
             </section>
 
             <section id="faqs" className="mt-12">
-              <h2>8. Frequently Asked Questions</h2>
+              <h2>9. Frequently Asked Questions</h2>
 
               <div className="space-y-4 not-prose my-8">
                 <div className="p-4 bg-muted/30 rounded-xl">
@@ -844,9 +1202,11 @@ export default function FamilyReunificationGuidePage() {
                   </h4>
                   <p className="text-sm text-muted-foreground">
                     Under S.L. 217.06 you must hold a Malta residence permit
-                    valid for at least 1 year and have reasonable prospects of
-                    permanent residence. Under the Family Member Policy you must
-                    wait <strong>12 calendar months</strong> from the date your
+                    valid for at least 1 year, have reasonable prospects of
+                    permanent residence and — in Identità&apos;s practice — have
+                    lived lawfully in Malta for <strong>2 years</strong>. Under
+                    the Family Member Policy you must wait{" "}
+                    <strong>12 calendar months</strong> from the date your
                     initial permit was first issued — except for{" "}
                     <strong>
                       Key Employee / Specialist Employee Initiative
@@ -857,7 +1217,24 @@ export default function FamilyReunificationGuidePage() {
                       €50,000 (sponsor + 1 dependent) plus €6,000 per additional
                       dependent
                     </strong>
-                    , who may apply earlier.
+                    , who may apply immediately. EU Blue Card holders have no
+                    waiting period.
+                  </p>
+                </div>
+                <div className="p-4 bg-muted/30 rounded-xl">
+                  <h4 className="font-semibold mb-2">
+                    Can I bring my children straight away on a KEI or SEI
+                    permit?
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    Yes, if you hold an Approval in Principle and earn at least{" "}
+                    <strong>€50,000 gross</strong> for yourself and one
+                    dependant, plus <strong>€6,000</strong> for each additional
+                    dependant. Each child needs €100,000 health cover, and
+                    school-age children need a private school application. On an
+                    SEI salary below the fast-track threshold (the permit itself
+                    needs only €30,000), you must wait 12 months and apply under
+                    the Family Member Policy instead.
                   </p>
                 </div>
                 <div className="p-4 bg-muted/30 rounded-xl">
@@ -874,9 +1251,9 @@ export default function FamilyReunificationGuidePage() {
                     <strong>Under the Family Member Policy</strong>, Identità
                     explicitly recognises{" "}
                     <strong>dependent unmarried adult family members</strong>{" "}
-                    (e.g. an elderly parent or a dependent sibling), provided
-                    you can document financial or physical dependency on the
-                    sponsor.
+                    (e.g. an adult child; parents only in exceptional cases),
+                    provided you can document financial or physical dependency
+                    on the sponsor.
                   </p>
                 </div>
                 <div className="p-4 bg-muted/30 rounded-xl">
@@ -898,13 +1275,16 @@ export default function FamilyReunificationGuidePage() {
                     Why is the median wage figure dated June 2024?
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Identità&apos;s Family Member Policy page lists the €18,940
-                    net median wage <strong>as of June 2024</strong>. The figure
-                    is reviewed periodically and may rise as Malta&apos;s median
-                    wage rises. The 20% per-family-member uplift applies to the
-                    median wage, so a future revision will affect both the base
-                    threshold and the uplift simultaneously. Always cross-check
-                    the latest number with Identità before submitting.
+                    Identità&apos;s Family Member Policy (v5.3, updated April
+                    2025) still quotes the €18,940 median from an NSO release of{" "}
+                    <strong>June 2024</strong>. NSO has since published a 2025
+                    median annual basic salary of <strong>€22,266</strong>.
+                    Identità says the figure is reviewed when a new median is
+                    published, and the 20% uplift is a share of the median, so
+                    an update raises both. For one family member the net
+                    requirement would go from €22,728 to about €26,719. Always
+                    cross-check the latest number with Identità before
+                    submitting.
                   </p>
                 </div>
                 <div className="p-4 bg-muted/30 rounded-xl">
@@ -927,9 +1307,9 @@ export default function FamilyReunificationGuidePage() {
                 Calculate Your Salary Requirement
               </h2>
               <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Use our Family Reunification Calculator to find out the exact
-                minimum salary you need to sponsor your family members under
-                both schemes.
+                Use our Family Reunification Calculator to find the minimum
+                salary for both schemes and check when you can apply with your
+                Single Permit, KEI, SEI or Blue Card.
               </p>
               <Link
                 href="/calculators/family-reunification"
@@ -941,6 +1321,7 @@ export default function FamilyReunificationGuidePage() {
             </div>
             <BlogArticleAuthor
               datePublished="2026-02-02"
+              dateModified={LAST_UPDATED}
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

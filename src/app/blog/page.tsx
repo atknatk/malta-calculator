@@ -418,9 +418,9 @@ const blogPosts: BlogPost[] = [
     slug: "malta-family-reunification-guide-2026",
     title: "Malta Family Reunification 2026: Complete Salary Guide",
     description:
-      "Complete guide to family reunification salary requirements in Malta. Two schemes explained with calculation examples.",
-    date: "February 2026",
-    readTime: "10 min read",
+      "Updated October 2026: new NSO wage thresholds, waiting periods by permit (Single Permit, KEI, SEI, Blue Card) and salary tables for both schemes.",
+    date: "October 2026",
+    readTime: "12 min read",
     category: "Immigration",
   },
   // Family benefits blog posts

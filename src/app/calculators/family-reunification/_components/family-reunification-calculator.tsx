@@ -11,6 +11,10 @@ import {
   ArrowRight,
   Scale,
   ExternalLink,
+  Clock,
+  CheckCircle2,
+  XCircle,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
@@ -19,11 +23,16 @@ import {
   calculateKeiThreshold,
   compareBothSchemes,
   formatCurrency,
+  getEligibility,
   getMonthlyBreakdown,
   WAGE_DATA,
   type SchemeType,
+  type MedianBasis,
+  type SponsorPermitType,
   type FamilyReunificationOutput,
+  type RouteEligibility,
 } from "@/utils/family-reunification-calculator";
+import type { SimpleTaxType, ChildCount } from "@/config/malta-tax-config";
 
 // Toggle Group Component
 function ToggleGroup<T extends string>({
@@ -109,21 +118,114 @@ function FamilyMemberCounter({
   );
 }
 
+// Eligibility row for a single route
+function RouteRow({ route }: { route: RouteEligibility }) {
+  const canApplyNow = route.monthsRemaining === 0;
+  const qualifies = canApplyNow && route.meetsIncome !== false;
+
+  return (
+    <div
+      className={cn(
+        "p-4 rounded-xl border space-y-2",
+        qualifies
+          ? "bg-emerald-500/5 border-emerald-500/30"
+          : "bg-background border-border",
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span className="font-medium text-sm">{route.label}</span>
+        <span
+          className={cn(
+            "shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold",
+            !canApplyNow
+              ? "bg-amber-500/15 text-amber-700 dark:text-amber-400"
+              : qualifies
+                ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
+                : "bg-red-500/15 text-red-700 dark:text-red-400",
+          )}
+        >
+          {!canApplyNow
+            ? `Wait ${route.monthsRemaining} more month${route.monthsRemaining > 1 ? "s" : ""}`
+            : qualifies
+              ? "Can apply now"
+              : "Income too low"}
+        </span>
+      </div>
+
+      {route.requiredIncome > 0 && (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+          <span>
+            Required:{" "}
+            <strong className="text-foreground">
+              {formatCurrency(route.requiredIncome)} {route.incomeType}
+            </strong>
+          </span>
+          {route.comparedIncome !== undefined && (
+            <span className="inline-flex items-center gap-1">
+              {route.meetsIncome ? (
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+              ) : (
+                <XCircle className="h-3.5 w-3.5 text-red-500" />
+              )}
+              Yours: {route.incomeType === "net" ? "~" : ""}
+              {formatCurrency(route.comparedIncome)} {route.incomeType}
+              {!route.meetsIncome &&
+                ` (short by ${formatCurrency(route.requiredIncome - route.comparedIncome)})`}
+            </span>
+          )}
+        </div>
+      )}
+
+      <p className="text-xs text-muted-foreground">{route.note}</p>
+    </div>
+  );
+}
+
 export function FamilyReunificationCalculator() {
   const [familyMemberCount, setFamilyMemberCount] = useState(1);
   const [scheme, setScheme] = useState<SchemeType>("family-reunification");
+  const [medianBasis, setMedianBasis] = useState<MedianBasis>("identita");
   const [showComparison, setShowComparison] = useState(false);
+
+  // Eligibility check inputs
+  const [permitType, setPermitType] =
+    useState<SponsorPermitType>("single-permit");
+  const [monthsResident, setMonthsResident] = useState<number | "">(0);
+  const [grossSalary, setGrossSalary] = useState<number | "">("");
+  const [taxType, setTaxType] = useState<SimpleTaxType>("married");
+  const [childCount, setChildCount] = useState<ChildCount>(0);
 
   const result = useMemo<FamilyReunificationOutput>(() => {
     return calculateFamilyReunification({
       familyMemberCount,
       scheme,
+      medianBasis,
     });
-  }, [familyMemberCount, scheme]);
+  }, [familyMemberCount, scheme, medianBasis]);
 
   const comparison = useMemo(() => {
-    return compareBothSchemes(familyMemberCount);
-  }, [familyMemberCount]);
+    return compareBothSchemes(familyMemberCount, medianBasis);
+  }, [familyMemberCount, medianBasis]);
+
+  const eligibility = useMemo(
+    () =>
+      getEligibility({
+        permitType,
+        monthsResident: monthsResident === "" ? 0 : monthsResident,
+        familyMemberCount,
+        grossAnnualSalary: grossSalary === "" ? undefined : grossSalary,
+        simpleTaxType: taxType,
+        childCount: taxType === "single" ? 0 : childCount,
+      }),
+    [
+      permitType,
+      monthsResident,
+      familyMemberCount,
+      grossSalary,
+      taxType,
+      childCount,
+    ],
+  );
 
   const monthlyBreakdown = getMonthlyBreakdown(result.minimumRequired);
 
@@ -192,6 +294,29 @@ export function FamilyReunificationCalculator() {
               </p>
             </div>
 
+            {/* Median basis (Family Member Policy only) */}
+            {scheme === "family-member-policy" && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground/70">
+                  Median Wage Basis
+                </label>
+                <ToggleGroup
+                  options={["identita", "nso-latest"] as const}
+                  value={medianBasis}
+                  onChange={setMedianBasis}
+                  labels={{
+                    identita: `Identità €${WAGE_DATA.medianWageNet.toLocaleString("en-MT")}`,
+                    "nso-latest": `NSO ${WAGE_DATA.nsoLatestMedianYear} €${WAGE_DATA.nsoLatestMedian.toLocaleString("en-MT")}`,
+                  }}
+                />
+                <p className="text-xs text-muted-foreground">
+                  {medianBasis === "identita"
+                    ? `The figure Identità currently publishes (NSO release of ${WAGE_DATA.medianWageNetReference}).`
+                    : `Projection: NSO has published a ${WAGE_DATA.nsoLatestMedianYear} median of €${WAGE_DATA.nsoLatestMedian.toLocaleString("en-MT")}. Identità has not adopted it yet, but says the figure is reviewed when NSO publishes a new median.`}
+                </p>
+              </div>
+            )}
+
             {/* Family Member Count */}
             <div className="space-y-4">
               <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
@@ -221,16 +346,18 @@ export function FamilyReunificationCalculator() {
                 <p className="text-muted-foreground text-xs mb-2">
                   {scheme === "family-reunification" ? (
                     <>
-                      Base: average gross wage (NSO {WAGE_DATA.year}: €
+                      Base: average gross basic wage (
+                      {WAGE_DATA.averageWageGrossReference}: €
                       {WAGE_DATA.averageWageGross.toLocaleString("en-MT")}) +
-                      20% per family member
+                      20% per family member. Sponsor needs 2 years of lawful
+                      residence.
                     </>
                   ) : (
                     <>
-                      Base: €{WAGE_DATA.medianWageNet.toLocaleString("en-MT")}{" "}
-                      net (Identità, {WAGE_DATA.medianWageNetReference}) + 20%
-                      of the median wage per family member. &quot;Net&quot; =
-                      gross minus income tax and SSC.
+                      Base: €{result.baseWage.toLocaleString("en-MT")} median
+                      wage + 20% of the median per family member, tested against
+                      your net income (gross minus income tax and SSC). Sponsor
+                      needs 12 months of residence.
                     </>
                   )}
                 </p>
@@ -438,13 +565,17 @@ export function FamilyReunificationCalculator() {
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
                   <li>
-                    Average gross wage: NSO Malta {WAGE_DATA.year} (€
-                    {WAGE_DATA.averageWageGross.toLocaleString("en-MT")})
+                    Average gross wage: NSO Labour Force Survey {WAGE_DATA.year}{" "}
+                    (€
+                    {WAGE_DATA.averageWageGross.toLocaleString("en-MT")}) — the
+                    definition used by S.L. 217.06
                   </li>
                   <li>
-                    Median net wage: Identità reference{" "}
+                    Median wage: Identità reference{" "}
                     {WAGE_DATA.medianWageNetReference} (€
-                    {WAGE_DATA.medianWageNet.toLocaleString("en-MT")})
+                    {WAGE_DATA.medianWageNet.toLocaleString("en-MT")}); NSO{" "}
+                    {WAGE_DATA.nsoLatestMedianYear} median is €
+                    {WAGE_DATA.nsoLatestMedian.toLocaleString("en-MT")}
                   </li>
                   <li>
                     Eligible income (Family Member Policy): employment, social
@@ -459,13 +590,136 @@ export function FamilyReunificationCalculator() {
                     Excludes EU citizens, refugees, SRA holders, and certain
                     other residence-document holders
                   </li>
-                  <li>Always confirm current figures with Identità Malta</li>
+                  <li>
+                    Figures last reviewed {WAGE_DATA.lastReviewed} — always
+                    confirm current figures with Identità Malta
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
         </motion.div>
       </div>
+
+      {/* Eligibility & waiting period check */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="p-6 rounded-3xl bg-gradient-to-br from-primary/5 via-background to-secondary/5 border border-border/50 space-y-6"
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-primary/10">
+            <Clock className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <span className="font-semibold">When Can I Apply?</span>
+            <p className="text-xs text-muted-foreground">
+              Waiting period and salary check for your permit type
+            </p>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="space-y-5">
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground/70">
+                Your Residence Permit
+              </label>
+              <ToggleGroup
+                options={["single-permit", "kei", "sei", "blue-card"] as const}
+                value={permitType}
+                onChange={setPermitType}
+                labels={{
+                  "single-permit": "Single Permit",
+                  kei: "KEI",
+                  sei: "SEI",
+                  "blue-card": "Blue Card",
+                }}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70">
+                  Months in Malta
+                </label>
+                <NumericInput
+                  value={monthsResident}
+                  onChange={setMonthsResident}
+                  min={0}
+                  max={240}
+                  allowDecimals={false}
+                  suffix="months"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70">
+                  Gross Basic Salary
+                </label>
+                <NumericInput
+                  value={grossSalary}
+                  onChange={setGrossSalary}
+                  min={0}
+                  allowDecimals={false}
+                  placeholder="Optional"
+                  suffix="€/yr"
+                />
+              </div>
+            </div>
+
+            {grossSalary !== "" && grossSalary > 0 && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground/70">
+                  Your Tax Status (for the net income estimate)
+                </label>
+                <ToggleGroup
+                  options={["single", "married", "parent"] as const}
+                  value={taxType}
+                  onChange={setTaxType}
+                  labels={{
+                    single: "Single",
+                    married: "Married",
+                    parent: "Parent",
+                  }}
+                />
+                {taxType !== "single" && (
+                  <ToggleGroup
+                    options={["0", "1", "2"] as const}
+                    value={String(childCount) as "0" | "1" | "2"}
+                    onChange={(v) => setChildCount(Number(v) as ChildCount)}
+                    labels={{
+                      "0": "No children",
+                      "1": "1 child",
+                      "2": "2+ children",
+                    }}
+                  />
+                )}
+              </div>
+            )}
+
+            <p className="text-xs text-muted-foreground">
+              Months count from the date your first residence permit was issued.
+              KEI, SEI and Blue Card fast-tracks require an Approval in
+              Principle letter. Net income is estimated with 2026 tax rates and
+              SSC, excluding statutory bonuses.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {eligibility.map((route) => (
+              <RouteRow key={route.route} route={route} />
+            ))}
+            {medianBasis === "nso-latest" && (
+              <p className="text-xs text-muted-foreground flex gap-2">
+                <TrendingUp className="h-4 w-4 shrink-0" />
+                The eligibility check uses Identità&apos;s current published
+                median (€{WAGE_DATA.medianWageNet.toLocaleString("en-MT")}).
+              </p>
+            )}
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

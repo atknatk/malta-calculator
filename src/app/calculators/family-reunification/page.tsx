@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Family Reunification Calculator | Malta 2026",
   description:
-    "Malta family reunification calculator: minimum salary for S.L. 217.06 (gross average wage + 20%) and the Family Member Policy (€18,940 net + 20%). Includes the KEI/Specialist enhanced threshold (€50,000 + €6,000 per dependent).",
+    "Malta family reunification calculator: salary needed under S.L. 217.06 (€30,876 for one) and the Family Member Policy, plus KEI/SEI and waiting period checks.",
   keywords: [
     "Malta family reunification",
     "Malta family visa",
@@ -35,7 +35,8 @@ export const metadata: Metadata = {
     "Identità family reunification",
     "Malta KEI family threshold",
     "Malta dependent adult sponsor",
-    "Malta median wage 2024",
+    "Malta family reunification waiting period",
+    "Malta SEI family members",
   ],
   alternates: pageAlternates("/calculators/family-reunification"),
   openGraph: {
@@ -66,13 +67,16 @@ export default function FamilyReunificationPage() {
       />
       <CalculatorJsonLd
         name="Family Reunification Calculator Malta"
-        description="Calculate minimum salary requirements for sponsoring family members to Malta under Family Reunification (S.L. 217.06) or the Family Member Policy, including the KEI/Specialist Employee Initiative enhanced threshold."
+        description="Calculate minimum salary requirements for sponsoring family members to Malta under Family Reunification (S.L. 217.06) or the Family Member Policy, check waiting periods by permit type (Single Permit, KEI, SEI, Blue Card) and test your salary against each route."
         slug="family-reunification"
         category="Immigration Calculator"
         features={[
           "Family Reunification (S.L. 217.06) salary calculation",
           "Family Member Policy salary calculation",
           "KEI / Specialist Employee Initiative enhanced threshold",
+          "Waiting period check by permit type (Single Permit, KEI, SEI, Blue Card)",
+          "Salary eligibility test with net income estimate",
+          "NSO 2025 median projection for the Family Member Policy",
           "Gross and net income requirements explained",
           "Monthly and weekly breakdown",
           "Scheme comparison tool",
@@ -85,7 +89,7 @@ export default function FamilyReunificationPage() {
             question:
               "What is the minimum salary for family reunification in Malta?",
             answer:
-              "Under S.L. 217.06 (Family Reunification) you need the NSO average gross wage (€24,976 in 2025) plus 20% for each family member sponsored. Under the Family Member Policy you need €18,940 net (Identità reference, June 2024) plus 20% of the median wage for each family member. Net here means gross income minus income tax and social security contributions.",
+              "Under S.L. 217.06 (Family Reunification) you need the NSO Labour Force Survey average gross basic wage (€25,730 for 2025) plus 20% for each family member — €30,876 for one family member. Under the Family Member Policy your net income must reach Identità's median wage figure (€18,940) plus 20% of it for each family member — €22,728 net for one. Net means gross income minus income tax and social security contributions.",
           },
           {
             question:
@@ -97,7 +101,24 @@ export default function FamilyReunificationPage() {
             question:
               "How much salary do I need to sponsor 2 family members in Malta?",
             answer:
-              "Under S.L. 217.06 you need approximately €34,966 gross/year (€2,914/month). Under the Family Member Policy you need approximately €26,516 net/year (€2,210/month).",
+              "Under S.L. 217.06 you need approximately €36,022 gross/year (€3,002/month). Under the Family Member Policy you need approximately €26,516 net/year (€2,210/month), which is roughly €33,200 gross for a sponsor on married tax rates.",
+          },
+          {
+            question:
+              "How long do I have to wait before bringing my family to Malta?",
+            answer:
+              "Under the Family Member Policy you must wait 12 months from the date your first residence permit was issued. Under S.L. 217.06 Identità requires 2 years of lawful residence. Key Employee Initiative (KEI) and Specialist Employee Initiative (SEI) holders with an Approval in Principle can bring their spouse and children immediately if they earn at least €50,000 gross (+€6,000 per extra dependant). EU Blue Card holders have no waiting period.",
+          },
+          {
+            question:
+              "Can SEI permit holders bring their children to Malta straight away?",
+            answer:
+              "Only if they meet the family fast-track income of €50,000 gross for the sponsor plus one dependant (+€6,000 for each additional dependant), hold an Approval in Principle, have €100,000 health cover per dependant and have applied for a private school place for school-age children. The SEI permit itself only requires €30,000 gross, so many SEI holders must wait the standard 12 months and use the Family Member Policy.",
+          },
+          {
+            question: "Will the Family Member Policy threshold go up?",
+            answer:
+              "Probably. Identità still quotes a median wage of €18,940, but NSO has since published a 2025 median annual basic salary of €22,266. Identità says the figure is reviewed when NSO publishes a new median. If it adopts the 2025 figure, the net requirement for one family member would rise from €22,728 to about €26,719.",
           },
           {
             question: "Who can I sponsor for family reunification in Malta?",
@@ -108,7 +129,7 @@ export default function FamilyReunificationPage() {
             question:
               "What is the KEI threshold for sponsoring family members in Malta?",
             answer:
-              "Key Employee Initiative and Specialist Employee Initiative holders with an approval-in-principle letter may apply under the Family Member Policy without serving the 12-month sponsor tenure if their gross annual income meets the enhanced threshold: €50,000 for the sponsor plus one dependent, and €6,000 for each additional dependent.",
+              "Key Employee Initiative and Specialist Employee Initiative holders with an approval-in-principle letter may apply under the Family Member Policy without serving the 12-month sponsor tenure if their gross annual income meets the enhanced threshold: €50,000 for the sponsor plus one dependent, and €6,000 for each additional dependent. Each dependant also needs €100,000 health insurance, and school-age children need a private school application.",
           },
           {
             question:

@@ -32,7 +32,8 @@ const PAGE_LAST_UPDATED: Record<string, string> = {
   "/calculators/vehicle-finance": "2026-04-15",
   "/blog/malta-vehicle-finance-guide-2026": "2026-04-15",
   "/blog/malta-work-permit-health-screening-2026": "2026-05-01",
-  "/blog/malta-family-reunification-guide-2026": "2026-04-28",
+  "/blog/malta-family-reunification-guide-2026": "2026-10-20",
+  "/calculators/family-reunification": "2026-10-20",
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
