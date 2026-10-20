@@ -31,8 +31,8 @@ import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Tax Rates",
-    url: "https://cfr.gov.mt/en/Tax-Encyclopaedia/Pages/Tax-Rates.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Tax Rates",
+    url: "https://mtca.gov.mt/personal-tax/tax-rates/tax-ratesindividuals",
   },
   {
     name: "Department of Social Security - SSC Rates",
@@ -327,8 +327,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 </li>
                 <li>
                   <strong>Income Tax (FSS)</strong> — Final Settlement System
-                  tax withheld by your employer and paid to the Commissioner for
-                  Revenue (CFR)
+                  tax withheld by your employer and paid to the Malta Tax and Customs Administration (MTCA)
                 </li>
               </ul>
               <p>
@@ -474,11 +473,11 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 where your employer withholds income tax from each paycheck and
                 remits it directly to the{" "}
                 <a
-                  href="https://cfr.gov.mt"
+                  href="https://mtca.gov.mt"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Commissioner for Revenue (CFR)
+                  Malta Tax and Customs Administration (MTCA)
                 </a>
                 . At year-end, you file a tax return (Form TA24) to confirm or
                 adjust the amounts.
@@ -521,11 +520,11 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 and single parents with children now benefit from substantially
                 higher tax-free thresholds. Source:{" "}
                 <a
-                  href="https://cfr.gov.mt"
+                  href="https://mtca.gov.mt"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  cfr.gov.mt
+                  mtca.gov.mt
                 </a>
               </p>
 
@@ -737,12 +736,12 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                     earlier, there were only 3 categories (Single, Married,
                     Parent) without child-count distinctions. Source:{" "}
                     <a
-                      href="https://cfr.gov.mt"
+                      href="https://mtca.gov.mt"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline"
                     >
-                      cfr.gov.mt
+                      mtca.gov.mt
                     </a>
                   </p>
                 </div>
@@ -1266,11 +1265,11 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 form (issued by your employer) and file your TA24 return through
                 the{" "}
                 <a
-                  href="https://cfr.gov.mt"
+                  href="https://mtca.gov.mt"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  CFR online portal
+                  MTCA online portal
                 </a>{" "}
                 to confirm or claim a refund. See our{" "}
                 <Link href="/blog/malta-tax-refund-guide-2026">

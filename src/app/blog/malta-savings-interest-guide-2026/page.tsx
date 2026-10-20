@@ -48,8 +48,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Withholding Tax",
-    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Withholding-Tax.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Withholding Tax",
+    url: "https://mtca.gov.mt/personal-tax/individual/taxationforindividuals",
   },
   {
     name: "Central Bank of Malta - Interest Rates",

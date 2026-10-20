@@ -131,6 +131,7 @@ export default function MaltaSinglePermitGuide2026Page() {
         description="Verified, source-cited 2026 guide to Malta's Single Permit. Covers government fees, KEI and SEI fast-track routes, the mandatory Pre-Departure Course (Skills Pass), the 30+30 day post-termination grace period, and the full document checklist."
         slug="malta-single-permit-guide-2026"
         datePublished="2026-04-07"
+        dateModified="2026-10-20"
         sources={ARTICLE_SOURCES}
       />
       <HowToJsonLd
@@ -2016,8 +2017,12 @@ export default function MaltaSinglePermitGuide2026Page() {
                   <strong>Fixed renewal periods (1 Oct 2025).</strong> Up to 2
                   years for standard renewals; up to 3 years for KEI, SEI and EU
                   Blue Card. Identità&apos;s discretion to vary these periods
-                  has been removed. Low-skilled workers enrolled in Identità
-                  training programmes get 2-year renewals.
+                  has been removed. Since March 2026, workers in low-skilled
+                  roles must complete the Maltese culture and language course
+                  and pass its exam (run by the Examinations Department) to be
+                  considered for a 2-year renewal instead of 1 year. Tourism
+                  workers with a higher-level skills card and a 3-year contract
+                  can get 3 years.
                 </li>
                 <li>
                   <strong>Newly registered businesses (Jan 2026).</strong> New
@@ -2231,6 +2236,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             <BlogArticleAuthor
               datePublished="2026-04-07"
+              dateModified="2026-10-20"
               sources={ARTICLE_SOURCES}
             />
 

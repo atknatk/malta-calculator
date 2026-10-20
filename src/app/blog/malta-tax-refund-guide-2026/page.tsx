@@ -23,8 +23,8 @@ import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 const ARTICLE_SOURCES = [
   {
-    name: "Commissioner for Revenue (CFR) - Income Tax Returns",
-    url: "https://cfr.gov.mt/en/individuals/Pages/Income-Tax-Returns.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Income Tax Returns",
+    url: "https://mtca.gov.mt/personal-tax/individual/tax-return-cycle",
   },
   {
     name: "Malta Tax Compliance Authority (MTCA)",
@@ -130,8 +130,8 @@ export default function MaltaTaxRefundPage() {
                   this by end of February
                 </li>
                 <li>
-                  <strong>File online</strong> - Use the IRD CFR portal at
-                  cfr.gov.mt
+                  <strong>File online</strong> - Use MTCA online services at
+                  mtca.gov.mt
                 </li>
                 <li>
                   <strong>Submit by June 30</strong> - Deadline for previous

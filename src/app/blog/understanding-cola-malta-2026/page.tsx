@@ -28,8 +28,8 @@ const ARTICLE_SOURCES = [
     url: "https://socialsecurity.gov.mt",
   },
   {
-    name: "Commissioner for Revenue (CFR) - Malta",
-    url: "https://cfr.gov.mt",
+    name: "Malta Tax and Customs Administration (MTCA) - Malta",
+    url: "https://mtca.gov.mt",
   },
 ];
 

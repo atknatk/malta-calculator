@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "First-Time Buyer Calculator Malta 2026 | Malta Calculator",
   description:
-    "Add up Malta's first-time buyer benefits for 2026: stamp duty exemption on €200,000, the €10,000 grant, and UCA incentives up to €30,000. Free tool.",
+    "Malta home buyer benefits 2026: €200,000 stamp duty exemption, €10,000 grant (€20,000 with Disability Card), second-time buyer grant and UCA incentives.",
   keywords: [
     "malta first time buyer calculator",
     "first time buyer scheme malta 2026",
@@ -69,7 +69,9 @@ export default function FirstTimeBuyerPage() {
         category="Property Calculator"
         features={[
           "Stamp duty exemption on first €200,000 (permanent)",
-          "€10,000 grant over 10 years",
+          "€10,000 grant over 10 years (€20,000 with EU Disability Card)",
+          "Second-time buyer grant (purchases from 1 January 2026)",
+          "Joint purchase with a previous homeowner (€5,000 grant)",
           "UCA/vacant property exemption to €750,000",
           "€15,000 / €30,000 (Gozo) UCA cash grants",
           "Deposit Assistance Scheme eligibility check",
@@ -92,7 +94,18 @@ export default function FirstTimeBuyerPage() {
           {
             question: "Who qualifies for the €10,000 first-time buyer grant?",
             answer:
-              "Buyers acquiring their first primary residence in Malta or Gozo with a bank loan, for purchases made between 1 January 2024 and 31 December 2026. The grant is paid in ten yearly instalments of €1,000 by the Commissioner for Tax and Customs.",
+              "Buyers who acquired their first residential property after 1 January 2022 with a bank home loan and live in it as their ordinary residence. The Housing Authority pays the grant in ten yearly instalments of €1,000, each June. Apply by 31 July of the year after the deed — each late year forfeits that year's payment.",
+          },
+          {
+            question:
+              "Is the first-time buyer grant higher for persons with disability?",
+            answer:
+              "Yes. Since August 2026 a first-time buyer holding a valid EU Disability Card issued by Agenzija Sapport receives €20,000, paid as €2,000 a year for ten years. If a couple buys jointly and the property is not the first home of one partner, the grant is €5,000 (€500 a year), or €10,000 when one partner holds a Disability Card.",
+          },
+          {
+            question: "Can second-time buyers get the grant in Malta?",
+            answer:
+              "Yes, from August 2026. Second-time buyers who previously owned a home but own no other residential property now, and buy their sole primary residence after 1 January 2026 with a bank loan, can receive up to €10,000. Anyone who already received part of the grant gets only the remaining balance. Second-time buyers do not get the €200,000 first-time buyer stamp duty exemption.",
           },
           {
             question: "What is the Deposit Assistance Scheme in Malta?",

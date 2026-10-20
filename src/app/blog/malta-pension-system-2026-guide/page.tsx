@@ -27,8 +27,8 @@ const ARTICLE_SOURCES = [
     url: "https://socialsecurity.gov.mt/en/pensions/",
   },
   {
-    name: "Commissioner for Revenue (CFR) - Pension Income",
-    url: "https://cfr.gov.mt/en/individuals/Pages/Pension-Income.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Pension Income",
+    url: "https://mtca.gov.mt/personal-tax/pensioners/pension-income-in-malta",
   },
 ];
 

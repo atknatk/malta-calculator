@@ -48,8 +48,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Self-Employment",
-    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Self-Employment.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Self-Employment",
+    url: "https://mtca.gov.mt/personal-tax/self-employed/registration",
   },
   {
     name: "Department of Social Security Malta - Class 2 Contributions",

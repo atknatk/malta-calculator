@@ -88,4 +88,56 @@ describe("calculateFirstTimeBuyer", () => {
       }).depositSchemeEligible,
     ).toBe(false);
   });
+
+  it("pays €20,000 (€2,000/year) to first-time buyers with an EU Disability Card", () => {
+    const r = calculateFirstTimeBuyer({
+      propertyPrice: 250000,
+      isUCAOrVacant: false,
+      isGozo: false,
+      withBankLoan: true,
+      hasDisabilityCard: true,
+    });
+    expect(r.ftbGrant).toBe(20000);
+    expect(r.ftbGrantPerYear).toBe(2000);
+  });
+
+  it("halves the grant when the property is not the first home of one partner", () => {
+    const base = {
+      propertyPrice: 250000,
+      isUCAOrVacant: false,
+      isGozo: false,
+      withBankLoan: true,
+      jointWithNonFirstTimeBuyer: true,
+    };
+    expect(calculateFirstTimeBuyer(base).ftbGrant).toBe(5000);
+    expect(
+      calculateFirstTimeBuyer({ ...base, hasDisabilityCard: true }).ftbGrant,
+    ).toBe(10000);
+  });
+
+  it("gives second-time buyers the €10,000 grant but no FTB duty exemption", () => {
+    const r = calculateFirstTimeBuyer({
+      propertyPrice: 300000,
+      isUCAOrVacant: false,
+      isGozo: false,
+      withBankLoan: true,
+      buyerType: "second-time",
+    });
+    expect(r.ftbGrant).toBe(10000);
+    expect(r.exemptAmount).toBe(0);
+    expect(r.stampDutyDue).toBe(15000);
+    expect(r.stampDutySaved).toBe(0);
+  });
+
+  it("keeps the UCA duty exemption but not the UCA cash grant for second-time buyers", () => {
+    const r = calculateFirstTimeBuyer({
+      propertyPrice: 500000,
+      isUCAOrVacant: true,
+      isGozo: false,
+      withBankLoan: true,
+      buyerType: "second-time",
+    });
+    expect(r.stampDutyDue).toBe(0);
+    expect(r.ucaGrant).toBe(0);
+  });
 });

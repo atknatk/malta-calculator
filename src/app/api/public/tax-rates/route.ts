@@ -34,7 +34,7 @@ export async function GET(request: Request) {
         version: "1.0",
         source: "https://maltacalculator.com",
         dataSource:
-          "Malta Commissioner for Revenue (CFR) & Social Security Department",
+          "Malta Tax and Customs Administration (MTCA) & Social Security Department",
         availableYears,
         latestYear,
         endpoints: {
@@ -86,7 +86,7 @@ export async function GET(request: Request) {
       currency: "EUR",
       country: "Malta",
       lastUpdated: "2026-01-23",
-      source: "Malta Commissioner for Revenue (CFR)",
+      source: "Malta Tax and Customs Administration (MTCA)",
       incomeTax: {
         description:
           "Malta progressive income tax brackets. Tax = (income × rate) − deduction",

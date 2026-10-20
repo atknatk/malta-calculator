@@ -27,8 +27,8 @@ import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue - Tax Rates 2026",
-    url: "https://cfr.gov.mt/en/Tax-Encyclopaedia/Pages/Tax-Rates.aspx",
+    name: "Malta Tax and Customs Administration - Tax Rates 2026",
+    url: "https://mtca.gov.mt/personal-tax/tax-rates/tax-ratesindividuals",
   },
   {
     name: "Malta Tax & Customs Administration (MTCA)",

@@ -40,12 +40,12 @@ export function BlogArticleAuthor({
               contributions, and employment regulations. All content is reviewed
               against official sources from the{" "}
               <a
-                href="https://cfr.gov.mt"
+                href="https://mtca.gov.mt"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >
-                Malta Commissioner for Revenue
+                Malta Tax and Customs Administration
               </a>{" "}
               and the{" "}
               <a

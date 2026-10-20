@@ -48,8 +48,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Rental Income",
-    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Rental-Income.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Rental Income",
+    url: "https://mtca.gov.mt/personal-tax/individual/tax-on-rental-income-(ta24)",
   },
   {
     name: "Malta Tax Compliance Authority (MTCA)",

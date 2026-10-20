@@ -58,8 +58,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Double Taxation Relief",
-    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Double-Taxation-Relief.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Double Taxation Relief",
+    url: "https://mtca.gov.mt/business-tax/InternationalAffairs/international-direct-taxation",
   },
   {
     name: "Ministry for Foreign and European Affairs Malta - Tax Treaties",
@@ -405,12 +405,12 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
               <p className="text-sm text-muted-foreground">
                 Source:{" "}
                 <a
-                  href="https://cfr.gov.mt/en/inlandrevenue/itu/Pages/Tax-Treaty-Withholding-Rates.aspx"
+                  href="https://mtca.gov.mt/business-tax/InternationalAffairs/international-legislation-and-agreements/international-agreements"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline"
                 >
-                  Commissioner for Revenue (CFR) - Double Taxation Agreements in
+                  Malta Tax and Customs Administration (MTCA) - Double Taxation Agreements in
                   Force
                 </a>
               </p>
@@ -630,7 +630,7 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
                   customs duties, VAT, etc.)
                 </li>
                 <li>
-                  The taxpayer must <strong>prove to the CFR</strong> that
+                  The taxpayer must <strong>prove to the MTCA</strong> that
                   foreign tax was actually paid and provide documentation of the
                   amount
                 </li>
@@ -955,12 +955,12 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
                   each treaty&mdash;beneficial ownership and other conditions
                   may apply. For the most current rates, consult the{" "}
                   <a
-                    href="https://cfr.gov.mt/en/inlandrevenue/itu/Pages/Tax-Treaty-Withholding-Rates.aspx"
+                    href="https://mtca.gov.mt/business-tax/InternationalAffairs/international-legislation-and-agreements/international-agreements"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline"
                   >
-                    CFR website
+                    MTCA website
                   </a>
                   .
                 </p>
@@ -1160,7 +1160,7 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
                 <p className="text-xs text-muted-foreground mt-4">
                   *Even without a DTA, Sarah avoids double taxation through
                   Malta&apos;s unilateral relief provisions. She must provide
-                  proof of Brazilian tax paid to the CFR.
+                  proof of Brazilian tax paid to the MTCA.
                 </p>
               </div>
             </section>
@@ -1183,11 +1183,11 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
                   <strong>Identify the applicable treaty</strong>: Check if
                   Malta has a DTA with the source country on the{" "}
                   <a
-                    href="https://cfr.gov.mt/en/inlandrevenue/itu/Pages/Tax-Treaty-Withholding-Rates.aspx"
+                    href="https://mtca.gov.mt/business-tax/InternationalAffairs/international-legislation-and-agreements/international-agreements"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    CFR website
+                    MTCA website
                   </a>
                 </li>
                 <li>
@@ -1229,7 +1229,7 @@ export default function MaltaDoubleTaxationTreatyGuidePage() {
               <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl not-prose my-6">
                 <p className="text-sm">
                   <strong>Malta Tax Residence Certificate:</strong> You can
-                  request a certificate of tax residence from the CFR using
+                  request a certificate of tax residence from the MTCA using
                   their online services. This document may be required by the
                   treaty partner country to apply reduced withholding tax rates
                   under the DTA. Allow at least 2-4 weeks for processing.

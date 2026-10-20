@@ -187,9 +187,15 @@ const PHASES: TimelinePhase[] = [
       },
       {
         title: "Mandatory Pre-Departure Course (Skills Pass)",
-        badge: "Expected Jan 2026",
-        badgeVariant: "warning",
+        badge: "In force — verified from 1 Mar 2026",
+        badgeVariant: "success",
         body: "Every first-time third-country applicant must complete a Pre-Departure Course on skillspass.org.mt before Identità issues Approval in Principle. €250 fee, two online modules plus a 20-minute live interview, completed within 42 days. Identità began verifying certificates on 1 March 2026.",
+      },
+      {
+        title: "Maltese culture & language course for longer renewals",
+        badge: "Announced Mar 2026",
+        badgeVariant: "info",
+        body: "Third-country nationals already working in Malta can take a mandatory-attendance course on Maltese culture, civic life and the Maltese and English languages, ending in an exam run by the Examinations Department. Workers in low-skilled roles must pass it (with the other conditions) to be considered for a 2-year renewal instead of 1 year. KEI, SEI and Blue Card renewals can run up to 3 years, and tourism workers with a higher-level skills card and a 3-year contract can also get 3 years.",
       },
     ],
   },

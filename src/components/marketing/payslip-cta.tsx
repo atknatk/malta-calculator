@@ -10,7 +10,7 @@ const features = [
   {
     icon: Shield,
     title: "Malta Compliant",
-    description: "Aligned with CFR & Social Security rules",
+    description: "Aligned with MTCA & Social Security rules",
   },
   {
     icon: Users,

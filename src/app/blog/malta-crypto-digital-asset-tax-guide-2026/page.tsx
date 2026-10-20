@@ -60,8 +60,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Tax on Cryptocurrency",
-    url: "https://cfr.gov.mt",
+    name: "Malta Tax and Customs Administration (MTCA) - Tax on Cryptocurrency",
+    url: "https://mtca.gov.mt",
   },
   {
     name: "Malta Financial Services Authority (MFSA) - Virtual Financial Assets",

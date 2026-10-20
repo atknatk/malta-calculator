@@ -9,6 +9,7 @@ import {
   calculateFirstTimeBuyer,
   formatCurrency,
   getFTBRules,
+  type BuyerType,
   type FirstTimeBuyerOutput,
 } from "@/utils/first-time-buyer-calculator";
 
@@ -55,8 +56,14 @@ export function FirstTimeBuyerCalculator() {
   const [isUCAOrVacant, setIsUCAOrVacant] = useState<"no" | "yes">("no");
   const [isGozo, setIsGozo] = useState<"no" | "yes">("no");
   const [withBankLoan, setWithBankLoan] = useState<"yes" | "no">("yes");
+  const [buyerType, setBuyerType] = useState<BuyerType>("first-time");
+  const [hasDisabilityCard, setHasDisabilityCard] = useState<"no" | "yes">(
+    "no",
+  );
+  const [jointNonFtb, setJointNonFtb] = useState<"no" | "yes">("no");
 
   const rules = getFTBRules();
+  const isSecondTime = buyerType === "second-time";
 
   const result = useMemo<FirstTimeBuyerOutput>(() => {
     return calculateFirstTimeBuyer({
@@ -64,8 +71,19 @@ export function FirstTimeBuyerCalculator() {
       isUCAOrVacant: isUCAOrVacant === "yes",
       isGozo: isGozo === "yes",
       withBankLoan: withBankLoan === "yes",
+      buyerType,
+      hasDisabilityCard: hasDisabilityCard === "yes",
+      jointWithNonFirstTimeBuyer: jointNonFtb === "yes",
     });
-  }, [propertyPrice, isUCAOrVacant, isGozo, withBankLoan]);
+  }, [
+    propertyPrice,
+    isUCAOrVacant,
+    isGozo,
+    withBankLoan,
+    buyerType,
+    hasDisabilityCard,
+    jointNonFtb,
+  ]);
 
   return (
     <div className="space-y-6 lg:space-y-8">
@@ -83,8 +101,9 @@ export function FirstTimeBuyerCalculator() {
           First-Time Buyer Calculator
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto px-2">
-          Add up every government benefit for first-time buyers in Malta — stamp
-          duty exemption, the €10,000 grant and UCA incentives.
+          Add up every government benefit for first-time and second-time buyers
+          in Malta — stamp duty exemption, the €10,000 (or €20,000) grant and
+          UCA incentives.
         </p>
       </motion.div>
 
@@ -122,6 +141,54 @@ export function FirstTimeBuyerCalculator() {
 
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/70">
+                Buyer type
+              </label>
+              <ToggleGroup
+                options={["first-time", "second-time"] as const}
+                value={buyerType}
+                onChange={setBuyerType}
+                labels={{
+                  "first-time": "First-time buyer",
+                  "second-time": "Second-time buyer",
+                }}
+              />
+              <p className="text-xs text-muted-foreground">
+                {isSecondTime
+                  ? "You previously owned a home but own none now, and buy your sole primary residence after 1 January 2026."
+                  : "This is the first residential property you (or one of you) will own."}
+              </p>
+            </div>
+
+            {!isSecondTime && (
+              <>
+                <div className="space-y-3">
+                  <label className="text-sm font-medium text-foreground/70">
+                    Does an applicant hold an EU Disability Card?
+                  </label>
+                  <ToggleGroup
+                    options={["no", "yes"] as const}
+                    value={hasDisabilityCard}
+                    onChange={setHasDisabilityCard}
+                    labels={{ no: "No", yes: "Yes — doubles the grant" }}
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-sm font-medium text-foreground/70">
+                    Buying with a partner who owned a home before?
+                  </label>
+                  <ToggleGroup
+                    options={["no", "yes"] as const}
+                    value={jointNonFtb}
+                    onChange={setJointNonFtb}
+                    labels={{ no: "No", yes: "Yes — grant halved" }}
+                  />
+                </div>
+              </>
+            )}
+
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground/70">
                 Buying with a bank loan?
               </label>
               <ToggleGroup
@@ -131,7 +198,8 @@ export function FirstTimeBuyerCalculator() {
                 labels={{ yes: "Yes — bank loan", no: "No — cash" }}
               />
               <p className="text-xs text-muted-foreground">
-                The €10,000 grant (10 × €1,000/year) requires a bank loan.
+                The Property Acquisition Grant (paid yearly over 10 years)
+                requires a bank home loan.
               </p>
             </div>
 
@@ -147,7 +215,7 @@ export function FirstTimeBuyerCalculator() {
               />
               <p className="text-xs text-muted-foreground">
                 Qualifying properties get a duty exemption on the first €750,000
-                plus a cash grant.
+                {isSecondTime ? "." : " plus a cash grant."}
               </p>
             </div>
 
@@ -215,24 +283,29 @@ export function FirstTimeBuyerCalculator() {
                 {formatCurrency(result.totalBenefits)}
               </motion.div>
               <p className="text-muted-foreground mt-2 text-sm sm:text-base">
-                combined value of your first-time buyer package
+                combined value of your {isSecondTime ? "second" : "first"}-time
+                buyer package
               </p>
             </div>
 
             <div className="space-y-2">
-              <div className="flex justify-between items-center p-3 rounded-xl bg-green-500/10 border border-green-500/20">
-                <span className="text-sm text-muted-foreground">
-                  Stamp Duty Saved (exemption on first{" "}
-                  {formatCurrency(result.exemptAmount)})
-                </span>
-                <span className="font-semibold text-green-600">
-                  +{formatCurrency(result.stampDutySaved)}
-                </span>
-              </div>
+              {result.stampDutySaved > 0 && (
+                <div className="flex justify-between items-center p-3 rounded-xl bg-green-500/10 border border-green-500/20">
+                  <span className="text-sm text-muted-foreground">
+                    Stamp Duty Saved (exemption on first{" "}
+                    {formatCurrency(result.exemptAmount)})
+                  </span>
+                  <span className="font-semibold text-green-600">
+                    +{formatCurrency(result.stampDutySaved)}
+                  </span>
+                </div>
+              )}
               {result.ftbGrant > 0 && (
                 <div className="flex justify-between items-center p-3 rounded-xl bg-green-500/10 border border-green-500/20">
                   <span className="text-sm text-muted-foreground">
-                    FTB Grant (€1,000 × 10 years)
+                    Property Acquisition Grant (
+                    {formatCurrency(result.ftbGrantPerYear)} ×{" "}
+                    {rules.GRANT_YEARS} years)
                   </span>
                   <span className="font-semibold text-green-600">
                     +{formatCurrency(result.ftbGrant)}
@@ -291,19 +364,33 @@ export function FirstTimeBuyerCalculator() {
                 <ul className="list-disc list-inside space-y-1 text-xs">
                   <li>
                     The €200,000 stamp duty exemption was made{" "}
-                    <strong>permanent</strong> in Budget 2026
+                    <strong>permanent</strong> in Budget 2026 (first-time buyers
+                    only)
                   </li>
                   <li>
-                    The €10,000 grant covers first primary residences bought
-                    with a bank loan (2024–2026 purchases)
+                    The grant is €10,000 for first homes bought after 1 January
+                    2022 with a bank loan — €20,000 with an EU Disability Card,
+                    and €5,000 if one partner owned a home before
+                  </li>
+                  <li>
+                    Since August 2026, second-time buyers who own no other home
+                    also qualify (purchases after 1 January 2026, up to €10,000
+                    minus any grant already received)
+                  </li>
+                  <li>
+                    Apply by 31 July of the year after the deed — each late year
+                    forfeits that year&apos;s payment
                   </li>
                   <li>
                     UCA/vacant properties also qualify for a VAT refund of up to
                     €54,000 on restoration works
                   </li>
-                  <li>
-                    You must not have owned property in Malta or Gozo before
-                  </li>
+                  {isSecondTime && (
+                    <li>
+                      Second-time buyers may still get other duty reliefs for a
+                      sole ordinary residence — check with your notary
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>

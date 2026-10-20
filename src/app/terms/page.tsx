@@ -229,7 +229,7 @@ export default function TermsPage() {
                 <li>We cannot guarantee real-time accuracy</li>
                 <li>
                   Always verify critical calculations with official sources
-                  (CFR, Transport Malta, DIER)
+                  (MTCA, Transport Malta, DIER)
                 </li>
               </ul>
             </section>
@@ -313,7 +313,7 @@ export default function TermsPage() {
                 official government resources:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 mt-4 ml-4">
-                <li>Inland Revenue Department (CFR) - cfr.gov.mt</li>
+                <li>Malta Tax and Customs Administration (MTCA) - mtca.gov.mt</li>
                 <li>Transport Malta - transport.gov.mt</li>
                 <li>DIER - dier.gov.mt</li>
                 <li>Social Security Department - socialsecurity.gov.mt</li>

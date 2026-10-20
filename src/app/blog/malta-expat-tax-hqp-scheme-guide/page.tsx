@@ -61,8 +61,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Highly Qualified Persons Rules",
-    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Highly-Qualified-Persons.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Highly Qualified Persons Rules",
+    url: "https://mtca.gov.mt/personal-tax/individual/special-schemes",
   },
   {
     name: "Malta Enterprise - Highly Qualified Persons Scheme",

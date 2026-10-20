@@ -37,8 +37,8 @@ import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
 const ARTICLE_SOURCES = [
   {
-    name: "Commissioner for Revenue (CFR) - Tax Rates & Thresholds",
-    url: "https://cfr.gov.mt/en/individuals/Pages/Tax-Rates.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Tax Rates & Thresholds",
+    url: "https://mtca.gov.mt/personal-tax/tax-rates/tax-ratesindividuals",
   },
   {
     name: "Malta Tax Compliance Authority (MTCA)",

@@ -188,8 +188,8 @@ const blogPosts: BlogPost[] = [
     slug: "malta-maternity-leave-2026-guide",
     title: "Malta Maternity Leave 2026: 18 Weeks Entitlement",
     description:
-      "Malta maternity leave 2026 guide. 18 weeks paid leave, 10 days paternity leave, and benefit calculations.",
-    date: "January 2026",
+      "Malta maternity leave 2026 guide: 18 weeks paid leave, paid parental leave, and the new 2026 miscarriage, bereavement and self-employed parental leave rules.",
+    date: "October 2026",
     readTime: "7 min read",
     category: "Family",
   },
@@ -233,9 +233,9 @@ const blogPosts: BlogPost[] = [
     slug: "malta-first-time-buyer-scheme-2026",
     title: "Malta First-Time Buyer Scheme 2026",
     description:
-      "Malta first-time property buyer benefits. Reduced stamp duty at 3.5%, grant eligibility, and property value limits.",
-    date: "January 2026",
-    readTime: "5 min read",
+      "Updated October 2026: €200,000 stamp duty exemption, €10,000 grant (€20,000 with Disability Card) and the new second-time buyer grant.",
+    date: "October 2026",
+    readTime: "6 min read",
     category: "Property",
   },
   {

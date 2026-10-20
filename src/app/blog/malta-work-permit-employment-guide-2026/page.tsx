@@ -663,12 +663,12 @@ export default function MaltaWorkPermitGuidePage() {
                     Tax numbers &amp; tax matters
                   </p>
                   <a
-                    href="https://cfr.gov.mt"
+                    href="https://mtca.gov.mt"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-primary hover:underline"
                   >
-                    cfr.gov.mt →
+                    mtca.gov.mt →
                   </a>
                 </div>
               </div>

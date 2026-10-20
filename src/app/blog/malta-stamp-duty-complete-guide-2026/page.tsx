@@ -49,8 +49,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Stamp Duty",
-    url: "https://cfr.gov.mt/en/rates/Pages/Duty-on-Documents-and-Transfers.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Stamp Duty",
+    url: "https://mtca.gov.mt/personal-tax/property-taxes/general-information-on-duty",
   },
   {
     name: "Malta Tax Compliance Authority (MTCA)",

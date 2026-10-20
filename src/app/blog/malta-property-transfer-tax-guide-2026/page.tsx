@@ -59,8 +59,8 @@ export const metadata: Metadata = {
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Commissioner for Revenue (CFR) - Duty on Documents",
-    url: "https://cfr.gov.mt/en/inlandrevenue/Pages/Duty-on-Documents-and-Transfers.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Duty on Documents",
+    url: "https://mtca.gov.mt/personal-tax/property-taxes/general-information-on-duty",
   },
   {
     name: "Malta Tax Compliance Authority (MTCA)",
@@ -1180,7 +1180,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                   </div>
                 </a>
                 <a
-                  href="https://cfr.gov.mt/en/inlandrevenue/Pages/Duty-on-Documents-and-Transfers.aspx"
+                  href="https://mtca.gov.mt/personal-tax/property-taxes/general-information-on-duty"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 border border-border/50 hover:border-primary/50 transition-colors text-sm"
@@ -1188,15 +1188,15 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                   <ExternalLink className="h-4 w-4 text-primary flex-shrink-0" />
                   <div>
                     <span className="font-semibold">
-                      Commissioner for Revenue - Duty on Documents
+                      MTCA - Duty on Documents
                     </span>
                     <span className="text-muted-foreground ml-2">
-                      - cfr.gov.mt
+                      - mtca.gov.mt
                     </span>
                   </div>
                 </a>
                 <a
-                  href="https://cfr.gov.mt/en/inlandrevenue/Pages/Property-Transfers.aspx"
+                  href="https://mtca.gov.mt/personal-tax/property-taxes/buying-property"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 border border-border/50 hover:border-primary/50 transition-colors text-sm"
@@ -1204,10 +1204,10 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                   <ExternalLink className="h-4 w-4 text-primary flex-shrink-0" />
                   <div>
                     <span className="font-semibold">
-                      Commissioner for Revenue - Property Transfers
+                      MTCA - Property Transfers
                     </span>
                     <span className="text-muted-foreground ml-2">
-                      - cfr.gov.mt
+                      - mtca.gov.mt
                     </span>
                   </div>
                 </a>

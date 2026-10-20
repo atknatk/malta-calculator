@@ -27,8 +27,8 @@ const ARTICLE_SOURCES = [
     url: "https://dier.gov.mt",
   },
   {
-    name: "Commissioner for Revenue (CFR) - Employment Income",
-    url: "https://cfr.gov.mt/en/individuals/Pages/Employment-Income.aspx",
+    name: "Malta Tax and Customs Administration (MTCA) - Employment Income",
+    url: "https://mtca.gov.mt/personal-tax/individual/taxationforindividuals",
   },
 ];
 
