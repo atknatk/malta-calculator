@@ -168,9 +168,9 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "malta-minimum-wage-2026-guide",
-    title: "Malta Minimum Wage 2026: €213.54/Week Complete Guide",
+    title: "Malta Minimum Wage 2026: €229.44/Week Complete Guide",
     description:
-      "Malta minimum wage 2026 guide. Current rates at €213.54/week (€928.70/month). Learn about the National Minimum Wage.",
+      "Malta minimum wage 2026 guide. Current rates at €229.44/week (€994.24/month). Learn about the National Minimum Wage.",
     date: "January 2026",
     readTime: "5 min read",
     category: "Salary Guide",

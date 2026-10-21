@@ -102,6 +102,11 @@ export default function ChildrenAllowancePage() {
               "Children's Allowance is paid every 13 weeks (quarterly) in advance.",
           },
           {
+            question: "What is the Children's Allowance Supplement in 2026?",
+            answer:
+              "On top of the weekly allowance, every child under 16 gets a yearly supplement paid with the 13-weekly payments: €910 per child (€227.50 per quarter) where household income is up to €30,000, and €640 per child (€160 per quarter) above it. Budget 2026 raised the lower-income supplement by €250, from €660 to €910.",
+          },
+          {
             question: "What is the Child Birth Bonus in Malta?",
             answer:
               "Malta provides a one-time birth/adoption bonus: €1,000 for the first child, €1,500 for the second child, and €2,000 for the third child and beyond.",

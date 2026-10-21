@@ -5,7 +5,10 @@
  * - https://socialsecurity.gov.mt/en/information-and-applications-for-benefits-and-services/family-benefits/childrens-allowance-annual-income-less-than-threshold/
  * - https://socialsecurity.gov.mt/en/information-and-applications-for-benefits-and-services/family-benefits/childrens-allowance-annual-income-exceeds-threshold/
  *
- * Last updated: 2026
+ * - https://socialsecurity.gov.mt/en/information-and-applications-for-benefits-and-services/family-benefits/childrens-allowance-supplement/
+ *
+ * Last updated: 2026-10-21 (Budget 2026: supplement ≤€30k €660 → €910)
+ * Budget 2027 (26 Eki 2026) supplement/oranları değiştirebilir — sonra tekrar kontrol et.
  */
 
 // Constants from official Malta Social Security
@@ -27,6 +30,10 @@ export const CA_CONSTANTS = {
   BIRTH_BONUS_FIRST_CHILD: 1000, // €1,000 for 1st child
   BIRTH_BONUS_SECOND_CHILD: 1500, // €1,500 for 2nd child
   BIRTH_BONUS_THIRD_PLUS: 2000, // €2,000 for 3rd child and beyond
+
+  // Children's Allowance Supplement (yıllık, çocuk başına, 2026)
+  SUPPLEMENT_AT_OR_BELOW_THRESHOLD: 910, // €910 (€227.50 / 13 hafta), gelir ≤ €30,000
+  SUPPLEMENT_ABOVE_THRESHOLD: 640, // €640 (€160 / 13 hafta), gelir > €30,000
 
   // Payment frequency
   PAYMENT_WEEKS: 13, // Paid every 13 weeks (quarterly)
@@ -68,6 +75,14 @@ export interface ChildrensAllowanceResult {
 
   // Quarterly payment (every 13 weeks)
   quarterlyPayment: number;
+
+  // Children's Allowance Supplement (yearly, paid with each 13-week payment)
+  supplementPerChild: number;
+  supplementForAll: number;
+
+  // Allowance + supplement
+  yearlyTotalWithSupplement: number;
+  quarterlyPaymentWithSupplement: number;
 
   // Status
   isAboveThreshold: boolean;
@@ -166,6 +181,16 @@ export function calculateChildrensAllowance(
   const yearlyForAll = yearlyPerChild * numberOfChildren;
   const quarterlyPayment = weeklyForAll * CA_CONSTANTS.PAYMENT_WEEKS;
 
+  // Supplement aynı means test'e göre (€30,000) ödenir
+  const isAboveThreshold = netIncome > CA_CONSTANTS.MAX_INCOME_THRESHOLD;
+  const supplementPerChild = isAboveThreshold
+    ? CA_CONSTANTS.SUPPLEMENT_ABOVE_THRESHOLD
+    : CA_CONSTANTS.SUPPLEMENT_AT_OR_BELOW_THRESHOLD;
+  const supplementForAll = supplementPerChild * numberOfChildren;
+  const yearlyTotalWithSupplement = yearlyForAll + supplementForAll;
+  const quarterlyPaymentWithSupplement =
+    quarterlyPayment + supplementForAll / 4;
+
   return {
     totalIncome: Math.round(totalIncome * 100) / 100,
     netIncome: Math.round(netIncome * 100) / 100,
@@ -174,7 +199,13 @@ export function calculateChildrensAllowance(
     yearlyPerChild: Math.round(yearlyPerChild * 100) / 100,
     yearlyForAll: Math.round(yearlyForAll * 100) / 100,
     quarterlyPayment: Math.round(quarterlyPayment * 100) / 100,
-    isAboveThreshold: netIncome > CA_CONSTANTS.MAX_INCOME_THRESHOLD,
+    supplementPerChild,
+    supplementForAll,
+    yearlyTotalWithSupplement:
+      Math.round(yearlyTotalWithSupplement * 100) / 100,
+    quarterlyPaymentWithSupplement:
+      Math.round(quarterlyPaymentWithSupplement * 100) / 100,
+    isAboveThreshold,
     rateType,
     maxWeeklyRate: CA_CONSTANTS.MAX_WEEKLY_RATE,
     minWeeklyRate: CA_CONSTANTS.MIN_WEEKLY_RATE,

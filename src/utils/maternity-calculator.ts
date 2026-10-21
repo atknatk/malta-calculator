@@ -1,19 +1,21 @@
 /**
  * Malta Maternity & Paternity Leave Hesaplayıcısı — 2026
  * Çalışanlar: 18 hafta doğum izni = 14 hafta işveren (tam maaş)
- *   + 4 hafta devlet Maternity Leave Benefit (€213,54/hafta).
- * Self-occupied: 14 hafta Maternity Benefit €221,78/hafta + 4 hafta MLB €213,54.
- * İşveren ödemeli izne hak kazanmayanlar: 14 hafta flat Maternity Benefit €140,29/hafta.
+ *   + 4 hafta devlet Maternity Leave Benefit (€229,44/hafta = ulusal asgari ücret).
+ * Self-occupied: 14 hafta Maternity Benefit €229,44/hafta + 4 hafta MLB €229,44.
+ * İşveren ödemeli izne hak kazanmayanlar: 14 hafta flat Maternity Benefit €147,95/hafta.
  * Babalar: 10 iş günü ücretli babalık izni (tam maaş, işveren).
- * Kaynak: socialsecurity.gov.mt — Maternity Benefit / Maternity Leave Benefit, 2026
+ * Kaynak: Avrupa Komisyonu "Your social security rights in Malta" (Temmuz 2026),
+ *   socialsecurity.gov.mt — Maternity Benefit / Maternity Leave Benefit.
+ * MLB ve self-occupied oranı asgari ücrete bağlı: Budget 2027 (26 Eki 2026) ile 2027'de değişir.
  */
 
 const RATES_2026 = {
-  MLB_WEEKLY: 213.54, // 4 haftalık devlet Maternity Leave Benefit
+  MLB_WEEKLY: 229.44, // 4 haftalık devlet Maternity Leave Benefit (asgari ücret)
   MLB_WEEKS: 4,
   EMPLOYER_WEEKS: 14, // işveren tam maaş
-  BENEFIT_FLAT_WEEKLY: 140.29, // istihdam dışı / hak kazanmayan
-  BENEFIT_SELF_OCCUPIED_WEEKLY: 221.78,
+  BENEFIT_FLAT_WEEKLY: 147.95, // istihdam dışı / hak kazanmayan
+  BENEFIT_SELF_OCCUPIED_WEEKLY: 229.44, // asgari ücret
   BENEFIT_WEEKS: 14,
   PATERNITY_DAYS: 10, // iş günü, tam ücretli
 } as const;

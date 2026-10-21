@@ -92,7 +92,7 @@ export const CALCULATORS: CalculatorInfo[] = [
     slug: "maternity",
     href: "/calculators/maternity",
     title: "Maternity/Paternity Leave",
-    tagline: "18 weeks pay: employer + €213.54 benefit",
+    tagline: "18 weeks pay: employer + €229.44 benefit",
     category: "Family & Children",
   },
   {

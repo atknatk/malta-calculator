@@ -24,12 +24,12 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Maternity Leave Calculator Malta 2026 | Malta Calculator",
   description:
-    "Calculate your income during Malta's 18-week maternity leave: 14 weeks employer full pay + 4 weeks at €213.54. Self-occupied rates and paternity leave.",
+    "Calculate your income during Malta's 18-week maternity leave: 14 weeks employer full pay + 4 weeks at €229.44. Self-occupied rates and paternity leave.",
   keywords: [
     "malta maternity leave calculator",
     "maternity leave pay malta 2026",
     "18 weeks maternity leave malta",
-    "maternity leave benefit €213.54",
+    "maternity leave benefit €229.44",
     "maternity benefit malta",
     "paternity leave malta 10 days",
     "self-occupied maternity malta",
@@ -70,8 +70,8 @@ export default function MaternityPage() {
         features={[
           "18-week maternity leave breakdown",
           "14 weeks employer full pay",
-          "4-week government benefit at €213.54/week",
-          "Self-occupied rate €221.78/week",
+          "4-week government benefit at €229.44/week",
+          "Self-occupied rate €229.44/week",
           "10 working days paternity leave info",
         ]}
       />
@@ -80,18 +80,18 @@ export default function MaternityPage() {
           {
             question: "How long is maternity leave in Malta?",
             answer:
-              "Maternity leave in Malta is 18 weeks. The first 14 weeks are paid in full by the employer; the final 4 weeks are unpaid by the employer but covered by the government's Maternity Leave Benefit of €213.54 per week. At least 6 weeks must be taken after the birth.",
+              "Maternity leave in Malta is 18 weeks. The first 14 weeks are paid in full by the employer; the final 4 weeks are unpaid by the employer but covered by the government's Maternity Leave Benefit of €229.44 per week. At least 6 weeks must be taken after the birth.",
           },
           {
             question: "Who pays for maternity leave in Malta?",
             answer:
-              "The employer pays the first 14 weeks at the employee's full salary. The remaining 4 weeks are paid by the government through the Maternity Leave Benefit (€213.54/week in 2026), which both employed and self-employed mothers can claim via mysocialsecurity.gov.mt.",
+              "The employer pays the first 14 weeks at the employee's full salary. The remaining 4 weeks are paid by the government through the Maternity Leave Benefit (€229.44/week in 2026), which both employed and self-employed mothers can claim via mysocialsecurity.gov.mt.",
           },
           {
             question:
               "How much maternity benefit does a self-employed mother get in Malta?",
             answer:
-              "Self-occupied mothers do not receive employer pay; instead they get the Maternity Benefit of €221.78 per week for 14 weeks, plus the 4-week Maternity Leave Benefit of €213.54 per week — a total of around €3,959 over 18 weeks in 2026.",
+              "Self-occupied mothers do not receive employer pay; instead they get the Maternity Benefit of €229.44 per week for 14 weeks, plus the 4-week Maternity Leave Benefit of €229.44 per week — a total of around €4,130 over 18 weeks in 2026.",
           },
           {
             question: "How long is paternity leave in Malta?",
@@ -102,7 +102,7 @@ export default function MaternityPage() {
             question:
               "Do I get maternity benefit if I am not employed in Malta?",
             answer:
-              "Women who are not entitled to employer-paid maternity leave (for example those not in employment but satisfying social security conditions) may qualify for the flat-rate Maternity Benefit of €140.29 per week for 14 weeks in 2026.",
+              "Women who are not entitled to employer-paid maternity leave (for example those not in employment but satisfying social security conditions) may qualify for the flat-rate Maternity Benefit of €147.95 per week for 14 weeks in 2026.",
           },
         ]}
       />
