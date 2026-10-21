@@ -16,8 +16,6 @@ import {
   Calendar,
   Clock,
   Calculator,
-  Globe,
-  CheckCircle,
 } from "lucide-react";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
@@ -26,14 +24,15 @@ import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 export const metadata: Metadata = {
   ...defaultMetadata,
   title:
-    "Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide | Malta Calculator",
+    "Malta 15% Expat Tax 2026: HSI Rules (Formerly HQP) | Malta Calculator",
   description:
-    "Complete guide to Malta's Highly Qualified Persons (HQP) tax scheme. Learn about the 15% flat tax rate for expats, eligibility requirements, qualifying sectors (iGaming, finance, aviation), and application process.",
+    "Malta's 15% expat tax in 2026: the Highly Skilled Individuals Rules that replaced HQP. €65,000 threshold, eligible employers, transition rules and savings.",
   keywords: [
     "Malta HQP tax scheme",
     "Malta expat tax",
     "Malta 15% flat tax",
     "Highly Qualified Persons Malta",
+    "Malta Highly Skilled Individuals Rules",
     "Malta iGaming tax",
     "Malta finance tax",
     "Malta expat salary",
@@ -42,27 +41,23 @@ export const metadata: Metadata = {
   alternates: pageAlternates("/blog/malta-expat-tax-hqp-scheme-guide"),
   openGraph: {
     ...ogMetadata,
-    title:
-      "Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide",
+    title: "Malta 15% Expat Tax 2026: HSI Rules (Formerly HQP)",
     url: `${SITE_URL}/blog/malta-expat-tax-hqp-scheme-guide`,
     type: "article",
     images: [
-      getBlogOgImage(
-        "Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide",
-      ),
+      getBlogOgImage("Malta 15% Expat Tax 2026: HSI Rules (Formerly HQP)"),
     ],
   },
   twitter: {
     ...twitterMetadata,
-    title:
-      "Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide",
+    title: "Malta 15% Expat Tax 2026: HSI Rules (Formerly HQP)",
   },
 };
 
 const ARTICLE_SOURCES = [
   {
-    name: "Malta Tax and Customs Administration (MTCA) - Highly Qualified Persons Rules",
-    url: "https://mtca.gov.mt/personal-tax/individual/special-schemes",
+    name: "Legal Notice 20 of 2026 - Tax Treatment of Highly Skilled Individuals Rules",
+    url: "https://legislation.mt",
   },
   {
     name: "Malta Enterprise - Highly Qualified Persons Scheme",
@@ -74,10 +69,11 @@ export default function MaltaHQPPage() {
   return (
     <MarketingLayout>
       <ArticleJsonLd
-        title="Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide"
-        description="Complete guide to Malta's HQP tax scheme with 15% flat tax rate for expats in iGaming, finance, and aviation."
+        title="Malta 15% Expat Tax 2026: HSI Rules (Formerly HQP)"
+        description="Guide to Malta's 15% flat tax for highly skilled expats under the 2026 HSI Rules, which replaced the HQP scheme."
         slug="malta-expat-tax-hqp-scheme-guide"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -115,38 +111,23 @@ export default function MaltaHQPPage() {
                 </span>
               </div>
               <h1 className="font-cal text-4xl md:text-5xl font-bold mb-6">
-                Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate
-                Guide
+                Malta 15% Expat Tax 2026: HSI Rules (Formerly HQP)
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                Moving to Malta for work? The HQP scheme offers a flat 15% tax
-                rate for highly skilled professionals. Learn if you qualify and
-                how to apply.
+                From 1 January 2026 the Highly Qualified Persons (HQP) scheme
+                has been replaced by the{" "}
+                <strong>Highly Skilled Individuals (HSI) Rules</strong>. The 15%
+                flat rate remains, but the salary threshold, eligible employers
+                and application route have changed.
               </p>
             </header>
 
-            <div className="not-prose mb-10 p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/10 border border-amber-500/30">
-              <p className="text-sm font-semibold text-foreground mb-2">
-                ⚠️ Update — January 2026
-              </p>
-              <p className="text-sm text-muted-foreground">
-                From <strong>1 January 2026</strong>, the HQP scheme described
-                in this guide was consolidated into the new{" "}
-                <strong>
-                  Tax Treatment of Highly Skilled Individuals Rules
-                </strong>{" "}
-                (L.N. 20 of 2026): the 15% flat rate now applies to eligible
-                employment income of <strong>€65,000+</strong> across financial
-                services, gaming, aviation, maritime, oil &amp; gas, family
-                offices and back-office operations, for 5 years renewable twice
-                (sunset 31 December 2040). Use our updated{" "}
-                <a
-                  href="/calculators/expatriate-tax"
-                  className="text-primary hover:underline font-medium"
-                >
-                  Highly Skilled Individuals Tax Calculator
-                </a>{" "}
-                for current figures.
+            <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl not-prose mb-10">
+              <p className="text-sm">
+                <strong>Updated October 2026:</strong> This guide was rewritten
+                for the Tax Treatment of Highly Skilled Individuals Rules, 2026
+                (Legal Notice 20 of 2026). No new HQP determinations were issued
+                after 31 December 2025.
               </p>
             </div>
 
@@ -158,7 +139,7 @@ export default function MaltaHQPPage() {
                     href="#what-is-hqp"
                     className="text-primary hover:underline"
                   >
-                    1. What is the HQP Scheme?
+                    1. From HQP to HSI: What Changed?
                   </a>
                 </li>
                 <li>
@@ -179,7 +160,7 @@ export default function MaltaHQPPage() {
                     href="#qualifying-sectors"
                     className="text-primary hover:underline"
                   >
-                    4. Qualifying Sectors & Roles
+                    4. Eligible Employers & Roles
                   </a>
                 </li>
                 <li>
@@ -187,7 +168,7 @@ export default function MaltaHQPPage() {
                     href="#comparison"
                     className="text-primary hover:underline"
                   >
-                    5. HQP vs Standard Tax Rates
+                    5. 15% Flat Rate vs Standard Tax Rates
                   </a>
                 </li>
                 <li>
@@ -195,211 +176,131 @@ export default function MaltaHQPPage() {
                     href="#application"
                     className="text-primary hover:underline"
                   >
-                    6. How to Apply
+                    6. How to Apply & Transition Rules
                   </a>
                 </li>
               </ul>
             </nav>
 
             <section id="what-is-hqp">
-              <h2>1. What is the HQP Scheme?</h2>
+              <h2>1. From HQP to HSI: What Changed?</h2>
               <p>
-                The <strong>Highly Qualified Persons (HQP) Rules</strong> is a
-                special tax program designed to attract skilled professionals to
-                Malta. Under this scheme, qualifying individuals pay a{" "}
-                <strong>flat 15% tax rate</strong> on their employment income,
-                instead of the standard progressive rates that can go up to 35%.
-              </p>
-              <p>
-                The scheme was introduced to make Malta competitive in
-                attracting talent to key industries such as:
+                The{" "}
+                <strong>
+                  Tax Treatment of Highly Skilled Individuals Rules, 2026
+                </strong>{" "}
+                came into force on 1 January 2026. They replace the Highly
+                Qualified Persons Rules and four older sector regimes
+                (innovation and creativity, aviation, maritime and offshore oil
+                and gas, and senior staff of family offices and treasury
+                operations) with one framework.
               </p>
               <ul>
-                <li>Financial services</li>
-                <li>iGaming (online gaming)</li>
-                <li>Aviation</li>
-                <li>Yacht registration</li>
+                <li>
+                  <strong>Same rate:</strong> qualifying employment income is
+                  taxed at a flat <strong>15%</strong>
+                </li>
+                <li>
+                  <strong>Lower threshold:</strong> at least
+                  <strong>€65,000</strong> a year (excluding fringe benefits),
+                  rising by €10,000 every five years
+                </li>
+                <li>
+                  <strong>Wider scope:</strong> five competent authorities
+                  instead of sector-by-sector schemes
+                </li>
               </ul>
             </section>
 
             <section id="benefits" className="mt-12">
               <h2>2. Key Benefits</h2>
-
-              <div className="grid md:grid-cols-2 gap-4 not-prose my-8">
-                <div className="p-6 bg-gradient-to-br from-violet-500/10 to-purple-500/5 rounded-2xl border border-violet-500/20">
-                  <div className="text-3xl font-bold text-violet-600 mb-2">
+              <div className="grid md:grid-cols-2 gap-4 not-prose my-6">
+                <div className="p-6 bg-primary/5 border border-primary/20 rounded-2xl text-center">
+                  <div className="text-4xl font-bold text-primary mb-1">
                     15%
                   </div>
-                  <div className="font-semibold mb-2">Flat Tax Rate</div>
                   <p className="text-sm text-muted-foreground">
-                    Compared to up to 35% under standard rates
+                    Flat tax rate on qualifying income up to €7 million a year
                   </p>
                 </div>
-                <div className="p-6 bg-gradient-to-br from-emerald-500/10 to-green-500/5 rounded-2xl border border-emerald-500/20">
-                  <div className="text-3xl font-bold text-emerald-600 mb-2">
-                    5 Years
+                <div className="p-6 bg-primary/5 border border-primary/20 rounded-2xl text-center">
+                  <div className="text-4xl font-bold text-primary mb-1">
+                    5 + 5 + 5
                   </div>
-                  <div className="font-semibold mb-2">Initial Period</div>
                   <p className="text-sm text-muted-foreground">
-                    Extendable based on continued eligibility
+                    Initial 5 years, with two optional 5-year renewals
                   </p>
                 </div>
               </div>
-
-              <p>Additional benefits of the HQP scheme include:</p>
               <ul>
                 <li>
-                  <strong>No minimum tax</strong> - The 15% rate applies from
-                  the first Euro
+                  The 15% rate is elective. No reliefs, deductions or credits
+                  can be claimed against income taxed at 15%
                 </li>
                 <li>
-                  <strong>Family-friendly</strong> - Spouse benefits from the
-                  same tax treatment
+                  Income above €7 million is taxed at the normal progressive
+                  rates
                 </li>
-                <li>
-                  <strong>SSC included</strong> - Normal SSC rules still apply
-                </li>
-                <li>
-                  <strong>EU/EEA priority</strong> - Faster processing for EU
-                  nationals
-                </li>
+                <li>Normal Class 1 SSC rules still apply</li>
               </ul>
             </section>
 
             <section id="eligibility" className="mt-12">
               <h2>3. Eligibility Requirements</h2>
-              <p>
-                To qualify for the HQP scheme, you must meet{" "}
-                <strong>all</strong> of the following requirements:
-              </p>
-
-              <div className="space-y-4 not-prose my-8">
-                <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-xl">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-semibold">
-                      Minimum Salary Threshold
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Annual gross salary of at least <strong>€86,938</strong>{" "}
-                      (2026 threshold)
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-xl">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-semibold">Qualifying Employment</div>
-                    <p className="text-sm text-muted-foreground">
-                      Employment with a company licensed by a qualifying
-                      regulator in Malta
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-xl">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-semibold">Qualifying Role</div>
-                    <p className="text-sm text-muted-foreground">
-                      Position requires specialized skills (management,
-                      professional, or technical)
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-xl">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-semibold">Non-Resident History</div>
-                    <p className="text-sm text-muted-foreground">
-                      Not resident in Malta for tax purposes in the 5 years
-                      before employment
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <ul>
+                <li>
+                  <strong>Minimum income:</strong> qualifying employment income
+                  of at least <strong>€65,000</strong> a year, which is lower
+                  than the old HQP threshold
+                </li>
+                <li>
+                  <strong>Not domiciled in Malta</strong>
+                </li>
+                <li>
+                  <strong>Qualifications:</strong> a course of at least three
+                  years, or at least five years of comparable professional
+                  experience
+                </li>
+                <li>
+                  <strong>Eligible office</strong> under a genuine employment
+                  contract with a licensed or recognised employer
+                </li>
+                <li>
+                  Stable resources, suitable accommodation, a valid travel
+                  document and private health insurance for you and your family
+                </li>
+                <li>
+                  You cannot have previously benefited under article 6 of the
+                  Income Tax Act
+                </li>
+              </ul>
             </section>
 
             <section id="qualifying-sectors" className="mt-12">
-              <h2>4. Qualifying Sectors & Roles</h2>
+              <h2>4. Eligible Employers & Roles</h2>
               <p>
-                The HQP scheme covers specific regulated sectors. Your employer
-                must hold a license from the relevant Maltese authority:
+                Your employer must be regulated, licensed or recognised by one
+                of five competent authorities:
               </p>
-
-              <div className="overflow-x-auto not-prose my-8">
-                <table className="w-full border-collapse text-sm">
-                  <thead>
-                    <tr className="bg-muted">
-                      <th className="border border-border p-3 text-left font-semibold">
-                        Sector
-                      </th>
-                      <th className="border border-border p-3 text-left font-semibold">
-                        Regulator
-                      </th>
-                      <th className="border border-border p-3 text-left font-semibold">
-                        Example Roles
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border border-border p-3 font-semibold">
-                        Financial Services
-                      </td>
-                      <td className="border border-border p-3">MFSA</td>
-                      <td className="border border-border p-3">
-                        Fund managers, compliance, risk
-                      </td>
-                    </tr>
-                    <tr className="bg-muted/50">
-                      <td className="border border-border p-3 font-semibold">
-                        iGaming
-                      </td>
-                      <td className="border border-border p-3">MGA</td>
-                      <td className="border border-border p-3">
-                        Platform leads, game developers, C-level
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-border p-3 font-semibold">
-                        Aviation
-                      </td>
-                      <td className="border border-border p-3">
-                        Transport Malta
-                      </td>
-                      <td className="border border-border p-3">
-                        Pilots, aviation engineers, directors
-                      </td>
-                    </tr>
-                    <tr className="bg-muted/50">
-                      <td className="border border-border p-3 font-semibold">
-                        Maritime/Yachting
-                      </td>
-                      <td className="border border-border p-3">
-                        Transport Malta
-                      </td>
-                      <td className="border border-border p-3">
-                        Yacht management, captains
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl not-prose">
-                <p className="text-sm">
-                  <strong>💡 Note:</strong> IT roles in iGaming companies may
-                  qualify if the company holds an MGA license and the role is
-                  technical/specialized.
-                </p>
-              </div>
+              <ul>
+                <li>Malta Financial Services Authority (MFSA)</li>
+                <li>Malta Gaming Authority (MGA)</li>
+                <li>Authority for Transport in Malta (Transport Malta)</li>
+                <li>Office of the Chief Medical Officer</li>
+                <li>Malta Enterprise</li>
+              </ul>
+              <p>
+                Eligible offices are generally C-level and senior management
+                roles and specialised STEM functions that fall within the
+                employer&apos;s regulated activity.
+              </p>
             </section>
 
             <section id="comparison" className="mt-12">
-              <h2>5. HQP vs Standard Tax Rates</h2>
+              <h2>5. 15% Flat Rate vs Standard Tax Rates</h2>
               <p>
-                Here&apos;s how the HQP 15% flat rate compares to standard tax
-                for different salary levels:
+                Here&apos;s how the 15% flat rate compares to the 2026 single
+                tax rates at different salary levels:
               </p>
 
               <div className="overflow-x-auto not-prose my-8">
@@ -410,10 +311,10 @@ export default function MaltaHQPPage() {
                         Annual Salary
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Standard Tax (Single)
+                        Standard Tax (Single, 2026)
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        HQP (15%)
+                        HSI (15%)
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
                         Annual Savings
@@ -423,97 +324,88 @@ export default function MaltaHQPPage() {
                   <tbody>
                     <tr>
                       <td className="border border-border p-3">€90,000</td>
-                      <td className="border border-border p-3">€22,685</td>
+                      <td className="border border-border p-3">€22,100</td>
                       <td className="border border-border p-3 text-primary font-semibold">
                         €13,500
                       </td>
                       <td className="border border-border p-3 font-semibold text-green-600">
-                        €9,185
+                        €8,600
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">€120,000</td>
-                      <td className="border border-border p-3">€33,185</td>
+                      <td className="border border-border p-3">€32,600</td>
                       <td className="border border-border p-3 text-primary font-semibold">
                         €18,000
                       </td>
                       <td className="border border-border p-3 font-semibold text-green-600">
-                        €15,185
+                        €14,600
                       </td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3">€150,000</td>
-                      <td className="border border-border p-3">€43,685</td>
+                      <td className="border border-border p-3">€43,100</td>
                       <td className="border border-border p-3 text-primary font-semibold">
                         €22,500
                       </td>
                       <td className="border border-border p-3 font-semibold text-green-600">
-                        €21,185
+                        €20,600
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">€200,000</td>
-                      <td className="border border-border p-3">€61,185</td>
+                      <td className="border border-border p-3">€60,600</td>
                       <td className="border border-border p-3 text-primary font-semibold">
                         €30,000
                       </td>
                       <td className="border border-border p-3 font-semibold text-green-600">
-                        €31,185
+                        €30,600
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
               <p>
-                <strong>
-                  At €200,000 annual salary, HQP saves over €30,000 per year
-                </strong>{" "}
-                compared to standard tax rates — a significant benefit for
-                high-earning professionals.
+                At €200,000 a year, the 15% rate saves over €30,000 a year
+                compared with the standard single rates.
               </p>
             </section>
 
             <section id="application" className="mt-12">
-              <h2>6. How to Apply</h2>
-              <p>The application process typically involves:</p>
-              <ol>
+              <h2>6. How to Apply & Transition Rules</h2>
+              <ul>
                 <li>
-                  <strong>Employment offer</strong> - Secure a qualifying job
-                  with a licensed employer
+                  Apply to the relevant competent authority (one of the five
+                  bodies above). Processing can take up to 90 days
                 </li>
                 <li>
-                  <strong>Employer application</strong> - Your employer submits
-                  the HQP application on your behalf
+                  Applications are accepted from 1 January 2026 to 31 December
+                  2035, and benefits apply to income up to 31 December 2040
                 </li>
                 <li>
-                  <strong>Documentation</strong> - Provide proof of
-                  qualifications, previous residence, contract
+                  <strong>Existing HQP beneficiaries</strong> must move to the
+                  HSI Rules by 31 December 2028. If your old minimum income was
+                  below €65,000 it stays the same in year one, rises by €10,000
+                  in year two and reaches €65,000 in year three
                 </li>
-                <li>
-                  <strong>Approval</strong> - Malta Enterprise reviews and
-                  approves the application
-                </li>
-                <li>
-                  <strong>Tax card</strong> - Receive your tax card reflecting
-                  the 15% rate
-                </li>
-              </ol>
+              </ul>
               <p>
-                Processing typically takes 4-6 weeks for EU nationals and may be
-                longer for non-EU applicants.
+                Because the rules are new, check the latest guidance from your
+                competent authority and the Malta Tax and Customs Administration
+                before you rely on the 15% rate.
               </p>
             </section>
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter
               slug="malta-expat-tax-hqp-scheme-guide"
-              title="Malta Expat Tax: Highly Qualified Persons (HQP) 15% Flat Rate Guide"
+              title="Malta 15% Expat Tax 2026: HSI Rules (Formerly HQP)"
               ctaTitle="Compare Your Tax Options"
-              ctaDescription="Use our Expatriate Tax Calculator to see the difference between standard tax rates and what you'd pay under the HQP scheme."
+              ctaDescription="Use our Expatriate Tax Calculator to see the difference between standard tax rates and what you'd pay under the 15% HSI regime."
               ctaLink="/calculators/expatriate-tax"
               ctaLinkText="Try Expatriate Tax Calculator"
             />

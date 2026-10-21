@@ -77,6 +77,7 @@ export default function MaltaCryptoTaxGuidePage() {
         description="Complete guide to cryptocurrency and digital asset taxation in Malta for 2026, including Bitcoin, NFTs, and the VFA framework."
         slug="malta-crypto-digital-asset-tax-guide-2026"
         datePublished="2026-02-19"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -478,14 +479,14 @@ export default function MaltaCryptoTaxGuidePage() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-border p-3">€0 - €9,100</td>
+                      <td className="border border-border p-3">€0 - €12,000</td>
                       <td className="border border-border p-3 font-semibold text-green-600">
                         0%
                       </td>
                       <td className="border border-border p-3">-</td>
                     </tr>
                     <tr className="bg-muted/50">
-                      <td className="border border-border p-3">€0 - €12,700</td>
+                      <td className="border border-border p-3">€0 - €15,000</td>
                       <td className="border border-border p-3">-</td>
                       <td className="border border-border p-3 font-semibold text-green-600">
                         0%
@@ -493,7 +494,7 @@ export default function MaltaCryptoTaxGuidePage() {
                     </tr>
                     <tr>
                       <td className="border border-border p-3">
-                        €9,101 - €14,500
+                        €12,001 - €16,000
                       </td>
                       <td className="border border-border p-3 font-semibold text-yellow-600">
                         15%
@@ -502,7 +503,7 @@ export default function MaltaCryptoTaxGuidePage() {
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €12,701 - €21,200
+                        €15,001 - €23,000
                       </td>
                       <td className="border border-border p-3">-</td>
                       <td className="border border-border p-3 font-semibold text-yellow-600">
@@ -511,7 +512,7 @@ export default function MaltaCryptoTaxGuidePage() {
                     </tr>
                     <tr>
                       <td className="border border-border p-3">
-                        €14,501 - €60,000
+                        €16,001 / €23,001 - €60,000
                       </td>
                       <td className="border border-border p-3 font-semibold text-orange-600">
                         25%
@@ -777,25 +778,25 @@ export default function MaltaCryptoTaxGuidePage() {
                 </p>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    • First €9,100 @ 0% = <strong>€0</strong>
+                    • First €12,000 @ 0% = <strong>€0</strong>
                   </li>
                   <li>
-                    • €9,101 - €14,500 (€5,400) @ 15% = <strong>€810</strong>
+                    • €12,001 - €16,000 (€4,000) @ 15% = <strong>€600</strong>
                   </li>
                   <li>
-                    • €14,501 - €40,000 (€25,500) @ 25% ={" "}
-                    <strong>€6,375</strong>
+                    • €16,001 - €40,000 (€24,000) @ 25% ={" "}
+                    <strong>€6,000</strong>
                   </li>
                   <li className="pt-2 border-t border-border font-semibold">
                     Total Annual Tax ={" "}
-                    <strong className="text-primary">€7,185</strong>
+                    <strong className="text-primary">€6,600</strong>
                   </li>
                   <li>
-                    Effective Tax Rate = <strong>17.96%</strong>
+                    Effective Tax Rate = <strong>16.5%</strong>
                   </li>
                   <li className="pt-2 border-t border-border font-semibold">
                     Net After Tax ={" "}
-                    <strong className="text-green-600">€32,815</strong>
+                    <strong className="text-green-600">€33,400</strong>
                   </li>
                 </ul>
               </div>
@@ -821,29 +822,29 @@ export default function MaltaCryptoTaxGuidePage() {
                     Taxable Income = <strong>€20,000</strong>
                   </li>
                   <li className="mt-3">
-                    • First €9,100 @ 0% = <strong>€0</strong>
+                    • First €12,000 @ 0% = <strong>€0</strong>
                   </li>
                   <li>
-                    • €9,101 - €14,500 (€5,400) @ 15% = <strong>€810</strong>
+                    • €12,001 - €16,000 (€4,000) @ 15% = <strong>€600</strong>
                   </li>
                   <li>
-                    • €14,501 - €20,000 (€5,500) @ 25% = <strong>€1,375</strong>
+                    • €16,001 - €20,000 (€4,000) @ 25% = <strong>€1,000</strong>
                   </li>
                   <li className="pt-2 border-t border-border font-semibold">
                     Income Tax ={" "}
-                    <strong className="text-primary">€2,185</strong>
+                    <strong className="text-primary">€1,600</strong>
                   </li>
                   <li>
-                    Class 2 SSC (self-employed, est.) ={" "}
-                    <strong>€1,200/year</strong>
+                    Class 2 SSC (15% of €20,000, 2026 SB band) ={" "}
+                    <strong>€3,000/year</strong>
                   </li>
                   <li className="pt-2 border-t border-border font-semibold">
                     Total Tax + SSC ={" "}
-                    <strong className="text-red-600">€3,385</strong>
+                    <strong className="text-red-600">€4,600</strong>
                   </li>
                   <li className="font-semibold">
                     Net After Tax & SSC ={" "}
-                    <strong className="text-green-600">€16,615</strong>
+                    <strong className="text-green-600">€15,400</strong>
                   </li>
                 </ul>
               </div>
@@ -887,6 +888,17 @@ export default function MaltaCryptoTaxGuidePage() {
                 Malta residents must report all worldwide income, including
                 cryptocurrency gains, on their annual tax return.
               </p>
+
+              <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl not-prose my-4">
+                <p className="text-sm">
+                  <strong>New from 2026 (DAC8):</strong> Under the EU&apos;s
+                  DAC8 directive, crypto-asset service providers must collect
+                  information on their EU customers&apos; transactions from 1
+                  January 2026 and report it to tax authorities, with the first
+                  exchanges between EU countries due in 2027. Expect MTCA to
+                  receive data on your 2026 crypto activity automatically.
+                </p>
+              </div>
 
               <h3>Annual Tax Return (Form TA24)</h3>
               <p>
@@ -1143,6 +1155,7 @@ export default function MaltaCryptoTaxGuidePage() {
 
             <BlogArticleAuthor
               datePublished="2026-02-19"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

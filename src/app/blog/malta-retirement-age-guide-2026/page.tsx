@@ -66,6 +66,7 @@ export default function MaltaRetirementAgeGuidePage() {
         description="Complete guide to statutory retirement age in Malta based on birth year."
         slug="malta-retirement-age-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -181,10 +182,12 @@ export default function MaltaRetirementAgeGuidePage() {
               </p>
               <ul>
                 <li>
-                  At least <strong>35 years</strong> of National Insurance
-                  contributions
+                  Enough paid or credited contributions:{" "}
+                  <strong>35 years</strong> if born 1952-1961,{" "}
+                  <strong>40 years</strong> if born 1962-1968 and{" "}
+                  <strong>41 years</strong> if born 1969 or later
                 </li>
-                <li>Minimum of 50 weekly contributions per year</li>
+                <li>A yearly average of at least 50 weekly contributions</li>
                 <li>
                   Not engaged in any gainful occupation until statutory
                   retirement age
@@ -205,6 +208,7 @@ export default function MaltaRetirementAgeGuidePage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

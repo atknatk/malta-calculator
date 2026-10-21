@@ -64,6 +64,7 @@ export default function MaltaPersonalLoanGuidePage() {
         description="Complete guide to personal loans in Malta."
         slug="malta-personal-loan-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -109,9 +110,9 @@ export default function MaltaPersonalLoanGuidePage() {
             <section id="overview">
               <h2>What is a Personal Loan?</h2>
               <p>
-                A personal loan (bireysel kredi) is an unsecured loan from a
-                bank or lender that you repay in fixed monthly instalments.
-                Unlike mortgages, personal loans don&apos;t require collateral.
+                A personal loan is an unsecured loan from a bank or lender that
+                you repay in fixed monthly instalments. Unlike mortgages,
+                personal loans don&apos;t require collateral.
               </p>
             </section>
 
@@ -249,6 +250,7 @@ export default function MaltaPersonalLoanGuidePage() {
             </div>
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

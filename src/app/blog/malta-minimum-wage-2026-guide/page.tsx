@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Malta Minimum Wage 2026: Complete Guide | Malta Calculator",
   description:
-    "Malta minimum wage 2026 guide. Current rates at €213.54/week (€928.70/month). Learn about the National Minimum Wage, annual increases, and how it compares to average salaries.",
+    "Malta minimum wage 2026: €229.44/week (≈€994/month) for workers aged 18+. Age rates, how the 2026 increase was built and how it compares to average pay.",
   keywords: [
     "Malta minimum wage 2026",
     "Malta minimum salary",
@@ -65,6 +65,7 @@ export default function MaltaMinimumWagePage() {
         description="Complete guide to Malta's National Minimum Wage for 2026. Learn about current rates, annual increases, and comparisons."
         slug="malta-minimum-wage-2026-guide"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -127,19 +128,19 @@ export default function MaltaMinimumWagePage() {
                     <tr>
                       <td className="border border-border p-3">Weekly</td>
                       <td className="border border-border p-3 font-semibold text-primary">
-                        €213.54
+                        €229.44
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">Monthly</td>
                       <td className="border border-border p-3 font-semibold text-primary">
-                        €928.70
+                        €994.24
                       </td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3">Annual</td>
                       <td className="border border-border p-3 font-semibold text-primary">
-                        €11,104.08
+                        €11,930.88
                       </td>
                     </tr>
                   </tbody>
@@ -147,9 +148,17 @@ export default function MaltaMinimumWagePage() {
               </div>
               <p>
                 The National Minimum Wage (NMW) in Malta is updated annually.
-                For 2026, the weekly rate is <strong>€213.54</strong>, which
-                includes the COLA (Cost of Living Adjustment) of €10.36 per
-                week.
+                For 2026, the weekly rate for full-time workers aged 18 and over
+                is <strong>€229.44</strong> (up from €221.78 in 2025). The €7.66
+                increase is made up of the 2026 COLA (Cost of Living Adjustment)
+                of €4.66 per week plus a further €3.00 statutory increase.
+                Monthly and annual figures above are based on 52 weeks (€229.44
+                × 52 ÷ 12).
+              </p>
+              <p>
+                Lower rates apply to younger workers:{" "}
+                <strong>€222.66/week</strong> at age 17 and{" "}
+                <strong>€219.82/week</strong> under 17.
               </p>
             </section>
 
@@ -168,8 +177,9 @@ export default function MaltaMinimumWagePage() {
                 </li>
               </ul>
               <p>
-                Note: Employees under 17 or in their first 6 months of
-                employment may receive 95% of the minimum wage.
+                Note: Minimum wage earners also receive the statutory bonuses
+                (€121.16 in March and September, €135.10 in June and December)
+                on top of the weekly wage.
               </p>
             </section>
 
@@ -178,7 +188,7 @@ export default function MaltaMinimumWagePage() {
               <div className="p-6 bg-muted/30 rounded-xl not-prose">
                 <ul className="space-y-2 text-sm">
                   <li>
-                    • <strong>Minimum Wage:</strong> €11,104/year
+                    • <strong>Minimum Wage:</strong> €11,931/year
                   </li>
                   <li>
                     • <strong>Average Salary (Malta):</strong> ~€25,000/year
@@ -192,6 +202,7 @@ export default function MaltaMinimumWagePage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

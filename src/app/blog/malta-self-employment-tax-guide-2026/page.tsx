@@ -65,6 +65,7 @@ export default function MaltaSelfEmploymentTaxPage() {
         description="Complete tax guide for self-employed individuals and freelancers in Malta."
         slug="malta-self-employment-tax-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -116,8 +117,9 @@ export default function MaltaSelfEmploymentTaxPage() {
               </p>
               <ul>
                 <li>
-                  <strong>0%</strong> on first €9,100 (single) / €12,700
-                  (married)
+                  <strong>0%</strong> on the first €12,000 (single) / €15,000
+                  (married) in 2026, more for parents and married couples with
+                  children
                 </li>
                 <li>
                   <strong>15%</strong> on next bracket
@@ -134,15 +136,22 @@ export default function MaltaSelfEmploymentTaxPage() {
             <section id="ssc" className="mt-12">
               <h2>Class 2 SSC Contributions</h2>
               <p>
-                Self-employed pay <strong>Class 2 SSC</strong> at 15% of net
-                annual income, with:
+                Self-employed pay <strong>Class 2 SSC</strong> based on the
+                previous year&apos;s net income. The 2026 rates are:
               </p>
               <ul>
                 <li>
-                  <strong>Minimum:</strong> ~€34/week
+                  <strong>Lower band (SA):</strong> €36.18/week for income from
+                  €910 to €12,543.72
                 </li>
                 <li>
-                  <strong>Maximum:</strong> ~€86/week (2026)
+                  <strong>Middle band (SB):</strong> 15% of net income from
+                  €12,543.73 up to €29,083.35 (born from 1962) or €25,499.99
+                  (born before 1962)
+                </li>
+                <li>
+                  <strong>Maximum (SC):</strong> €83.89/week if born from 1962,
+                  €73.56/week if born before 1962
                 </li>
               </ul>
             </section>
@@ -156,14 +165,16 @@ export default function MaltaSelfEmploymentTaxPage() {
                     <tr className="bg-muted">
                       <th className="border border-border p-3">Payment</th>
                       <th className="border border-border p-3">Due Date</th>
-                      <th className="border border-border p-3">Amount</th>
+                      <th className="border border-border p-3">
+                        Share of last year&apos;s tax
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td className="border border-border p-3">1st</td>
                       <td className="border border-border p-3">April 30</td>
-                      <td className="border border-border p-3">30%</td>
+                      <td className="border border-border p-3">20%</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">2nd</td>
@@ -173,7 +184,7 @@ export default function MaltaSelfEmploymentTaxPage() {
                     <tr>
                       <td className="border border-border p-3">3rd</td>
                       <td className="border border-border p-3">December 21</td>
-                      <td className="border border-border p-3">40%</td>
+                      <td className="border border-border p-3">50%</td>
                     </tr>
                   </tbody>
                 </table>
@@ -193,6 +204,7 @@ export default function MaltaSelfEmploymentTaxPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

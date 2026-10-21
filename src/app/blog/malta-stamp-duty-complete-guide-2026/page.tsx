@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title:
     "Malta Stamp Duty 2026: Complete Guide to Property Tax | Malta Calculator",
   description:
-    "Malta stamp duty 2026 complete guide. 5% standard rate, 3.5% first-time buyer, exemptions, AIP considerations, and calculation examples.",
+    "Malta stamp duty 2026: 5% standard rate, 0% on the first €200,000 for first-time buyers, 3.5% own-home band, UCA exemption, AIP and worked examples.",
   keywords: [
     "Malta stamp duty",
     "Malta property tax",
@@ -66,6 +66,7 @@ export default function MaltaStampDutyGuidePage() {
         description="Complete guide to stamp duty on property purchases in Malta."
         slug="malta-stamp-duty-complete-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -133,7 +134,15 @@ export default function MaltaStampDutyGuidePage() {
                         First-Time Buyer
                       </td>
                       <td className="border border-border p-3 font-semibold text-green-600">
-                        3.5%
+                        0% on first €200,000, then 5%
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        Own home (not first-time)
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        3.5% on first €200,000, then 5%
                       </td>
                     </tr>
                     <tr>
@@ -141,15 +150,15 @@ export default function MaltaStampDutyGuidePage() {
                         Gozo Properties
                       </td>
                       <td className="border border-border p-3 font-semibold">
-                        2% reduction
+                        5% (old 2% Gozo rate abolished)
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        Heritage Buildings (UCA)
+                        UCA / old vacant property
                       </td>
                       <td className="border border-border p-3 font-semibold">
-                        2.5%
+                        Exempt on first €750,000 (until 31 Dec 2026)
                       </td>
                     </tr>
                   </tbody>
@@ -166,12 +175,18 @@ export default function MaltaStampDutyGuidePage() {
                     • Standard (5%): <strong>€17,500</strong>
                   </li>
                   <li>
-                    • First-Time Buyer (3.5%):{" "}
-                    <strong className="text-primary">€12,250</strong>
+                    • Own home, not first-time (3.5% on €200k + 5% on €150k):{" "}
+                    <strong>€14,500</strong>
                   </li>
                   <li>
-                    • <strong>Savings:</strong>{" "}
-                    <span className="text-green-600 font-semibold">€5,250</span>
+                    • First-Time Buyer (0% on €200k + 5% on €150k):{" "}
+                    <strong className="text-primary">€7,500</strong>
+                  </li>
+                  <li>
+                    • <strong>First-time buyer saving:</strong>{" "}
+                    <span className="text-green-600 font-semibold">
+                      €10,000
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -201,6 +216,7 @@ export default function MaltaStampDutyGuidePage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   title:
     "Malta Budget 2026: New Family Tax Savings & Key Changes | Malta Calculator",
   description:
-    "Complete guide to Malta Budget 2026 changes. New tax brackets for families save up to \u20AC1,625/year. Pension tax exemptions, property relief, and business incentives explained.",
+    "Malta Budget 2026 guide: child-based tax bands saving families up to €2,025 in 2026, pension tax exemption, property relief and business incentives.",
   keywords: [
     "Malta budget 2026",
     "Malta tax changes 2026",
@@ -94,6 +94,7 @@ export default function MaltaBudget2026GuidePage() {
         description="Complete guide to Malta Budget 2026 tax changes including new family tax brackets, pension exemptions, and business incentives."
         slug="malta-budget-2026-family-tax-savings-guide"
         datePublished="2026-02-16"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -112,7 +113,7 @@ export default function MaltaBudget2026GuidePage() {
             question:
               "How much can families save with the new Malta 2026 tax brackets?",
             answer:
-              "Families with two or more children can save up to \u20AC1,625 per parent in 2026. These savings increase to \u20AC3,250 in 2027 and \u20AC5,000 in 2028 as the new brackets are phased in over three years.",
+              "In 2026 the maximum saving is \u20AC1,625 for a parent with two or more children and \u20AC2,025 for a married couple with two or more children. The bands widen again in 2027 and 2028, raising the maximum to \u20AC5,000 (parent) and \u20AC6,000 (married couple) by 2028.",
           },
           {
             question:
@@ -123,7 +124,7 @@ export default function MaltaBudget2026GuidePage() {
           {
             question: "Is pension income tax-free in Malta from 2026?",
             answer:
-              "Yes, from 2026 all pension income up to double the maximum statutory pension amount (including bonuses) is fully exempt from income tax. This is a significant improvement over the previous partial exemption.",
+              "Yes. From basis year 2026, pension income of individuals aged 61 and over is fully exempt from income tax up to a cap linked to double the maximum statutory pension (about \u20AC37,104 a year). This replaces the previous partial exemption (80% in 2025).",
           },
           {
             question:
@@ -134,7 +135,7 @@ export default function MaltaBudget2026GuidePage() {
           {
             question: "What is the COLA increase for 2026 in Malta?",
             answer:
-              "The COLA (Cost of Living Adjustment) for 2026 is \u20AC4.66 per week, reflecting lower inflation compared to previous years. This brings the cumulative COLA to \u20AC10.36 per week (\u20AC538.72 annually).",
+              "The COLA (Cost of Living Adjustment) for 2026 is \u20AC4.66 per week (\u20AC242.32 a year), reflecting lower inflation compared to previous years. It is added to basic wages and is taxable like the rest of your salary.",
           },
         ]}
       />
@@ -169,8 +170,9 @@ export default function MaltaBudget2026GuidePage() {
               <p className="text-xl text-muted-foreground leading-relaxed">
                 Malta&apos;s 2026 Budget introduces the biggest tax changes for
                 families in years. New tax brackets for parents and married
-                couples with children can save up to &euro;1,625 per parent.
-                Here&apos;s everything you need to know.
+                couples with children can save up to &euro;2,025 in 2026, with
+                bigger savings to come in 2027 and 2028. Here&apos;s everything
+                you need to know.
               </p>
             </header>
 
@@ -261,7 +263,7 @@ export default function MaltaBudget2026GuidePage() {
                     &euro;1,625
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Max tax savings per parent (2026)
+                    Max saving, parent with 2+ children (2026)
                   </p>
                 </div>
                 <div className="p-6 bg-green-500/10 border border-green-500/20 rounded-2xl text-center">
@@ -445,7 +447,7 @@ export default function MaltaBudget2026GuidePage() {
                           35%
                         </span>
                       </td>
-                      <td className="py-3 px-4">&euro;10,270</td>
+                      <td className="py-3 px-4">&euro;10,275</td>
                     </tr>
                   </tbody>
                 </table>
@@ -531,7 +533,10 @@ export default function MaltaBudget2026GuidePage() {
               <p>
                 The new family tax brackets are being{" "}
                 <strong>phased in over three years</strong> (2026-2028). The
-                maximum tax savings per parent with two or more children are:
+                maximum annual tax savings for a <em>parent</em> with two or
+                more children are shown below (for a married couple with two or
+                more children: &euro;2,025 in 2026, &euro;4,050 in 2027 and
+                &euro;6,000 in 2028):
               </p>
 
               <div className="grid md:grid-cols-3 gap-4 my-8 not-prose">
@@ -567,8 +572,8 @@ export default function MaltaBudget2026GuidePage() {
               <h3>Calculation Example</h3>
               <div className="p-6 bg-muted/50 rounded-2xl my-6 not-prose">
                 <h4 className="font-semibold mb-4">
-                  Example: Married couple, 2 children, &euro;45,000 gross salary
-                  each
+                  Example: Married couple, 2 children, &euro;45,000 combined
+                  chargeable income (joint computation)
                 </h4>
                 <div className="space-y-3 text-sm">
                   <div className="grid grid-cols-2 gap-4">
@@ -577,8 +582,8 @@ export default function MaltaBudget2026GuidePage() {
                         Previous Married Rate (No Children)
                       </p>
                       <p>
-                        Tax: &euro;45,000 &times; 25% - &euro;3,650 ={" "}
-                        <strong>&euro;7,600</strong>
+                        Tax: &euro;45,000 &times; 25% - &euro;4,550 ={" "}
+                        <strong>&euro;6,700</strong>
                       </p>
                     </div>
                     <div>
@@ -594,14 +599,9 @@ export default function MaltaBudget2026GuidePage() {
                   <hr className="my-3 border-border/50" />
                   <p>
                     <strong className="text-green-600">
-                      Saving per parent: &euro;2,925/year
+                      Household saving: &euro;2,025/year
                     </strong>{" "}
-                    (capped at &euro;1,625 in 2026)
-                  </p>
-                  <p>
-                    <strong className="text-green-600">
-                      Combined household saving: up to &euro;3,250/year in 2026
-                    </strong>
+                    (the maximum for married couples with 2+ children in 2026)
                   </p>
                 </div>
               </div>
@@ -722,8 +722,8 @@ export default function MaltaBudget2026GuidePage() {
                   </li>
                   <li>
                     <CheckCircle2 className="h-4 w-4 text-green-500 inline mr-2" />
-                    Applies to all pensioners from{" "}
-                    <strong>1 January 2026</strong>
+                    Applies to pensioners aged 61 and over from basis year{" "}
+                    <strong>2026</strong> (cap of about &euro;37,104 a year)
                   </li>
                   <li>
                     <CheckCircle2 className="h-4 w-4 text-green-500 inline mr-2" />
@@ -772,8 +772,8 @@ export default function MaltaBudget2026GuidePage() {
                   </p>
                   <hr className="my-3 border-border/50" />
                   <p>
-                    Previous: &euro;200,000 &times; 3.5% + &euro;150,000 &times;
-                    5% = &euro;7,000 + &euro;7,500 ={" "}
+                    Previous: (&euro;200,000 &times; 3.5%) + (&euro;150,000
+                    &times; 5%) = &euro;7,000 + &euro;7,500 ={" "}
                     <strong>&euro;14,500</strong>
                   </p>
                   <p>
@@ -881,9 +881,9 @@ export default function MaltaBudget2026GuidePage() {
               <h2>8. COLA 2026</h2>
               <p>
                 The Cost of Living Adjustment (COLA) for 2026 is{" "}
-                <strong>&euro;4.66 per week</strong>, reflecting lower inflation
-                compared to previous years. This brings the cumulative COLA to
-                &euro;10.36 per week (&euro;538.72 annually).
+                <strong>&euro;4.66 per week</strong> (&euro;242.32 a year),
+                reflecting lower inflation compared to previous years. Pensions
+                also rose by &euro;10 per week in 2026.
               </p>
 
               <div className="overflow-x-auto my-6">
@@ -916,8 +916,9 @@ export default function MaltaBudget2026GuidePage() {
               </div>
 
               <p>
-                COLA is automatically added to all salaries and is{" "}
-                <strong>not subject to income tax</strong>. Read more in our{" "}
+                COLA is automatically added to all basic wages and is{" "}
+                <strong>taxed like the rest of your salary</strong>. Read more
+                in our{" "}
                 <Link
                   href="/blog/understanding-cola-malta-2026"
                   className="text-primary hover:underline"
@@ -940,9 +941,10 @@ export default function MaltaBudget2026GuidePage() {
                   </h3>
                   <p className="text-sm text-muted-foreground">
                     Families with two or more children can save up to
-                    &euro;1,625 per parent in 2026. These savings increase to
-                    &euro;3,250 in 2027 and &euro;5,000 in 2028 as the new
-                    brackets are phased in over three years.
+                    &euro;1,625 (parent) or &euro;2,025 (married couple) in
+                    2026. These rise to &euro;3,250 / &euro;4,050 in 2027 and
+                    &euro;5,000 / &euro;6,000 in 2028 as the new brackets are
+                    phased in.
                   </p>
                 </div>
 
@@ -964,9 +966,9 @@ export default function MaltaBudget2026GuidePage() {
                     Is pension income tax-free in Malta from 2026?
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Yes, from 2026 all pension income up to double the maximum
-                    statutory pension amount (including bonuses) is fully exempt
-                    from income tax.
+                    Yes. From 2026, pension income of people aged 61 and over is
+                    fully exempt up to a cap of about &euro;37,104 a year
+                    (double the maximum statutory pension).
                   </p>
                 </div>
 
@@ -1113,6 +1115,7 @@ export default function MaltaBudget2026GuidePage() {
             </section>
             <BlogArticleAuthor
               datePublished="2026-02-16"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

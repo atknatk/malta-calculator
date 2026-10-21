@@ -65,6 +65,7 @@ export default function MaltaRentalIncomeTaxPage() {
         description="Complete guide to Malta's rental income tax including the 15% flat rate option."
         slug="malta-rental-income-tax-15-percent-guide"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -149,8 +150,8 @@ export default function MaltaRentalIncomeTaxPage() {
               <h2>When to Choose 15% Flat Rate</h2>
               <ul>
                 <li>
-                  Your rental income is{" "}
-                  <strong>higher than €14,500/year</strong>
+                  Your other income already puts you in the{" "}
+                  <strong>25% or 35% tax band</strong>
                 </li>
                 <li>
                   You have <strong>minimal expenses</strong> to deduct
@@ -174,8 +175,13 @@ export default function MaltaRentalIncomeTaxPage() {
                     <strong className="text-primary">€2,250 tax</strong>
                   </li>
                   <li>
-                    • <strong>Progressive (single, no other income):</strong> ~
-                    <strong className="text-secondary">€885 tax</strong>
+                    •{" "}
+                    <strong>
+                      Progressive (single, no other income, 2026 rates):
+                    </strong>{" "}
+                    €15,000 × 15% − €1,800 ={" "}
+                    <strong className="text-secondary">€450 tax</strong> (or €0
+                    if the 20% maintenance deduction brings it to €12,000)
                   </li>
                 </ul>
                 <p className="text-xs mt-4 text-muted-foreground">
@@ -187,6 +193,7 @@ export default function MaltaRentalIncomeTaxPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

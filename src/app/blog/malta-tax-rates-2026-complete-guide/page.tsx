@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   title:
     "Malta Tax Rates 2026: Complete Guide to Income Tax Brackets | Malta Calculator",
   description:
-    "Complete guide to Malta income tax rates for 2026. Detailed breakdown of tax brackets for single (0-35%), married, and parent taxpayers. Includes examples, thresholds, and calculation methods.",
+    "Malta income tax rates 2026: official brackets for single, married and parent taxpayers, the new child-based rates, examples and the subtraction formula.",
   keywords: [
     "Malta tax rates 2026",
     "Malta income tax brackets",
@@ -82,6 +82,7 @@ export default function MaltaTaxRates2026Page() {
         description="Complete guide to Malta income tax rates for 2026 including brackets for single, married, and parent taxpayers."
         slug="malta-tax-rates-2026-complete-guide"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <HowToJsonLd
@@ -95,11 +96,11 @@ export default function MaltaTaxRates2026Page() {
           },
           {
             name: "Find your gross annual income",
-            text: "Calculate your total annual gross salary including any bonuses, but excluding COLA and statutory government bonuses which are tax-exempt.",
+            text: "Calculate your total annual gross salary including any bonuses and the statutory government bonuses (€512.52 in 2026), which are taxable.",
           },
           {
             name: "Apply the tax brackets",
-            text: "Use Malta's progressive tax brackets for your status. For example, a single taxpayer pays 0% on the first €9,100, 15% on €9,101-€14,500, 25% on €14,501-€60,000, and 35% above €60,000.",
+            text: "Use Malta's progressive tax brackets for your status. For example, in 2026 a single taxpayer pays 0% on the first €12,000, 15% on €12,001-€16,000, 25% on €16,001-€60,000, and 35% above €60,000.",
           },
           {
             name: "Calculate using the formula",
@@ -107,7 +108,7 @@ export default function MaltaTaxRates2026Page() {
           },
           {
             name: "Deduct SSC and add COLA",
-            text: "Subtract Social Security Contributions (10% of basic weekly wage, capped at €55.93/week for 2026) and add COLA (€512.52 annually for 2026) to determine your final net salary.",
+            text: "Subtract Social Security Contributions (10% of basic weekly wage, capped at €55.93/week for 2026) and income tax from your gross pay (including the taxable €512.52 statutory bonuses) to determine your final net salary.",
           },
         ]}
       />
@@ -216,241 +217,443 @@ export default function MaltaTaxRates2026Page() {
                 from <strong>0% to 35%</strong> depending on your income level
                 and tax status.
               </p>
-              <p>For 2026, Malta has three main tax computation categories:</p>
+              <p>
+                For 2026 there are three main computation types, and since 1
+                January 2026 the married and parent rates are further split by
+                the number of qualifying children (seven rate tables in total):
+              </p>
               <ul>
                 <li>
                   <strong>Single</strong> - For unmarried individuals
                 </li>
                 <li>
                   <strong>Married</strong> - For married couples (joint
-                  computation)
+                  computation): no children, one child, or two or more children
                 </li>
                 <li>
-                  <strong>Parent</strong> - For single parents with dependent
-                  children
+                  <strong>Parent</strong> - For single parents maintaining a
+                  child: no qualifying child, one child, or two or more children
                 </li>
               </ul>
               <p>
-                Each category has different tax brackets and thresholds, with
-                married taxpayers and parents enjoying more favorable rates than
-                single taxpayers.
+                A qualifying child is under 18, or under 23 if in full-time
+                education. All figures below are the official 2026 rates
+                published by the Malta Tax and Customs Administration (MTCA).
+                Tax is worked out with the formula
+                <strong>Tax = Chargeable Income × Rate − Subtract</strong>.
               </p>
             </section>
 
             <section id="single-rates" className="mt-12">
               <h2>2. Single Taxpayer Tax Rates 2026</h2>
               <p>
-                The following table shows the income tax brackets for{" "}
-                <strong>single taxpayers</strong> in Malta for 2026:
+                The following table shows the income tax brackets for
+                <strong>single taxpayers</strong> in Malta for 2026 (unchanged
+                from 2025):
               </p>
-
-              <div className="overflow-x-auto not-prose my-8">
+              <div className="overflow-x-auto not-prose my-6">
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr className="bg-muted">
                       <th className="border border-border p-3 text-left font-semibold">
-                        Annual Income (€)
+                        Chargeable Income (€)
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Tax Rate
+                        Rate
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Tax on Band
+                        Subtract (€)
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-border p-3">€0 - €9,100</td>
-                      <td className="border border-border p-3 font-semibold text-green-600">
+                      <td className="border border-border p-3">0 – 12,000</td>
+                      <td className="border border-border p-3 font-semibold">
                         0%
                       </td>
-                      <td className="border border-border p-3">€0</td>
+                      <td className="border border-border p-3">0</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €9,101 - €14,500
+                        12,001 – 16,000
                       </td>
-                      <td className="border border-border p-3 font-semibold text-yellow-600">
+                      <td className="border border-border p-3 font-semibold">
                         15%
                       </td>
-                      <td className="border border-border p-3">Up to €810</td>
+                      <td className="border border-border p-3">1,800</td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3">
-                        €14,501 - €19,500
+                        16,001 – 60,000
                       </td>
-                      <td className="border border-border p-3 font-semibold text-orange-600">
+                      <td className="border border-border p-3 font-semibold">
                         25%
                       </td>
-                      <td className="border border-border p-3">Up to €1,250</td>
+                      <td className="border border-border p-3">3,400</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €19,501 - €60,000
+                        60,001 and over
                       </td>
-                      <td className="border border-border p-3 font-semibold text-orange-600">
-                        25%
-                      </td>
-                      <td className="border border-border p-3">
-                        Up to €10,125
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-border p-3">Over €60,000</td>
-                      <td className="border border-border p-3 font-semibold text-red-600">
+                      <td className="border border-border p-3 font-semibold">
                         35%
                       </td>
-                      <td className="border border-border p-3">
-                        35% of excess
-                      </td>
+                      <td className="border border-border p-3">9,400</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-              <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl not-prose">
+              <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl not-prose">
                 <p className="text-sm">
-                  <strong>💡 Key Point:</strong> The first €9,100 of income is
-                  completely tax-free for single taxpayers. This is known as the
-                  &quot;personal allowance&quot; or tax-free threshold.
+                  <strong>💡 Key Point:</strong> The first
+                  <strong>€12,000</strong> of chargeable income is taxed at 0%
+                  for single taxpayers.
                 </p>
               </div>
             </section>
 
             <section id="married-rates" className="mt-12">
               <h2>3. Married Taxpayer Tax Rates 2026</h2>
-              <p>
-                Married taxpayers in Malta benefit from higher tax-free
-                thresholds and more favorable brackets:
-              </p>
-
-              <div className="overflow-x-auto not-prose my-8">
+              <h3>Married - No Qualifying Children</h3>
+              <div className="overflow-x-auto not-prose my-6">
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr className="bg-muted">
                       <th className="border border-border p-3 text-left font-semibold">
-                        Annual Income (€)
+                        Chargeable Income (€)
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Tax Rate
+                        Rate
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Tax on Band
+                        Subtract (€)
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-border p-3">€0 - €12,700</td>
-                      <td className="border border-border p-3 font-semibold text-green-600">
+                      <td className="border border-border p-3">0 – 15,000</td>
+                      <td className="border border-border p-3 font-semibold">
                         0%
                       </td>
-                      <td className="border border-border p-3">€0</td>
+                      <td className="border border-border p-3">0</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €12,701 - €21,200
+                        15,001 – 23,000
                       </td>
-                      <td className="border border-border p-3 font-semibold text-yellow-600">
+                      <td className="border border-border p-3 font-semibold">
                         15%
                       </td>
-                      <td className="border border-border p-3">Up to €1,275</td>
+                      <td className="border border-border p-3">2,250</td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3">
-                        €21,201 - €28,700
+                        23,001 – 60,000
                       </td>
-                      <td className="border border-border p-3 font-semibold text-orange-600">
+                      <td className="border border-border p-3 font-semibold">
                         25%
                       </td>
-                      <td className="border border-border p-3">Up to €1,875</td>
+                      <td className="border border-border p-3">4,550</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €28,701 - €60,000
+                        60,001 and over
                       </td>
-                      <td className="border border-border p-3 font-semibold text-orange-600">
-                        25%
-                      </td>
-                      <td className="border border-border p-3">Up to €7,825</td>
-                    </tr>
-                    <tr>
-                      <td className="border border-border p-3">Over €60,000</td>
-                      <td className="border border-border p-3 font-semibold text-red-600">
+                      <td className="border border-border p-3 font-semibold">
                         35%
                       </td>
-                      <td className="border border-border p-3">
-                        35% of excess
-                      </td>
+                      <td className="border border-border p-3">10,550</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
+              <h3>Married - One Child</h3>
+              <div className="overflow-x-auto not-prose my-6">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-muted">
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Chargeable Income (€)
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Rate
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Subtract (€)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-border p-3">0 – 17,500</td>
+                      <td className="border border-border p-3 font-semibold">
+                        0%
+                      </td>
+                      <td className="border border-border p-3">0</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        17,501 – 26,500
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        15%
+                      </td>
+                      <td className="border border-border p-3">2,625</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        26,501 – 60,000
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        25%
+                      </td>
+                      <td className="border border-border p-3">5,275</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        60,001 and over
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        35%
+                      </td>
+                      <td className="border border-border p-3">11,275</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <h3>Married - Two or More Children</h3>
+              <div className="overflow-x-auto not-prose my-6">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-muted">
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Chargeable Income (€)
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Rate
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Subtract (€)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-border p-3">0 – 22,500</td>
+                      <td className="border border-border p-3 font-semibold">
+                        0%
+                      </td>
+                      <td className="border border-border p-3">0</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        22,501 – 32,000
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        15%
+                      </td>
+                      <td className="border border-border p-3">3,375</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        32,001 – 60,000
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        25%
+                      </td>
+                      <td className="border border-border p-3">6,575</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        60,001 and over
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        35%
+                      </td>
+                      <td className="border border-border p-3">12,575</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <p>
-                <strong>Married taxpayers save €540/year</strong> compared to
-                single taxpayers at the same income level, thanks to the higher
-                tax-free threshold (€12,700 vs €9,100).
+                The child-based married rates are new for 2026 and are being
+                phased in further in 2027 and 2028. See our
+                <Link
+                  href="/blog/malta-budget-2026-family-tax-savings-guide"
+                  className="text-primary hover:underline"
+                >
+                  Budget 2026 family tax guide
+                </Link>
+                for the eligibility rules.
               </p>
             </section>
 
             <section id="parent-rates" className="mt-12">
               <h2>4. Parent Taxpayer Tax Rates 2026</h2>
               <p>
-                Single parents with dependent children qualify for the
-                &quot;Parent&quot; tax computation, which offers similar
-                benefits to married taxpayers:
+                Single parents maintaining a child qualify for the
+                &quot;Parent&quot; computation:
               </p>
-
-              <div className="overflow-x-auto not-prose my-8">
+              <h3>Parent - Standard Rates</h3>
+              <div className="overflow-x-auto not-prose my-6">
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr className="bg-muted">
                       <th className="border border-border p-3 text-left font-semibold">
-                        Annual Income (€)
+                        Chargeable Income (€)
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Tax Rate
+                        Rate
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Subtract (€)
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-border p-3">€0 - €10,500</td>
-                      <td className="border border-border p-3 font-semibold text-green-600">
+                      <td className="border border-border p-3">0 – 13,000</td>
+                      <td className="border border-border p-3 font-semibold">
                         0%
                       </td>
+                      <td className="border border-border p-3">0</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €10,501 - €15,800
+                        13,001 – 17,500
                       </td>
-                      <td className="border border-border p-3 font-semibold text-yellow-600">
+                      <td className="border border-border p-3 font-semibold">
                         15%
                       </td>
+                      <td className="border border-border p-3">1,950</td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3">
-                        €15,801 - €21,200
+                        17,501 – 60,000
                       </td>
-                      <td className="border border-border p-3 font-semibold text-orange-600">
+                      <td className="border border-border p-3 font-semibold">
                         25%
                       </td>
+                      <td className="border border-border p-3">3,700</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €21,201 - €60,000
+                        60,001 and over
                       </td>
-                      <td className="border border-border p-3 font-semibold text-orange-600">
-                        25%
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-border p-3">Over €60,000</td>
-                      <td className="border border-border p-3 font-semibold text-red-600">
+                      <td className="border border-border p-3 font-semibold">
                         35%
                       </td>
+                      <td className="border border-border p-3">9,700</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <h3>Parent - One Child</h3>
+              <div className="overflow-x-auto not-prose my-6">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-muted">
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Chargeable Income (€)
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Rate
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Subtract (€)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-border p-3">0 – 14,500</td>
+                      <td className="border border-border p-3 font-semibold">
+                        0%
+                      </td>
+                      <td className="border border-border p-3">0</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        14,501 – 21,000
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        15%
+                      </td>
+                      <td className="border border-border p-3">2,175</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        21,001 – 60,000
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        25%
+                      </td>
+                      <td className="border border-border p-3">4,275</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        60,001 and over
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        35%
+                      </td>
+                      <td className="border border-border p-3">10,275</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <h3>Parent - Two or More Children</h3>
+              <div className="overflow-x-auto not-prose my-6">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-muted">
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Chargeable Income (€)
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Rate
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Subtract (€)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-border p-3">0 – 18,500</td>
+                      <td className="border border-border p-3 font-semibold">
+                        0%
+                      </td>
+                      <td className="border border-border p-3">0</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        18,501 – 25,500
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        15%
+                      </td>
+                      <td className="border border-border p-3">2,775</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        25,501 – 60,000
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        25%
+                      </td>
+                      <td className="border border-border p-3">5,325</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        60,001 and over
+                      </td>
+                      <td className="border border-border p-3 font-semibold">
+                        35%
+                      </td>
+                      <td className="border border-border p-3">11,325</td>
                     </tr>
                   </tbody>
                 </table>
@@ -463,45 +666,42 @@ export default function MaltaTaxRates2026Page() {
               <h3>Example 1: Single Taxpayer Earning €30,000</h3>
               <div className="p-6 bg-muted/30 rounded-xl not-prose my-4">
                 <ul className="space-y-2 text-sm">
-                  <li>
-                    • First €9,100 @ 0% = <strong>€0</strong>
-                  </li>
-                  <li>
-                    • €9,101 - €14,500 (€5,400) @ 15% = <strong>€810</strong>
-                  </li>
-                  <li>
-                    • €14,501 - €19,500 (€5,000) @ 25% = <strong>€1,250</strong>
-                  </li>
-                  <li>
-                    • €19,501 - €30,000 (€10,500) @ 25% ={" "}
-                    <strong>€2,625</strong>
-                  </li>
-                  <li className="pt-2 border-t border-border font-semibold">
-                    Total Annual Tax ={" "}
-                    <strong className="text-primary">€4,685</strong>
+                  <li>• Band: €16,001 – €60,000 (25%, subtract €3,400)</li>
+                  <li>• €30,000 × 25% = €7,500</li>
+                  <li>• €7,500 − €3,400</li>
+                  <li className="pt-2 border-t border-border">
+                    <span>Total Annual Tax = </span>
+                    <strong className="text-primary">€4,100</strong>
                   </li>
                 </ul>
               </div>
 
-              <h3>Example 2: Married Taxpayer Earning €50,000</h3>
+              <h3>Example 2: Married Couple Earning €50,000 (No Children)</h3>
               <div className="p-6 bg-muted/30 rounded-xl not-prose my-4">
                 <ul className="space-y-2 text-sm">
-                  <li>
-                    • First €12,700 @ 0% = <strong>€0</strong>
+                  <li>• Band: €23,001 – €60,000 (25%, subtract €4,550)</li>
+                  <li>• €50,000 × 25% = €12,500</li>
+                  <li>• €12,500 − €4,550</li>
+                  <li className="pt-2 border-t border-border">
+                    <span>Total Annual Tax = </span>
+                    <strong className="text-primary">€7,950</strong>
                   </li>
-                  <li>
-                    • €12,701 - €21,200 (€8,500) @ 15% = <strong>€1,275</strong>
-                  </li>
-                  <li>
-                    • €21,201 - €28,700 (€7,500) @ 25% = <strong>€1,875</strong>
-                  </li>
-                  <li>
-                    • €28,701 - €50,000 (€21,300) @ 25% ={" "}
-                    <strong>€5,325</strong>
-                  </li>
-                  <li className="pt-2 border-t border-border font-semibold">
-                    Total Annual Tax ={" "}
-                    <strong className="text-primary">€8,475</strong>
+                </ul>
+              </div>
+
+              <h3>Example 3: Married Couple Earning €50,000 (Two Children)</h3>
+              <div className="p-6 bg-muted/30 rounded-xl not-prose my-4">
+                <ul className="space-y-2 text-sm">
+                  <li>• Band: €32,001 – €60,000 (25%, subtract €6,575)</li>
+                  <li>• €50,000 × 25% = €12,500</li>
+                  <li>• €12,500 − €6,575</li>
+                  <li className="pt-2 border-t border-border">
+                    <span>Total Annual Tax = </span>
+                    <strong className="text-primary">€5,925</strong>
+                    <span className="text-muted-foreground text-xs">
+                      {" "}
+                      (€2,025 less than without children)
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -509,25 +709,32 @@ export default function MaltaTaxRates2026Page() {
 
             <section id="deductions" className="mt-12">
               <h2>6. Tax-Free Income & Deductions</h2>
-              <p>Certain types of income are not subject to tax in Malta:</p>
+              <p>Some income is exempt or taxed separately in Malta:</p>
               <ul>
                 <li>
-                  <strong>COLA (Cost of Living Adjustment)</strong> - The annual
-                  COLA payment of €538.72 (2026) is tax-free
+                  <strong>Children&apos;s Allowance</strong> - Social security
+                  benefits for children are not taxable
                 </li>
                 <li>
-                  <strong>Statutory Bonuses</strong> - Government-mandated
-                  bonuses are tax-exempt
+                  <strong>Pension income</strong> - From 2026, qualifying
+                  pension income of people aged 61+ is fully exempt, subject to
+                  a cap
                 </li>
                 <li>
-                  <strong>Children&apos;s Allowance</strong> - Social benefits
-                  for children are not taxable
+                  <strong>Bank interest</strong> - Can be taxed at a 15% final
+                  withholding tax instead of your normal rates
                 </li>
               </ul>
+              <p>
+                Note that <strong>COLA</strong> (part of your basic wage) and
+                the <strong>statutory bonuses</strong> (€512.52 a year) are
+                <strong>taxable</strong> in Malta. They are not tax-free.
+              </p>
             </section>
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
 

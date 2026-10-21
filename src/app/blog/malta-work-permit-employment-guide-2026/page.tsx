@@ -83,6 +83,7 @@ export default function MaltaWorkPermitGuidePage() {
         description="Complete guide to working in Malta including work permits, employment licenses, and worker rights."
         slug="malta-work-permit-employment-guide-2026"
         datePublished="2026-02-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -543,7 +544,7 @@ export default function MaltaWorkPermitGuidePage() {
                         Minimum Wage
                       </td>
                       <td className="border border-border p-3">
-                        €213.54/week (€928.70/month)
+                        €229.44/week (about €994/month) for workers aged 18+
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -551,7 +552,7 @@ export default function MaltaWorkPermitGuidePage() {
                         COLA
                       </td>
                       <td className="border border-border p-3">
-                        €10.36/week Cost of Living Adjustment
+                        €4.66/week Cost of Living Adjustment added in 2026
                       </td>
                     </tr>
                     <tr>
@@ -559,7 +560,8 @@ export default function MaltaWorkPermitGuidePage() {
                         Annual Leave
                       </td>
                       <td className="border border-border p-3">
-                        Minimum 192 hours (24 8-hour days)
+                        216 hours in 2026 (192 basic hours plus 24 hours for
+                        public holidays falling on weekends)
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -676,6 +678,7 @@ export default function MaltaWorkPermitGuidePage() {
 
             <BlogArticleAuthor
               datePublished="2026-02-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

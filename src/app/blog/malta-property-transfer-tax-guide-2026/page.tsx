@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Malta Property Transfer Tax Guide 2026 | Malta Calculator",
   description:
-    "Complete guide to Malta property transfer tax 2026. Stamp duty rates (5%, 3.5%), notarial fees, capital gains tax, and all costs when buying property in Malta.",
+    "Complete guide to Malta property transfer tax 2026. Stamp duty (5%, first-time buyer and own-home relief), notarial fees, the seller's 8% tax and all buying costs.",
   keywords: [
     "malta property transfer tax",
     "property transfer tax malta",
@@ -76,6 +76,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
         description="Complete guide to all taxes and fees involved in property transfers in Malta."
         slug="malta-property-transfer-tax-guide-2026"
         datePublished="2026-02-16"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -94,7 +95,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
             question:
               "What is the property transfer tax rate in Malta for 2026?",
             answer:
-              "The standard property transfer tax (stamp duty) rate in Malta is 5% of the property value or market value, whichever is higher. First-time buyers get a reduced rate of 3.5% and may be exempt on the first €200,000. The 5% is paid in two stages: 1% within 21 days of signing the preliminary agreement (Konvenju) and 4% upon final deed transfer.",
+              "The standard property transfer tax (stamp duty) rate in Malta is 5% of the property value or market value, whichever is higher. First-time buyers pay no duty on the first €200,000 (5% on the rest), and other buyers of their own home pay 3.5% on the first €200,000. The 5% is paid in two stages: 1% within 21 days of signing the preliminary agreement (Konvenju) and 4% upon final deed transfer.",
           },
           {
             question: "What are notarial fees for property transfer in Malta?",
@@ -105,7 +106,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
             question:
               "Do first-time buyers pay less property transfer tax in Malta?",
             answer:
-              "Yes, first-time buyers in Malta receive significant benefits: they are exempt from stamp duty on the first €200,000 of property value, and pay a reduced rate of 3.5% (instead of 5%) on any amount exceeding €200,000. To qualify, you must not have previously owned property in Malta or Gozo, and the property must be your primary residence.",
+              "Yes, first-time buyers in Malta receive significant benefits: they are exempt from stamp duty on the first €200,000 of property value and pay the standard 5% on any amount above €200,000, saving up to €10,000. To qualify, you must not have previously owned residential property, and the property must be your sole ordinary residence.",
           },
           {
             question: "What is capital gains tax on property sales in Malta?",
@@ -257,8 +258,8 @@ export default function MaltaPropertyTransferTaxGuidePage() {
               </p>
               <ul>
                 <li>
-                  <strong>Stamp Duty</strong> (5% standard, 3.5% first-time
-                  buyers)
+                  <strong>Stamp Duty</strong> (5% standard, 0% on the first
+                  €200,000 for first-time buyers)
                 </li>
                 <li>
                   <strong>Notarial Fees</strong> (1-2% of property value)
@@ -326,32 +327,32 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                         First-Time Buyers
                       </td>
                       <td className="border border-border p-3 text-right font-semibold text-green-600">
-                        3.5%
+                        0% / 5%
                       </td>
                       <td className="border border-border p-3 text-sm text-muted-foreground">
-                        Reduced rate + exemption on first €200k
+                        0% on first €200k, 5% on the rest
                       </td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3">
-                        Gozo Property
+                        Own Home (not first-time)
                       </td>
                       <td className="border border-border p-3 text-right font-semibold">
-                        3%
+                        3.5% / 5%
                       </td>
                       <td className="border border-border p-3 text-sm text-muted-foreground">
-                        2% reduction for Gozo properties
+                        3.5% on first €200k, 5% on the rest
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        Heritage Buildings (UCA)
+                        UCA / Old Vacant Property
                       </td>
                       <td className="border border-border p-3 text-right font-semibold">
-                        2.5%
+                        0%
                       </td>
                       <td className="border border-border p-3 text-sm text-muted-foreground">
-                        Urban Conservation Areas
+                        Exempt on first €750k until 31 Dec 2026
                       </td>
                     </tr>
                   </tbody>
@@ -429,7 +430,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                 </li>
                 <li>
                   <strong>Above €200,000:</strong>{" "}
-                  <strong>3.5% on excess amount</strong>
+                  <strong>5% on the excess amount</strong>
                 </li>
               </ul>
 
@@ -437,8 +438,9 @@ export default function MaltaPropertyTransferTaxGuidePage() {
               <p>To qualify as a first-time buyer in Malta:</p>
               <ul>
                 <li>
-                  You must not have previously owned immovable property in Malta
-                  or Gozo
+                  You must not have previously owned residential property
+                  (owning only non-residential property no longer disqualifies
+                  you from 2026)
                 </li>
                 <li>
                   The property must be your <strong>primary residence</strong>{" "}
@@ -449,7 +451,8 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                   (typically 3 years)
                 </li>
                 <li>
-                  Property value typically under €200,000 for full exemption
+                  There is no price cap: properties up to €200,000 pay no duty
+                  at all
                 </li>
               </ul>
 
@@ -465,7 +468,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                         Standard (5%)
                       </th>
                       <th className="border border-border p-3 text-right">
-                        First-Time (3.5%)
+                        First-Time Buyer
                       </th>
                       <th className="border border-border p-3 text-right">
                         Savings
@@ -491,10 +494,10 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                         €12,500
                       </td>
                       <td className="border border-border p-3 text-right font-semibold text-green-600">
-                        €1,750
+                        €2,500
                       </td>
                       <td className="border border-border p-3 text-right font-bold text-green-600">
-                        €10,750
+                        €10,000
                       </td>
                     </tr>
                     <tr>
@@ -503,10 +506,10 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                         €17,500
                       </td>
                       <td className="border border-border p-3 text-right font-semibold text-green-600">
-                        €5,250
+                        €7,500
                       </td>
                       <td className="border border-border p-3 text-right font-bold text-green-600">
-                        €12,250
+                        €10,000
                       </td>
                     </tr>
                   </tbody>
@@ -514,8 +517,8 @@ export default function MaltaPropertyTransferTaxGuidePage() {
               </div>
 
               <p className="text-sm text-muted-foreground">
-                *First-time buyer calculation: 3.5% × (Property Value -
-                €200,000)
+                *First-time buyer calculation: 5% × (Property Value - €200,000).
+                Legal Notice 305 of 2025 made the exemption permanent.
               </p>
             </section>
 
@@ -951,15 +954,15 @@ export default function MaltaPropertyTransferTaxGuidePage() {
               <div className="p-6 bg-green-500/10 rounded-xl not-prose my-6 border border-green-500/20">
                 <ul className="space-y-2 text-sm">
                   <li>
-                    • Stamp Duty: <strong>€3,500</strong> (3.5% on €100k over
+                    • Stamp Duty: <strong>€5,000</strong> (5% on €100k over
                     €200k exemption)
                   </li>
                   <li>
-                    • Total Cost: <strong>€311,890</strong>
+                    • Total Cost: <strong>€313,390</strong>
                   </li>
                   <li>
                     •{" "}
-                    <strong className="text-green-600">Savings: €11,500</strong>
+                    <strong className="text-green-600">Savings: €10,000</strong>
                   </li>
                 </ul>
               </div>
@@ -968,20 +971,24 @@ export default function MaltaPropertyTransferTaxGuidePage() {
             <section id="exemptions" className="mt-12">
               <h2>Exemptions & Special Cases</h2>
 
-              <h3>Gozo Property Discount</h3>
+              <h3>Gozo Property</h3>
               <p>
-                Properties located in Gozo benefit from a{" "}
-                <strong>2% reduction</strong> in stamp duty (3% instead of 5%).
-                This incentive aims to promote development and population growth
-                in Malta&apos;s sister island.
+                The old reduced 2% duty rate for Gozo properties has been
+                abolished, so Gozo purchases now pay the same{" "}
+                <strong>5%</strong> standard rate. First-time buyers of
+                qualifying old or vacant properties in Gozo can still get a
+                larger restoration grant (up to €40,000).
               </p>
 
               <h3>Urban Conservation Areas (UCA)</h3>
               <p>
-                Heritage buildings within designated Urban Conservation Areas
-                qualify for a reduced stamp duty rate of <strong>2.5%</strong>{" "}
-                to encourage restoration and preservation of historical
-                properties.
+                Properties in designated Urban Conservation Areas, properties
+                built over 20 years ago and vacant for over 7 years, and
+                qualifying traditional-style new builds are{" "}
+                <strong>exempt from stamp duty on the first €750,000</strong>{" "}
+                (the seller is also exempt from property transfer tax on that
+                amount). The scheme runs until 31 December 2026, so check Budget
+                2027 for any extension.
               </p>
 
               <h3>Property Inheritance</h3>
@@ -1020,10 +1027,10 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                   <p>
                     The standard property transfer tax (stamp duty) rate in
                     Malta is 5% of the property value or market value, whichever
-                    is higher. First-time buyers get a reduced rate of 3.5% and
-                    may be exempt on the first €200,000. The 5% is paid in two
-                    stages: 1% within 21 days of signing the preliminary
-                    agreement (Konvenju) and 4% upon final deed transfer.
+                    is higher. First-time buyers pay no duty on the first
+                    €200,000 (5% on the rest). The 5% is paid in two stages: 1%
+                    within 21 days of signing the preliminary agreement
+                    (Konvenju) and 4% upon final deed transfer.
                   </p>
                 </div>
 
@@ -1049,11 +1056,10 @@ export default function MaltaPropertyTransferTaxGuidePage() {
                   <p>
                     Yes, first-time buyers in Malta receive significant
                     benefits: they are exempt from stamp duty on the first
-                    €200,000 of property value, and pay a reduced rate of 3.5%
-                    (instead of 5%) on any amount exceeding €200,000. To
-                    qualify, you must not have previously owned property in
-                    Malta or Gozo, and the property must be your primary
-                    residence.
+                    €200,000 of property value and pay the standard 5% on any
+                    amount above €200,000, saving up to €10,000. To qualify, you
+                    must not have previously owned residential property, and the
+                    property must be your sole ordinary residence.
                   </p>
                 </div>
 
@@ -1217,6 +1223,7 @@ export default function MaltaPropertyTransferTaxGuidePage() {
             {/* CTA Box */}
             <BlogArticleAuthor
               datePublished="2026-02-16"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

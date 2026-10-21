@@ -64,6 +64,7 @@ export default function MaltaMortgageGuidePage() {
         description="Complete guide to getting a mortgage in Malta."
         slug="malta-mortgage-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -109,7 +110,7 @@ export default function MaltaMortgageGuidePage() {
             <section id="overview">
               <h2>Understanding Mortgages in Malta</h2>
               <p>
-                A mortgage (konut kredisi) is a loan secured against property,
+                A mortgage (home loan) is a loan secured against property,
                 allowing you to purchase a home while repaying over an extended
                 period. Malta&apos;s banks offer competitive mortgage products
                 with terms typically ranging from 5 to 40 years.
@@ -124,10 +125,12 @@ export default function MaltaMortgageGuidePage() {
                   10% Minimum Deposit
                 </h3>
                 <p className="text-muted-foreground">
-                  In Malta, banks typically require a minimum deposit of{" "}
-                  <strong>10%</strong> of the property&apos;s purchase price,
-                  meaning the maximum Loan-to-Value (LTV) ratio is{" "}
-                  <strong>90%</strong>.
+                  Under Central Bank of Malta Directive 16, buyers of their main
+                  home (Category I) can borrow up to <strong>90%</strong> of the
+                  value, so the minimum deposit is <strong>10%</strong>. For
+                  other properties, such as a second home or buy-to-let
+                  (Category II), the limit is <strong>75%</strong> (25%
+                  deposit).
                 </p>
               </div>
               <p>A higher deposit offers benefits:</p>
@@ -161,7 +164,8 @@ export default function MaltaMortgageGuidePage() {
                         Variable Rate
                       </td>
                       <td className="border border-border p-3">
-                        Fluctuates with the ECB base rate. More common in Malta.
+                        Moves with the bank&apos;s base rate, which follows ECB
+                        policy. More common in Malta.
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -185,9 +189,10 @@ export default function MaltaMortgageGuidePage() {
                 </table>
               </div>
               <p>
-                As of 2026, typical mortgage rates in Malta range from{" "}
-                <strong>3.5% to 5.5%</strong> depending on the bank and loan
-                conditions.
+                Malta has some of the lowest mortgage rates in the eurozone. ECB
+                data put the average rate on new Maltese home loans at about{" "}
+                <strong>2.1%</strong> in April 2026. Your own rate depends on
+                the bank, the term and any fixed-rate period.
               </p>
             </section>
 
@@ -220,14 +225,16 @@ export default function MaltaMortgageGuidePage() {
                   <strong>Income:</strong> Stable employment or business income
                 </li>
                 <li>
-                  <strong>Debt-to-Income:</strong> Monthly repayments
-                  shouldn&apos;t exceed ~30-40% of net income
+                  <strong>Debt-to-Income:</strong> Loan repayments can&apos;t
+                  exceed 40% of net income, tested with a 1.5 percentage point
+                  interest rate increase (CBM Directive 16)
                 </li>
                 <li>
                   <strong>Credit History:</strong> Clean payment history
                 </li>
                 <li>
-                  <strong>Age:</strong> Loan must typically be repaid before
+                  <strong>Term and age:</strong> Up to 40 years for a main home
+                  (25 years for other property), normally ending by your
                   retirement age
                 </li>
               </ul>
@@ -259,6 +266,7 @@ export default function MaltaMortgageGuidePage() {
             </div>
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter
