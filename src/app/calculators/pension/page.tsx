@@ -72,8 +72,8 @@ export default function PensionPage() {
         features={[
           "Two-thirds pension formula (annual = pensionable income × 2/3 × proportion)",
           "Maximum Pensionable Income cap €29,083 (2026)",
-          "Child credits — 4 years per child (post-1962), max 3 children",
-          "Deferral bonus schedule: +5% / +10% / +18% / +29% for 1–4 year deferral",
+          "Child credits — 4 years per child for the first 3 (post-1962), 2 from the 4th",
+          "Deferral bonus schedule: +6.5% / +13.5% / +21% / +29% for 1–4 year deferral",
           "LN 53/2026 — 100% pension income tax exemption up to €37,104/year",
           "Pensioner COLA 2026: €10/week (€520/year)",
           "Private pension tax credit — 25% of contributions, capped at €750/year",
@@ -85,7 +85,7 @@ export default function PensionPage() {
           {
             question: "What is the maximum Malta state pension in 2026?",
             answer:
-              "The maximum Two-Thirds Pension in 2026 is approximately €19,388/year (roughly €373/week) before COLA. This is based on the Maximum Pensionable Income (MPI) cap of €29,083 × 2/3. The pensioner COLA increase adds a further €10/week (€520/year) on top of the base pension.",
+              "The maximum Two-Thirds Pension in 2026 is approximately €19,388/year (roughly €373/week) before COLA. This is based on the Maximum Pensionable Income (MPI) cap of €29,083 × 2/3 for those born in 1962 or later. For those born before 1962 the 2026 MPI is €25,500. The pensioner COLA increase adds a further €10/week (€520/year) on top of the base pension.",
           },
           {
             question:
@@ -96,7 +96,7 @@ export default function PensionPage() {
           {
             question: "How do child credits work in the Malta pension system?",
             answer:
-              "Parents born after 1962 receive 4 years of credited contributions per child, up to 3 children (a maximum of 12 extra years). Those born before 1962 receive 2 years per child. Child credits count toward the contribution proportion used in the two-thirds formula but do not raise your pensionable income average.",
+              "Parents born in 1962 or later receive 4 years of credited contributions for each of their first 3 children and 2 years for each child from the 4th onwards. Those born before 1962 receive 2 years per child for the first 3 children and 1 year from the 4th. From 2026, credits run until the child turns 10 for the first three children. Child credits count toward the contribution proportion used in the two-thirds formula but do not raise your pensionable income average.",
           },
           {
             question: "Is my Malta state pension taxable in 2026?",
@@ -106,7 +106,7 @@ export default function PensionPage() {
           {
             question: "What is the deferral bonus for Malta pensions?",
             answer:
-              "If you defer claiming your state pension past retirement age, your weekly payment increases. The schedule is: +1 year → +5%, +2 years → +10%, +3 years → +18%, +4 years → +29%. You cannot be in gainful employment while deferring an early pension, so deferral is most useful for those who intend to keep working past their statutory retirement age.",
+              "If you defer claiming your state pension past retirement age, your weekly payment increases. The schedule, counted from age 61, is: +1 year → +6.5%, +2 years → +13.5%, +3 years → +21%, +4 years → +29%. You cannot be in gainful employment while deferring an early pension, so deferral is most useful for those who intend to keep working past their statutory retirement age.",
           },
           {
             question: "How does the private pension tax credit work?",
@@ -137,15 +137,15 @@ export default function PensionPage() {
           },
           {
             name: "Enter your average best-years salary",
-            text: "Use the average gross annual salary of your best qualifying years. Pensionable income is capped at the Maximum Pensionable Income of €29,083 for 2026 — earnings above this are ignored.",
+            text: "Use the average gross annual salary of your best qualifying years. Pensionable income is capped at the 2026 Maximum Pensionable Income of €29,083 (born 1962 or later) or €25,500 (born before 1962). Earnings above the cap are ignored.",
           },
           {
             name: "Apply the Two-Thirds formula with proportion",
-            text: "Base annual pension = pensionable income × 2/3 × (effective years / required years). Effective years include child credits: 4 years per child (born post-1962, max 3 children) or 2 years per child (born pre-1962).",
+            text: "Base annual pension = pensionable income × 2/3 × (effective years / required years). Effective years include child credits: 4 years each for the first 3 children and 2 from the 4th (born 1962 or later), or 2 years each for the first 3 and 1 from the 4th (born before 1962).",
           },
           {
             name: "Add deferral bonus and pensioner COLA",
-            text: "If you defer claiming, add +5% (1 year), +10% (2 years), +18% (3 years) or +29% (4 years). Then add the 2026 pensioner COLA of €10/week (€520/year).",
+            text: "If you defer claiming, add +6.5% (1 year), +13.5% (2 years), +21% (3 years) or +29% (4 years), counted from age 61. Then add the 2026 pensioner COLA of €10/week (€520/year).",
           },
           {
             name: "Check tax treatment and private pension credit",

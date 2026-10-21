@@ -57,6 +57,7 @@ export default function StampDutyPage() {
         features={[
           "5% standard stamp duty rate",
           "First-time buyer exemption on €200,000",
+          "3.5% reduced rate on the first €200,000 for main residence buyers",
           "Second property calculations",
           "Promise of sale (AIP) vs final deed",
           "2026 Malta tax rates",
@@ -67,7 +68,7 @@ export default function StampDutyPage() {
           {
             question: "What is the stamp duty rate on property in Malta?",
             answer:
-              "The standard stamp duty rate on property purchases in Malta is 5% of the higher of the purchase price or the market value of the property. This applies to most residential and commercial property transactions. The duty is calculated on the full purchase price with no tax-free threshold for standard purchases.",
+              "The standard stamp duty rate on property purchases in Malta is 5% of the higher of the purchase price or the market value of the property. This applies to most residential and commercial property transactions. The duty is calculated on the full purchase price with no tax-free threshold for standard purchases. Buyers acquiring their sole ordinary residence who are not first-time buyers pay a reduced 3.5% on the first €200,000 and 5% on the excess.",
           },
           {
             question:

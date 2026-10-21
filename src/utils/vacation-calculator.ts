@@ -37,18 +37,36 @@ const BASE_VACATION_HOURS = 192; // 24 days × 8 hours
 const HOURS_PER_DAY = 8;
 
 /**
- * Public holidays falling on weekends by year
- * These add extra vacation hours
+ * Malta'nın sabit tarihli resmi tatilleri (ay 0-index, gün)
+ * Good Friday her zaman Cuma olduğu için hafta sonuna denk gelmez, listede yok.
  */
-const PUBLIC_HOLIDAYS_ON_WEEKENDS: Record<number, number> = {
-  2024: 3, // 3 public holidays on weekends → +24 hours
-  2025: 2, // 2 public holidays on weekends → +16 hours
-  2026: 3, // 3 public holidays on weekends → +24 hours
-  2027: 3, // Estimated
-  2028: 2, // Estimated
-  2029: 2, // Estimated
-  2030: 3, // Estimated
-};
+const FIXED_PUBLIC_HOLIDAYS: [number, number][] = [
+  [0, 1], // New Year's Day
+  [1, 10], // St Paul's Shipwreck
+  [2, 19], // St Joseph
+  [2, 31], // Freedom Day
+  [4, 1], // Workers' Day
+  [5, 7], // Sette Giugno
+  [5, 29], // St Peter & St Paul
+  [7, 15], // Assumption
+  [8, 8], // Victory Day
+  [8, 21], // Independence Day
+  [11, 8], // Immaculate Conception
+  [11, 13], // Republic Day
+  [11, 25], // Christmas Day
+];
+
+/**
+ * Hafta sonuna denk gelen resmi tatil sayısı
+ * Her biri yıllık izne +1 gün (8 saat) ekler.
+ * Örn: 2024 → 6 (240 saat), 2025 → 4 (224 saat), 2026 → 3 (216 saat)
+ */
+function countPublicHolidaysOnWeekends(year: number): number {
+  return FIXED_PUBLIC_HOLIDAYS.filter(([month, day]) => {
+    const weekday = new Date(year, month, day).getDay();
+    return weekday === 0 || weekday === 6;
+  }).length;
+}
 
 /**
  * Calculate vacation leave entitlement
@@ -63,7 +81,7 @@ export function calculateVacationLeave(
   const baseHours = Math.round(BASE_VACATION_HOURS * hoursRatio);
 
   // Get public holiday additions for the year
-  const publicHolidaysOnWeekends = PUBLIC_HOLIDAYS_ON_WEEKENDS[year] ?? 3;
+  const publicHolidaysOnWeekends = countPublicHolidaysOnWeekends(year);
   const publicHolidayHours = Math.round(
     publicHolidaysOnWeekends * HOURS_PER_DAY * hoursRatio,
   );
@@ -105,12 +123,9 @@ export function getPublicHolidayInfo(year: number): {
   extraHours: number;
   note: string;
 } {
-  const count = PUBLIC_HOLIDAYS_ON_WEEKENDS[year] ?? 3;
+  const count = countPublicHolidaysOnWeekends(year);
   const extraHours = count * HOURS_PER_DAY;
-  const note =
-    year > 2026
-      ? "Estimated - actual dates may vary"
-      : "Based on official Malta calendar";
+  const note = "Based on Malta's fixed-date public holidays";
 
   return { count, extraHours, note };
 }

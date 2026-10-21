@@ -9,6 +9,7 @@ import {
   calculateStampDuty,
   formatCurrency,
   getStampDutyInfo,
+  type BuyerType,
   type StampDutyOutput,
 } from "@/utils/stamp-duty-calculator";
 
@@ -52,14 +53,14 @@ function ToggleGroup<T extends string>({
 
 export function StampDutyCalculator() {
   const [propertyPrice, setPropertyPrice] = useState(350000);
-  const [isFirstTimeBuyer, setIsFirstTimeBuyer] = useState<"yes" | "no">("no");
+  const [buyerType, setBuyerType] = useState<BuyerType>("standard");
 
   const result = useMemo<StampDutyOutput>(() => {
     return calculateStampDuty({
       propertyPrice,
-      isFirstTimeBuyer: isFirstTimeBuyer === "yes",
+      buyerType,
     });
-  }, [propertyPrice, isFirstTimeBuyer]);
+  }, [propertyPrice, buyerType]);
 
   const info = getStampDutyInfo();
 
@@ -119,17 +120,22 @@ export function StampDutyCalculator() {
             {/* First-Time Buyer Toggle */}
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/70">
-                Are you a first-time property buyer?
+                Buyer type
               </label>
               <ToggleGroup
-                options={["no", "yes"] as const}
-                value={isFirstTimeBuyer}
-                onChange={setIsFirstTimeBuyer}
-                labels={{ yes: "🏠 Yes, first property", no: "No" }}
+                options={["standard", "owner_occupier", "first_time"] as const}
+                value={buyerType}
+                onChange={setBuyerType}
+                labels={{
+                  standard: "Standard",
+                  owner_occupier: "Main residence",
+                  first_time: "🏠 First-time",
+                }}
               />
               <p className="text-xs text-muted-foreground">
-                First-time buyers get a stamp duty exemption on the first
-                €200,000
+                First-time buyers pay no duty on the first €200,000. Buyers of
+                their main residence who are not first-time buyers pay 3.5% on
+                the first €200,000.
               </p>
             </div>
           </div>
@@ -199,7 +205,7 @@ export function StampDutyCalculator() {
                   {formatCurrency(propertyPrice)}
                 </span>
               </div>
-              {isFirstTimeBuyer === "yes" && (
+              {result.exemptedAmount > 0 && (
                 <div className="flex justify-between items-center p-3 rounded-xl bg-green-500/10 border border-green-500/20">
                   <span className="text-sm text-muted-foreground">
                     Exemption Applied
@@ -209,9 +215,19 @@ export function StampDutyCalculator() {
                   </span>
                 </div>
               )}
+              {result.reducedRateAmount > 0 && (
+                <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
+                  <span className="text-sm text-muted-foreground">
+                    Taxed at {info.reducedRate}%
+                  </span>
+                  <span className="font-semibold">
+                    {formatCurrency(result.reducedRateAmount)}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
                 <span className="text-sm text-muted-foreground">
-                  Taxable Amount
+                  Taxed at {info.standardRate}%
                 </span>
                 <span className="font-semibold">
                   {formatCurrency(result.taxableAmount)}
@@ -219,9 +235,11 @@ export function StampDutyCalculator() {
               </div>
               <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
                 <span className="text-sm text-muted-foreground">
-                  Rate Applied
+                  Effective Rate
                 </span>
-                <span className="font-semibold">{info.standardRate}%</span>
+                <span className="font-semibold">
+                  {result.effectiveRate.toFixed(2)}%
+                </span>
               </div>
             </div>
 
@@ -233,7 +251,7 @@ export function StampDutyCalculator() {
           </div>
 
           {/* Savings Card */}
-          {isFirstTimeBuyer === "yes" && result.savings > 0 && (
+          {buyerType !== "standard" && result.savings > 0 && (
             <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20">
               <div className="flex gap-3">
                 <Gift className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -242,7 +260,9 @@ export function StampDutyCalculator() {
                     You&apos;re saving {formatCurrency(result.savings)}!
                   </p>
                   <p className="text-muted-foreground text-xs">
-                    As a first-time buyer, you save up to €10,000 on stamp duty.
+                    {buyerType === "first_time"
+                      ? "As a first-time buyer, you save up to €10,000 on stamp duty."
+                      : "Main residence buyers save up to €3,000 with the 3.5% rate."}
                   </p>
                 </div>
               </div>
@@ -261,6 +281,9 @@ export function StampDutyCalculator() {
                   <li>Standard stamp duty rate is 5% of property value</li>
                   <li>
                     First-time buyers: €200,000 exemption (save up to €10,000)
+                  </li>
+                  <li>
+                    Main residence (not first-time): 3.5% on the first €200,000
                   </li>
                   <li>Property must be your sole ordinary residence</li>
                   <li>Additional fees may apply (notary, legal, etc.)</li>

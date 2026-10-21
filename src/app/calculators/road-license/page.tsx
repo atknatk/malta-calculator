@@ -64,19 +64,19 @@ export default function RoadLicensePage() {
           {
             question: "How is the annual road license fee calculated in Malta?",
             answer:
-              "In Malta, the annual road license fee (circulation tax) is calculated based on the vehicle's CO2 emissions (g/km) and engine capacity (cc). Vehicles with higher CO2 emissions are charged higher rates. The fee is set by Transport Malta and must be renewed annually.",
+              "In Malta, the annual road license fee (circulation tax) for cars registered from 1 January 2009 depends on CO2 emissions (g/km) and the vehicle's age, counted from the year of manufacture. Cars registered before 2009 are charged by engine capacity (cc) and age. The rates are set by Transport Malta and rise after year 5 for newer cars and after year 6 for pre-2009 cars.",
           },
           {
             question:
               "Are CO2 emissions used to determine road license rates in Malta?",
             answer:
-              "Yes, CO2 emissions are a primary factor in determining road license fees in Malta for vehicles registered after 2009. Vehicles are placed into CO2 bands ranging from under 100 g/km (lowest fee) to over 250 g/km (highest fee). Older vehicles are rated by engine capacity instead.",
+              "Yes, CO2 emissions are a primary factor in determining road license fees in Malta for vehicles registered after 2009. Vehicles are placed into eight CO2 bands: from 0-100 g/km (€100 a year when new) to over 250 g/km (€525 a year when new) on NEDC figures, with wider bands (0-125 g/km up to over 300 g/km) for WLTP figures. Vehicles registered before 2009 are rated by engine capacity instead.",
           },
           {
             question:
               "Do electric vehicles get a discount on Malta road license fees?",
             answer:
-              "Yes, fully electric vehicles (BEV) receive a significant discount on road license fees in Malta. Plug-in hybrid electric vehicles (PHEV) and mild hybrids also qualify for reduced rates based on their official CO2 emissions figures. Zero-emission vehicles may pay a nominal flat fee.",
+              "Yes. Electric vehicles and plug-in hybrids with at least 50 km of electric range pay no road license fee for the first six years (years 0-5) and €10 a year after that. Regular (non plug-in) hybrids are charged on their official CO2 figure like petrol cars. LPG conversions get a 10% reduction.",
           },
           {
             question:

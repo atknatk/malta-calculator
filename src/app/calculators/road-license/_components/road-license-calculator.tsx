@@ -2,24 +2,17 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Car, Fuel, Calendar, Gauge, Info, Bike, Truck } from "lucide-react";
+import { Car, Fuel, Calendar, Gauge, Info, Leaf } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
 import {
   calculateRoadLicense,
   formatCurrency,
+  type Co2Standard,
+  type RoadLicenseFuelType,
   type RoadLicenseOutput,
+  type RoadLicenseVehicleType,
 } from "@/utils/road-license-calculator";
-
-type FuelType =
-  | "petrol"
-  | "diesel"
-  | "hybrid"
-  | "plugin_hybrid"
-  | "electric"
-  | "lpg";
-type VehicleCategory = "private_car" | "motorcycle" | "commercial" | "vintage";
-type LicensePeriod = 3 | 6 | 12;
 
 function ToggleGroup<T extends string | number>({
   options,
@@ -59,30 +52,43 @@ function ToggleGroup<T extends string | number>({
 }
 
 export function RoadLicenseCalculator() {
-  const [engineCapacity, setEngineCapacity] = useState(1600);
+  const currentYear = new Date().getFullYear();
+  const [vehicleType, setVehicleType] = useState<RoadLicenseVehicleType>("car");
+  const [fuelType, setFuelType] = useState<RoadLicenseFuelType>("petrol");
+  const [manufactureYear, setManufactureYear] = useState(currentYear - 5);
+  const [registeredBefore2009, setRegisteredBefore2009] = useState<
+    "yes" | "no"
+  >("no");
+  const [engineCapacity, setEngineCapacity] = useState(1400);
   const [co2Emissions, setCo2Emissions] = useState(130);
-  const [vehicleAge, setVehicleAge] = useState(5);
-  const [fuelType, setFuelType] = useState<FuelType>("petrol");
-  const [vehicleCategory, setVehicleCategory] =
-    useState<VehicleCategory>("private_car");
-  const [licensePeriod, setLicensePeriod] = useState<LicensePeriod>(12);
+  const [co2Standard, setCo2Standard] = useState<Co2Standard>("wltp");
+
+  const usesCo2 =
+    vehicleType === "car" &&
+    registeredBefore2009 === "no" &&
+    fuelType !== "electric";
+  const usesEngineCapacity =
+    fuelType !== "electric" &&
+    (vehicleType === "motorcycle" || registeredBefore2009 === "yes");
 
   const result = useMemo<RoadLicenseOutput>(() => {
     return calculateRoadLicense({
-      engineCapacity,
-      co2Emissions: fuelType === "electric" ? 0 : co2Emissions,
-      vehicleAge,
+      vehicleType,
       fuelType,
-      vehicleCategory,
-      licensePeriod,
+      manufactureYear,
+      registeredBefore2009: registeredBefore2009 === "yes",
+      engineCapacity,
+      co2Emissions,
+      co2Standard,
     });
   }, [
+    vehicleType,
+    fuelType,
+    manufactureYear,
+    registeredBefore2009,
     engineCapacity,
     co2Emissions,
-    vehicleAge,
-    fuelType,
-    vehicleCategory,
-    licensePeriod,
+    co2Standard,
   ]);
 
   return (
@@ -121,28 +127,16 @@ export function RoadLicenseCalculator() {
               <span className="font-semibold">Vehicle Details</span>
             </div>
 
-            {/* Vehicle Category */}
+            {/* Vehicle Type */}
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/70">
                 Vehicle Type
               </label>
               <ToggleGroup
-                options={
-                  [
-                    "private_car",
-                    "motorcycle",
-                    "commercial",
-                    "vintage",
-                  ] as const
-                }
-                value={vehicleCategory}
-                onChange={(v) => setVehicleCategory(v as VehicleCategory)}
-                labels={{
-                  private_car: "🚗 Car",
-                  motorcycle: "🏍️ Bike",
-                  commercial: "🚚 Commercial",
-                  vintage: "🏛️ Vintage",
-                }}
+                options={["car", "motorcycle"] as const}
+                value={vehicleType}
+                onChange={setVehicleType}
+                labels={{ car: "🚗 Car", motorcycle: "🏍️ Motorcycle" }}
               />
             </div>
 
@@ -154,105 +148,126 @@ export function RoadLicenseCalculator() {
               </label>
               <ToggleGroup
                 options={
-                  ["petrol", "diesel", "hybrid", "electric", "lpg"] as const
+                  ["petrol", "diesel", "hybrid", "lpg", "electric"] as const
                 }
                 value={fuelType}
-                onChange={(v) => setFuelType(v as FuelType)}
+                onChange={setFuelType}
                 labels={{
                   petrol: "⛽ Petrol",
                   diesel: "🛢️ Diesel",
                   hybrid: "🔋 Hybrid",
-                  electric: "⚡ Electric",
                   lpg: "🌿 LPG",
+                  electric: "⚡ EV / PHEV",
                 }}
               />
+              <p className="text-xs text-muted-foreground">
+                EV / PHEV covers electric and plug-in hybrid vehicles with at
+                least 50 km electric range. Other hybrids are charged on CO2
+                like petrol cars.
+              </p>
             </div>
 
-            {/* Engine Capacity */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
-                <Gauge className="h-4 w-4 text-primary/70" />
-                Engine Capacity (cc)
-              </label>
-              <NumericInput
-                value={engineCapacity}
-                onChange={(v) => setEngineCapacity(v === "" ? 50 : v)}
-                min={50}
-                max={8000}
-                allowDecimals={false}
-                suffix="cc"
-                className="h-14 text-xl px-5"
-              />
-              {/* Quick presets */}
-              <div className="flex flex-wrap gap-2">
-                {vehicleCategory === "motorcycle"
-                  ? [125, 250, 500, 750, 1000].map((cc) => (
-                      <button
-                        key={cc}
-                        onClick={() => setEngineCapacity(cc)}
-                        className={cn(
-                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
-                          engineCapacity === cc
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-background border border-border hover:bg-muted",
-                        )}
-                      >
-                        {cc}cc
-                      </button>
-                    ))
-                  : [1000, 1400, 1600, 2000, 2500, 3000].map((cc) => (
-                      <button
-                        key={cc}
-                        onClick={() => setEngineCapacity(cc)}
-                        className={cn(
-                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
-                          engineCapacity === cc
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-background border border-border hover:bg-muted",
-                        )}
-                      >
-                        {cc}cc
-                      </button>
-                    ))}
-              </div>
-            </div>
-
-            {/* Vehicle Age */}
+            {/* Year of manufacture */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-primary/70" />
-                Vehicle Age: {vehicleAge} years
+                Year of Manufacture
               </label>
-              <input
-                type="range"
-                min="0"
-                max="30"
-                value={vehicleAge}
-                onChange={(e) => setVehicleAge(parseInt(e.target.value))}
-                className="w-full accent-primary"
+              <NumericInput
+                value={manufactureYear}
+                onChange={(v) => setManufactureYear(v === "" ? currentYear : v)}
+                min={1950}
+                max={currentYear}
+                allowDecimals={false}
+                className="h-14 text-xl px-5"
               />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>New</span>
-                <span>30+ years</span>
-              </div>
+              <p className="text-xs text-muted-foreground">
+                Fees rise with age, counted in calendar years from the year of
+                manufacture ({result.vehicleAge} years in {currentYear}).
+              </p>
             </div>
 
-            {/* License Period */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground/70">
-                License Period
-              </label>
-              <ToggleGroup
-                options={[3, 6, 12] as const}
-                value={licensePeriod}
-                onChange={(v) => setLicensePeriod(v as LicensePeriod)}
-                labels={{
-                  3: "3 Months",
-                  6: "6 Months",
-                  12: "12 Months",
-                }}
-              />
-            </div>
+            {/* Registered before 2009 */}
+            {fuelType !== "electric" && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground/70">
+                  First registered in Malta before 1 January 2009?
+                </label>
+                <ToggleGroup
+                  options={["no", "yes"] as const}
+                  value={registeredBefore2009}
+                  onChange={setRegisteredBefore2009}
+                  labels={{ no: "No (2009 or later)", yes: "Yes" }}
+                />
+              </div>
+            )}
+
+            {/* CO2 */}
+            {usesCo2 && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
+                  <Leaf className="h-4 w-4 text-primary/70" />
+                  CO2 Emissions (g/km)
+                </label>
+                <NumericInput
+                  value={co2Emissions}
+                  onChange={(v) => setCo2Emissions(v === "" ? 0 : v)}
+                  min={0}
+                  max={600}
+                  allowDecimals={false}
+                  suffix="g/km"
+                  className="h-14 text-xl px-5"
+                />
+                <ToggleGroup
+                  options={["wltp", "nedc"] as const}
+                  value={co2Standard}
+                  onChange={setCo2Standard}
+                  labels={{ wltp: "WLTP figure", nedc: "NEDC figure" }}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Use the CO2 standard shown on your registration document. WLTP
+                  bands are wider because WLTP figures are higher.
+                </p>
+              </div>
+            )}
+
+            {/* Engine Capacity */}
+            {usesEngineCapacity && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
+                  <Gauge className="h-4 w-4 text-primary/70" />
+                  Engine Capacity (cc)
+                </label>
+                <NumericInput
+                  value={engineCapacity}
+                  onChange={(v) => setEngineCapacity(v === "" ? 50 : v)}
+                  min={50}
+                  max={8000}
+                  allowDecimals={false}
+                  suffix="cc"
+                  className="h-14 text-xl px-5"
+                />
+                <div className="flex flex-wrap gap-2">
+                  {(vehicleType === "motorcycle"
+                    ? [125, 350, 500, 800, 1000]
+                    : [1300, 1449, 1500, 1800, 2000, 2500]
+                  ).map((cc) => (
+                    <button
+                      key={cc}
+                      onClick={() => setEngineCapacity(cc)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
+                        engineCapacity === cc
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background border border-border hover:bg-muted",
+                      )}
+                    >
+                      {cc}cc
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -269,56 +284,45 @@ export function RoadLicenseCalculator() {
               <div className="p-2.5 rounded-xl bg-primary/20">
                 <Car className="h-5 w-5 text-primary" />
               </div>
-              <span className="font-semibold">
-                {licensePeriod === 12 ? "Annual" : `${licensePeriod}-Month`}{" "}
-                License Fee
-              </span>
+              <span className="font-semibold">Annual License Fee</span>
             </div>
 
             <div className="text-center py-6">
               <motion.div
-                key={result.periodFee}
+                key={result.annualFee}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="text-5xl md:text-6xl font-bold text-primary"
               >
-                {formatCurrency(result.periodFee)}
+                {formatCurrency(result.annualFee)}
               </motion.div>
-              {licensePeriod !== 12 && (
-                <p className="text-muted-foreground mt-2">
-                  Annual: {formatCurrency(result.annualFee)} | Monthly:{" "}
-                  {formatCurrency(Math.round(result.monthlyEquivalent))}
-                </p>
-              )}
+              <p className="text-muted-foreground mt-2">
+                About {formatCurrency(Math.round(result.monthlyEquivalent))} per
+                month
+              </p>
             </div>
 
             {/* Breakdown */}
             <div className="space-y-3">
               <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
+                <span className="text-sm text-muted-foreground">Band</span>
+                <span className="font-semibold text-right">{result.band}</span>
+              </div>
+              <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
                 <span className="text-sm text-muted-foreground">
-                  Base Fee ({engineCapacity}cc)
+                  Table Fee (age {result.vehicleAge})
                 </span>
                 <span className="font-semibold">
-                  {formatCurrency(result.baseFee)}
+                  {formatCurrency(result.tableFee)}
                 </span>
               </div>
-              {result.co2Surcharge > 0 && (
-                <div className="flex justify-between items-center p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                  <span className="text-sm text-muted-foreground">
-                    CO2 Surcharge
-                  </span>
-                  <span className="font-semibold text-amber-600">
-                    +{formatCurrency(result.co2Surcharge)}
-                  </span>
-                </div>
-              )}
-              {result.ecoDiscount > 0 && (
+              {result.lpgDiscount > 0 && (
                 <div className="flex justify-between items-center p-3 rounded-xl bg-green-500/10 border border-green-500/20">
                   <span className="text-sm text-muted-foreground">
-                    Eco Discount
+                    LPG Reduction (10%)
                   </span>
                   <span className="font-semibold text-green-600">
-                    -{formatCurrency(result.ecoDiscount)}
+                    -{formatCurrency(result.lpgDiscount)}
                   </span>
                 </div>
               )}
@@ -346,29 +350,11 @@ export function RoadLicenseCalculator() {
                 <Car className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
                   <p className="font-medium text-foreground mb-1">
-                    Electric Vehicle - FREE Road License! ⚡
+                    Electric & Plug-in Hybrid Rate ⚡
                   </p>
                   <p className="text-muted-foreground text-xs">
-                    Electric vehicles are exempt from road license fees in
-                    Malta.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Vintage Info */}
-          {(vehicleCategory === "vintage" || vehicleAge >= 25) && (
-            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
-              <div className="flex gap-3">
-                <Calendar className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
-                <div className="text-sm">
-                  <p className="font-medium text-foreground mb-1">
-                    Vintage Vehicle Rate
-                  </p>
-                  <p className="text-muted-foreground text-xs">
-                    Vehicles 25+ years old qualify for the reduced vintage rate
-                    of €30/year.
+                    No road licence fee for the first 6 years (years 0-5), then
+                    €10 per year.
                   </p>
                 </div>
               </div>
@@ -384,11 +370,15 @@ export function RoadLicenseCalculator() {
                   Important Notes
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>Road license must be renewed before expiry</li>
-                  <li>Electric vehicles are exempt from fees</li>
-                  <li>Vintage vehicles (25+ years) get reduced rates</li>
-                  <li>Late renewal may incur penalties</li>
-                  <li>Pay at Transport Malta offices or online</li>
+                  <li>Rates from Transport Malta SOPV 33 (1 January 2026)</li>
+                  <li>
+                    Diesel cars from 2009 assume particulate emissions up to
+                    0.005 g/km; older diesels pay more
+                  </li>
+                  <li>Late renewal: €10 fine per month, up to €100</li>
+                  <li>
+                    Vintage, commercial and goods vehicles have separate rates
+                  </li>
                 </ul>
               </div>
             </div>

@@ -156,26 +156,24 @@ export function calculateVehicleRegistrationFee(
   // 4. First Year Circulation Fee (Annual Road Tax)
   // Use the road license calculator to determine first year road tax
   let firstYearCirculationFee = 0;
-  let vehicleCategory: "private_car" | "motorcycle" | "commercial" | "vintage" =
-    "private_car";
 
-  if (vehicleType === "motorcycle") {
-    vehicleCategory = "motorcycle";
-  } else if (vehicleType === "commercial") {
-    vehicleCategory = "commercial";
-  } else {
-    vehicleCategory = "private_car";
-  }
-
-  // Calculate annual road tax
-  if (engineCapacity > 0) {
+  // Yeni tescil edilen araç her zaman "2009 ve sonrası tescilli" tablosuna girer.
+  // Van/commercial (N1+) tabloları SOPV 33'te ayrıdır, burada hesaplanmaz.
+  if (
+    engineCapacity > 0 &&
+    (vehicleType === "car" || vehicleType === "motorcycle")
+  ) {
     const roadLicenseInput: RoadLicenseInput = {
+      vehicleType,
+      fuelType:
+        fuelType === "plugin_hybrid"
+          ? "electric"
+          : (fuelType as RoadLicenseInput["fuelType"]),
+      manufactureYear: new Date().getFullYear() - vehicleAge,
+      registeredBefore2009: false,
       engineCapacity,
       co2Emissions,
-      vehicleAge,
-      fuelType,
-      vehicleCategory,
-      licensePeriod: 12, // First year
+      co2Standard: "wltp",
     };
 
     try {
