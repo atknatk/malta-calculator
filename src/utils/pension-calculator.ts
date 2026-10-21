@@ -78,10 +78,18 @@ export interface PensionOutput {
 // ============= 2026 Constants =============
 
 /**
- * Maximum Pensionable Income (MPI) 2026
- * Hesaplama: max pension €19,388/year = MPI × 2/3 → MPI = €29,083
+ * Maximum Pensionable Income (MPI) 2026 — 1 Ocak 1962 ve sonrası doğumlular
+ * Kaynak: DSS Pensions Information (2026: €29,083.36)
  */
 export const MPI_2026 = 29083;
+
+/** MPI 2026 — 31 Aralık 1961 ve öncesi doğumlular (DSS: €25,500) */
+export const MPI_2026_PRE_1962 = 25500;
+
+/** Doğum yılına göre MPI */
+export function getMPI(birthYear: number): number {
+  return birthYear < 1962 ? MPI_2026_PRE_1962 : MPI_2026;
+}
 
 /** 2026 pensioner weekly COLA (€/week) — ayrı, payroll COLA'sından farklı */
 export const WEEKLY_COLA_PENSIONER_2026 = 10;
@@ -128,31 +136,33 @@ export function getRetirementAge(birthYear: number): number {
 }
 
 /**
- * Çocuk başına credit.
- * - 1962 sonrası: 4 yıl/çocuk
- * - 1962 öncesi: 2 yıl/çocuk
- * - Max 3 çocuk sayılır
+ * Çocuk başına credit (DSS child-rearing credits).
+ * - 1962 ve sonrası: ilk 3 çocuk 4'er yıl, 4. çocuktan itibaren 2'şer yıl
+ * - 1962 öncesi: ilk 3 çocuk 2'şer yıl, 4. çocuktan itibaren 1'er yıl
+ * Engelli çocuk için ek kredi burada hesaplanmaz.
  */
 export function getChildCredits(birthYear: number, children: number): number {
-  const capped = Math.min(Math.max(0, children), 3);
-  const creditPerChild = birthYear >= 1962 ? 4 : 2;
-  return capped * creditPerChild;
+  const total = Math.max(0, Math.floor(children));
+  const firstThree = Math.min(total, 3);
+  const additional = Math.max(0, total - 3);
+  if (birthYear >= 1962) return firstThree * 4 + additional * 2;
+  return firstThree * 2 + additional * 1;
 }
 
 /**
- * Deferral bonus — erteleme yıllarına göre artış oranı.
- * Kaynak: Dept. of Social Security deferred pension schedule.
+ * Deferral bonus — 61 yaşından sonra erteleme yıllarına göre kümülatif artış.
+ * Kaynak: DSS Pensions Information (61→62 %6.5, →63 %13.5, →64 %21, →65 %29)
  */
 export function getDeferralBonusRate(years: DeferralYears): number {
   switch (years) {
     case 0:
       return 0;
     case 1:
-      return 0.05;
+      return 0.065;
     case 2:
-      return 0.1;
+      return 0.135;
     case 3:
-      return 0.18;
+      return 0.21;
     case 4:
       return 0.29;
   }
@@ -185,11 +195,12 @@ export function calculatePension(input: PensionInput): PensionOutput {
     );
   }
 
-  const isMPICapped = averageSalary > MPI_2026;
-  const pensionableIncome = Math.min(Math.max(0, averageSalary), MPI_2026);
+  const mpi = getMPI(birthYear);
+  const isMPICapped = averageSalary > mpi;
+  const pensionableIncome = Math.min(Math.max(0, averageSalary), mpi);
   if (isMPICapped) {
     warnings.push(
-      `Your salary exceeds the Maximum Pensionable Income cap of €${MPI_2026.toLocaleString("en-MT")}.`,
+      `Your salary exceeds the Maximum Pensionable Income cap of €${mpi.toLocaleString("en-MT")}.`,
     );
   }
 
@@ -254,7 +265,7 @@ export function calculatePension(input: PensionInput): PensionOutput {
     proportion,
     pensionableIncome,
     isMPICapped,
-    mpi: MPI_2026,
+    mpi,
     baseAnnualPension,
     deferralBonusRate,
     deferralBonusAmount,

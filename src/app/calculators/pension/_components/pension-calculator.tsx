@@ -21,7 +21,7 @@ import {
   formatEUR,
   formatEUR2,
   getPensionReferenceTable,
-  MPI_2026,
+  getMPI,
   MIN_CONTRIBUTION_YEARS,
   PENSION_EXEMPTION_LIMIT_2026,
   PRIVATE_PENSION_MAX_CONTRIBUTION,
@@ -182,15 +182,15 @@ export function PensionCalculator() {
                 </span>
               </label>
               <ToggleGroup<number>
-                options={[0, 1, 2, 3] as const}
-                value={Math.min(children, 3)}
+                options={[0, 1, 2, 3, 4, 5] as const}
+                value={Math.min(children, 5)}
                 onChange={(v) => setChildren(v)}
-                labels={{ 0: "0", 1: "1", 2: "2", 3: "3+" }}
+                labels={{ 0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5+" }}
               />
               <p className="text-xs text-muted-foreground">
                 {birthYear >= 1962
-                  ? "4 credit years per child (max 3 children)"
-                  : "2 credit years per child (max 3 children)"}
+                  ? "4 credit years each for the first 3 children, 2 from the 4th"
+                  : "2 credit years each for the first 3 children, 1 from the 4th"}
               </p>
             </div>
           </div>
@@ -239,7 +239,8 @@ export function PensionCalculator() {
               />
               <p className="text-xs text-muted-foreground">
                 Pension is capped at Maximum Pensionable Income of{" "}
-                <strong>{formatEUR(MPI_2026)}</strong> for 2026.
+                <strong>{formatEUR(getMPI(birthYear))}</strong> for 2026
+                {birthYear < 1962 ? " (born before 1962)" : ""}.
               </p>
             </div>
 
@@ -264,7 +265,7 @@ export function PensionCalculator() {
                 }}
               />
               <p className="text-xs text-muted-foreground">
-                Bonus: +1y (5%) · +2y (10%) · +3y (18%) · +4y (29%)
+                Bonus: +1y (6.5%) · +2y (13.5%) · +3y (21%) · +4y (29%)
               </p>
             </div>
           </div>

@@ -3,11 +3,20 @@
  * Based on Malta Property Transfer Regulations
  */
 
+/**
+ * Alıcı tipi
+ * - standard: 5% tüm bedel üzerinden
+ * - first_time: ilk €200,000 muaf, kalan %5 (Budget 2026 ile kalıcı)
+ * - owner_occupier: ilk kez almayan ama ana konut (sole ordinary residence)
+ *   alan kişi — ilk €200,000 için %3.5, kalan %5
+ */
+export type BuyerType = "standard" | "first_time" | "owner_occupier";
+
 export interface StampDutyInput {
   /** Property purchase price in EUR */
   propertyPrice: number;
-  /** Whether buyer is a first-time property buyer */
-  isFirstTimeBuyer: boolean;
+  /** Buyer type */
+  buyerType: BuyerType;
 }
 
 export interface StampDutyOutput {
@@ -17,7 +26,9 @@ export interface StampDutyOutput {
   effectiveRate: number;
   /** Amount exempted (for first-time buyers) */
   exemptedAmount: number;
-  /** Taxable amount */
+  /** Amount charged at the reduced 3.5% rate (owner-occupiers) */
+  reducedRateAmount: number;
+  /** Amount charged at the standard 5% rate */
   taxableAmount: number;
   /** Savings compared to standard rate */
   savings: number;
@@ -26,43 +37,46 @@ export interface StampDutyOutput {
 }
 
 /**
- * Stamp duty rates and thresholds
+ * Stamp duty rates and thresholds (Duty on Documents and Transfers Act, Cap. 364)
  */
 const STANDARD_RATE = 0.05; // 5%
+const REDUCED_RATE = 0.035; // 3.5% - ana konut (owner-occupier)
 const FIRST_TIME_BUYER_EXEMPTION = 200000; // €200,000
+const OWNER_OCCUPIER_REDUCED_BAND = 200000; // €200,000
 
 /**
  * Calculate stamp duty on property purchase
  */
 export function calculateStampDuty(input: StampDutyInput): StampDutyOutput {
-  const { propertyPrice, isFirstTimeBuyer } = input;
+  const { propertyPrice, buyerType } = input;
+  const price = Math.max(0, propertyPrice);
 
-  let taxableAmount: number;
-  let exemptedAmount: number;
+  let exemptedAmount = 0;
+  let reducedRateAmount = 0;
   let description: string;
 
-  if (isFirstTimeBuyer) {
-    // First-time buyers: exempt on first €200,000
-    exemptedAmount = Math.min(propertyPrice, FIRST_TIME_BUYER_EXEMPTION);
-    taxableAmount = Math.max(0, propertyPrice - FIRST_TIME_BUYER_EXEMPTION);
-    description = `First-time buyer: €${FIRST_TIME_BUYER_EXEMPTION.toLocaleString()} exemption applied`;
+  if (buyerType === "first_time") {
+    exemptedAmount = Math.min(price, FIRST_TIME_BUYER_EXEMPTION);
+    description = `First-time buyer: no duty on the first €${FIRST_TIME_BUYER_EXEMPTION.toLocaleString()}, 5% on the excess`;
+  } else if (buyerType === "owner_occupier") {
+    reducedRateAmount = Math.min(price, OWNER_OCCUPIER_REDUCED_BAND);
+    description = `Main residence: 3.5% on the first €${OWNER_OCCUPIER_REDUCED_BAND.toLocaleString()}, 5% on the excess`;
   } else {
-    // Standard buyers: 5% on full amount
-    exemptedAmount = 0;
-    taxableAmount = propertyPrice;
     description = "Standard rate of 5% on full property value";
   }
 
-  const stampDuty = taxableAmount * STANDARD_RATE;
-  const effectiveRate =
-    propertyPrice > 0 ? (stampDuty / propertyPrice) * 100 : 0;
-  const standardDuty = propertyPrice * STANDARD_RATE;
+  const taxableAmount = price - exemptedAmount - reducedRateAmount;
+  const stampDuty =
+    taxableAmount * STANDARD_RATE + reducedRateAmount * REDUCED_RATE;
+  const effectiveRate = price > 0 ? (stampDuty / price) * 100 : 0;
+  const standardDuty = price * STANDARD_RATE;
   const savings = standardDuty - stampDuty;
 
   return {
     stampDuty,
     effectiveRate,
     exemptedAmount,
+    reducedRateAmount,
     taxableAmount,
     savings,
     description,
@@ -87,7 +101,9 @@ export function formatCurrency(amount: number): string {
 export function getStampDutyInfo() {
   return {
     standardRate: STANDARD_RATE * 100,
+    reducedRate: REDUCED_RATE * 100,
     firstTimeBuyerExemption: FIRST_TIME_BUYER_EXEMPTION,
+    ownerOccupierReducedBand: OWNER_OCCUPIER_REDUCED_BAND,
     maxSavings: FIRST_TIME_BUYER_EXEMPTION * STANDARD_RATE, // €10,000
   };
 }

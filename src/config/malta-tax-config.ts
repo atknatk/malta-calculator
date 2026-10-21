@@ -404,7 +404,7 @@ export const sscRatesByYear: YearlySSCConfig[] = [
     },
   },
   {
-    // 2026 SSC Rates - Excel Payroll Working.xlsx ile uyumlu
+    // 2026 SSC Rates - Kaynak: mtca.gov.mt Class 1 2026 tablosu
     year: 2026,
     rates: {
       categoryA: 6.62,
@@ -415,7 +415,7 @@ export const sscRatesByYear: YearlySSCConfig[] = [
       categoryDNew: 55.93,
       weeklyCapOld: 490.38,
       weeklyCapNew: 559.31,
-      minimumWage: 225.0,
+      minimumWage: 229.44, // 2026 asgari ücret (18+), Cat. A/B üst sınırı
     },
   },
 ];
