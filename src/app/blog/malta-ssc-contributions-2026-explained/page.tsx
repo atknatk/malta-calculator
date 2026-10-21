@@ -37,14 +37,14 @@ export const metadata: Metadata = {
   title:
     "Malta SSC Contributions 2026: Rates, Caps & Categories Explained | Malta Calculator",
   description:
-    "Complete guide to Malta Social Security Contributions (SSC) for 2026. Learn about Class 1 employee rates (10%), weekly caps, Category A/B/C, the 1962 age threshold, and employer contributions.",
+    "Malta SSC 2026 explained: Class 1 rates (10%), the €55.93 weekly cap, categories A to F, the 1962 birth-year threshold and employer contributions.",
   keywords: [
     "Malta SSC 2026",
     "Malta social security contributions",
     "Malta SSC rates",
     "Malta SSC caps",
     "Malta Class 1 contributions",
-    "Malta SSC Category A",
+    "Malta SSC categories",
     "Malta employer SSC",
     "Malta 1962 age threshold",
   ],
@@ -74,6 +74,7 @@ export default function MaltaSSCPage() {
         description="Complete guide to Malta Social Security Contributions (SSC) for 2026 including Class 1 rates and categories."
         slug="malta-ssc-contributions-2026-explained"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -144,7 +145,7 @@ export default function MaltaSSCPage() {
                     href="#categories"
                     className="text-primary hover:underline"
                   >
-                    3. SSC Categories (A, B, C)
+                    3. SSC Categories (A to F)
                   </a>
                 </li>
                 <li>
@@ -271,10 +272,12 @@ export default function MaltaSSCPage() {
             </section>
 
             <section id="categories" className="mt-12">
-              <h2>3. SSC Categories (A, B, C)</h2>
+              <h2>3. SSC Categories (A to F)</h2>
               <p>
-                Malta&apos;s SSC system has three categories based on your{" "}
-                <strong>date of birth</strong>:
+                Class 1 contributions are split into categories based on your{" "}
+                <strong>age</strong>, your <strong>basic weekly wage</strong>{" "}
+                and, for higher earners, your <strong>date of birth</strong>.
+                The official 2026 rates are:
               </p>
 
               <div className="overflow-x-auto not-prose my-8">
@@ -285,55 +288,87 @@ export default function MaltaSSCPage() {
                         Category
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Birth Date
+                        Basic Weekly Wage
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Weekly Cap 2026
+                        Employee (weekly)
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td className="border border-border p-3 font-semibold">
-                        Category A
+                        A (under 18)
                       </td>
                       <td className="border border-border p-3">
-                        Born on or after 1 Jan 1962
+                        Up to €229.44
                       </td>
-                      <td className="border border-border p-3">
-                        €54.06 - €57.32
-                      </td>
+                      <td className="border border-border p-3">€6.62</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3 font-semibold">
-                        Category B
+                        B (18 and over)
                       </td>
                       <td className="border border-border p-3">
-                        Born before 1 Jan 1962
+                        Up to €229.44
                       </td>
                       <td className="border border-border p-3">
-                        €35.54 - €37.68
+                        €22.94 (or 10% of wage if chosen)
                       </td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3 font-semibold">
-                        Category C
+                        C1 (born up to 31 Dec 1961)
                       </td>
                       <td className="border border-border p-3">
-                        Born before 1 Jan 1962
+                        €229.45 – €490.38
+                      </td>
+                      <td className="border border-border p-3">10% of wage</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3 font-semibold">
+                        D1 (born up to 31 Dec 1961)
                       </td>
                       <td className="border border-border p-3">
-                        €25.99 - €27.55
+                        €490.39 and over
+                      </td>
+                      <td className="border border-border p-3">€49.04</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3 font-semibold">
+                        C2 (born from 1 Jan 1962)
+                      </td>
+                      <td className="border border-border p-3">
+                        €229.45 – €559.30
+                      </td>
+                      <td className="border border-border p-3">10% of wage</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3 font-semibold">
+                        D2 (born from 1 Jan 1962)
+                      </td>
+                      <td className="border border-border p-3">
+                        €559.31 and over
+                      </td>
+                      <td className="border border-border p-3">€55.93</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3 font-semibold">
+                        E / F (students)
+                      </td>
+                      <td className="border border-border p-3">-</td>
+                      <td className="border border-border p-3">
+                        10%, max €4.38 (under 18) / €7.94 (18+)
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-              <p>
-                <strong>Most working adults today fall into Category A</strong>,
-                as they were born after 1962. Categories B and C apply to those
-                approaching or past retirement age who continue to work.
+              <p className="text-sm text-muted-foreground">
+                Source: Department of Social Security Class 1 rates for 2026.
+                The employer pays the same amount, plus 0.3% of the basic wage
+                to the Maternity Leave Trust Fund (e.g. €1.68/week in category
+                D2).
               </p>
             </section>
 
@@ -341,54 +376,49 @@ export default function MaltaSSCPage() {
               <h2>4. Weekly Contribution Caps</h2>
               <p>
                 SSC contributions are{" "}
-                <strong>capped at a maximum weekly amount</strong>. This means
-                that regardless of how high your salary is, you won&apos;t pay
-                more than the cap.
+                <strong>capped at a maximum weekly amount</strong>. Once your
+                basic weekly wage passes the ceiling for your birth-year group,
+                your contribution stays fixed no matter how much more you earn.
               </p>
 
-              <h3>Category A Weekly Caps (2026)</h3>
               <div className="overflow-x-auto not-prose my-8">
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr className="bg-muted">
                       <th className="border border-border p-3 text-left font-semibold">
-                        Wage Band
+                        Born
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Employee Cap
+                        Wage Ceiling (weekly)
                       </th>
                       <th className="border border-border p-3 text-left font-semibold">
-                        Annual Max
+                        Max Employee SSC
+                      </th>
+                      <th className="border border-border p-3 text-left font-semibold">
+                        Annual Max (52 weeks)
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td className="border border-border p-3">
-                        Up to €540.64/week
+                        From 1 Jan 1962
                       </td>
-                      <td className="border border-border p-3">10% of wage</td>
-                      <td className="border border-border p-3">Varies</td>
+                      <td className="border border-border p-3">€559.31</td>
+                      <td className="border border-border p-3 font-semibold">
+                        €55.93
+                      </td>
+                      <td className="border border-border p-3">€2,908.36</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        €540.65 - €573.23/week
+                        Up to 31 Dec 1961
                       </td>
+                      <td className="border border-border p-3">€490.39</td>
                       <td className="border border-border p-3 font-semibold">
-                        €54.06
+                        €49.04
                       </td>
-                      <td className="border border-border p-3">€2,811.12</td>
-                    </tr>
-                    <tr>
-                      <td className="border border-border p-3">
-                        Over €573.23/week
-                      </td>
-                      <td className="border border-border p-3 font-semibold">
-                        €57.32
-                      </td>
-                      <td className="border border-border p-3 font-semibold text-primary">
-                        €2,980.64
-                      </td>
+                      <td className="border border-border p-3">€2,550.08</td>
                     </tr>
                   </tbody>
                 </table>
@@ -396,10 +426,11 @@ export default function MaltaSSCPage() {
 
               <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl not-prose">
                 <p className="text-sm">
-                  <strong>✅ Maximum Annual SSC (2026):</strong> If you&apos;re
-                  in Category A earning above the cap, your maximum annual
-                  employee SSC is <strong>€2,980.64</strong> (€57.32 × 52
-                  weeks).
+                  <strong>✅ Maximum Annual SSC (2026):</strong> If you were
+                  born from 1962 onwards and earn above €559.31 a week (about
+                  €29,084 a year), your maximum annual employee SSC is{" "}
+                  <strong>€2,908.36</strong> (€55.93 × 52 weeks). In years with
+                  53 Mondays, 53 weekly contributions are due.
                 </p>
               </div>
             </section>
@@ -411,60 +442,58 @@ export default function MaltaSSCPage() {
                 threshold in Malta&apos;s SSC system. It determines:
               </p>
               <ul>
-                <li>Which SSC category you fall into (A vs B/C)</li>
+                <li>
+                  Which higher-wage category you fall into (C1/D1 vs C2/D2)
+                </li>
                 <li>Your maximum weekly contribution cap</li>
-                <li>Your retirement age eligibility</li>
+                <li>Your maximum pensionable income and pension rules</li>
               </ul>
               <p>
-                <strong>Born on or after 1 Jan 1962:</strong> You&apos;re in
-                Category A with higher contribution caps but also higher pension
-                entitlements.
+                <strong>Born on or after 1 Jan 1962:</strong> categories C2/D2,
+                with a higher cap (€55.93) and a higher maximum pensionable
+                income.
               </p>
               <p>
-                <strong>Born before 1 Jan 1962:</strong> You&apos;re in Category
-                B or C with lower caps, reflecting the older pension system.
+                <strong>Born before 1 Jan 1962:</strong> categories C1/D1, with
+                a lower cap (€49.04).
               </p>
             </section>
 
             <section id="calculation" className="mt-12">
               <h2>6. How SSC is Calculated</h2>
-              <h3>Example: Employee earning €35,000/year (Category A)</h3>
+
+              <h3>Example: Employee earning €35,000/year (born after 1962)</h3>
               <div className="p-6 bg-muted/30 rounded-xl not-prose my-4">
                 <ul className="space-y-2 text-sm">
                   <li>• Annual salary: €35,000</li>
+                  <li>• Weekly wage: €35,000 ÷ 52 = €673.08</li>
                   <li>
-                    • Weekly wage: €35,000 ÷ 52 = <strong>€673.08</strong>
+                    • Weekly wage exceeds €559.31, so{" "}
+                    <strong>cap applies</strong> (category D2)
                   </li>
-                  <li>
-                    • Weekly wage exceeds €573.23, so{" "}
-                    <strong>cap applies</strong>
-                  </li>
-                  <li>
-                    • Weekly employee SSC: <strong>€57.32</strong> (capped)
-                  </li>
-                  <li className="pt-2 border-t border-border font-semibold">
-                    Annual SSC = €57.32 × 52 ={" "}
-                    <strong className="text-primary">€2,980.64</strong>
+                  <li>• Weekly employee SSC: €55.93 (capped)</li>
+                  <li className="pt-2 border-t border-border">
+                    <span>Annual SSC = €55.93 × 52 = </span>
+                    <strong className="text-primary">€2,908.36</strong>
                   </li>
                 </ul>
               </div>
 
-              <h3>Example: Employee earning €20,000/year (Category A)</h3>
+              <h3>Example: Employee earning €20,000/year (born after 1962)</h3>
               <div className="p-6 bg-muted/30 rounded-xl not-prose my-4">
                 <ul className="space-y-2 text-sm">
                   <li>• Annual salary: €20,000</li>
+                  <li>• Weekly wage: €20,000 ÷ 52 = €384.62</li>
                   <li>
-                    • Weekly wage: €20,000 ÷ 52 = <strong>€384.62</strong>
-                  </li>
-                  <li>
-                    • Weekly wage below cap, so <strong>10% applies</strong>
+                    • Weekly wage is between €229.45 and €559.30, so 10% applies
+                    (category C2)
                   </li>
                   <li>
                     • Weekly employee SSC: €384.62 × 10% ={" "}
                     <strong>€38.46</strong>
                   </li>
-                  <li className="pt-2 border-t border-border font-semibold">
-                    Annual SSC = €38.46 × 52 ={" "}
+                  <li className="pt-2 border-t border-border">
+                    <span>Annual SSC = €38.46 × 52 = </span>
                     <strong className="text-primary">€2,000.00</strong>
                   </li>
                 </ul>
@@ -473,6 +502,7 @@ export default function MaltaSSCPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

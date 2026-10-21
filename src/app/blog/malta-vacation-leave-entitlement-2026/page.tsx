@@ -66,6 +66,7 @@ export default function MaltaVacationLeaveGuidePage() {
         description="Complete guide to annual vacation leave entitlement in Malta."
         slug="malta-vacation-leave-entitlement-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -170,13 +171,9 @@ export default function MaltaVacationLeaveGuidePage() {
               </p>
               <ul>
                 <li>
-                  <strong>2024:</strong> 3 holidays on weekends → +24 hours
-                </li>
-                <li>
-                  <strong>2025:</strong> 2 holidays on weekends → +16 hours
-                </li>
-                <li>
                   <strong>2026:</strong> 3 holidays on weekends → +24 hours
+                  (Sette Giugno on Sunday 7 June, Santa Marija on Saturday 15
+                  August and Republic Day on Sunday 13 December)
                 </li>
               </ul>
             </section>
@@ -213,6 +210,7 @@ export default function MaltaVacationLeaveGuidePage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   title:
     "Understanding COLA in Malta 2026: Cost of Living Adjustment Guide | Malta Calculator",
   description:
-    "What is COLA in Malta and how does it affect your salary? Complete guide to the Cost of Living Adjustment for 2026. Learn about COLA history, calculation method, and the €10.36 weekly allowance.",
+    "What is COLA in Malta? The 2026 Cost of Living Adjustment is €4.66/week (€242.32/year). Learn how it is calculated, its history and how it is taxed.",
   keywords: [
     "Malta COLA 2026",
     "Malta cost of living adjustment",
@@ -74,6 +74,7 @@ export default function MaltaCOLAPage() {
         description="What is COLA in Malta and how does it affect your salary? Complete guide to the Cost of Living Adjustment."
         slug="understanding-cola-malta-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -173,9 +174,10 @@ export default function MaltaCOLAPage() {
               <h2>1. What is COLA?</h2>
               <p>
                 <strong>COLA (Cost of Living Adjustment)</strong> is a mandatory
-                annual allowance that all employers in Malta must pay to their
-                employees. It&apos;s designed to help workers keep up with
-                inflation and maintain their purchasing power.
+                annual wage increase that all employers in Malta must add to
+                their employees&apos; basic weekly wage each January. It&apos;s
+                designed to help workers keep up with inflation and maintain
+                their purchasing power.
               </p>
               <p>Key characteristics of COLA:</p>
               <ul>
@@ -192,7 +194,9 @@ export default function MaltaCOLAPage() {
                   inflation
                 </li>
                 <li>
-                  <strong>Tax-free</strong> - Not subject to income tax
+                  <strong>Part of your wage</strong> - It becomes part of your
+                  basic salary, so it is taxed and subject to SSC like the rest
+                  of your pay
                 </li>
                 <li>
                   <strong>Cumulative</strong> - Each year&apos;s COLA is added
@@ -207,7 +211,7 @@ export default function MaltaCOLAPage() {
               <div className="p-8 bg-gradient-to-br from-emerald-500/10 to-green-500/5 rounded-3xl border border-emerald-500/20 not-prose my-8 text-center">
                 <TrendingUp className="h-12 w-12 mx-auto mb-4 text-emerald-600" />
                 <div className="text-4xl font-bold text-emerald-600 mb-2">
-                  €10.36
+                  €4.66
                 </div>
                 <div className="text-lg text-muted-foreground mb-4">
                   per week (2026 increase)
@@ -215,22 +219,24 @@ export default function MaltaCOLAPage() {
                 <div className="grid grid-cols-2 gap-4 max-w-md mx-auto text-sm">
                   <div className="p-4 bg-white/50 dark:bg-white/5 rounded-xl">
                     <div className="font-semibold">Monthly</div>
-                    <div className="text-xl font-bold text-primary">€44.89</div>
+                    <div className="text-xl font-bold text-primary">€20.19</div>
                   </div>
                   <div className="p-4 bg-white/50 dark:bg-white/5 rounded-xl">
                     <div className="font-semibold">Annual</div>
                     <div className="text-xl font-bold text-primary">
-                      €538.72
+                      €242.32
                     </div>
                   </div>
                 </div>
               </div>
 
               <p>
-                For 2026, the COLA increase is <strong>€10.36 per week</strong>,
-                which translates to approximately{" "}
-                <strong>€538.72 per year</strong>. This is added to the
-                cumulative COLA from previous years.
+                For 2026, the COLA increase is <strong>€4.66 per week</strong>{" "}
+                (Legal Notice 290 of 2025), which translates to{" "}
+                <strong>€242.32 per year</strong> for a full-time employee.
+                Part-timers receive it pro rata (about €0.12 per hour). It is
+                added permanently to the wage you already earn, so previous
+                years&apos; COLA increases remain part of your salary.
               </p>
             </section>
 
@@ -310,10 +316,10 @@ export default function MaltaCOLAPage() {
                     </tr>
                     <tr>
                       <td className="border border-border p-3">2024</td>
-                      <td className="border border-border p-3">€5.84</td>
-                      <td className="border border-border p-3">€303.68</td>
+                      <td className="border border-border p-3">€12.81</td>
+                      <td className="border border-border p-3">€666.12</td>
                       <td className="border border-border p-3 text-xs text-muted-foreground">
-                        Continued adjustments
+                        Highest increase on record
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -329,10 +335,10 @@ export default function MaltaCOLAPage() {
                         2026
                       </td>
                       <td className="border border-border p-3 font-semibold text-primary">
-                        €10.36
+                        €4.66
                       </td>
                       <td className="border border-border p-3 font-semibold text-primary">
-                        €538.72
+                        €242.32
                       </td>
                       <td className="border border-border p-3 text-xs font-medium">
                         Current year
@@ -346,24 +352,35 @@ export default function MaltaCOLAPage() {
             <section id="tax-treatment" className="mt-12">
               <h2>5. Tax Treatment of COLA</h2>
               <p>
-                One of the key benefits of COLA is that it is{" "}
-                <strong>completely tax-free</strong>. This means:
+                COLA is <strong>not a tax-free payment</strong>. Once it is
+                added to your basic wage it is treated exactly like the rest of
+                your salary:
               </p>
               <ul>
                 <li>
-                  COLA is <strong>not subject to income tax</strong>
+                  It is <strong>subject to income tax</strong> through the FSS
+                  system
                 </li>
                 <li>
-                  It does <strong>not count toward your taxable income</strong>
+                  It counts towards the basic weekly wage used for{" "}
+                  <strong>Social Security Contributions</strong> (up to the
+                  weekly cap)
                 </li>
-                <li>You receive the full COLA amount without any deductions</li>
+                <li>
+                  Your net gain is therefore the COLA amount minus the tax and
+                  SSC on it
+                </li>
               </ul>
 
               <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl not-prose">
                 <p className="text-sm">
-                  <strong>✅ Tax-Free Benefit:</strong> Your €538.72 annual COLA
-                  for 2026 is yours to keep in full — it&apos;s not taxed and
-                  doesn&apos;t push you into a higher tax bracket.
+                  <strong>
+                    Don&apos;t confuse COLA with the statutory bonuses.
+                  </strong>{" "}
+                  The four statutory payments (€121.16 in March and September,
+                  €135.10 in June and December, €512.52 a year) are separate
+                  from COLA. They are also taxable, but they are not counted for
+                  SSC.
                 </p>
               </div>
             </section>
@@ -379,29 +396,31 @@ export default function MaltaCOLAPage() {
               <div className="p-6 bg-muted/30 rounded-xl not-prose my-4">
                 <ul className="space-y-2 text-sm">
                   <li>• Base salary: €25,000</li>
-                  <li>• COLA 2026: €538.72</li>
+                  <li>• COLA 2026: €242.32</li>
                   <li>
-                    • Total gross: <strong>€25,538.72</strong>
+                    • New gross: <strong>€25,242.32</strong>
                   </li>
                   <li className="pt-2 border-t border-border">
                     <span>Taxable portion: </span>
-                    <strong className="text-primary">€25,000</strong>
+                    <strong className="text-primary">€25,242.32</strong>
                     <span className="text-muted-foreground text-xs">
                       {" "}
-                      (COLA is tax-free)
+                      (COLA is taxed like the rest of your salary)
                     </span>
                   </li>
                 </ul>
               </div>
 
               <p>
-                This means you benefit from the full COLA amount without it
-                increasing your tax liability.
+                At the single rates for 2026 (25% band), the €242.32 COLA adds
+                about €60.58 in income tax and €24.23 in employee SSC, so the
+                net gain is roughly €157.51 a year.
               </p>
             </section>
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

@@ -31,7 +31,7 @@ const featuredGuides: GuideCard[] = [
     href: "/blog/malta-minimum-wage-2026-guide",
     title: "Minimum Wage 2026",
     description:
-      "Current rates at €213.54/week and National Minimum Wage regulations.",
+      "Current rate of €229.44/week and National Minimum Wage regulations.",
     category: "Salary",
     readTime: "5 min",
   },

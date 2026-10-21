@@ -75,6 +75,7 @@ export default function ChildrensAllowanceGuidePage() {
         description="Complete guide to Malta Children's Allowance including eligibility, calculation formula, and rates."
         slug="malta-childrens-allowance-guide-2026"
         datePublished="2026-02-03"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -572,22 +573,26 @@ export default function ChildrensAllowanceGuidePage() {
                 <strong>higher Children&apos;s Allowance rate</strong>.
               </p>
 
-              <h3>Children&apos;s Allowance Supplement</h3>
+              <h3>Children&apos;s Allowance Supplement (2026)</h3>
               <p>
-                From January 2025, an additional{" "}
-                <strong>Children&apos;s Allowance Supplement</strong> is
-                available:
+                Budget 2026 raised the{" "}
+                <strong>Children&apos;s Allowance Supplement</strong> by €250
+                per child for lower-income families. For 2026 it is:
               </p>
               <ul>
                 <li>
-                  <strong>€165 per child per quarter</strong> (€660/year) for
-                  income below €27,434
+                  <strong>€227.50 per child per quarter</strong> (€910/year) for
+                  household income up to €30,000
                 </li>
                 <li>
                   <strong>€160 per child per quarter</strong> (€640/year) for
-                  income above €27,434
+                  income above €30,000
                 </li>
               </ul>
+              <p>
+                Parents with joint custody each receive half. The supplement is
+                paid automatically with the Children&apos;s Allowance.
+              </p>
             </section>
 
             {/* How to Apply Section */}
@@ -783,6 +788,7 @@ export default function ChildrensAllowanceGuidePage() {
             </section>
             <BlogArticleAuthor
               datePublished="2026-02-03"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

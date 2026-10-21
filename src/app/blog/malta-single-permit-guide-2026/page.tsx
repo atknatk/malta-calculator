@@ -131,7 +131,7 @@ export default function MaltaSinglePermitGuide2026Page() {
         description="Verified, source-cited 2026 guide to Malta's Single Permit. Covers government fees, KEI and SEI fast-track routes, the mandatory Pre-Departure Course (Skills Pass), the 30+30 day post-termination grace period, and the full document checklist."
         slug="malta-single-permit-guide-2026"
         datePublished="2026-04-07"
-        dateModified="2026-10-20"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <HowToJsonLd
@@ -1845,10 +1845,11 @@ export default function MaltaSinglePermitGuide2026Page() {
                 security on exactly the same basis as a Maltese employee. Your
                 gross salary is subject to Malta&apos;s progressive income tax
                 brackets (FSS), employee Social Security Contributions (10% of
-                weekly wage, capped weekly), and the quarterly tax-free Cost of
-                Living Adjustment (COLA). Highly qualified individuals on KEI
-                may also benefit from the 15% flat-rate scheme — see the related
-                guide below.
+                weekly wage, capped weekly). Like every employee, you also
+                receive the annual Cost of Living Adjustment (COLA) and the four
+                statutory bonuses, both of which are taxable. Highly qualified
+                individuals on KEI may also benefit from the 15% flat-rate
+                Highly Skilled Individuals regime — see the related guide below.
               </p>
 
               <p>
@@ -2236,7 +2237,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             <BlogArticleAuthor
               datePublished="2026-04-07"
-              dateModified="2026-10-20"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
 

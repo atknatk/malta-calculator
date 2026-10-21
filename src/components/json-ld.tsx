@@ -279,7 +279,7 @@ export function FAQPageJsonLd() {
         name: "What are the Malta tax brackets for 2026?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Malta has progressive tax brackets. For single taxpayers in 2026: 0% on the first €9,100, 15% on €9,101-€14,500, 25% on €14,501-€19,500, and 35% above €60,000. Married taxpayers have higher thresholds.",
+          text: "Malta has progressive tax brackets. For single taxpayers in 2026: 0% on the first €12,000, 15% on €12,001-€16,000, 25% on €16,001-€60,000, and 35% above €60,000. Married taxpayers and parents have higher thresholds, with extra relief for those with children.",
         },
       },
       {
@@ -287,7 +287,7 @@ export function FAQPageJsonLd() {
         name: "What is SSC (Social Security Contribution) in Malta?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "SSC in Malta is a mandatory social security contribution paid by both employees and employers. For 2026, the employee contribution is 10% of basic weekly wage, with weekly caps varying by category (€54.06-€57.32 for Category A).",
+          text: "SSC in Malta is a mandatory social security contribution paid by both employees and employers. For 2026, the employee contribution is 10% of basic weekly wage, capped at €55.93 per week for people born from 1962 (€49.04 for those born earlier).",
         },
       },
       {
@@ -295,7 +295,7 @@ export function FAQPageJsonLd() {
         name: "What is COLA in Malta?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "COLA (Cost of Living Adjustment) is an annual allowance added to all salaries in Malta to compensate for inflation. For 2026, COLA is €10.36 per week (€538.72 annually), and it's not subject to income tax.",
+          text: "COLA (Cost of Living Adjustment) is an annual statutory increase added to basic wages in Malta to compensate for inflation. For 2026, COLA is €4.66 per week (€242.32 a year). It becomes part of your wage and is taxable.",
         },
       },
       {

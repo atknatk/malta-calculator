@@ -69,6 +69,7 @@ export default function MaltaExpatMortgageGuidePage() {
         description="Complete guide for expats buying property in Malta."
         slug="malta-expat-mortgage-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -323,11 +324,12 @@ export default function MaltaExpatMortgageGuidePage() {
               </div>
               <p>To qualify for first-time buyer status:</p>
               <ul>
-                <li>
-                  You must not have previously owned property in Malta or Gozo
-                </li>
+                <li>You must not have previously owned residential property</li>
                 <li>The property must be your primary residence</li>
-                <li>Valid for transfers before January 1, 2026</li>
+                <li>
+                  Made permanent from 28 October 2025 (Legal Notice 305 of
+                  2025); the excess above €200,000 is taxed at 5%
+                </li>
               </ul>
             </section>
 
@@ -406,6 +408,7 @@ export default function MaltaExpatMortgageGuidePage() {
             </div>
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

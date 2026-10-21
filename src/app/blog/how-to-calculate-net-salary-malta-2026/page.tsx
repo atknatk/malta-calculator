@@ -83,6 +83,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
         description="Complete step-by-step guide to calculating your net salary in Malta for 2026, including income tax brackets, SSC contributions, and COLA adjustments."
         slug="how-to-calculate-net-salary-malta-2026"
         datePublished="2026-03-02"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <HowToJsonLd
@@ -111,12 +112,12 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
             text: "Apply Malta's progressive tax brackets to your gross salary. Use the formula: Tax = (Income × Rate) − Deduction for each bracket.",
           },
           {
-            name: "Add COLA (Cost of Living Adjustment)",
-            text: "Add the quarterly government bonus (COLA): €121.16 in March & September, €135.10 in June & December. Annual total: €512.52. COLA is tax-free.",
+            name: "Add the statutory bonuses",
+            text: "Add the statutory bonuses: €121.16 weekly allowance in March & September and €135.10 statutory bonus in June & December (€512.52 a year). They are taxable but not subject to SSC.",
           },
           {
             name: "Calculate net salary",
-            text: "Net Salary = Gross Salary − Income Tax − SSC + COLA. Divide by 12 for monthly take-home pay.",
+            text: "Net Salary = Gross Salary + Statutory Bonuses − Income Tax − SSC. Divide by 12 for monthly take-home pay.",
           },
         ]}
       />
@@ -135,7 +136,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
           {
             question: "How do I calculate my net salary in Malta?",
             answer:
-              "To calculate your Malta net salary: (1) Start with your gross annual salary. (2) Calculate your SSC employee contribution (10% of weekly wage, capped at €55.93/week for post-1962 births). (3) Calculate income tax using Malta's progressive brackets (0-35%) based on your status — single, married, or parent. (4) Subtract both SSC and income tax from gross salary to get net. (5) Add your COLA payments (€512.52/year total) which are tax-free.",
+              "To calculate your Malta net salary: (1) Start with your gross annual salary. (2) Calculate your SSC employee contribution (10% of weekly wage, capped at €55.93/week for post-1962 births). (3) Calculate income tax using Malta's progressive brackets (0-35%) based on your status — single, married, or parent. (4) Add the statutory bonuses (€512.52/year), which are taxable but not subject to SSC. (5) Subtract SSC and income tax to get your net pay.",
           },
           {
             question: "What is the income tax rate in Malta for 2026?",
@@ -145,24 +146,24 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
           {
             question: "How much SSC do I pay in Malta in 2026?",
             answer:
-              "As an employee in Malta you pay 10% of your weekly gross wage as SSC (Social Security Contribution). This is capped at €55.93 per week if you were born after 1962 (€49.04/week if born before 1962). Part-time workers earning at or below the minimum wage (€225/week) are capped at €22.94/week. Annual maximum SSC for full-time employees born after 1962 is €2,908.36.",
+              "As an employee in Malta you pay 10% of your weekly gross wage as SSC (Social Security Contribution). This is capped at €55.93 per week if you were born after 1962 (€49.04/week if born before 1962). Workers aged 18+ earning up to €229.44/week (the 2026 minimum wage) pay a flat €22.94/week. Annual maximum SSC for full-time employees born after 1962 is €2,908.36.",
           },
           {
             question: "What is COLA and how does it affect my salary in Malta?",
             answer:
-              "COLA (Cost of Living Adjustment) is a mandatory government-prescribed payment added to employee salaries quarterly. In 2026, COLA is paid in March (€121.16), June (€135.10), September (€121.16), and December (€135.10) — totalling €512.52 per year. COLA is exempt from income tax but is included in your gross salary for SSC purposes.",
+              "COLA (Cost of Living Adjustment) is the annual statutory wage increase added to your basic wage each January: €4.66 per week in 2026. It becomes part of your salary, so it is taxed and subject to SSC. It is different from the statutory bonuses (€121.16 in March and September, €135.10 in June and December, €512.52 a year), which are taxable but not subject to SSC.",
           },
           {
             question:
               "Does Malta's 2026 tax system change based on number of children?",
             answer:
-              "Yes — 2026 introduced child-sensitive tax brackets in Malta. Married taxpayers with 1 child have a €17,500 tax-free threshold (vs €15,000 without children). Married with 2+ children enjoy a €22,500 tax-free threshold. Single parents with 1 child get €14,500 tax-free (vs €13,000). These higher thresholds can save families up to €1,625/year in income tax.",
+              "Yes — 2026 introduced child-sensitive tax brackets in Malta. Married taxpayers with 1 child have a €17,500 tax-free threshold (vs €15,000 without children). Married with 2+ children enjoy a €22,500 tax-free threshold. Single parents with 1 child get €14,500 tax-free (vs €13,000). In 2026 these bands save up to €2,025/year for married couples with 2+ children and up to €1,625/year for parents with 2+ children.",
           },
           {
             question:
               "What is the difference between gross and net salary in Malta?",
             answer:
-              "Gross salary in Malta is your total pay before deductions. Net salary (take-home pay) is what you receive after deducting income tax (FSS) and employee SSC contributions. For a single person earning €30,000 gross in 2026, income tax is €4,100 and SSC is approximately €2,908, giving a net salary of around €22,992 — plus €512 in tax-free COLA payments.",
+              "Gross salary in Malta is your total pay before deductions. Net salary (take-home pay) is what you receive after deducting income tax (FSS) and employee SSC contributions. For a single person earning €30,000 gross in 2026 plus €512.52 in statutory bonuses, income tax is about €4,228 and SSC is €2,908, giving net pay of around €23,376 a year.",
           },
         ]}
       />
@@ -230,12 +231,13 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold mt-0.5">→</span>
-                  COLA (€512.52/year total) is paid quarterly and is tax-exempt
+                  Statutory bonuses (€512.52/year) are taxable but not subject
+                  to SSC; COLA (€4.66/week in 2026) is part of your wage
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold mt-0.5">→</span>
                   New 2026: married with 2+ children enjoy a €22,500 tax-free
-                  threshold — up to €1,625/year in savings
+                  threshold — up to €2,025/year in savings
                 </li>
               </ul>
             </div>
@@ -310,12 +312,12 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                   <span className="font-bold text-lg">Net Salary Formula</span>
                 </div>
                 <p className="font-mono text-sm">
-                  <strong>Net Annual Salary</strong> = Gross Salary − Employee
-                  SSC − Income Tax (FSS)
+                  <strong>Taxable Income</strong> = Gross Salary + Statutory
+                  Bonuses (€512.52)
                 </p>
                 <p className="font-mono text-sm mt-2">
-                  <strong>Take-Home Pay</strong> = Net Annual Salary + COLA
-                  Payments (tax-free)
+                  <strong>Take-Home Pay</strong> = Taxable Income − Employee SSC
+                  − Income Tax (FSS)
                 </p>
               </div>
 
@@ -327,14 +329,15 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 </li>
                 <li>
                   <strong>Income Tax (FSS)</strong> — Final Settlement System
-                  tax withheld by your employer and paid to the Malta Tax and Customs Administration (MTCA)
+                  tax withheld by your employer and paid to the Malta Tax and
+                  Customs Administration (MTCA)
                 </li>
               </ul>
               <p>
-                COLA (Cost of Living Adjustment) is{" "}
-                <strong>added on top</strong> of your gross salary each quarter
-                and is <strong>tax-free</strong>, so it increases your net pay
-                without increasing your tax liability.
+                The statutory bonuses are <strong>added on top</strong> of your
+                salary in March, June, September and December. They are{" "}
+                <strong>taxable</strong> but are not counted for SSC. COLA, on
+                the other hand, is already built into your basic wage.
               </p>
             </section>
 
@@ -390,7 +393,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                         B
                       </td>
                       <td className="border border-border p-3">
-                        Part-time / at or below minimum wage (€225/week)
+                        Aged 18+, weekly wage up to €229.44
                       </td>
                       <td className="border border-border p-3">€22.94</td>
                       <td className="border border-border p-3">€1,192.88</td>
@@ -400,7 +403,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                         C (born after 1962)
                       </td>
                       <td className="border border-border p-3">
-                        Full-time, weekly wage above €225
+                        Weekly wage above €229.44 (cap at €559.31)
                       </td>
                       <td className="border border-border p-3 font-semibold text-primary">
                         €55.93
@@ -414,7 +417,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                         C (born before 1962)
                       </td>
                       <td className="border border-border p-3">
-                        Full-time, weekly wage above €225, older worker
+                        Weekly wage above €229.44 (cap at €490.39)
                       </td>
                       <td className="border border-border p-3">€49.04</td>
                       <td className="border border-border p-3">€2,550.08</td>
@@ -485,10 +488,10 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
               <p>
                 Income tax is calculated on your{" "}
                 <strong>annual taxable income</strong>, which is your gross
-                salary (excluding COLA and statutory bonuses, which are
-                tax-free). Malta&apos;s progressive system means higher income
-                is taxed at higher rates — but only the portion <em>above</em>{" "}
-                each threshold.
+                salary plus the statutory bonuses (both are taxable).
+                Malta&apos;s progressive system means higher income is taxed at
+                higher rates — but only the portion <em>above</em> each
+                threshold.
               </p>
 
               <h3>Step-by-Step Income Tax Calculation</h3>
@@ -752,14 +755,15 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
             <section id="cola" className="mt-12">
               <h2>5. COLA and Government Bonuses</h2>
               <p>
-                In addition to your base salary, Malta employees receive
-                mandatory <strong>COLA (Cost of Living Adjustment)</strong>{" "}
-                payments. These are set by the government each year based on
-                inflation and paid quarterly by your employer as part of your
-                payslip.
+                Two different statutory amounts affect your pay.{" "}
+                <strong>COLA (Cost of Living Adjustment)</strong> is an annual
+                increase to your basic wage (€4.66 per week in 2026) and is
+                taxed like the rest of your salary. The{" "}
+                <strong>statutory bonuses</strong> are four fixed payments made
+                by your employer during the year:
               </p>
 
-              <h3>2026 COLA Payment Schedule</h3>
+              <h3>2026 Statutory Bonus Schedule</h3>
               <div className="overflow-x-auto not-prose my-4">
                 <table className="w-full border-collapse text-sm">
                   <thead>
@@ -785,8 +789,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                       <td className="border border-border p-3 font-semibold">
                         €121.16
                       </td>
-                      <td className="border border-border p-3 text-green-600 font-semibold">
-                        Tax-free
+                      <td className="border border-border p-3">
+                        Taxable, no SSC
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -795,8 +799,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                       <td className="border border-border p-3 font-semibold">
                         €135.10
                       </td>
-                      <td className="border border-border p-3 text-green-600 font-semibold">
-                        Tax-free
+                      <td className="border border-border p-3">
+                        Taxable, no SSC
                       </td>
                     </tr>
                     <tr>
@@ -805,8 +809,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                       <td className="border border-border p-3 font-semibold">
                         €121.16
                       </td>
-                      <td className="border border-border p-3 text-green-600 font-semibold">
-                        Tax-free
+                      <td className="border border-border p-3">
+                        Taxable, no SSC
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -815,8 +819,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                       <td className="border border-border p-3 font-semibold">
                         €135.10
                       </td>
-                      <td className="border border-border p-3 text-green-600 font-semibold">
-                        Tax-free
+                      <td className="border border-border p-3">
+                        Taxable, no SSC
                       </td>
                     </tr>
                     <tr className="border-t-2 border-primary/30">
@@ -829,8 +833,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                       <td className="border border-border p-3 font-bold text-primary">
                         €512.52
                       </td>
-                      <td className="border border-border p-3 text-green-600 font-bold">
-                        All tax-free
+                      <td className="border border-border p-3 font-bold">
+                        Taxable, no SSC
                       </td>
                     </tr>
                   </tbody>
@@ -838,11 +842,10 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
               </div>
 
               <p>
-                COLA is paid by your employer as part of your monthly payslip in
-                the relevant months. Because it is{" "}
-                <strong>exempt from income tax</strong>, it increases your
-                actual take-home pay by the full €512.52 over the year —
-                regardless of your tax bracket.
+                The bonuses are paid with your payslip in the relevant months.
+                They are <strong>subject to income tax</strong> (your employer
+                withholds FSS tax on them), but no SSC is deducted, so most of
+                the €512.52 still reaches your pocket.
               </p>
 
               <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl not-prose my-4">
@@ -868,7 +871,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
               <p>
                 Let&apos;s work through three real-world scenarios to show how
                 the calculation looks in practice. All figures are for 2026 and
-                assume the employee was born after 1962 (Category C New SSC).
+                assume the employee was born after 1962 (SSC category D2) and
+                receives the €512.52 statutory bonuses.
               </p>
 
               <h3>Example 1: Single Taxpayer — €30,000 Gross</h3>
@@ -935,13 +939,13 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                         <strong className="text-primary">€22,991.64</strong>
                       </li>
                       <li>
-                        + COLA: €512.52 (tax-free) →{" "}
+                        + Statutory bonuses: €512.52 − €128.13 tax (25%) →{" "}
                         <strong className="text-green-600">
-                          Total Take-Home: €23,504.16
+                          Total Take-Home: €23,376.03
                         </strong>
                       </li>
                       <li className="text-muted-foreground">
-                        Monthly net: ≈ <strong>€1,958.68</strong>
+                        Monthly net: ≈ <strong>€1,948.00</strong>
                       </li>
                     </ul>
                   </div>
@@ -1007,13 +1011,13 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                         <strong className="text-primary">€37,416.64</strong>
                       </li>
                       <li>
-                        + COLA: €512.52 →{" "}
+                        + Statutory bonuses: €512.52 − €128.13 tax (25%) →{" "}
                         <strong className="text-green-600">
-                          Total Take-Home: €37,929.16
+                          Total Take-Home: €37,801.03
                         </strong>
                       </li>
                       <li className="text-muted-foreground">
-                        Monthly net: ≈ <strong>€3,160.76</strong>
+                        Monthly net: ≈ <strong>€3,150.09</strong>
                       </li>
                     </ul>
                   </div>
@@ -1058,13 +1062,14 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                       <strong className="text-primary">€45,491.64</strong>
                     </li>
                     <li>
-                      + COLA →{" "}
+                      + Statutory bonuses: €512.52 − €179.38 tax (35%, as they
+                      fall above €60,000) →{" "}
                       <strong className="text-green-600">
-                        Total Take-Home: €46,004.16
+                        Total Take-Home: €45,824.78
                       </strong>
                     </li>
                     <li className="text-muted-foreground">
-                      Effective tax rate: 19.3% (combined tax + SSC)
+                      Effective rate: 24.3% (combined tax + SSC)
                     </li>
                   </div>
                 </div>
@@ -1077,8 +1082,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
               <p>
                 The table below compares annual net salaries across different
                 income levels and tax statuses for 2026. All figures assume
-                employee born after 1962 (Category C New SSC) and include the
-                annual COLA of €512.52.
+                employee born after 1962 (SSC category D2 or C2) and include the
+                taxable statutory bonuses of €512.52.
               </p>
 
               <div className="overflow-x-auto not-prose my-6">
@@ -1104,50 +1109,50 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                       <td className="border border-border p-3 font-semibold">
                         €15,000
                       </td>
-                      <td className="border border-border p-3">€12,867</td>
-                      <td className="border border-border p-3">€13,017</td>
+                      <td className="border border-border p-3">€13,486</td>
+                      <td className="border border-border p-3">€13,936</td>
                       <td className="border border-border p-3 text-green-600 font-semibold">
-                        €13,017
+                        €14,013
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3 font-semibold">
                         €25,000
                       </td>
-                      <td className="border border-border p-3">€20,342</td>
-                      <td className="border border-border p-3">€20,642</td>
+                      <td className="border border-border p-3">€20,034</td>
+                      <td className="border border-border p-3">€21,184</td>
                       <td className="border border-border p-3 text-green-600 font-semibold">
-                        €20,792
+                        €22,561
                       </td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3 font-semibold">
                         €35,000
                       </td>
-                      <td className="border border-border p-3">€28,342</td>
-                      <td className="border border-border p-3">€28,792</td>
+                      <td className="border border-border p-3">€27,126</td>
+                      <td className="border border-border p-3">€28,276</td>
                       <td className="border border-border p-3 text-green-600 font-semibold">
-                        €29,792
+                        €30,301
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3 font-semibold">
                         €50,000
                       </td>
-                      <td className="border border-border p-3">€37,342</td>
-                      <td className="border border-border p-3">€38,092</td>
+                      <td className="border border-border p-3">€38,376</td>
+                      <td className="border border-border p-3">€39,526</td>
                       <td className="border border-border p-3 text-green-600 font-semibold">
-                        €39,342
+                        €41,551
                       </td>
                     </tr>
                     <tr>
                       <td className="border border-border p-3 font-semibold">
                         €70,000
                       </td>
-                      <td className="border border-border p-3">€49,842</td>
-                      <td className="border border-border p-3">€50,342</td>
+                      <td className="border border-border p-3">€52,325</td>
+                      <td className="border border-border p-3">€53,475</td>
                       <td className="border border-border p-3 text-green-600 font-semibold">
-                        €51,592
+                        €55,500
                       </td>
                     </tr>
                   </tbody>
@@ -1157,8 +1162,9 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
               <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl not-prose my-4">
                 <p className="text-sm">
                   <strong>Note:</strong> These figures are approximate and
-                  include COLA (€512.52). They assume standard deductions only.
-                  For a precise calculation tailored to your situation, use our{" "}
+                  include the statutory bonuses (€512.52). They assume standard
+                  deductions only. For a precise calculation tailored to your
+                  situation, use our{" "}
                   <Link
                     href="/salary"
                     className="underline text-primary font-semibold"
@@ -1204,8 +1210,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 of weekly wage, capped at €55.93/week for post-1962 births).
                 Then subtract income tax using the 2026 progressive brackets for
                 your status (single/married/parent and number of children). The
-                result is your net salary. Add COLA (€512.52/year, tax-free) to
-                get total take-home pay.
+                statutory bonuses (€512.52/year) are included in taxable income,
+                so remember to count them when you work out the tax.
               </p>
 
               <h3>What percentage of my Malta salary goes to tax?</h3>
@@ -1214,10 +1220,10 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 Combined income tax + SSC effective rates in 2026:
               </p>
               <ul>
-                <li>€20,000 gross (single): ~17% combined rate</li>
-                <li>€35,000 gross (single): ~22% combined rate</li>
-                <li>€50,000 gross (single): ~25% combined rate</li>
-                <li>€70,000 gross (single): ~29% combined rate</li>
+                <li>€20,000 gross (single): ~18% combined rate</li>
+                <li>€35,000 gross (single): ~24% combined rate</li>
+                <li>€50,000 gross (single): ~24% combined rate</li>
+                <li>€70,000 gross (single): ~26% combined rate</li>
               </ul>
 
               <h3>Does my employer also pay SSC?</h3>
@@ -1226,17 +1232,18 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 your weekly wage, same caps). This employer contribution does
                 not come out of your salary — it&apos;s an additional cost borne
                 by the company. For more details, see our{" "}
-                <Link href="/blog/malta-employer-cost-hiring-guide-2026">
-                  Malta Employer Cost guide
+                <Link href="/blog/malta-ssc-contributions-2026-explained">
+                  Malta SSC guide
                 </Link>
                 .
               </p>
 
               <h3>Is COLA taxable in Malta?</h3>
               <p>
-                No. COLA (Cost of Living Adjustment) payments are exempt from
-                income tax in Malta. You receive the full €512.52 in 2026
-                without any tax deduction. Learn more in our{" "}
+                Yes. COLA (€4.66 per week in 2026) is added to your basic wage
+                and is taxed and subject to SSC like the rest of your salary.
+                The separate statutory bonuses (€512.52 a year) are also
+                taxable, but no SSC is deducted from them. Learn more in our{" "}
                 <Link href="/blog/understanding-cola-malta-2026">
                   COLA guide
                 </Link>
@@ -1250,7 +1257,8 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 income tax brackets — not just whether you are married or a
                 parent. Married couples with 2+ children now have a €22,500
                 tax-free threshold (vs €12,000 for single). This can save
-                families up to €1,625/year. See the{" "}
+                married couples up to €2,025/year in 2026, with further
+                increases due in 2027 and 2028. See the{" "}
                 <Link href="/blog/malta-budget-2026-family-tax-savings-guide">
                   Malta Budget 2026 guide
                 </Link>{" "}
@@ -1323,6 +1331,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
 
             <BlogArticleAuthor
               datePublished="2026-03-02"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
 

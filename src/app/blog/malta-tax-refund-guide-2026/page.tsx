@@ -64,9 +64,10 @@ export default function MaltaTaxRefundPage() {
     <MarketingLayout>
       <ArticleJsonLd
         title="Malta Tax Refund 2026: How to Claim Back Overpaid Tax"
-        description="Complete guide to claiming tax refunds in Malta including FS3 forms and IRD process."
+        description="Complete guide to claiming tax refunds in Malta including FS3 forms and the MTCA process."
         slug="malta-tax-refund-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -106,7 +107,8 @@ export default function MaltaTaxRefundPage() {
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 Overpaid tax in Malta? Here&apos;s how to claim your refund from
-                the Inland Revenue Department.
+                the Malta Tax and Customs Administration (MTCA), formerly the
+                Inland Revenue Department / CFR.
               </p>
             </header>
 
@@ -126,8 +128,8 @@ export default function MaltaTaxRefundPage() {
               <h2>How to Claim Your Refund</h2>
               <ol>
                 <li>
-                  <strong>Collect your FS3</strong> - Your employer provides
-                  this by end of February
+                  <strong>Collect your FS3</strong> - Your employer must give it
+                  to you by 15 February
                 </li>
                 <li>
                   <strong>File online</strong> - Use MTCA online services at
@@ -138,8 +140,8 @@ export default function MaltaTaxRefundPage() {
                   year returns
                 </li>
                 <li>
-                  <strong>Wait for assessment</strong> - IRD will review and
-                  issue refund
+                  <strong>Wait for assessment</strong> - MTCA will review and
+                  issue the refund
                 </li>
               </ol>
             </section>
@@ -149,7 +151,7 @@ export default function MaltaTaxRefundPage() {
               <div className="p-6 bg-muted/30 rounded-xl not-prose">
                 <ul className="space-y-2 text-sm">
                   <li>
-                    • <strong>FS3 received:</strong> By end of February
+                    • <strong>FS3 received:</strong> By 15 February
                   </li>
                   <li>
                     • <strong>Filing deadline:</strong> June 30
@@ -166,6 +168,7 @@ export default function MaltaTaxRefundPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

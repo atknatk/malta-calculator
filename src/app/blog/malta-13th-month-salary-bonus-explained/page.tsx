@@ -65,6 +65,7 @@ export default function Malta13thMonthSalaryPage() {
         description="Complete guide to Malta's statutory bonuses and 13th month salary payments."
         slug="malta-13th-month-salary-bonus-explained"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -133,14 +134,18 @@ export default function Malta13thMonthSalaryPage() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-border p-3">March Bonus</td>
+                      <td className="border border-border p-3">
+                        Weekly Allowance (1st half)
+                      </td>
                       <td className="border border-border p-3 font-semibold">
-                        €135.10
+                        €121.16
                       </td>
                       <td className="border border-border p-3">March</td>
                     </tr>
                     <tr className="bg-muted/50">
-                      <td className="border border-border p-3">June Bonus</td>
+                      <td className="border border-border p-3">
+                        Statutory Bonus (1st half)
+                      </td>
                       <td className="border border-border p-3 font-semibold">
                         €135.10
                       </td>
@@ -148,16 +153,16 @@ export default function Malta13thMonthSalaryPage() {
                     </tr>
                     <tr>
                       <td className="border border-border p-3">
-                        September Bonus
+                        Weekly Allowance (2nd half)
                       </td>
                       <td className="border border-border p-3 font-semibold">
-                        €135.10
+                        €121.16
                       </td>
                       <td className="border border-border p-3">September</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        December Bonus
+                        Statutory Bonus (2nd half)
                       </td>
                       <td className="border border-border p-3 font-semibold">
                         €135.10
@@ -169,13 +174,21 @@ export default function Malta13thMonthSalaryPage() {
                         Total Annual
                       </td>
                       <td className="border border-border p-3 font-bold text-primary">
-                        €540.40
+                        €512.52
                       </td>
                       <td className="border border-border p-3">-</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+              <p>
+                The weekly allowance is paid at the end of March and September
+                and the statutory bonus in June and in December (between the
+                15th and 23rd). Employees who did not work the full six-month
+                period receive a pro-rata amount: €4.66 per working week for the
+                weekly allowance and €0.74 per calendar day for the statutory
+                bonus. Source: DIER.
+              </p>
             </section>
 
             <section id="13th-month" className="mt-12">
@@ -190,7 +203,7 @@ export default function Malta13thMonthSalaryPage() {
                   Some employers offer a 13th month as a contractual benefit
                 </li>
                 <li>
-                  The statutory bonuses (€540.40/year) serve a similar purpose
+                  The statutory bonuses (€512.52/year) serve a similar purpose
                 </li>
                 <li>Performance bonuses are common in many sectors</li>
               </ul>
@@ -200,8 +213,9 @@ export default function Malta13thMonthSalaryPage() {
               <h2>Tax Treatment of Bonuses</h2>
               <ul>
                 <li>
-                  <strong>Statutory bonuses:</strong> Tax-exempt (government
-                  bonuses)
+                  <strong>Statutory bonuses:</strong> Taxable through FSS like
+                  the rest of your pay, but not counted for Social Security
+                  Contributions
                 </li>
                 <li>
                   <strong>Employer bonuses:</strong> Fully taxable as regular
@@ -216,6 +230,7 @@ export default function Malta13thMonthSalaryPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

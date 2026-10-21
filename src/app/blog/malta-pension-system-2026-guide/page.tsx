@@ -66,6 +66,7 @@ export default function MaltaPensionSystemPage() {
         description="Complete guide to Malta's state pension system, eligibility, and contribution requirements."
         slug="malta-pension-system-2026-guide"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -129,7 +130,7 @@ export default function MaltaPensionSystemPage() {
                         Full contribution history
                       </td>
                       <td className="border border-border p-3 text-primary">
-                        ~67% of best 3-year average
+                        Up to two-thirds of pensionable income
                       </td>
                     </tr>
                     <tr className="bg-muted/50">
@@ -140,7 +141,7 @@ export default function MaltaPensionSystemPage() {
                         Minimum contributions
                       </td>
                       <td className="border border-border p-3">
-                        ~€160/week (2026)
+                        Set yearly by DSS (+€10/week for all pensions in 2026)
                       </td>
                     </tr>
                   </tbody>
@@ -172,14 +173,16 @@ export default function MaltaPensionSystemPage() {
 
             <section id="contributions" className="mt-12">
               <h2>Contribution Requirements</h2>
-              <p>To qualify for the full two-thirds pension, you need:</p>
+              <p>To qualify for a contributory pension you need:</p>
               <ul>
                 <li>
-                  <strong>Minimum 10 years</strong> of paid/credited
-                  contributions
+                  <strong>Minimum 10 years</strong> (520 weeks) of paid or
+                  credited contributions for a reduced pension
                 </li>
                 <li>
-                  <strong>Yearly average</strong> of at least 15 contributions
+                  For the <strong>full</strong> two-thirds pension: 35 years
+                  (born 1952-1961), 40 years (born 1962-1968) or 41 years (born
+                  1969 or later)
                 </li>
                 <li>
                   Contributions from employment, self-employment, or credits
@@ -192,18 +195,44 @@ export default function MaltaPensionSystemPage() {
               <p>The two-thirds pension is based on:</p>
               <ul>
                 <li>
-                  Average of your <strong>best 3 consecutive years</strong> of
-                  earnings
+                  Born before 1962: average of your{" "}
+                  <strong>best 3 consecutive years</strong> in the last 10
                 </li>
                 <li>
-                  Subject to a <strong>maximum pensionable income</strong> cap
+                  Born from 1962: average of your{" "}
+                  <strong>best 10 calendar years</strong> in the last 40
+                </li>
+                <li>
+                  Subject to a <strong>maximum pensionable income</strong>{" "}
+                  (2026: €25,500 if born before 1962, €29,083.36 if born from
+                  1962)
                 </li>
                 <li>Pro-rata reduction for incomplete contribution years</li>
               </ul>
             </section>
 
+            <section id="changes-2026" className="mt-12">
+              <h2>What Changed in 2026</h2>
+              <ul>
+                <li>
+                  All retirement, invalidity and widow&apos;s pensions rose by{" "}
+                  <strong>€10 per week</strong> (€4.66 COLA plus €5.34)
+                </li>
+                <li>
+                  Pension income of people aged 61+ is now{" "}
+                  <strong>fully exempt from income tax</strong> up to a cap of
+                  about €37,104 a year (it was 80% exempt in 2025)
+                </li>
+                <li>
+                  Social security contributions paid before age 18 now count
+                  towards pension entitlement
+                </li>
+              </ul>
+            </section>
+
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

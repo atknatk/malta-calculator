@@ -65,6 +65,7 @@ export default function MaltaPartTimeEmploymentPage() {
         description="Complete guide to part-time employment rights in Malta including pro-rata calculations and benefits."
         slug="malta-part-time-employment-rights"
         datePublished="2026-01-01"
+        dateModified="2026-10-21"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -125,12 +126,15 @@ export default function MaltaPartTimeEmploymentPage() {
                   Example: 20 hours/week employee
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li>• Full-time minimum wage: €213.54/week</li>
                   <li>
-                    • Pro-rata (20/40 hours): <strong>€106.77/week</strong>
+                    • Full-time minimum wage (2026, aged 18+): €229.44/week
                   </li>
                   <li>
-                    • Annual leave: 24 days × (20/40) = <strong>12 days</strong>
+                    • Pro-rata (20/40 hours): <strong>€114.72/week</strong>
+                  </li>
+                  <li>
+                    • Annual leave (2026): 216 hours × (20/40) ={" "}
+                    <strong>108 hours (13.5 days)</strong>
                   </li>
                 </ul>
               </div>
@@ -144,8 +148,8 @@ export default function MaltaPartTimeEmploymentPage() {
                   full-time equivalents
                 </li>
                 <li>
-                  <strong>Annual leave</strong> - Pro-rata of 192 hours (24
-                  days)
+                  <strong>Annual leave</strong> - Pro-rata of the full-time
+                  entitlement (216 hours / 27 days in 2026)
                 </li>
                 <li>
                   <strong>Sick leave</strong> - Pro-rata entitlement
@@ -155,7 +159,8 @@ export default function MaltaPartTimeEmploymentPage() {
                   (10%)
                 </li>
                 <li>
-                  <strong>COLA</strong> - Pro-rata of €10.36/week
+                  <strong>COLA</strong> - Pro-rata share of the 2026 increase
+                  (€4.66/week full-time, about €0.12 per hour)
                 </li>
               </ul>
             </section>
@@ -171,6 +176,7 @@ export default function MaltaPartTimeEmploymentPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-21"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter
