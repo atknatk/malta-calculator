@@ -339,15 +339,36 @@ export function ChildrenAllowanceCalculator() {
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Yearly Total</span>
-                <span className="font-bold text-lg text-pink-600 dark:text-pink-400">
+                <span className="text-muted-foreground">
+                  Yearly Allowance (all children)
+                </span>
+                <span className="font-semibold">
                   {formatCurrency(result.yearlyForAll)}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Quarterly Payment</span>
+                <span className="text-muted-foreground">
+                  Supplement ({formatCurrency(result.supplementPerChild)}
+                  /child/year)
+                </span>
                 <span className="font-semibold">
-                  {formatCurrency(result.quarterlyPayment)}
+                  {formatCurrency(result.supplementForAll)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">
+                  Yearly Total incl. Supplement
+                </span>
+                <span className="font-bold text-lg text-pink-600 dark:text-pink-400">
+                  {formatCurrency(result.yearlyTotalWithSupplement)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">
+                  Payment every 13 weeks
+                </span>
+                <span className="font-semibold">
+                  {formatCurrency(result.quarterlyPaymentWithSupplement)}
                 </span>
               </div>
             </div>
@@ -451,8 +472,16 @@ export function ChildrenAllowanceCalculator() {
                   {CA_CONSTANTS.MAX_WEEKLY_RATE}/week per child.
                 </p>
                 <p>
+                  <strong className="text-foreground">Supplement:</strong> €
+                  {CA_CONSTANTS.SUPPLEMENT_AT_OR_BELOW_THRESHOLD} per child per
+                  year if income is up to €
+                  {CA_CONSTANTS.MAX_INCOME_THRESHOLD.toLocaleString()}, €
+                  {CA_CONSTANTS.SUPPLEMENT_ABOVE_THRESHOLD} above it (2026).
+                </p>
+                <p>
                   <strong className="text-foreground">Payment:</strong> Paid
-                  every 13 weeks (quarterly) in advance.
+                  every 13 weeks (quarterly) in advance, together with the
+                  supplement.
                 </p>
               </div>
             </div>

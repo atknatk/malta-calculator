@@ -25,7 +25,7 @@ import {
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 
-const LAST_UPDATED = "2026-10-20";
+const LAST_UPDATED = "2026-10-21";
 
 const ARTICLE_SOURCES = [
   {
@@ -184,7 +184,25 @@ export default function MaltaMaternityLeavePage() {
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">Weeks 15-18</td>
                       <td className="border border-border p-3">
-                        Flat-rate benefit (SSC funded)
+                        Maternity Leave Benefit: €229.44/week (equal to the
+                        national minimum wage, paid by DSS)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        Self-occupied mothers
+                      </td>
+                      <td className="border border-border p-3">
+                        Maternity Benefit €229.44/week × 14 + Maternity Leave
+                        Benefit €229.44/week × 4
+                      </td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        No employer-paid leave
+                      </td>
+                      <td className="border border-border p-3">
+                        Flat-rate Maternity Benefit €147.95/week × 14
                       </td>
                     </tr>
                   </tbody>

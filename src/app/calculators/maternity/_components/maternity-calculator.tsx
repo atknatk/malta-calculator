@@ -26,12 +26,12 @@ const STATUS_OPTIONS: Array<{
   {
     value: "selfOccupied",
     label: "Self-occupied",
-    detail: "€221.78/week × 14 + 4 weeks benefit",
+    detail: "€229.44/week × 14 + 4 weeks benefit",
   },
   {
     value: "notEntitled",
     label: "Not in employment",
-    detail: "Flat €140.29/week × 14",
+    detail: "Flat €147.95/week × 14",
   },
 ];
 
