@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import TurnstileWidget, {
+  TURNSTILE_SITE_KEY,
+} from "@/components/turnstile-widget";
 
 interface PinAuthProps {
   payslipId: string;
@@ -18,6 +21,9 @@ export default function PinAuth({
   const [pin, setPin] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaResetKey, setCaptchaResetKey] = useState(0);
+  const captchaReady = !TURNSTILE_SITE_KEY || Boolean(captchaToken);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +34,7 @@ export default function PinAuth({
       const response = await fetch("/api/employee/verify-pin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ payslipId, pin }),
+        body: JSON.stringify({ payslipId, pin, captchaToken }),
       });
 
       const data = await response.json();
@@ -38,6 +44,8 @@ export default function PinAuth({
         router.refresh();
       } else {
         setError(data.error || "Invalid PIN");
+        // Turnstile token'ı tek kullanımlık: yeni deneme için sıfırla
+        setCaptchaResetKey((k) => k + 1);
       }
     } catch {
       setError("An error occurred. Please try again.");
@@ -93,6 +101,12 @@ export default function PinAuth({
             </p>
           </div>
 
+          <TurnstileWidget
+            action="payslip-pin"
+            onToken={setCaptchaToken}
+            resetKey={captchaResetKey}
+          />
+
           {error && (
             <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400">
               {error}
@@ -101,7 +115,7 @@ export default function PinAuth({
 
           <button
             type="submit"
-            disabled={loading || pin.length < 8}
+            disabled={loading || pin.length < 8 || !captchaReady}
             className="w-full rounded-lg bg-amber-600 px-4 py-3 font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Verifying..." : "View Payslip"}

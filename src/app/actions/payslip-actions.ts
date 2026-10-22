@@ -4,6 +4,11 @@ import { auth } from "@clerk/nextjs/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
+import {
+  EMPTY_YTD,
+  fetchYearToDateTotals,
+  type YearToDateTotals,
+} from "@/lib/payslip/document-props";
 
 // Use admin client since we verify auth with Clerk
 // This bypasses RLS but is safe because we check userId
@@ -395,22 +400,6 @@ export async function getRecentPayslips(
   return (data as (Payslip & { employee: Employee })[]) || [];
 }
 
-export interface YearToDateTotals {
-  grossTotal: number;
-  taxTotal: number;
-  sscTotal: number;
-  netTotal: number;
-  leaveHoursTaken: number;
-}
-
-const EMPTY_YTD: YearToDateTotals = {
-  grossTotal: 0,
-  taxTotal: 0,
-  sscTotal: 0,
-  netTotal: 0,
-  leaveHoursTaken: 0,
-};
-
 /**
  * Yıl başından bu döneme kadar toplamlar. Yalnızca yayınlanmış bordrolar
  * sayılır; görüntülenen bordro taslaksa kendi tutarları da eklenir.
@@ -435,40 +424,13 @@ export async function getYearToDateTotals(
 
   if (!company) return { ...EMPTY_YTD };
 
-  // Get all issued payslips for this employee in this year up to the month
-  const { data: payslips, error } = await supabase
-    .from("payslips")
-    .select("gross_salary, net_salary, deductions")
-    .eq("employee_id", employeeId)
-    .eq("company_id", (company as { id: string }).id)
-    .eq("status", PAYSLIP_STATUS.FINAL)
-    .eq("period_year", year)
-    .lte("period_month", upToMonth);
-
-  if (error || !payslips) {
-    console.error("Error fetching YTD totals:", error);
-    return { ...EMPTY_YTD };
-  }
-
-  const rows = currentDraft ? [...payslips, currentDraft] : payslips;
-  const totals = { ...EMPTY_YTD };
-
-  for (const payslip of rows) {
-    totals.grossTotal += payslip.gross_salary || 0;
-    totals.netTotal += payslip.net_salary || 0;
-    const deductions = payslip.deductions as {
-      incomeTax?: number;
-      sscEmployee?: number;
-      leaveHoursTaken?: number;
-    } | null;
-    if (deductions) {
-      totals.taxTotal += deductions.incomeTax || 0;
-      totals.sscTotal += deductions.sscEmployee || 0;
-      totals.leaveHoursTaken += deductions.leaveHoursTaken || 0;
-    }
-  }
-
-  return totals;
+  return fetchYearToDateTotals(supabase, {
+    companyId: (company as { id: string }).id,
+    employeeId,
+    year,
+    upToMonth,
+    currentDraft,
+  });
 }
 
 export async function getPayslips(
