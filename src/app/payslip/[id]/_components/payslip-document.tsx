@@ -75,6 +75,11 @@ export interface PayslipDocumentProps {
   };
   notes?: string;
   status?: PayslipStatus;
+  /** Geçersiz kılınmış bordro: tarih ve gerekçe */
+  voided?: {
+    at: string;
+    reason: string;
+  };
   payslipUrl?: string;
   accessToken?: string;
 }
@@ -114,7 +119,7 @@ const fmt = (amount: number): string =>
 
 const fmtHours = (hours: number): string => hours.toFixed(2);
 
-function DraftWatermark() {
+function Watermark({ label, color }: { label: string; color: string }) {
   // html2canvas transform'ları destekler; arka plan SVG'si yerine span ızgarası
   return (
     <div
@@ -141,14 +146,14 @@ function DraftWatermark() {
           <span
             key={i}
             style={{
-              color: "#9ca3af",
+              color,
               opacity: 0.28,
               fontSize: "12px",
               fontWeight: 600,
               textAlign: "center",
             }}
           >
-            Draft
+            {label}
           </span>
         ))}
       </div>
@@ -207,10 +212,12 @@ export default function PayslipDocument({
   leave,
   notes,
   status = PAYSLIP_STATUS.FINAL,
+  voided,
   payslipUrl,
   accessToken,
 }: PayslipDocumentProps) {
   const isDraft = status === PAYSLIP_STATUS.DRAFT;
+  const isVoid = status === PAYSLIP_STATUS.VOID;
   const isPaidPlan = company.plan !== "free";
 
   // Dönem: kıst ayda işe başlama tarihinden başlar
@@ -302,7 +309,8 @@ export default function PayslipDocument({
         overflow: "hidden",
       }}
     >
-      {isDraft && <DraftWatermark />}
+      {isDraft && <Watermark label="Draft" color="#9ca3af" />}
+      {isVoid && <Watermark label="VOID" color="#dc2626" />}
 
       <div
         className="relative flex flex-col"
@@ -492,6 +500,19 @@ export default function PayslipDocument({
           </div>
         )}
 
+        {/* ============ VOID NOTICE ============ */}
+        {isVoid && voided && (
+          <div
+            className="mt-6 rounded-sm px-3 py-2 text-[11px]"
+            style={{ borderLeft: "3px solid #dc2626", background: "#fef2f2" }}
+          >
+            <span className="font-semibold" style={{ color: "#dc2626" }}>
+              Voided on {formatOrdinalDate(voided.at)}:{" "}
+            </span>
+            <span className="whitespace-pre-line">{voided.reason}</span>
+          </div>
+        )}
+
         <div className="flex-grow" />
 
         {/* ============ TAKE-HOME PAY ============ */}
@@ -564,6 +585,12 @@ export default function PayslipDocument({
             {isDraft ? (
               <p className="font-semibold uppercase" style={{ color: ACCENT }}>
                 Draft — not issued, subject to change
+              </p>
+            ) : isVoid ? (
+              <p className="font-semibold" style={{ color: "#dc2626" }}>
+                VOID — cancelled
+                {voided ? ` on ${formatOrdinalDate(voided.at)}` : ""}. Not
+                valid.
               </p>
             ) : (
               <>

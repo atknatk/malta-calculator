@@ -17,7 +17,7 @@ import {
   accessCookieOptions,
   createAccessCookieValue,
 } from "@/lib/payslip/access-cookie";
-import { PAYSLIP_STATUS } from "@/utils/payslip-details";
+import { ISSUED_STATUSES } from "@/utils/payslip-details";
 
 const VERIFY_ACCESS_MAX_AGE = 60 * 60; // 1 saat
 
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       .from("payslips")
       .select("id")
       .eq("access_token", body.token)
-      .eq("status", PAYSLIP_STATUS.FINAL)
+      .in("status", ISSUED_STATUSES)
       .maybeSingle();
 
     if (!payslip) {

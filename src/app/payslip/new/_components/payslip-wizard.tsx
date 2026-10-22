@@ -36,7 +36,10 @@ interface Employee {
 }
 
 export interface PayslipDraft {
-  payslipId: string;
+  /** Düzenlenen taslak */
+  payslipId?: string;
+  /** Void edilen bordronun yerine çıkarılan düzeltme */
+  replacesPayslipId?: string;
   employeeId: string;
   periodMonth: number;
   periodYear: number;
@@ -314,6 +317,7 @@ export default function PayslipWizard({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           payslipId: draft?.payslipId,
+          replacesPayslipId: draft?.replacesPayslipId,
           status,
           employeeId: selectedEmployee.id,
           periodMonth: salaryDetails.month,
@@ -373,7 +377,11 @@ export default function PayslipWizard({
       <div>
         <div className="mx-auto max-w-2xl">
           <h1 className="mb-6 text-[28px] font-normal leading-9 tracking-tight text-md-on-surface">
-            {draft ? "Edit draft" : "New payslip"}
+            {draft?.payslipId
+              ? "Edit draft"
+              : draft?.replacesPayslipId
+                ? "Corrected payslip"
+                : "New payslip"}
           </h1>
           {/* Progress */}
           <div className="mb-8">
@@ -1053,7 +1061,7 @@ export default function PayslipWizard({
                   >
                     {loading === PAYSLIP_STATUS.DRAFT
                       ? "Saving..."
-                      : draft
+                      : draft?.payslipId
                         ? "Update Draft"
                         : "Save as Draft"}
                   </Button>

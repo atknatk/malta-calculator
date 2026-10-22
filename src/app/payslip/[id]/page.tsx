@@ -1,16 +1,16 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Info } from "lucide-react";
-import {
-  getPayslipById,
-  getYearToDateTotals,
-} from "@/app/actions/payslip-actions";
+import { ArrowLeft, Ban, Info } from "lucide-react";
+import { getPayslipById } from "@/app/actions/payslip-actions";
 import PayslipDocument from "./_components/payslip-document";
 import PayslipActions from "./_components/payslip-actions";
 import PayslipStatusChip from "@/components/admin/payslip-status-chip";
 import { PAYSLIP_STATUS } from "@/utils/payslip-details";
-import { buildPayslipDocumentProps } from "@/lib/payslip/document-props";
+import { resolvePayslipDocument } from "@/lib/payslip/document-props";
+import { freezeLegacyPayslip } from "@/lib/payslip/issue";
+import { createAdminClient } from "@/lib/supabase/admin";
+import PayslipIntegrityNotice from "@/components/payslip/payslip-integrity";
 
 const months = [
   "January",
@@ -46,22 +46,28 @@ export default async function PayslipViewPage({
   }
 
   const isDraft = payslip.status === PAYSLIP_STATUS.DRAFT;
+  const isVoid = payslip.status === PAYSLIP_STATUS.VOID;
+  const supabase = createAdminClient();
 
-  // Get Year-to-Date totals (taslaksa kendi tutarları da eklenir)
-  const ytdTotals = await getYearToDateTotals(
-    payslip.employee_id,
-    payslip.period_year,
-    payslip.period_month,
-    isDraft ? payslip : undefined,
-  );
-
-  const documentProps = buildPayslipDocumentProps(
+  // getPayslipById şirket sahipliğini doğruladı; yayınlanmış bordro
+  // snapshot'tan, taslak canlı veriden gösterilir
+  const { props: documentProps, integrity } = await resolvePayslipDocument(
+    supabase,
     payslip,
     payslip.company,
     payslip.employee,
-    ytdTotals,
   );
   const { payslipNumber } = documentProps;
+
+  // Kilitleme öncesi yayınlanmış bordroyu ilk görüntülemede dondur
+  if (integrity === "legacy") {
+    await freezeLegacyPayslip(
+      supabase,
+      payslip,
+      payslip.company,
+      payslip.employee,
+    );
+  }
 
   return (
     <div className="mx-auto max-w-[210mm]">
@@ -103,6 +109,26 @@ export default async function PayslipViewPage({
               limit.
             </p>
           </div>
+        )}
+        {isVoid && (
+          <div className="mt-4 flex items-start gap-3 rounded-2xl bg-md-error-container p-4 text-sm text-md-on-error-container">
+            <Ban className="mt-0.5 size-4 shrink-0" />
+            <p>
+              Voided
+              {payslip.voided_at
+                ? ` on ${new Date(payslip.voided_at).toLocaleDateString("en-GB")}`
+                : ""}
+              : {payslip.void_reason}. It stays on record and shows as void
+              when its QR code is scanned.
+            </p>
+          </div>
+        )}
+        {!isDraft && (
+          <PayslipIntegrityNotice
+            integrity={integrity}
+            contentHash={payslip.content_hash}
+            className="mt-4"
+          />
         )}
       </div>
 

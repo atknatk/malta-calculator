@@ -3,7 +3,12 @@
 import { auth } from "@clerk/nextjs/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
-import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
+import {
+  ISSUED_STATUSES,
+  PAYSLIP_STATUS,
+  type PayslipStatus,
+} from "@/utils/payslip-details";
+import { issuePayslip, voidIssuedPayslip } from "@/lib/payslip/issue";
 import {
   EMPTY_YTD,
   fetchYearToDateTotals,
@@ -65,6 +70,11 @@ interface Payslip {
   created_at: string;
   updated_at: string;
   finalized_at: string | null;
+  snapshot: unknown;
+  content_hash: string | null;
+  voided_at: string | null;
+  void_reason: string | null;
+  replaces_payslip_id: string | null;
 }
 
 // ============ COMPANY ACTIONS ============
@@ -317,12 +327,13 @@ export async function getUsageLimits(): Promise<{
     59,
   ).toISOString();
 
-  // Limit yalnızca bu ay yayınlanan bordroları sayar; taslaklar ücretsiz
+  // Limit yalnızca bu ay yayınlanan bordroları sayar (sonradan void
+  // edilenler dahil); taslaklar ücretsiz
   const { count: payslipCount } = await supabase
     .from("payslips")
     .select("*", { count: "exact", head: true })
     .eq("company_id", companyData.id)
-    .eq("status", PAYSLIP_STATUS.FINAL)
+    .in("status", ISSUED_STATUSES)
     .gte("finalized_at", startOfMonth)
     .lte("finalized_at", endOfMonth);
 
@@ -501,27 +512,48 @@ export async function finalizePayslip(
     return { success: false, error: limit.message };
   }
 
-  const now = new Date().toISOString();
-  const { data, error } = await supabase
-    .from("payslips")
-    .update({
-      status: PAYSLIP_STATUS.FINAL,
-      finalized_at: now,
-      updated_at: now,
-    })
-    .eq("id", payslipId)
-    .eq("company_id", (company as { id: string }).id)
-    .eq("status", PAYSLIP_STATUS.DRAFT)
-    .select("id");
+  const result = await issuePayslip(
+    supabase,
+    payslipId,
+    (company as { id: string }).id,
+  );
+  if (!result.success) return result;
 
-  if (error) {
-    console.error("Error finalizing payslip:", error);
-    return { success: false, error: "Failed to issue payslip" };
-  }
+  revalidatePath("/dashboard");
+  revalidatePath("/payslips");
+  revalidatePath(`/payslip/${payslipId}`);
+  return { success: true };
+}
 
-  if (!data || data.length === 0) {
-    return { success: false, error: "Draft not found or already issued" };
-  }
+/**
+ * Yayınlanmış bordroyu geçersiz kıl (yanlış yayınlandıysa). Bordro silinmez,
+ * "VOID" olarak kalır ve QR doğrulamada geçersiz görünür; aynı dönem için
+ * yeni bordro çıkarılabilir.
+ */
+export async function voidPayslip(
+  payslipId: string,
+  reason: string,
+): Promise<{ success: boolean; error?: string }> {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Not authenticated" };
+
+  const supabase = createAdminClient();
+
+  const { data: company } = await supabase
+    .from("companies")
+    .select("id")
+    .eq("clerk_user_id", userId)
+    .single();
+
+  if (!company) return { success: false, error: "Company not found" };
+
+  const result = await voidIssuedPayslip(
+    supabase,
+    payslipId,
+    (company as { id: string }).id,
+    reason,
+  );
+  if (!result.success) return result;
 
   revalidatePath("/dashboard");
   revalidatePath("/payslips");

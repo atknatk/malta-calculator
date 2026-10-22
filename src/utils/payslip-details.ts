@@ -8,7 +8,11 @@ import { calculateVacationLeave } from "@/utils/vacation-calculator";
 export const PAYSLIP_STATUS = {
   DRAFT: "draft",
   FINAL: "final",
+  VOID: "void",
 } as const;
+
+/** Yayınlanmış (final) ya da sonradan geçersiz kılınmış (void) bordrolar */
+export const ISSUED_STATUSES: PayslipStatus[] = ["final", "void"];
 
 export type PayslipStatus =
   (typeof PAYSLIP_STATUS)[keyof typeof PAYSLIP_STATUS];

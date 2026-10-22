@@ -27,6 +27,7 @@ const FILTERS: { label: string; value?: PayslipStatus }[] = [
   { label: "All" },
   { label: "Drafts", value: PAYSLIP_STATUS.DRAFT },
   { label: "Issued", value: PAYSLIP_STATUS.FINAL },
+  { label: "Void", value: PAYSLIP_STATUS.VOID },
 ];
 
 export default async function PayslipsPage({

@@ -4,8 +4,10 @@
  * aynı hesaplamalarla gösterir.
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { verifySnapshot, type PayslipSnapshot } from "@/lib/payslip/snapshot";
 import type { PayslipDocumentProps } from "@/app/payslip/[id]/_components/payslip-document";
 import {
+  ISSUED_STATUSES,
   PAYSLIP_STATUS,
   buildPayslipNumber,
   calculateEmployerContributions,
@@ -26,7 +28,21 @@ export interface PayslipRecord {
   status: PayslipStatus;
   created_at: string;
   updated_at: string;
+  finalized_at?: string | null;
+  snapshot?: unknown;
+  content_hash?: string | null;
+  voided_at?: string | null;
+  void_reason?: string | null;
 }
+
+/**
+ * Belge bütünlüğü:
+ * - verified: yayınlanırken dondurulan snapshot, parmak iziyle eşleşiyor
+ * - mismatch: snapshot değiştirilmiş (parmak izi tutmuyor)
+ * - legacy: kilitleme öncesi yayınlanmış, snapshot yok (canlı veriden çizilir)
+ * - draft: taslak, henüz dondurulmadı
+ */
+export type PayslipIntegrity = "verified" | "mismatch" | "legacy" | "draft";
 
 export interface PayslipCompanyRecord {
   name: string;
@@ -250,8 +266,52 @@ export function firstRelation<T>(value: T | T[] | null | undefined): T | null {
 }
 
 /**
- * Herkese açık sayfalar için yayınlanmış bordroyu tüm belge verisiyle yükler.
- * Taslaklar asla döndürülmez. Erişim kontrolü (PIN / captcha) çağıranda.
+ * Bir bordro satırının belge prop'ları. Yayınlanmış bordro dondurulmuş
+ * snapshot'tan gösterilir (şirket/çalışan bilgisi sonradan değişse de aynı
+ * kalır); taslak ve eski bordrolar canlı veriden üretilir.
+ */
+export async function resolvePayslipDocument(
+  supabase: SupabaseClient,
+  payslip: PayslipRecord,
+  company: PayslipCompanyRecord,
+  employee: PayslipEmployeeRecord,
+): Promise<{ props: PayslipDocumentProps; integrity: PayslipIntegrity }> {
+  const voided =
+    payslip.status === PAYSLIP_STATUS.VOID && payslip.voided_at
+      ? { at: payslip.voided_at, reason: payslip.void_reason || "" }
+      : undefined;
+
+  const snapshot = payslip.snapshot as PayslipSnapshot | null | undefined;
+  if (snapshot?.document) {
+    return {
+      props: { ...snapshot.document, status: payslip.status, voided },
+      integrity: verifySnapshot(snapshot, payslip.content_hash)
+        ? "verified"
+        : "mismatch",
+    };
+  }
+
+  const isDraft = payslip.status === PAYSLIP_STATUS.DRAFT;
+  const ytdTotals = await fetchYearToDateTotals(supabase, {
+    companyId: payslip.company_id,
+    employeeId: payslip.employee_id,
+    year: payslip.period_year,
+    upToMonth: payslip.period_month,
+    currentDraft: isDraft ? payslip : undefined,
+  });
+
+  return {
+    props: {
+      ...buildPayslipDocumentProps(payslip, company, employee, ytdTotals),
+      voided,
+    },
+    integrity: isDraft ? "draft" : "legacy",
+  };
+}
+
+/**
+ * Herkese açık sayfalar için yayınlanmış (ya da void) bordroyu tüm belge
+ * verisiyle yükler. Taslaklar asla döndürülmez. Erişim kontrolü çağıranda.
  */
 export async function fetchPublishedPayslipDocument(
   supabase: SupabaseClient,
@@ -261,6 +321,7 @@ export async function fetchPublishedPayslipDocument(
   company: PayslipCompanyRecord;
   employee: PayslipEmployeeRecord & { date_of_birth?: string | null };
   props: PayslipDocumentProps;
+  integrity: PayslipIntegrity;
 } | null> {
   const { data, error } = await supabase
     .from("payslips")
@@ -272,7 +333,7 @@ export async function fetchPublishedPayslipDocument(
     `,
     )
     .eq(lookup.column, lookup.value)
-    .eq("status", PAYSLIP_STATUS.FINAL)
+    .in("status", ISSUED_STATUSES)
     .maybeSingle();
 
   if (error || !data) return null;
@@ -289,17 +350,12 @@ export async function fetchPublishedPayslipDocument(
   );
   if (!employee || !company) return null;
 
-  const ytdTotals = await fetchYearToDateTotals(supabase, {
-    companyId: row.company_id,
-    employeeId: row.employee_id,
-    year: row.period_year,
-    upToMonth: row.period_month,
-  });
-
-  return {
-    payslip: row,
+  const { props, integrity } = await resolvePayslipDocument(
+    supabase,
+    row,
     company,
     employee,
-    props: buildPayslipDocumentProps(row, company, employee, ytdTotals),
-  };
+  );
+
+  return { payslip: row, company, employee, props, integrity };
 }

@@ -13,6 +13,7 @@ import {
   createAccessCookieValue,
 } from "@/lib/payslip/access-cookie";
 import { firstRelation } from "@/lib/payslip/document-props";
+import { ISSUED_STATUSES } from "@/utils/payslip-details";
 
 const EMPLOYEE_ACCESS_MAX_AGE = 60 * 60 * 24; // 24 hours
 
@@ -87,7 +88,7 @@ export async function POST(request: NextRequest) {
             `,
       )
       .eq("id", payslipId)
-      .eq("status", "final")
+      .in("status", ISSUED_STATUSES)
       .single();
 
     if (error || !payslip) {

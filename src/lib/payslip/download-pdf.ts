@@ -5,11 +5,12 @@
 export function buildPayslipFilename(
   payslipNumber?: string,
   employeeName?: string,
-  isDraft = false,
+  /** Dosya adı öneki, ör. "DRAFT" ya da "VOID" */
+  prefix?: string,
 ): string {
   if (!payslipNumber) return "Payslip.pdf";
   const name = employeeName ? `-${employeeName.replace(/\s+/g, "_")}` : "";
-  return `${isDraft ? "DRAFT-" : ""}Payslip-${payslipNumber}${name}.pdf`;
+  return `${prefix ? `${prefix}-` : ""}Payslip-${payslipNumber}${name}.pdf`;
 }
 
 export async function downloadPayslipPdf(filename: string): Promise<void> {
