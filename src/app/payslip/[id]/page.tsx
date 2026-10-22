@@ -10,6 +10,7 @@ import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 import { resolvePayslipDocument } from "@/lib/payslip/document-props";
 import { freezeLegacyPayslip } from "@/lib/payslip/issue";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getPayslipPdfArchive } from "@/lib/payslip/pdf-archive";
 import PayslipIntegrityNotice from "@/components/payslip/payslip-integrity";
 
 const months = [
@@ -69,6 +70,11 @@ export default async function PayslipViewPage({
     );
   }
 
+  // R2'de arşivlenmiş PDF (yayınlanmış bordrolar)
+  const archive = isDraft
+    ? null
+    : await getPayslipPdfArchive(supabase, payslip.id);
+
   return (
     <div className="mx-auto max-w-[210mm]">
       {/* Actions */}
@@ -97,6 +103,7 @@ export default async function PayslipViewPage({
             status={payslip.status}
             payslipNumber={payslipNumber}
             employeeName={payslip.employee.name}
+            archivedAt={archive?.archived_at}
           />
         </div>
         {isDraft && (
