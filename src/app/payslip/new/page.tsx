@@ -9,6 +9,8 @@ import {
 import PayslipWizard, { type PayslipDraft } from "./_components/payslip-wizard";
 import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 import Link from "next/link";
+import { UserPlus, Users } from "lucide-react";
+import { EmptyState, MdCard, mdButton } from "@/components/admin/admin-ui";
 
 export default async function NewPayslipPage({
   searchParams,
@@ -64,25 +66,19 @@ export default async function NewPayslipPage({
 
   if (employees.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-        <div className="mx-auto max-w-md rounded-xl border bg-white p-8 text-center shadow-lg dark:bg-slate-800 dark:border-slate-700">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900">
-            <span className="text-3xl">👥</span>
-          </div>
-          <h2 className="mb-2 text-xl font-bold text-slate-900 dark:text-white">
-            Add Employees First
-          </h2>
-          <p className="mb-6 text-slate-500">
-            You need to add at least one employee to create a payslip.
-          </p>
-          <Link
-            href="/employees"
-            className="inline-block rounded-lg bg-amber-600 px-6 py-3 font-medium text-white transition hover:bg-amber-700"
-          >
-            Add Employee
-          </Link>
-        </div>
-      </div>
+      <MdCard className="mx-auto mt-8 max-w-lg">
+        <EmptyState
+          icon={<Users />}
+          title="Add employees first"
+          description="You need at least one employee before you can create a payslip."
+          action={
+            <Link href="/employees" className={mdButton()}>
+              <UserPlus />
+              Add employee
+            </Link>
+          }
+        />
+      </MdCard>
     );
   }
 

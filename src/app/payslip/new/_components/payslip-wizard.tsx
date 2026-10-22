@@ -3,7 +3,6 @@
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
 import { isChildCountEffective } from "@/config/malta-tax-config";
 import {
   Select,
@@ -365,30 +364,12 @@ export default function PayslipWizard({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-slate-900/80">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-2">
-            <Link
-              href="/dashboard"
-              className="text-xl font-bold text-amber-600"
-            >
-              Malta Calculator
-            </Link>
-            <span className="rounded-md bg-gradient-to-r from-violet-500 to-purple-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-              Beta
-            </span>
-            <span className="text-slate-400">/</span>
-            <span className="text-slate-600 dark:text-slate-400">
-              {draft ? "Edit Draft" : "New Payslip"}
-            </span>
-          </div>
-          <UserButton afterSignOutUrl="/" />
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-12">
+    <div>
+      <div>
         <div className="mx-auto max-w-2xl">
+          <h1 className="mb-6 text-[28px] font-normal leading-9 tracking-tight text-md-on-surface">
+            {draft ? "Edit draft" : "New payslip"}
+          </h1>
           {/* Progress */}
           <div className="mb-8">
             <div className="mb-2 flex justify-between text-sm text-slate-500">
@@ -405,8 +386,8 @@ export default function PayslipWizard({
                   key={s}
                   className={`h-2 flex-1 rounded-full transition ${
                     s <= step
-                      ? "bg-amber-500"
-                      : "bg-slate-200 dark:bg-slate-700"
+                      ? "bg-md-primary"
+                      : "bg-md-surface-container-highest"
                   }`}
                 />
               ))}
@@ -1076,7 +1057,7 @@ export default function PayslipWizard({
             </Link>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

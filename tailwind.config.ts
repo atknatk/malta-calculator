@@ -60,6 +60,37 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        /* Material 3 (admin paneli) */
+        md: {
+          "primary": "rgb(var(--md-primary) / <alpha-value>)",
+          "on-primary": "rgb(var(--md-on-primary) / <alpha-value>)",
+          "primary-container": "rgb(var(--md-primary-container) / <alpha-value>)",
+          "on-primary-container": "rgb(var(--md-on-primary-container) / <alpha-value>)",
+          "secondary-container": "rgb(var(--md-secondary-container) / <alpha-value>)",
+          "on-secondary-container": "rgb(var(--md-on-secondary-container) / <alpha-value>)",
+          "tertiary": "rgb(var(--md-tertiary) / <alpha-value>)",
+          "tertiary-container": "rgb(var(--md-tertiary-container) / <alpha-value>)",
+          "on-tertiary-container": "rgb(var(--md-on-tertiary-container) / <alpha-value>)",
+          "success": "rgb(var(--md-success) / <alpha-value>)",
+          "success-container": "rgb(var(--md-success-container) / <alpha-value>)",
+          "on-success-container": "rgb(var(--md-on-success-container) / <alpha-value>)",
+          "warning-container": "rgb(var(--md-warning-container) / <alpha-value>)",
+          "on-warning-container": "rgb(var(--md-on-warning-container) / <alpha-value>)",
+          "error": "rgb(var(--md-error) / <alpha-value>)",
+          "error-container": "rgb(var(--md-error-container) / <alpha-value>)",
+          "on-error-container": "rgb(var(--md-on-error-container) / <alpha-value>)",
+          "surface": "rgb(var(--md-surface) / <alpha-value>)",
+          "surface-dim": "rgb(var(--md-surface-dim) / <alpha-value>)",
+          "surface-container-lowest": "rgb(var(--md-surface-container-lowest) / <alpha-value>)",
+          "surface-container-low": "rgb(var(--md-surface-container-low) / <alpha-value>)",
+          "surface-container": "rgb(var(--md-surface-container) / <alpha-value>)",
+          "surface-container-high": "rgb(var(--md-surface-container-high) / <alpha-value>)",
+          "surface-container-highest": "rgb(var(--md-surface-container-highest) / <alpha-value>)",
+          "on-surface": "rgb(var(--md-on-surface) / <alpha-value>)",
+          "on-surface-variant": "rgb(var(--md-on-surface-variant) / <alpha-value>)",
+          "outline": "rgb(var(--md-outline) / <alpha-value>)",
+          "outline-variant": "rgb(var(--md-outline-variant) / <alpha-value>)",
+        },
         /* Tremor */
         // light mode
         tremor: {
@@ -135,6 +166,10 @@ const config = {
       },
       /* Tremor */
       boxShadow: {
+        /* Material 3 elevation */
+        "md-1": "0 1px 2px 0 rgb(0 0 0 / 0.08), 0 1px 3px 1px rgb(0 0 0 / 0.05)",
+        "md-2": "0 1px 2px 0 rgb(0 0 0 / 0.08), 0 2px 6px 2px rgb(0 0 0 / 0.06)",
+        "md-3": "0 4px 8px 3px rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.1)",
         // light
         "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         "tremor-card":
