@@ -80,6 +80,9 @@ export default function PayslipWizard({
     birthYear: 1990,
     bonus: 0, // One-time bonus for this month
     allowance: 0, // Monthly allowance
+    startDate: "", // İşe başlama tarihi (YYYY-MM-DD) — kıst bordro için
+    previousTaxableIncome: 0, // Aynı yıl önceki işveren matrahı (FS3)
+    previousTaxPaid: 0, // Aynı yıl önceki işverende kesilen vergi (FS3)
   });
 
   // Show child count for married/parent in 2026+
@@ -101,6 +104,8 @@ export default function PayslipWizard({
     cola: number;
     bonus: number;
     allowance: number;
+    employmentRatio: number;
+    sscWeeks: number;
   } | null>(null);
 
   const handleCalculate = async () => {
@@ -138,6 +143,20 @@ export default function PayslipWizard({
         return;
       }
 
+      // İşe başlama tarihinden önceki dönem için bordro hazırlanamaz
+      if (salaryDetails.startDate) {
+        const [startYear, startMonth] = salaryDetails.startDate
+          .split("-")
+          .map(Number);
+        if (
+          startYear > salaryDetails.year ||
+          (startYear === salaryDetails.year && startMonth > salaryDetails.month)
+        ) {
+          setError("This period is before the employee's start date");
+          return;
+        }
+      }
+
       // Check for API token
       const apiToken = process.env.NEXT_PUBLIC_SALARY_API_TOKEN;
       if (!apiToken) {
@@ -159,6 +178,9 @@ export default function PayslipWizard({
           childCount: salaryDetails.childCount,
           sscCategory: salaryDetails.sscCategory,
           birthYear: salaryDetails.birthYear,
+          startDate: salaryDetails.startDate || undefined,
+          previousTaxableIncome: salaryDetails.previousTaxableIncome,
+          previousTaxPaid: salaryDetails.previousTaxPaid,
         }),
       });
 
@@ -193,10 +215,13 @@ export default function PayslipWizard({
             salaryDetails.allowance,
           incomeTax: monthlyData?.incomeTax || data.data.summary.monthly.tax,
           sscEmployee: monthlyData?.sscTax || data.data.summary.monthly.ssc,
-          monthlyGross: data.data.summary.monthly.gross,
-          cola: monthlyData?.cola || 0,
+          monthlyGross:
+            monthlyData?.basicSalary ?? data.data.summary.monthly.gross,
+          cola: monthlyData?.governmentBonus || 0,
           bonus: salaryDetails.bonus,
           allowance: salaryDetails.allowance,
+          employmentRatio: monthlyData?.employmentRatio ?? 1,
+          sscWeeks: monthlyData?.sscWeeks ?? 4,
         });
         setStep(3);
       } else {
@@ -231,6 +256,10 @@ export default function PayslipWizard({
             cola: calculationResult.cola,
             bonus: calculationResult.bonus,
             allowance: calculationResult.allowance,
+            sscWeeks: calculationResult.sscWeeks,
+            ...(calculationResult.employmentRatio < 1 && salaryDetails.startDate
+              ? { periodStartDate: salaryDetails.startDate }
+              : {}),
           },
           salaryConfig: {
             annualGross: salaryDetails.annualGrossSalary,
@@ -238,6 +267,9 @@ export default function PayslipWizard({
             childCount: salaryDetails.childCount,
             sscCategory: salaryDetails.sscCategory,
             birthYear: salaryDetails.birthYear,
+            startDate: salaryDetails.startDate || undefined,
+            previousTaxableIncome: salaryDetails.previousTaxableIncome,
+            previousTaxPaid: salaryDetails.previousTaxPaid,
           },
         }),
       });
@@ -576,6 +608,69 @@ export default function PayslipWizard({
                     <p className="text-xs text-slate-500">Monthly allowance</p>
                   </div>
                 </div>
+
+                {/* Employment start & previous employment (FS3) */}
+                <div className="space-y-4 rounded-lg border border-slate-200 p-4 dark:border-slate-700">
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    <div className="space-y-2">
+                      <Label>Employment Start Date</Label>
+                      <Input
+                        type="date"
+                        value={salaryDetails.startDate}
+                        onChange={(e) =>
+                          setSalaryDetails({
+                            ...salaryDetails,
+                            startDate: e.target.value,
+                          })
+                        }
+                      />
+                      <p className="text-xs text-slate-500">
+                        Optional. Start month is paid pro-rata
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Taxable Income Earlier This Year (€)</Label>
+                      <Input
+                        type="number"
+                        value={salaryDetails.previousTaxableIncome || ""}
+                        onChange={(e) =>
+                          setSalaryDetails({
+                            ...salaryDetails,
+                            previousTaxableIncome:
+                              parseFloat(e.target.value) || 0,
+                          })
+                        }
+                        placeholder="0"
+                      />
+                      <p className="text-xs text-slate-500">
+                        From previous employer&apos;s FS3
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Tax Already Paid This Year (€)</Label>
+                      <Input
+                        type="number"
+                        value={salaryDetails.previousTaxPaid || ""}
+                        onChange={(e) =>
+                          setSalaryDetails({
+                            ...salaryDetails,
+                            previousTaxPaid: parseFloat(e.target.value) || 0,
+                          })
+                        }
+                        placeholder="0"
+                      />
+                      <p className="text-xs text-slate-500">
+                        FSS tax on previous employer&apos;s FS3
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Tax uses the FSS cumulative method: income earned this year
+                    (including earlier employers) is projected from the months
+                    elapsed, so a mid-year starter is not taxed as if they
+                    worked the full year.
+                  </p>
+                </div>
               </div>
 
               {error && (
@@ -647,6 +742,8 @@ export default function PayslipWizard({
                   <div className="flex justify-between">
                     <span className="text-slate-600 dark:text-slate-400">
                       Basic Salary
+                      {calculationResult.employmentRatio < 1 &&
+                        ` (pro-rata ${Math.round(calculationResult.employmentRatio * 100)}%)`}
                     </span>
                     <span className="font-medium text-slate-900 dark:text-white">
                       €{calculationResult.monthlyGross.toFixed(2)}

@@ -32,6 +32,16 @@ export type MonthlySalaryOutput = {
   net: number;
   paid: number;
   discr: number;
+  employmentRatio: number; // Ayın çalışılan oranı (0 = çalışılmadı, 1 = tam ay)
+  sscWeeks: number; // SSC ödenen hafta sayısı (kıst ayda çalışılan haftalar)
+};
+
+/**
+ * Aynı yıl içinde önceki işverenden gelen kümülatif değerler (FS3)
+ */
+export type PreviousEmployment = {
+  taxableIncome: number; // Önceki işverende vergiye tabi brüt (FS3)
+  taxPaid: number; // Önceki işverende kesilen FSS vergisi (FS3)
 };
 
 export type SalaryCalculatorConfig = {
@@ -47,6 +57,9 @@ export type SalaryCalculatorConfig = {
   governmentBonus?: number; // Devlet bonusu (aylık) - deprecated, use enableCOLA
   enableCOLA?: boolean; // COLA otomatik hesaplama (varsayılan: true)
   weeksPerMonthOverride?: number; // Sabit hafta sayısı (null = otomatik)
+  employmentStartDate?: Date; // İşe başlama tarihi (yıl öncesi/boş = 1 Ocak)
+  employmentEndDate?: Date; // İşten ayrılma tarihi (yıl sonrası/boş = 31 Aralık)
+  previousEmployment?: PreviousEmployment; // Yıl içi önceki işveren (FS3)
 };
 
 export enum Month {

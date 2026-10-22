@@ -5,10 +5,13 @@
 import {
   Month,
   MonthlySalaryInput,
-  MonthlySalaryOutput,
   SalaryCalculatorConfig,
 } from "@/types/salary-calculator-type";
-import { calculateMonthlyDeductions } from "@/utils/salary-calculator";
+import {
+  buildEmploymentConfig,
+  calculateMonthlyDeductions,
+  summarizeMonthlyDeductions,
+} from "@/utils/salary-calculator";
 import {
   SSCCategory,
   TaxRateType,
@@ -38,6 +41,14 @@ function buildConfig(params: SalarySearchParams): SalaryCalculatorConfig {
     yearlyTaxableBenefit: params.yearlyTaxableBenefit,
     monthlyBonus: params.monthlyBonus,
     enableCOLA: true,
+    ...buildEmploymentConfig({
+      year: parseInt(params.year),
+      startDate: params.startDate,
+      startOfMonth: params.startOfMonth,
+      endOfMonth: params.endOfMonth,
+      previousTaxableIncome: params.prevIncome,
+      previousTaxPaid: params.prevTax,
+    }),
   };
 }
 
@@ -62,33 +73,6 @@ function buildMonthlySalaries(
   return monthlySalaries;
 }
 
-/**
- * Özet hesapla
- */
-function calculateSummary(data: MonthlySalaryOutput[]) {
-  if (data.length === 0) return null;
-
-  const totalGross = data.reduce((sum, d) => sum + d.grossTotal, 0);
-  const totalSSC = data.reduce((sum, d) => sum + d.sscTax, 0);
-  const totalTax = data.reduce((sum, d) => sum + d.incomeTax, 0);
-  const totalNet = data.reduce((sum, d) => sum + d.net, 0);
-
-  return {
-    annual: {
-      gross: totalGross,
-      ssc: totalSSC,
-      tax: totalTax,
-      net: totalNet,
-    },
-    monthly: {
-      gross: totalGross / 12,
-      ssc: totalSSC / 12,
-      tax: totalTax / 12,
-      net: totalNet / 12,
-    },
-  };
-}
-
 export function SalaryCalculatorServer({
   initialParams,
   children,
@@ -97,7 +81,7 @@ export function SalaryCalculatorServer({
   const config = buildConfig(initialParams);
   const monthlySalaries = buildMonthlySalaries(initialParams);
   const calculatedData = calculateMonthlyDeductions(monthlySalaries, config);
-  const summary = calculateSummary(calculatedData);
+  const summary = summarizeMonthlyDeductions(calculatedData);
 
   return (
     <SalaryCalculatorClient

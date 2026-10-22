@@ -14,20 +14,37 @@ import {
   MonthlySalaryOutput,
   SalaryCalculatorConfig,
 } from "@/types/salary-calculator-type";
-import { calculateMonthlyDeductions } from "@/utils/salary-calculator";
-import { SSCCategory, TaxRateType } from "@/config/malta-tax-config";
+import {
+  buildEmploymentConfig,
+  calculateMonthlyDeductions,
+  calculateYearEndTaxPosition,
+  parseDateOnly,
+  summarizeMonthlyDeductions,
+  type YearEndTaxPosition,
+} from "@/utils/salary-calculator";
+import {
+  SSCCategory,
+  TaxRateType,
+  SimpleTaxType,
+  ChildCount,
+} from "@/config/malta-tax-config";
 
 // Request body type
 interface SalaryCalculationRequest {
   salary: number;
   year?: number;
   taxType?: "single" | "married" | "parent";
+  childCount?: number;
   sscCategory?: "A" | "B" | "C" | "D";
   birthYear?: number;
   yearlyNonTaxBenefit?: number;
   yearlyTaxableBenefit?: number;
   monthlyBonus?: number;
   allowanceBonus?: number;
+  startDate?: string; // İşe başlama tarihi (YYYY-MM-DD) — kıst hesap
+  endDate?: string; // İşten ayrılma tarihi (YYYY-MM-DD)
+  previousTaxableIncome?: number; // Aynı yıl önceki işveren matrahı (FS3)
+  previousTaxPaid?: number; // Aynı yıl önceki işverende ödenen vergi (FS3)
 }
 
 // Response type
@@ -53,7 +70,9 @@ interface SalaryCalculationResponse {
         tax: number;
         net: number;
       };
+      monthsWorked: number;
     };
+    yearEndTaxPosition: YearEndTaxPosition;
     monthlyBreakdown: MonthlySalaryOutput[];
   };
   error?: string;
@@ -85,16 +104,32 @@ function validateToken(request: NextRequest): boolean {
  */
 function buildConfig(params: SalaryCalculationRequest): SalaryCalculatorConfig {
   const currentYear = new Date().getFullYear();
+  const year = params.year ?? currentYear;
+  const childCount = Math.min(2, Math.max(0, Number(params.childCount) || 0));
+  const employment = buildEmploymentConfig({
+    year,
+    startDate: params.startDate,
+    previousTaxableIncome: params.previousTaxableIncome,
+    previousTaxPaid: params.previousTaxPaid,
+  });
+  const employmentEndDate = parseDateOnly(params.endDate);
 
   return {
-    year: params.year ?? currentYear,
+    year,
     taxRateType: (params.taxType ?? "single") as TaxRateType,
+    simpleTaxType: (params.taxType ?? "single") as SimpleTaxType,
+    childCount: childCount as ChildCount,
     sscCategory: (params.sscCategory ?? "C") as SSCCategory,
     birthDate: new Date(params.birthYear ?? 1990, 0, 1),
     yearlyNonTaxBenefit: params.yearlyNonTaxBenefit ?? 0,
     yearlyTaxableBenefit: params.yearlyTaxableBenefit ?? 0,
     monthlyBonus: params.monthlyBonus ?? 0,
     enableCOLA: true,
+    ...employment,
+    employmentEndDate:
+      employmentEndDate && employmentEndDate.getFullYear() === year
+        ? employmentEndDate
+        : undefined,
   };
 }
 
@@ -120,27 +155,25 @@ function buildMonthlySalaries(
 }
 
 /**
- * Calculate summary from monthly data
+ * Calculate summary from monthly data (aylık ortalama çalışılan aylar üzerinden)
  */
 function calculateSummary(data: MonthlySalaryOutput[]) {
-  const totalGross = data.reduce((sum, d) => sum + d.grossTotal, 0);
-  const totalSSC = data.reduce((sum, d) => sum + d.sscTax, 0);
-  const totalTax = data.reduce((sum, d) => sum + d.incomeTax, 0);
-  const totalNet = data.reduce((sum, d) => sum + d.net, 0);
-
+  const summary = summarizeMonthlyDeductions(data);
+  const r = (v: number) => Math.round(v * 100) / 100;
   return {
     annual: {
-      gross: Math.round(totalGross * 100) / 100,
-      ssc: Math.round(totalSSC * 100) / 100,
-      tax: Math.round(totalTax * 100) / 100,
-      net: Math.round(totalNet * 100) / 100,
+      gross: r(summary?.annual.gross ?? 0),
+      ssc: r(summary?.annual.ssc ?? 0),
+      tax: r(summary?.annual.tax ?? 0),
+      net: r(summary?.annual.net ?? 0),
     },
     monthly: {
-      gross: Math.round((totalGross / 12) * 100) / 100,
-      ssc: Math.round((totalSSC / 12) * 100) / 100,
-      tax: Math.round((totalTax / 12) * 100) / 100,
-      net: Math.round((totalNet / 12) * 100) / 100,
+      gross: r(summary?.monthly.gross ?? 0),
+      ssc: r(summary?.monthly.ssc ?? 0),
+      tax: r(summary?.monthly.tax ?? 0),
+      net: r(summary?.monthly.net ?? 0),
     },
+    monthsWorked: summary?.monthsWorked ?? 0,
   };
 }
 
@@ -194,6 +227,10 @@ export async function POST(
           sscCategory: config.sscCategory,
         },
         summary,
+        yearEndTaxPosition: calculateYearEndTaxPosition(
+          monthlyBreakdown,
+          config,
+        ),
         monthlyBreakdown,
       },
     });
@@ -251,6 +288,32 @@ export async function GET(): Promise<NextResponse> {
       yearlyTaxableBenefit: { type: "number", required: false, default: 0 },
       monthlyBonus: { type: "number", required: false, default: 0 },
       allowanceBonus: { type: "number", required: false, default: 0 },
+      childCount: { type: "number", required: false, default: 0 },
+      startDate: {
+        type: "string",
+        required: false,
+        description:
+          "Employment start date (YYYY-MM-DD) in the tax year. Months before it are empty and the first month is pro-rata.",
+      },
+      endDate: {
+        type: "string",
+        required: false,
+        description: "Employment end date (YYYY-MM-DD) in the tax year",
+      },
+      previousTaxableIncome: {
+        type: "number",
+        required: false,
+        default: 0,
+        description:
+          "Taxable income from a previous employer in the same year (FS3)",
+      },
+      previousTaxPaid: {
+        type: "number",
+        required: false,
+        default: 0,
+        description:
+          "FSS tax deducted by a previous employer in the same year (FS3)",
+      },
     },
     example: {
       curl: 'curl -X POST http://localhost:3000/api/salary/calculate -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -d \'{"salary": 50000, "year": 2025, "taxType": "single"}\'',

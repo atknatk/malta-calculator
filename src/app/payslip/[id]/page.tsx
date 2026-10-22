@@ -49,6 +49,8 @@ export default async function PayslipViewPage({
     cola?: number;
     bonus?: number;
     allowance?: number;
+    sscWeeks?: number;
+    periodStartDate?: string; // Kıst ay: işe başlama tarihi (YYYY-MM-DD)
   };
 
   // Get salary config if stored
@@ -183,6 +185,8 @@ export default async function PayslipViewPage({
               ytdTotals={ytdTotals}
               salaryConfig={salaryConfig}
               earnings={earnings}
+              sscWeeks={deductions.sscWeeks}
+              periodStartDate={deductions.periodStartDate}
               accessToken={payslip.access_token}
             />
           </div>

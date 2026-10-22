@@ -16,6 +16,7 @@ import {
   MonthlySalaryOutput,
   SalaryCalculatorConfig,
 } from "@/types/salary-calculator-type";
+import { cn } from "@/lib/utils";
 import { SalaryFormCard } from "@/components/salary/form-card";
 import { CalculatorModeToggle } from "@/components/salary/mode-toggle";
 import { serializeNetToGrossParams } from "@/app/net-to-gross/search-params";
@@ -23,7 +24,12 @@ import { SalaryCalculatorForm, type MonthlyBonuses } from "./salary-input-form";
 import { SalaryTable } from "./salary-table";
 import { MobileMonthlyCards } from "./mobile-monthly-cards";
 import { SalaryShareButtons } from "./salary-share-buttons";
-import { calculateMonthlyDeductions } from "@/utils/salary-calculator";
+import {
+  buildEmploymentConfig,
+  calculateMonthlyDeductions,
+  calculateYearEndTaxPosition,
+  summarizeMonthlyDeductions,
+} from "@/utils/salary-calculator";
 import {
   SSCCategory,
   TaxRateType,
@@ -104,25 +110,14 @@ function buildConfig(
     yearlyTaxableBenefit: formValues.yearlyTaxableBenefit,
     monthlyBonus: formValues.monthlyBonus,
     enableCOLA: true,
-  };
-}
-
-function calculateSummary(data: MonthlySalaryOutput[]): Summary | null {
-  if (data.length === 0) return null;
-
-  const totalGross = data.reduce((sum, d) => sum + d.grossTotal, 0);
-  const totalSSC = data.reduce((sum, d) => sum + d.sscTax, 0);
-  const totalTax = data.reduce((sum, d) => sum + d.incomeTax, 0);
-  const totalNet = data.reduce((sum, d) => sum + d.net, 0);
-
-  return {
-    annual: { gross: totalGross, ssc: totalSSC, tax: totalTax, net: totalNet },
-    monthly: {
-      gross: totalGross / 12,
-      ssc: totalSSC / 12,
-      tax: totalTax / 12,
-      net: totalNet / 12,
-    },
+    ...buildEmploymentConfig({
+      year: parseInt(formValues.year),
+      startDate: formValues.startDate,
+      startOfMonth: formValues.startOfMonth,
+      endOfMonth: formValues.endOfMonth,
+      previousTaxableIncome: formValues.previousTaxableIncome,
+      previousTaxPaid: formValues.previousTaxPaid,
+    }),
   };
 }
 
@@ -150,6 +145,9 @@ function useFormValues(localParams: SalarySearchParams) {
       birthYear: localParams.birthYear,
       startOfMonth: localParams.startOfMonth as Month,
       endOfMonth: localParams.endOfMonth as Month,
+      startDate: localParams.startDate,
+      previousTaxableIncome: localParams.prevIncome,
+      previousTaxPaid: localParams.prevTax,
       yearlyNonTaxBenefit: localParams.yearlyNonTaxBenefit,
       yearlyTaxableBenefit: localParams.yearlyTaxableBenefit,
       monthlyBonus: localParams.monthlyBonus,
@@ -253,7 +251,17 @@ export function SalaryCalculatorClient({
     previousDataRef.current = data;
   }, [data, config, formValues.allowanceBonus, formValues.monthlyBonuses]);
 
-  const summary = useMemo(() => calculateSummary(data), [data]);
+  const summary = useMemo(() => summarizeMonthlyDeductions(data), [data]);
+
+  // Yıl ortası giriş/çıkış veya önceki işveren varsa yıl sonu mahsup tahmini
+  const hasPartialYear =
+    !!config.employmentStartDate ||
+    !!config.employmentEndDate ||
+    !!config.previousEmployment;
+  const yearEndPosition = useMemo(
+    () => (hasPartialYear ? calculateYearEndTaxPosition(data, config) : null),
+    [data, config, hasPartialYear],
+  );
 
   // --- Handlers ---
   const handleValuesChange = (values: Partial<typeof formValues>) => {
@@ -281,6 +289,9 @@ export function SalaryCalculatorClient({
       endOfMonth:
         (values.endOfMonth as SalarySearchParams["endOfMonth"]) ??
         prev.endOfMonth,
+      startDate: values.startDate ?? prev.startDate,
+      prevIncome: values.previousTaxableIncome ?? prev.prevIncome,
+      prevTax: values.previousTaxPaid ?? prev.prevTax,
       yearlyNonTaxBenefit:
         values.yearlyNonTaxBenefit ?? prev.yearlyNonTaxBenefit,
       yearlyTaxableBenefit:
@@ -387,7 +398,9 @@ export function SalaryCalculatorClient({
               <div className="mt-3 p-4 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/10 rounded-xl border border-primary/20">
                 <div className="text-center">
                   <span className="text-sm text-muted-foreground block mb-1">
-                    Monthly Net
+                    {summary.monthsWorked < 12
+                      ? `Average Monthly Net (${summary.monthsWorked} months worked)`
+                      : "Monthly Net"}
                   </span>
                   <AnimatedCounter
                     value={summary.monthly.net}
@@ -397,6 +410,61 @@ export function SalaryCalculatorClient({
                   />
                 </div>
               </div>
+
+              {/* Year-end tax position (partial year / previous employer) */}
+              {yearEndPosition && (
+                <div className="mt-3 rounded-xl border border-border/50 bg-muted/30 p-3 text-xs text-muted-foreground space-y-1">
+                  <div className="flex justify-between">
+                    <span>Taxable income this year (all employers)</span>
+                    <span className="font-medium text-foreground">
+                      €
+                      {Math.round(
+                        yearEndPosition.annualTaxableIncome,
+                      ).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Actual tax due for the year</span>
+                    <span className="font-medium text-foreground">
+                      €
+                      {Math.round(
+                        yearEndPosition.annualTaxLiability,
+                      ).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>FSS tax withheld (all employers)</span>
+                    <span className="font-medium text-foreground">
+                      €
+                      {Math.round(
+                        yearEndPosition.totalTaxWithheld,
+                      ).toLocaleString()}
+                    </span>
+                  </div>
+                  {Math.abs(yearEndPosition.balance) >= 1 && (
+                    <div className="flex justify-between border-t border-border/40 pt-1">
+                      <span>
+                        {yearEndPosition.balance < 0
+                          ? "Estimated refund via tax return"
+                          : "Estimated balance due via tax return"}
+                      </span>
+                      <span
+                        className={cn(
+                          "font-semibold",
+                          yearEndPosition.balance < 0
+                            ? "text-emerald-600"
+                            : "text-destructive",
+                        )}
+                      >
+                        €
+                        {Math.round(
+                          Math.abs(yearEndPosition.balance),
+                        ).toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Generate Payslip CTA */}
               <Link
