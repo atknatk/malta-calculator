@@ -1,0 +1,39 @@
+<!-- @dsCard group="Forms" height=72 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          "div",
+          { className: "max-w-xs" },
+          h(
+            M.Select,
+            { defaultValue: "c" },
+            h(
+              M.SelectTrigger,
+              null,
+              h(M.SelectValue, { placeholder: "SSC category" }),
+            ),
+            h(
+              M.SelectContent,
+              null,
+              h(M.SelectItem, { value: "a" }, "Category A · Retired"),
+              h(M.SelectItem, { value: "b" }, "Category B · Part-time"),
+              h(M.SelectItem, { value: "c" }, "Category C · Full-time"),
+              h(M.SelectItem, { value: "d" }, "Category D · Self-employed"),
+            ),
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

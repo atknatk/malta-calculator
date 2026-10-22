@@ -1,0 +1,34 @@
+{
+  "$description": "Theme manifest: each theme is the base set plus override sets, applied in order. The generator writes each theme into src/app/tokens.css under `selector`, declaring only what differs from the rules that already apply to it (themes whose sets are a subset of its sets), so the browser cascade reproduces every theme exactly.",
+  "themes": [
+    {
+      "id": "light",
+      "name": "Malta Gold · Light",
+      "sets": ["base.tokens.json"],
+      "selector": ":root"
+    },
+    {
+      "id": "dark",
+      "name": "Malta Gold · Dark",
+      "sets": ["base.tokens.json", "themes/dark.tokens.json"],
+      "selector": ".dark"
+    },
+    {
+      "id": "fintech",
+      "name": "Fintech Blue",
+      "sets": ["base.tokens.json", "themes/fintech.tokens.json"],
+      "selector": "[data-theme=\"fintech\"]"
+    },
+    {
+      "id": "fintech-dark",
+      "name": "Fintech Blue · Dark",
+      "sets": [
+        "base.tokens.json",
+        "themes/dark.tokens.json",
+        "themes/fintech.tokens.json",
+        "themes/fintech-dark.tokens.json"
+      ],
+      "selector": "[data-theme=\"fintech\"].dark"
+    }
+  ]
+}

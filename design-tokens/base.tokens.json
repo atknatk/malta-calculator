@@ -1,0 +1,1133 @@
+{
+  "color": {
+    "$type": "color",
+    "background": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [40, 33, 98]
+      },
+      "$description": "Page ground: warm limestone in light, deep night-blue in dark. The 16px dot grid and the mesh glow sit over it."
+    },
+    "foreground": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [20, 14, 12]
+      },
+      "$description": "Body copy and headings on `background`, `card`, `muted` and `popover`."
+    },
+    "card": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [0, 0, 100]
+      },
+      "$description": "Card and panel surface (ui/card, tables, form cards)."
+    },
+    "card-foreground": {
+      "$value": "{color.foreground}",
+      "$description": "Text on `card`."
+    },
+    "popover": {
+      "$value": "{color.card}",
+      "$description": "Tooltip, dropdown, select and popover surfaces."
+    },
+    "popover-foreground": {
+      "$value": "{color.foreground}",
+      "$description": "Text on `popover`."
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [40, 20, 94]
+      },
+      "$description": "Quiet fills: default SummaryCard, table row hover (at 50%), mode-toggle track (at 30%)."
+    },
+    "muted-foreground": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [20, 10, 35]
+      },
+      "$description": "Secondary text: descriptions, captions, input suffixes (€), stat labels. Reads on `background`, `card` and `muted`."
+    },
+    "border": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [40, 20, 88]
+      },
+      "$description": "Default hairline on every element (`* { border-color }`), separators and table rows. Decorative only: it is not the boundary that identifies a control, so it is exempt from the 3:1 rule — use `input` for that."
+    },
+    "input": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [40, 20, 53]
+      },
+      "$description": "Boundary of form controls: Input, Textarea, Select trigger, outline buttons, segmented-control shell and the unchecked Switch track. Meets 3:1 against `background` and `card` (WCAG 1.4.11)."
+    },
+    "primary": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [38, 92, 32]
+      },
+      "$description": "Malta Gold. Primary buttons, selected segments, checked Switch/Checkbox, links, focused number-field border, accent words in body copy. Reads as text on `background` and `card`."
+    },
+    "primary-foreground": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [0, 0, 100]
+      },
+      "$description": "Text and icons on `primary` fills."
+    },
+    "secondary": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [199, 89, 36]
+      },
+      "$description": "Mediterranean Blue. Secondary buttons, calculator-card icon tiles, the 'SSC contributions' accent word. Reads as text on `background` and carries white text."
+    },
+    "secondary-foreground": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [0, 0, 100]
+      },
+      "$description": "Text on `secondary`."
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [28, 25, 90]
+      },
+      "$description": "Warm stone hover fill: ghost/outline button hover, toggle 'on', segmented-control hover."
+    },
+    "accent-foreground": {
+      "$value": "{color.foreground}",
+      "$description": "Text on `accent`."
+    },
+    "destructive": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [0, 72, 51]
+      },
+      "$description": "Malta Red (the cross). Destructive buttons and error text."
+    },
+    "destructive-foreground": {
+      "$value": {
+        "colorSpace": "hsl",
+        "components": [0, 0, 100]
+      },
+      "$description": "Text on `destructive`."
+    },
+    "ring": {
+      "$value": "{color.primary}",
+      "$description": "Focus ring: 2px with a 2px `background` offset on every focusable control. Meets 3:1 on `background` and `card`."
+    },
+    "success": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0824, 0.502, 0.2392],
+        "hex": "#15803d"
+      },
+      "$description": "Positive figures: net pay, the Net→Gross mode, 'success' SummaryCard text (green-700 / green-400). Always paired with a label or icon."
+    },
+    "success-subtle": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1333, 0.7725, 0.3686],
+        "hex": "#22c55e",
+        "alpha": 0.1
+      },
+      "$description": "Fill behind `success` text (green-500 at 10%)."
+    },
+    "warning": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.7608, 0.2549, 0.0471],
+        "hex": "#c2410c"
+      },
+      "$description": "Deductions and warnings in summaries (orange-700 / orange-400)."
+    },
+    "warning-subtle": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9765, 0.451, 0.0863],
+        "hex": "#f97316",
+        "alpha": 0.1
+      },
+      "$description": "Fill behind `warning` text (orange-500 at 10%)."
+    },
+    "danger": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.7255, 0.1098, 0.1098],
+        "hex": "#b91c1c"
+      },
+      "$description": "Negative amounts and the 'danger' SummaryCard (red-700 / red-400). For destructive actions use `destructive`."
+    },
+    "danger-subtle": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9373, 0.2667, 0.2667],
+        "hex": "#ef4444",
+        "alpha": 0.1
+      },
+      "$description": "Fill behind `danger` text (red-500 at 10%)."
+    },
+    "glass-bg": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "hex": "#ffffff",
+        "alpha": 0.7
+      },
+      "$description": "`.glass` surface: nav pill, hero eyebrow pill, premium cards, secondary hero CTA. Always with `blur.glass` and `glass-border`."
+    },
+    "glass-border": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "hex": "#ffffff",
+        "alpha": 0.4
+      },
+      "$description": "1px border of `.glass` surfaces."
+    },
+    "glass-strong-bg": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "hex": "#ffffff",
+        "alpha": 0.85
+      },
+      "$description": "`.glass-strong`: sticky headers and overlays that need more opacity (24px blur)."
+    },
+    "glass-strong-border": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "hex": "#ffffff",
+        "alpha": 0.5
+      },
+      "$description": "Border of `.glass-strong`."
+    },
+    "malta-gold": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9608, 0.651, 0.1373],
+        "hex": "#f5a623"
+      },
+      "$description": "Identity swatch of the Malta Gold theme and the colour of the gold glows. Brand moments and illustration only — never text."
+    },
+    "malta-blue": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0, 0.6, 0.8],
+        "hex": "#0099cc"
+      },
+      "$description": "Identity swatch: the Mediterranean. Brand moments and mesh glow; not body text."
+    },
+    "malta-red": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9059, 0.298, 0.2353],
+        "hex": "#e74c3c"
+      },
+      "$description": "Identity swatch: the red of the Maltese cross. Brand moments only; for errors use `destructive`."
+    }
+  },
+  "gradient": {
+    "$type": "gradient",
+    "primary": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.7882, 0.4902, 0.0392],
+            "hex": "#c97d0a"
+          },
+          "position": 0
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.7216, 0.4353, 0.0314],
+            "hex": "#b86f08"
+          },
+          "position": 0.5
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.6471, 0.3765, 0.0235],
+            "hex": "#a56006"
+          },
+          "position": 1
+        }
+      ],
+      "$description": "135° gold: `.btn-glow` hero CTA, `.text-gradient` headline words and stats, gradient-border cards. White text on its first stop is 3.27:1, so labels on it stay large and bold.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "angle": "135deg"
+        }
+      }
+    },
+    "secondary": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.0, 0.6, 0.8],
+            "hex": "#0099cc"
+          },
+          "position": 0
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.0, 0.4667, 0.7137],
+            "hex": "#0077b6"
+          },
+          "position": 0.5
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.0, 0.3725, 0.5412],
+            "hex": "#005f8a"
+          },
+          "position": 1
+        }
+      ],
+      "$description": "135° blue: `.text-gradient-secondary` stats such as '100%'.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "angle": "135deg"
+        }
+      }
+    },
+    "accent": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [1.0, 0.9255, 0.8235],
+            "hex": "#ffecd2"
+          },
+          "position": 0
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.9882, 0.7137, 0.6235],
+            "hex": "#fcb69f"
+          },
+          "position": 1
+        }
+      ],
+      "$description": "135° peach wash.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "angle": "135deg",
+          "ds": false
+        }
+      }
+    },
+    "success": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.0667, 0.6, 0.5569],
+            "hex": "#11998e"
+          },
+          "position": 0
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.2196, 0.9373, 0.4902],
+            "hex": "#38ef7d"
+          },
+          "position": 1
+        }
+      ],
+      "$description": "135° green wash.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "angle": "135deg",
+          "ds": false
+        }
+      }
+    },
+    "warning": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.9686, 0.5922, 0.1176],
+            "hex": "#f7971e"
+          },
+          "position": 0
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [1.0, 0.8235, 0.0],
+            "hex": "#ffd200"
+          },
+          "position": 1
+        }
+      ],
+      "$description": "135° amber wash.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "angle": "135deg",
+          "ds": false
+        }
+      }
+    },
+    "danger": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.9216, 0.2, 0.2863],
+            "hex": "#eb3349"
+          },
+          "position": 0
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.9569, 0.3608, 0.2627],
+            "hex": "#f45c43"
+          },
+          "position": 1
+        }
+      ],
+      "$description": "135° red wash.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "angle": "135deg",
+          "ds": false
+        }
+      }
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "sm": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.0, 0.0, 0.0],
+          "hex": "#000000",
+          "alpha": 0.05
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 1,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 2,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$description": "ui/card and PremiumToggleGroup resting shadow (Tailwind `shadow-sm`).",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    },
+    "elevation": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.0, 0.0, 0.0],
+          "hex": "#000000",
+          "alpha": 0.1
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 10,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 40,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$description": "`.premium-card` at rest."
+    },
+    "card": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.0, 0.0, 0.0],
+          "hex": "#000000",
+          "alpha": 0.15
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 25,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 50,
+          "unit": "px"
+        },
+        "spread": {
+          "value": -12,
+          "unit": "px"
+        }
+      },
+      "$description": "`.premium-card:hover` (lifts 4px)."
+    },
+    "glow": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.9608, 0.651, 0.1373],
+          "hex": "#f5a623",
+          "alpha": 0.25
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 0,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 60,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$description": "Gold halo behind featured elements."
+    },
+    "btn-glow": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.9608, 0.651, 0.1373],
+          "hex": "#f5a623",
+          "alpha": 0.3
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 4,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 15,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$description": "`.btn-glow` hero CTA at rest; hover is 0 6px 25px at 0.5 with a 2px lift."
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "sm": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$description": "`rounded-sm` = calc(var(--radius) - 4px): Checkbox corners and small chips.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$description": "`rounded-md` = calc(var(--radius) - 2px): Button, Input, Textarea, Toggle, Tooltip.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    },
+    "base": {
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      },
+      "$description": "The source `--radius` (12px) = `rounded-lg`: ui/card, PremiumToggleGroup, mode-toggle buttons.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": "--radius",
+          "ds": "radius"
+        }
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "`rounded-xl` — the most used radius: NumericInput, PremiumInput, SummaryCard, icon tiles.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    },
+    "2xl": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$description": "`rounded-2xl`: premium/calculator cards, hero CTAs, Advanced Settings bar, mode-toggle track.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    },
+    "3xl": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "`rounded-3xl`: large marketing panels and form cards.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    },
+    "full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$description": "Pills: nav bar, hero eyebrow, Switch, RadioGroup item, icon chips.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    }
+  },
+  "spacing": {
+    "$type": "dimension",
+    "$extensions": {
+      "com.maltacalculator": {
+        "note": "Tailwind's 4px scale; DS-only (the site uses Tailwind utilities)."
+      }
+    },
+    "1": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "Hairline gaps; gap between toggle items."
+    },
+    "1_5": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "CardHeader stack gap; SummaryCard icon-to-label gap; mode-toggle track padding.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "ds": "space-1.5"
+        }
+      }
+    },
+    "2": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$description": "Icon-to-text gap in buttons and pills; label-to-input gap (`space-y-2`)."
+    },
+    "3": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "Input horizontal padding; SummaryCard padding; button `sm` padding."
+    },
+    "4": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$description": "Button padding; field stack gap (`space-y-4`); the background dot-grid pitch."
+    },
+    "6": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Card padding (`p-6`) and premium-card padding; between form sections."
+    },
+    "8": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$description": "Container side padding (`container` 2rem); hero CTA horizontal padding; hero stack gap."
+    },
+    "10": {
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Gap between two-column marketing blocks (`gap-10`)."
+    },
+    "16": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "Hero vertical padding (`py-16`) and section rhythm."
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "control-sm": {
+      "$value": {
+        "value": 36,
+        "unit": "px"
+      },
+      "$description": "Button `sm` (h-9)."
+    },
+    "control": {
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Default Button, Input, Toggle, icon button (h-10)."
+    },
+    "control-lg": {
+      "$value": {
+        "value": 44,
+        "unit": "px"
+      },
+      "$description": "Button `lg` (h-11)."
+    },
+    "segment": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$description": "PremiumToggleGroup default (h-12); sm 40px, lg 56px."
+    },
+    "field": {
+      "$value": {
+        "value": 56,
+        "unit": "px"
+      },
+      "$description": "PremiumInput (h-14)."
+    },
+    "field-lg": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "PremiumInput `large` hero salary field (h-16)."
+    },
+    "container-max": {
+      "$value": {
+        "value": 1400,
+        "unit": "px"
+      },
+      "$description": "`container` max width at 2xl."
+    }
+  },
+  "blur": {
+    "$type": "dimension",
+    "glass": {
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Backdrop blur of `.glass` (`.glass-strong` uses 24px).",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": "--glass-blur"
+        }
+      }
+    },
+    "orb": {
+      "$value": {
+        "value": 60,
+        "unit": "px"
+      },
+      "$description": "Blur of the floating hero orbs (gold, blue, coral radial gradients).",
+      "$extensions": {
+        "com.maltacalculator": {
+          "css": false
+        }
+      }
+    }
+  },
+  "font": {
+    "$type": "fontFamily",
+    "sans": {
+      "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+      "$description": "Inter, loaded with next/font/google as `--font-sans`. Everything that is not display type."
+    },
+    "cal": {
+      "$value": [
+        "Cal Sans",
+        "Inter",
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif"
+      ],
+      "$description": "Cal Sans SemiBold, loaded with next/font/local as `--font-calsans`. Display only, 20px and up.",
+      "$extensions": {
+        "com.maltacalculator": {
+          "fontFiles": [
+            {
+              "family": "Cal Sans",
+              "file": "fonts/CalSans-SemiBold.ttf",
+              "source": "public/fonts/CalSans-SemiBold.ttf",
+              "weight": "600",
+              "style": "normal"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "typography": {
+    "$type": "typography",
+    "display": {
+      "$extensions": {
+        "com.maltacalculator": {
+          "group": "Display"
+        }
+      },
+      "display-hero": {
+        "$value": {
+          "fontFamily": "{font.cal}",
+          "fontSize": {
+            "value": 96,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1.25,
+          "letterSpacing": {
+            "value": -0.025,
+            "unit": "em"
+          }
+        },
+        "$description": "Home hero h1 (`font-cal text-5xl md:text-7xl lg:text-8xl tracking-tight leading-tight`): 48px mobile, 72px tablet, 96px desktop. First line in `.text-gradient`, second in `foreground`.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Calculate Your Malta Salary"
+          }
+        }
+      },
+      "display-1": {
+        "$value": {
+          "fontFamily": "{font.cal}",
+          "fontSize": {
+            "value": 48,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1
+        },
+        "$description": "Calculator and guide page titles (`font-cal text-4xl md:text-5xl`): 36px mobile, 48px desktop.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Malta Tax Calculator 2026"
+          }
+        }
+      },
+      "display-2": {
+        "$value": {
+          "fontFamily": "{font.cal}",
+          "fontSize": {
+            "value": 36,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1.1111
+        },
+        "$description": "Section headings (`font-cal text-3xl md:text-4xl`): 30px mobile, 36px desktop.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "How SSC is calculated"
+          }
+        }
+      },
+      "display-3": {
+        "$value": {
+          "fontFamily": "{font.cal}",
+          "fontSize": {
+            "value": 24,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1.3333
+        },
+        "$description": "Sub-section headings (`font-cal text-2xl`).",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Your monthly breakdown"
+          }
+        }
+      },
+      "display-card": {
+        "$value": {
+          "fontFamily": "{font.cal}",
+          "fontSize": {
+            "value": 20,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1.4
+        },
+        "$description": "Calculator card titles (`font-cal text-xl`), turning `primary` on hover.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Salary Calculator"
+          }
+        }
+      }
+    },
+    "text": {
+      "$extensions": {
+        "com.maltacalculator": {
+          "group": "Text"
+        }
+      },
+      "lead": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 20,
+            "unit": "px"
+          },
+          "fontWeight": 400,
+          "lineHeight": 1.625
+        },
+        "$description": "Hero subtitle (`text-lg md:text-xl leading-relaxed`) in `muted-foreground`, max-width 42rem; key terms in `primary`/`secondary` semibold.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Get accurate tax deductions, SSC contributions, and net salary calculations instantly."
+          }
+        }
+      },
+      "body-lg": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 18,
+            "unit": "px"
+          },
+          "fontWeight": 400,
+          "lineHeight": 1.5556
+        },
+        "$description": "Long-form guide copy and hero CTA labels (semibold).",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Malta uses progressive tax bands."
+          }
+        }
+      },
+      "body": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 16,
+            "unit": "px"
+          },
+          "fontWeight": 400,
+          "lineHeight": 1.5
+        },
+        "$description": "Default body; also every input on mobile (≥16px stops iOS zoom).",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Enter your gross annual salary."
+          }
+        }
+      },
+      "body-sm": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 14,
+            "unit": "px"
+          },
+          "fontWeight": 400,
+          "lineHeight": 1.4286
+        },
+        "$description": "The workhorse size (most used in the codebase): buttons, labels, table cells, card descriptions, inputs on desktop.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Based on the 2026 tax rates published by the CFR."
+          }
+        }
+      },
+      "caption": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 12,
+            "unit": "px"
+          },
+          "fontWeight": 400,
+          "lineHeight": 1.3333
+        },
+        "$description": "Field descriptions, SummaryCard labels, small segmented controls; in `muted-foreground`.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Weekly SSC capped at €559.31"
+          }
+        }
+      },
+      "label": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 14,
+            "unit": "px"
+          },
+          "fontWeight": 500,
+          "lineHeight": 1
+        },
+        "$description": "Form labels (ui/label: `text-sm font-medium leading-none`).",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Gross annual salary"
+          }
+        }
+      },
+      "card-title": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 24,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1,
+          "letterSpacing": {
+            "value": -0.025,
+            "unit": "em"
+          }
+        },
+        "$description": "ui/card CardTitle (`text-2xl font-semibold leading-none tracking-tight`).",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "Tax summary"
+          }
+        }
+      }
+    },
+    "figures": {
+      "$extensions": {
+        "com.maltacalculator": {
+          "group": "Figures"
+        }
+      },
+      "figure-hero": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 24,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1.3333
+        },
+        "$description": "Large salary input (PremiumInput `large`: `text-2xl font-semibold`).",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "€42,000"
+          }
+        }
+      },
+      "figure-input": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 18,
+            "unit": "px"
+          },
+          "fontWeight": 600,
+          "lineHeight": 1.5556
+        },
+        "$description": "Standard PremiumInput value (`text-lg font-semibold`).",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "€2,450"
+          }
+        }
+      },
+      "stat": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 36,
+            "unit": "px"
+          },
+          "fontWeight": 700,
+          "lineHeight": 1.1111
+        },
+        "$description": "Hero stats (`text-3xl md:text-4xl font-bold`) in `.text-gradient` or `.text-gradient-secondary`, label below in `body-sm` `muted-foreground`.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "2024-26"
+          }
+        }
+      },
+      "figure-summary": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontSize": {
+            "value": 16,
+            "unit": "px"
+          },
+          "fontWeight": 700,
+          "lineHeight": 1.5
+        },
+        "$description": "SummaryCard value (`text-sm sm:text-base font-bold`), coloured by variant.",
+        "$extensions": {
+          "com.maltacalculator": {
+            "sample": "€2,816.40"
+          }
+        }
+      }
+    }
+  }
+}

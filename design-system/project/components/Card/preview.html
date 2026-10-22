@@ -1,0 +1,46 @@
+<!-- @dsCard group="Surfaces" height=240 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          M.Card,
+          { className: "max-w-md" },
+          h(
+            M.CardHeader,
+            null,
+            h(M.CardTitle, null, "Tax summary"),
+            h(
+              M.CardDescription,
+              null,
+              "2026 rates · single · full-time (Category C)",
+            ),
+          ),
+          h(
+            M.CardContent,
+            null,
+            h(
+              "p",
+              null,
+              "On €42,000 your income tax is €7,100.00 a year (25% band, minus €3,400).",
+            ),
+          ),
+          h(
+            M.CardFooter,
+            null,
+            h(M.Button, { variant: "outline", size: "sm" }, "Download PDF"),
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

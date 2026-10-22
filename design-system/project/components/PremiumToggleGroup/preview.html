@@ -1,0 +1,36 @@
+<!-- @dsCard group="Forms" height=150 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      function Demo() {
+        var y = useState("2026"),
+          c = useState("C");
+        return h(
+          "div",
+          { className: "flex max-w-md flex-col gap-3" },
+          h(M.PremiumToggleGroup, {
+            options: ["2025", "2026"],
+            value: y[0],
+            onChange: y[1],
+          }),
+          h(M.PremiumToggleGroup, {
+            options: ["A", "B", "C", "D"],
+            value: c[0],
+            onChange: c[1],
+            size: "sm",
+          }),
+        );
+      }
+      ReactDOM.createRoot(document.getElementById("root")).render(h(Demo));
+    </script>
+  </body>
+</html>
