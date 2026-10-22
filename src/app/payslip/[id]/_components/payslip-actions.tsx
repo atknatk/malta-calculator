@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
   deleteDraftPayslip,
   finalizePayslip,
+  voidPayslip,
 } from "@/app/actions/payslip-actions";
 import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
 import {
@@ -35,6 +36,23 @@ export default function PayslipActions({
   );
   const [error, setError] = useState<string | null>(null);
   const isDraft = status === PAYSLIP_STATUS.DRAFT;
+  const isFinal = status === PAYSLIP_STATUS.FINAL;
+  const isVoid = status === PAYSLIP_STATUS.VOID;
+  const [voidOpen, setVoidOpen] = useState(false);
+  const [voidReason, setVoidReason] = useState("");
+
+  const handleVoid = () => {
+    setError(null);
+    startTransition(async () => {
+      const result = await voidPayslip(payslipId, voidReason);
+      if (result.success) {
+        setVoidOpen(false);
+        router.refresh();
+      } else {
+        setError(result.error || "Failed to void payslip");
+      }
+    });
+  };
 
   const handleIssue = () => {
     if (confirming !== "issue") {
@@ -77,7 +95,11 @@ export default function PayslipActions({
   const handleDownloadPDF = async () => {
     setDownloading(true);
     await downloadPayslipPdf(
-      buildPayslipFilename(payslipNumber, employeeName, isDraft),
+      buildPayslipFilename(
+        payslipNumber,
+        employeeName,
+        isDraft ? "DRAFT" : isVoid ? "VOID" : undefined,
+      ),
     );
     setDownloading(false);
   };
@@ -165,10 +187,26 @@ export default function PayslipActions({
                 d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
               />
             </svg>
-            {isDraft ? "Draft PDF" : "Download PDF"}
+            {isDraft ? "Draft PDF" : isVoid ? "Void PDF" : "Download PDF"}
           </>
         )}
       </button>
+      {isFinal && (
+        <button
+          onClick={() => setVoidOpen((open) => !open)}
+          className="rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 dark:hover:bg-red-950/40"
+        >
+          Void payslip
+        </button>
+      )}
+      {isVoid && (
+        <Link
+          href={`/payslip/new?replaces=${payslipId}`}
+          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-700"
+        >
+          Create corrected payslip
+        </Link>
+      )}
       {isDraft && (
         <button
           onClick={handleIssue}
@@ -184,6 +222,38 @@ export default function PayslipActions({
         </button>
       )}
     </div>
+    {voidOpen && isFinal && (
+      <div className="w-full max-w-md rounded-lg border border-red-200 bg-red-50 p-3 text-sm dark:border-red-900 dark:bg-red-950/40">
+        <p className="mb-2 text-red-800 dark:text-red-200">
+          Issued payslips can&apos;t be edited or deleted. Voiding keeps it on
+          record, marks it invalid on QR verification and lets you issue a
+          corrected payslip for the same period.
+        </p>
+        <textarea
+          value={voidReason}
+          onChange={(e) => setVoidReason(e.target.value)}
+          maxLength={500}
+          rows={2}
+          placeholder="Reason, e.g. wrong tax status applied"
+          className="w-full rounded-md border border-red-200 bg-white px-3 py-2 text-sm text-slate-900 dark:border-red-900 dark:bg-slate-900 dark:text-white"
+        />
+        <div className="mt-2 flex justify-end gap-2">
+          <button
+            onClick={() => setVoidOpen(false)}
+            className="rounded-md px-3 py-1.5 text-slate-600 hover:bg-white/60 dark:text-slate-300"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleVoid}
+            disabled={pending || voidReason.trim().length < 5}
+            className="rounded-md bg-red-600 px-3 py-1.5 font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+          >
+            {pending ? "Voiding..." : "Void payslip"}
+          </button>
+        </div>
+      </div>
+    )}
     {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );

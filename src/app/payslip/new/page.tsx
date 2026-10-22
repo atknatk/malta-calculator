@@ -15,7 +15,11 @@ import { EmptyState, MdCard, mdButton } from "@/components/admin/admin-ui";
 export default async function NewPayslipPage({
   searchParams,
 }: {
-  searchParams: Promise<{ employeeId?: string; draft?: string }>;
+  searchParams: Promise<{
+    employeeId?: string;
+    draft?: string;
+    replaces?: string;
+  }>;
 }) {
   const { userId } = await auth();
 
@@ -34,12 +38,15 @@ export default async function NewPayslipPage({
   const params = await searchParams;
   const selectedEmployeeId = params.employeeId;
 
-  // Taslak düzenleme: yalnızca bu şirkete ait taslaklar
+  // Taslak düzenleme ya da void edilen bordronun düzeltmesi: yalnızca bu
+  // şirkete ait bordrolar (getPayslipById sahipliği doğrular)
   let draft: PayslipDraft | undefined;
-  if (params.draft) {
-    const payslip = await getPayslipById(params.draft);
+  const sourceId = params.draft ?? params.replaces;
+  if (sourceId) {
+    const payslip = await getPayslipById(sourceId);
     if (!payslip) notFound();
-    if (payslip.status !== PAYSLIP_STATUS.DRAFT) {
+    const expected = params.draft ? PAYSLIP_STATUS.DRAFT : PAYSLIP_STATUS.VOID;
+    if (payslip.status !== expected) {
       redirect(`/payslip/${payslip.id}`);
     }
     const d = payslip.deductions as {
@@ -51,7 +58,9 @@ export default async function NewPayslipPage({
       salaryConfig?: PayslipDraft["salaryConfig"];
     };
     draft = {
-      payslipId: payslip.id,
+      ...(params.draft
+        ? { payslipId: payslip.id }
+        : { replacesPayslipId: payslip.id }),
       employeeId: payslip.employee_id,
       periodMonth: payslip.period_month,
       periodYear: payslip.period_year,

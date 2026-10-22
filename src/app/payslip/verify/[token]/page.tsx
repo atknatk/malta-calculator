@@ -66,7 +66,7 @@ export default async function PayslipVerifyPage({
     notFound();
   }
 
-  const { payslip, company, props } = result;
+  const { payslip, company, props, integrity } = result;
 
   const cookieStore = await cookies();
   const hasAccess = isValidAccessCookie(
@@ -85,5 +85,10 @@ export default async function PayslipVerifyPage({
     );
   }
 
-  return <PublicPayslipPage document={props} verified />;
+  return <PublicPayslipPage
+      document={props}
+      verified
+      integrity={integrity}
+      contentHash={payslip.content_hash}
+    />;
 }

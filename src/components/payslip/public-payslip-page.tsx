@@ -1,14 +1,19 @@
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, ShieldX } from "lucide-react";
 import PayslipDocument, {
   type PayslipDocumentProps,
 } from "@/app/payslip/[id]/_components/payslip-document";
 import PublicPayslipActions from "@/components/payslip/public-payslip-actions";
+import PayslipIntegrityNotice from "@/components/payslip/payslip-integrity";
+import type { PayslipIntegrity } from "@/lib/payslip/document-props";
+import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 
 interface PublicPayslipPageProps {
   document: PayslipDocumentProps;
   /** Doğrulama sayfasında "Verified" bandı gösterilir */
   verified?: boolean;
+  integrity: PayslipIntegrity;
+  contentHash?: string | null;
 }
 
 /**
@@ -18,7 +23,10 @@ interface PublicPayslipPageProps {
 export default function PublicPayslipPage({
   document,
   verified = false,
+  integrity,
+  contentHash,
 }: PublicPayslipPageProps) {
+  const isVoid = document.status === PAYSLIP_STATUS.VOID;
   const issuedOn = new Date(
     document.updatedAt || document.createdAt,
   ).toLocaleDateString("en-GB", {
@@ -42,7 +50,26 @@ export default function PublicPayslipPage({
       </header>
 
       <main className="container mx-auto px-4 py-6 print:p-0">
-        {verified && (
+        {isVoid && (
+          <div className="mx-auto mb-4 flex max-w-[210mm] items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 print:hidden">
+            <ShieldX className="mt-0.5 h-6 w-6 flex-shrink-0 text-red-600" />
+            <div className="text-sm">
+              <p className="font-semibold text-red-900">
+                This payslip has been voided
+              </p>
+              <p className="text-red-800">
+                {document.company.name} cancelled this payslip
+                {document.voided
+                  ? ` on ${new Date(document.voided.at).toLocaleDateString("en-GB")}`
+                  : ""}
+                {document.voided?.reason ? `: ${document.voided.reason}` : ""}.
+                It is not valid; ask for the corrected payslip.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {verified && !isVoid && (
           <div className="mx-auto mb-6 flex max-w-[210mm] items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 print:hidden">
             <ShieldCheck className="mt-0.5 h-6 w-6 flex-shrink-0 text-emerald-600" />
             <div className="text-sm">
@@ -58,6 +85,12 @@ export default function PublicPayslipPage({
             </div>
           </div>
         )}
+
+        <PayslipIntegrityNotice
+          integrity={integrity}
+          contentHash={contentHash}
+          className="mx-auto mb-6 max-w-[210mm] print:hidden"
+        />
 
         {/* A4 belge: dar ekranlarda yatay kaydırılır */}
         <div className="overflow-x-auto pb-4 print:overflow-visible print:pb-0">

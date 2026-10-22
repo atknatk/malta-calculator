@@ -234,6 +234,11 @@ export default async function DashboardPage() {
                           {isDraft && (
                             <PayslipStatusChip status={payslip.status} />
                           )}
+                          {payslip.status === "void" && (
+                            <span className="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-semibold text-red-700 dark:bg-red-900/40 dark:text-red-300">
+                              Void
+                            </span>
+                          )}
                         </p>
                         <p className="text-[13px] text-md-on-surface-variant">
                           {new Date(

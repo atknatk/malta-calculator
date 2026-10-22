@@ -28,7 +28,7 @@ export default async function EmployeeViewPage({
     notFound();
   }
 
-  const { payslip, employee, props } = result;
+  const { payslip, employee, props, integrity } = result;
 
   // İmzalı çerez: PIN (doğum tarihi) doğrulandıysa
   const cookieStore = await cookies();
@@ -50,7 +50,11 @@ export default async function EmployeeViewPage({
     );
   }
 
-  return <PublicPayslipPage document={props} />;
+  return <PublicPayslipPage
+      document={props}
+      integrity={integrity}
+      contentHash={payslip.content_hash}
+    />;
 }
 
 export const metadata = {

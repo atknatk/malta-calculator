@@ -6,7 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { randomBytes } from "crypto";
-import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
+import {
+  ISSUED_STATUSES,
+  PAYSLIP_STATUS,
+  type PayslipStatus,
+} from "@/utils/payslip-details";
+import { issuePayslip } from "@/lib/payslip/issue";
 
 // Generate a short random token (6-8 chars, alphanumeric, URL-safe)
 function generateShortToken(length: number = 8): string {
@@ -24,6 +29,8 @@ interface PayslipGenerateRequest {
   payslipId?: string;
   /** Varsayılan "final" (geriye dönük uyumluluk) */
   status?: PayslipStatus;
+  /** Void edilen bordronun yerine çıkarılan düzeltme bordrosu */
+  replacesPayslipId?: string;
   employeeId: string;
   periodMonth: number;
   periodYear: number;
@@ -153,7 +160,7 @@ export async function POST(
         .from("payslips")
         .select("*", { count: "exact", head: true })
         .eq("company_id", companyData.id)
-        .eq("status", PAYSLIP_STATUS.FINAL)
+        .in("status", ISSUED_STATUSES)
         .gte("finalized_at", startOfMonth)
         .lte("finalized_at", endOfMonth);
 
@@ -190,6 +197,7 @@ export async function POST(
       .eq("employee_id", body.employeeId)
       .eq("period_month", body.periodMonth)
       .eq("period_year", body.periodYear)
+      .neq("status", PAYSLIP_STATUS.VOID)
       .maybeSingle();
 
     const existing = existingPayslip as {
@@ -201,7 +209,8 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
-          error: "An issued payslip already exists for this period",
+          error:
+            "An issued payslip already exists for this period. Void it first to issue a correction.",
         },
         { status: 409 },
       );
@@ -238,6 +247,33 @@ export async function POST(
       draftId = existing.id;
     }
 
+    // Düzeltme bordrosu: aynı çalışan + dönemin void edilmiş bordrosu olmalı
+    let replacesPayslipId: string | null = null;
+    if (body.replacesPayslipId) {
+      const { data: replaced } = await supabase
+        .from("payslips")
+        .select("id")
+        .eq("id", body.replacesPayslipId)
+        .eq("company_id", companyData.id)
+        .eq("employee_id", body.employeeId)
+        .eq("period_month", body.periodMonth)
+        .eq("period_year", body.periodYear)
+        .eq("status", PAYSLIP_STATUS.VOID)
+        .maybeSingle();
+      if (!replaced) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "The payslip being replaced must be a voided payslip for the same employee and period",
+          },
+          { status: 400 },
+        );
+      }
+      replacesPayslipId = (replaced as { id: string }).id;
+    }
+
+    // Her bordro önce taslak olarak kaydedilir; yayınlama ayrı adımdır
+    // (snapshot + parmak izi, bkz. issuePayslip)
     const now = new Date().toISOString();
     const values = {
       employee_id: body.employeeId,
@@ -250,9 +286,9 @@ export async function POST(
         ...body.deductions,
         ...(body.salaryConfig ? { salaryConfig: body.salaryConfig } : {}),
       },
-      status,
+      status: PAYSLIP_STATUS.DRAFT,
       updated_at: now,
-      finalized_at: status === PAYSLIP_STATUS.FINAL ? now : null,
+      ...(replacesPayslipId ? { replaces_payslip_id: replacesPayslipId } : {}),
     };
 
     const { data: payslip, error: saveError } = draftId
@@ -282,11 +318,23 @@ export async function POST(
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      payslipId: (payslip as { id: string }).id,
-      status,
-    });
+    const payslipId = (payslip as { id: string }).id;
+
+    if (status === PAYSLIP_STATUS.FINAL) {
+      const issued = await issuePayslip(supabase, payslipId, companyData.id);
+      if (!issued.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            payslipId,
+            error: `Saved as draft, but it could not be issued: ${issued.error}`,
+          },
+          { status: 500 },
+        );
+      }
+    }
+
+    return NextResponse.json({ success: true, payslipId, status });
   } catch (error) {
     console.error("Payslip generate API error:", error);
     return NextResponse.json(

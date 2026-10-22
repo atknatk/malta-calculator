@@ -102,10 +102,15 @@ export interface Database {
           deductions: Json;
           pdf_url: string | null;
           access_token: string;
-          status: "draft" | "final";
+          status: "draft" | "final" | "void";
           created_at: string;
           updated_at: string;
           finalized_at: string | null;
+          snapshot: Json | null;
+          content_hash: string | null;
+          voided_at: string | null;
+          void_reason: string | null;
+          replaces_payslip_id: string | null;
         };
         Insert: {
           id?: string;
@@ -118,10 +123,15 @@ export interface Database {
           deductions: Json;
           pdf_url?: string | null;
           access_token?: string;
-          status?: "draft" | "final";
+          status?: "draft" | "final" | "void";
           created_at?: string;
           updated_at?: string;
           finalized_at?: string | null;
+          snapshot?: Json | null;
+          content_hash?: string | null;
+          voided_at?: string | null;
+          void_reason?: string | null;
+          replaces_payslip_id?: string | null;
         };
         Update: {
           id?: string;
@@ -134,10 +144,15 @@ export interface Database {
           deductions?: Json;
           pdf_url?: string | null;
           access_token?: string;
-          status?: "draft" | "final";
+          status?: "draft" | "final" | "void";
           created_at?: string;
           updated_at?: string;
           finalized_at?: string | null;
+          snapshot?: Json | null;
+          content_hash?: string | null;
+          voided_at?: string | null;
+          void_reason?: string | null;
+          replaces_payslip_id?: string | null;
         };
       };
       daily_usage: {
