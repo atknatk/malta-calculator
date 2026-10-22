@@ -4,6 +4,7 @@
  * dondurulur (snapshot) ve SHA-256 parmak izi yazılır. Veritabanı trigger'ı
  * snapshot'sız yayınlamayı ve yayınlanmış satırın değiştirilmesini reddeder.
  */
+import { after } from "next/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   buildPayslipDocumentProps,
@@ -15,6 +16,7 @@ import {
 } from "@/lib/payslip/document-props";
 import { createSnapshot } from "@/lib/payslip/snapshot";
 import { schedulePayslipArchive } from "@/lib/payslip/pdf-archive";
+import { notifyPayslipEvent } from "@/lib/notify/employee-notify";
 import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 
 const PAYSLIP_WITH_RELATIONS = `
@@ -112,7 +114,7 @@ export async function issuePayslip(
   if (!data || data.length === 0) {
     return { success: false, error: "Draft not found or already issued" };
   }
-
+  scheduleEmployeeNotification(supabase, payslipId, "payslip_issued");
   if (options.archivePdf !== false) {
     schedulePayslipArchive([payslipId]);
   }
@@ -168,7 +170,10 @@ export async function voidIssuedPayslip(
 ): Promise<{ success: boolean; error?: string }> {
   const trimmed = reason.trim();
   if (trimmed.length < 5) {
-    return { success: false, error: "Please give a reason (min. 5 characters)" };
+    return {
+      success: false,
+      error: "Please give a reason (min. 5 characters)",
+    };
   }
 
   const now = new Date().toISOString();
@@ -192,5 +197,23 @@ export async function voidIssuedPayslip(
   if (!data || data.length === 0) {
     return { success: false, error: "Issued payslip not found" };
   }
+  scheduleEmployeeNotification(supabase, payslipId, "payslip_voided");
   return { success: true };
+}
+
+/**
+ * Uygulamaya bağlı çalışana bildirim, yanıt döndükten sonra gönderilir
+ * (bordro akışını yavaşlatmaz, hata durumunda etkilemez).
+ */
+function scheduleEmployeeNotification(
+  supabase: SupabaseClient,
+  payslipId: string,
+  type: "payslip_issued" | "payslip_voided",
+): void {
+  try {
+    after(() => notifyPayslipEvent(supabase, payslipId, type));
+  } catch {
+    // İstek bağlamı dışında (ör. script) çağrıldı: hemen gönder
+    void notifyPayslipEvent(supabase, payslipId, type);
+  }
 }
