@@ -27,6 +27,8 @@ const isPublicRoute = createRouteMatcher([
   "/view(.*)",
   "/v/(.*)",
   "/payslip/verify(.*)",
+  "/archive-render(.*)", // imzalı bağlantıyla PDF arşivi çizimi
+  "/api/cron(.*)", // CRON_SECRET ile korunur
   "/api/salary(.*)",
   "/api/og(.*)",
   "/api/stripe/webhook(.*)",

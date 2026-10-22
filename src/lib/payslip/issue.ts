@@ -14,6 +14,7 @@ import {
   type PayslipRecord,
 } from "@/lib/payslip/document-props";
 import { createSnapshot } from "@/lib/payslip/snapshot";
+import { schedulePayslipArchive } from "@/lib/payslip/pdf-archive";
 import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 
 const PAYSLIP_WITH_RELATIONS = `
@@ -50,11 +51,20 @@ async function loadPayslipWithRelations(
   return { payslip: row, company, employee };
 }
 
+export interface IssuePayslipOptions {
+  /**
+   * Yanıttan sonra PDF'i R2'ye arşivle (varsayılan: true). Toplu yayınlamada
+   * false verip sonunda schedulePayslipArchive(ids) bir kez çağrılabilir.
+   */
+  archivePdf?: boolean;
+}
+
 /** Taslağı yayınlar: snapshot + parmak izi ile birlikte final yapar */
 export async function issuePayslip(
   supabase: SupabaseClient,
   payslipId: string,
   companyId: string,
+  options: IssuePayslipOptions = {},
 ): Promise<{ success: boolean; error?: string }> {
   const loaded = await loadPayslipWithRelations(supabase, payslipId, companyId);
   if (!loaded || loaded.payslip.status !== PAYSLIP_STATUS.DRAFT) {
@@ -101,6 +111,10 @@ export async function issuePayslip(
   }
   if (!data || data.length === 0) {
     return { success: false, error: "Draft not found or already issued" };
+  }
+
+  if (options.archivePdf !== false) {
+    schedulePayslipArchive([payslipId]);
   }
   return { success: true };
 }

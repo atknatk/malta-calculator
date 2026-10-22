@@ -8,6 +8,7 @@ import { createHmac, timingSafeEqual } from "crypto";
 export const ACCESS_SCOPE = {
   EMPLOYEE: "payslip_auth", // PIN (doğum tarihi) ile çalışan görüntülemesi
   VERIFY: "payslip_verify", // QR doğrulama (captcha)
+  RENDER: "payslip_render", // Sunucu PDF arşivi için kısa ömürlü çizim bağlantısı
 } as const;
 
 export type AccessScope = (typeof ACCESS_SCOPE)[keyof typeof ACCESS_SCOPE];

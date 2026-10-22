@@ -19,6 +19,8 @@ interface PayslipActionsProps {
   status: PayslipStatus;
   payslipNumber?: string;
   employeeName?: string;
+  /** R2 arşivine yüklendiği an (yayınlanmış bordrolar) */
+  archivedAt?: string;
 }
 
 export default function PayslipActions({
@@ -26,6 +28,7 @@ export default function PayslipActions({
   status,
   payslipNumber,
   employeeName,
+  archivedAt,
 }: PayslipActionsProps) {
   const router = useRouter();
   const [downloading, setDownloading] = useState(false);
@@ -191,6 +194,15 @@ export default function PayslipActions({
           </>
         )}
       </button>
+      {archivedAt && (
+        <a
+          href={`/api/payslip/${payslipId}/archive`}
+          title={`Archived copy stored on ${new Date(archivedAt).toLocaleString("en-GB")}`}
+          className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+        >
+          Archived PDF
+        </a>
+      )}
       {isFinal && (
         <button
           onClick={() => setVoidOpen((open) => !open)}
