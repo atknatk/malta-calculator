@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isMidWeekStart, parseDateOnly } from "@/utils/salary-calculator";
 import {
   PremiumInput,
   PremiumToggleGroup,
@@ -47,6 +48,7 @@ export type SalaryFormValues = {
   startDate?: string; // İşe başlama tarihi (YYYY-MM-DD)
   previousTaxableIncome?: number; // Aynı yıl önceki işveren matrahı (FS3)
   previousTaxPaid?: number; // Aynı yıl önceki işverende ödenen vergi (FS3)
+  includeStartWeekSSC?: boolean; // Salı–Cuma başlayanda başlangıç haftası SSC
   yearlyNonTaxBenefit: number;
   yearlyTaxableBenefit: number;
   monthlyBonus: number;
@@ -78,6 +80,7 @@ export function SalaryCalculatorForm({
     startDate: valuesProp?.startDate ?? "",
     previousTaxableIncome: valuesProp?.previousTaxableIncome ?? 0,
     previousTaxPaid: valuesProp?.previousTaxPaid ?? 0,
+    includeStartWeekSSC: valuesProp?.includeStartWeekSSC ?? true,
     yearlyNonTaxBenefit: valuesProp?.yearlyNonTaxBenefit ?? 0,
     yearlyTaxableBenefit: valuesProp?.yearlyTaxableBenefit ?? 0,
     monthlyBonus: valuesProp?.monthlyBonus ?? 0,
@@ -289,6 +292,25 @@ export function SalaryCalculatorForm({
             SSC by weeks worked, statutory bonuses by the days in their 6-month
             period) and tax is not calculated as if you worked the full year.
           </p>
+          {isMidWeekStart(parseDateOnly(startDateValue)) && (
+            <label className="flex items-start gap-3 text-sm text-foreground/80 cursor-pointer">
+              <input
+                type="checkbox"
+                className="mt-0.5 h-4 w-4 accent-primary"
+                checked={formValues.includeStartWeekSSC}
+                onChange={(e) =>
+                  updateValue("includeStartWeekSSC", e.target.checked)
+                }
+              />
+              <span>
+                Pay SSC for the start week
+                <span className="block text-xs text-muted-foreground">
+                  You start mid-week. Untick if a previous employer already paid
+                  SSC for this week.
+                </span>
+              </span>
+            </label>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <PremiumInput

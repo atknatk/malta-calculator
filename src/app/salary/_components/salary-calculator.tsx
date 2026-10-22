@@ -117,6 +117,7 @@ function buildConfig(
       endOfMonth: formValues.endOfMonth,
       previousTaxableIncome: formValues.previousTaxableIncome,
       previousTaxPaid: formValues.previousTaxPaid,
+      includeStartWeekSSC: formValues.includeStartWeekSSC,
     }),
   };
 }
@@ -148,6 +149,7 @@ function useFormValues(localParams: SalarySearchParams) {
       startDate: localParams.startDate,
       previousTaxableIncome: localParams.prevIncome,
       previousTaxPaid: localParams.prevTax,
+      includeStartWeekSSC: localParams.startWeekSSC,
       yearlyNonTaxBenefit: localParams.yearlyNonTaxBenefit,
       yearlyTaxableBenefit: localParams.yearlyTaxableBenefit,
       monthlyBonus: localParams.monthlyBonus,
@@ -292,6 +294,7 @@ export function SalaryCalculatorClient({
       startDate: values.startDate ?? prev.startDate,
       prevIncome: values.previousTaxableIncome ?? prev.prevIncome,
       prevTax: values.previousTaxPaid ?? prev.prevTax,
+      startWeekSSC: values.includeStartWeekSSC ?? prev.startWeekSSC,
       yearlyNonTaxBenefit:
         values.yearlyNonTaxBenefit ?? prev.yearlyNonTaxBenefit,
       yearlyTaxableBenefit:

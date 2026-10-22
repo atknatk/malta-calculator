@@ -45,6 +45,7 @@ interface SalaryCalculationRequest {
   endDate?: string; // İşten ayrılma tarihi (YYYY-MM-DD)
   previousTaxableIncome?: number; // Aynı yıl önceki işveren matrahı (FS3)
   previousTaxPaid?: number; // Aynı yıl önceki işverende ödenen vergi (FS3)
+  includeStartWeekSSC?: boolean; // Hafta ortası başlayanda başlangıç haftası SSC
 }
 
 // Response type
@@ -111,6 +112,7 @@ function buildConfig(params: SalaryCalculationRequest): SalaryCalculatorConfig {
     startDate: params.startDate,
     previousTaxableIncome: params.previousTaxableIncome,
     previousTaxPaid: params.previousTaxPaid,
+    includeStartWeekSSC: params.includeStartWeekSSC === true,
   });
   const employmentEndDate = parseDateOnly(params.endDate);
 
@@ -313,6 +315,13 @@ export async function GET(): Promise<NextResponse> {
         default: 0,
         description:
           "FSS tax deducted by a previous employer in the same year (FS3)",
+      },
+      includeStartWeekSSC: {
+        type: "boolean",
+        required: false,
+        default: false,
+        description:
+          "Pay Class 1 SSC for the start week when employment starts Tuesday–Friday (the previous employer did not pay that week)",
       },
     },
     example: {

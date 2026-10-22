@@ -190,6 +190,7 @@ describe("buildEmploymentConfig", () => {
       employmentStartDate: undefined,
       employmentEndDate: undefined,
       previousEmployment: undefined,
+      includeStartWeekSSC: false,
     });
     expect(
       buildEmploymentConfig({ year: 2026, startOfMonth: "May" })
@@ -209,5 +210,53 @@ describe("buildEmploymentConfig", () => {
       taxableIncome: 8000,
       taxPaid: 500,
     });
+  });
+});
+
+describe("calculateMonthlyDeductions — başlangıç haftası SSC", () => {
+  it("Çarşamba başlayanda başlangıç haftası seçilirse 2 hafta SSC kesilir", () => {
+    const cfg = config({
+      employmentStartDate: new Date(2026, 9, 21),
+      includeStartWeekSSC: true,
+    });
+    const october = calculateMonthlyDeductions(monthlyInputs(30000), cfg)[9];
+    // 19–25 Ekim haftası (başlangıç) + 26 Ekim Pazartesi
+    expect(october.sscWeeks).toBe(2);
+    expect(october.sscTax).toBe(111.86);
+  });
+
+  it("seçenek kapalıyken yalnızca başlangıçtan sonraki Pazartesiler sayılır", () => {
+    const cfg = config({ employmentStartDate: new Date(2026, 9, 21) });
+    expect(
+      calculateMonthlyDeductions(monthlyInputs(30000), cfg)[9].sscWeeks,
+    ).toBe(1);
+  });
+
+  it("ayın 1'i Perşembe başlayanda başlangıç haftası tam aya eklenir", () => {
+    // 1 Ekim 2026 Perşembe: Pazartesiler 5, 12, 19, 26 + 28 Eyl haftası
+    const cfg = config({
+      employmentStartDate: new Date(2026, 9, 1),
+      includeStartWeekSSC: true,
+    });
+    const data = calculateMonthlyDeductions(monthlyInputs(30000), cfg);
+    expect(data[9].sscWeeks).toBe(5);
+    expect(data[10].sscWeeks).toBe(5); // Kasım değişmez
+  });
+
+  it("Pazartesi veya hafta sonu başlayanda ek hafta eklenmez", () => {
+    const monday = config({
+      employmentStartDate: new Date(2026, 9, 19),
+      includeStartWeekSSC: true,
+    });
+    const saturday = config({
+      employmentStartDate: new Date(2026, 9, 24),
+      includeStartWeekSSC: true,
+    });
+    expect(
+      calculateMonthlyDeductions(monthlyInputs(30000), monday)[9].sscWeeks,
+    ).toBe(2);
+    expect(
+      calculateMonthlyDeductions(monthlyInputs(30000), saturday)[9].sscWeeks,
+    ).toBe(1);
   });
 });

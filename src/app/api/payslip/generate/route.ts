@@ -53,6 +53,7 @@ interface PayslipGenerateRequest {
     startDate?: string;
     previousTaxableIncome?: number;
     previousTaxPaid?: number;
+    includeStartWeekSSC?: boolean;
   };
 }
 

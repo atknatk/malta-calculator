@@ -3,6 +3,7 @@
  * SSR için createSearchParamsCache, client için useQueryStates kullanılır
  */
 import {
+  parseAsBoolean,
   parseAsInteger,
   parseAsString,
   parseAsStringLiteral,
@@ -62,6 +63,8 @@ export const salarySearchParams = {
   // Aynı yıl önceki işveren (FS3): vergiye tabi gelir ve ödenen vergi
   prevIncome: parseAsInteger.withDefault(0),
   prevTax: parseAsInteger.withDefault(0),
+  // Hafta ortası (Salı–Cuma) başlayanda başlangıç haftası SSC'si
+  startWeekSSC: parseAsBoolean.withDefault(true),
 
   // Advanced params
   birthYear: parseAsInteger.withDefault(1990),
@@ -97,6 +100,7 @@ export type SalarySearchParams = {
   startDate: string;
   prevIncome: number;
   prevTax: number;
+  startWeekSSC: boolean;
   birthYear: number;
   yearlyNonTaxBenefit: number;
   yearlyTaxableBenefit: number;
@@ -119,6 +123,7 @@ export const defaultSalaryParams: SalarySearchParams = {
   startDate: "",
   prevIncome: 0,
   prevTax: 0,
+  startWeekSSC: true,
   birthYear: 1990,
   yearlyNonTaxBenefit: 0,
   yearlyTaxableBenefit: 0,
