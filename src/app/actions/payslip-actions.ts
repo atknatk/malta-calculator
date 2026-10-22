@@ -14,6 +14,11 @@ import {
   fetchYearToDateTotals,
   type YearToDateTotals,
 } from "@/lib/payslip/document-props";
+import {
+  carryOverSalaryConfig,
+  normalizeSalaryConfig,
+  type PayslipSalaryConfig,
+} from "@/lib/payslip/compute";
 
 // Use admin client since we verify auth with Clerk
 // This bypasses RLS but is safe because we check userId
@@ -638,4 +643,139 @@ export async function getPayslipById(
     ...(data as Payslip & { employee: Employee }),
     company: company as Company,
   };
+}
+
+// ============ BULK PAYSLIPS ============
+
+export interface BulkPayslipRow {
+  employee: Pick<Employee, "id" | "name" | "employee_code" | "position">;
+  /** Son bordrodaki maaş ayarları (yeni yıla taşınmış); hiç bordro yoksa null */
+  defaults: PayslipSalaryConfig | null;
+  /** Bu dönemin aktif (void olmayan) bordrosu */
+  current: {
+    id: string;
+    status: PayslipStatus;
+    gross: number;
+    net: number;
+    incomeTax: number;
+    sscEmployee: number;
+    bonus: number;
+    allowance: number;
+  } | null;
+  /** Bu dönemde void edilmiş bordro var (yeni taslak düzeltme olur) */
+  hasVoided: boolean;
+}
+
+/** Toplu bordro sayfası: çalışanlar + varsayılan ayarlar + dönem durumu */
+export async function getBulkPayslipRows(
+  month: number,
+  year: number,
+): Promise<BulkPayslipRow[]> {
+  const { userId } = await auth();
+  if (!userId) return [];
+
+  const supabase = createAdminClient();
+
+  const { data: company } = await supabase
+    .from("companies")
+    .select("id")
+    .eq("clerk_user_id", userId)
+    .single();
+
+  if (!company) return [];
+  const companyId = (company as { id: string }).id;
+
+  const [{ data: employees }, { data: history }] = await Promise.all([
+    supabase
+      .from("employees")
+      .select("id, name, employee_code, position, date_of_birth")
+      .eq("company_id", companyId)
+      .order("name"),
+    supabase
+      .from("payslips")
+      .select(
+        "id, employee_id, status, period_month, period_year, gross_salary, net_salary, deductions",
+      )
+      .eq("company_id", companyId)
+      .order("period_year", { ascending: false })
+      .order("period_month", { ascending: false })
+      .order("updated_at", { ascending: false }),
+  ]);
+
+  const rows = (history ?? []) as Pick<
+    Payslip,
+    | "id"
+    | "employee_id"
+    | "status"
+    | "period_month"
+    | "period_year"
+    | "gross_salary"
+    | "net_salary"
+    | "deductions"
+  >[];
+
+  return (
+    (employees ?? []) as (Pick<
+      Employee,
+      "id" | "name" | "employee_code" | "position" | "date_of_birth"
+    >)[]
+  ).map((employee) => {
+    const own = rows.filter((r) => r.employee_id === employee.id);
+    const inPeriod = own.filter(
+      (r) => r.period_month === month && r.period_year === year,
+    );
+    const active = inPeriod.find((r) => r.status !== PAYSLIP_STATUS.VOID);
+
+    // Varsayılan: bu dönemin taslağı, yoksa en yeni bordronun ayarları
+    const source = [active, ...own].find(
+      (r) => r && (r.deductions as { salaryConfig?: unknown }).salaryConfig,
+    );
+    const sourceConfig = (
+      source?.deductions as { salaryConfig?: Partial<PayslipSalaryConfig> }
+    )?.salaryConfig;
+    const normalized = normalizeSalaryConfig(sourceConfig).config;
+    const birthYear = employee.date_of_birth
+      ? Number(employee.date_of_birth.slice(0, 4))
+      : undefined;
+
+    const d = (active?.deductions ?? {}) as {
+      incomeTax?: number;
+      sscEmployee?: number;
+      bonus?: number;
+      allowance?: number;
+    };
+
+    return {
+      employee: {
+        id: employee.id,
+        name: employee.name,
+        employee_code: employee.employee_code,
+        position: employee.position,
+      },
+      defaults: normalized
+        ? carryOverSalaryConfig(normalized, source!.period_year, year)
+        : birthYear
+          ? {
+              annualGross: 0,
+              taxType: "single",
+              childCount: 0,
+              sscCategory: "C",
+              birthYear,
+            }
+          : null,
+      current: active
+        ? {
+            id: active.id,
+            status: active.status,
+            gross: active.gross_salary,
+            net: active.net_salary,
+            incomeTax: d.incomeTax ?? 0,
+            sscEmployee: d.sscEmployee ?? 0,
+            bonus: d.bonus ?? 0,
+            allowance: d.allowance ?? 0,
+          }
+        : null,
+      hasVoided: inPeriod.some((r) => r.status === PAYSLIP_STATUS.VOID),
+    };
+  });
 }
