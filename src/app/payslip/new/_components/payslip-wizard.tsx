@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isChildCountEffective } from "@/config/malta-tax-config";
+import { isMidWeekStart, parseDateOnly } from "@/utils/salary-calculator";
 import {
   Select,
   SelectContent,
@@ -48,6 +49,7 @@ export interface PayslipDraft {
     startDate?: string;
     previousTaxableIncome?: number;
     previousTaxPaid?: number;
+    includeStartWeekSSC?: boolean;
   };
   bonus?: number;
   allowance?: number;
@@ -126,6 +128,7 @@ export default function PayslipWizard({
     startDate: draftConfig?.startDate ?? "", // İşe başlama tarihi (YYYY-MM-DD) — kıst bordro için
     previousTaxableIncome: draftConfig?.previousTaxableIncome ?? 0, // Aynı yıl önceki işveren matrahı (FS3)
     previousTaxPaid: draftConfig?.previousTaxPaid ?? 0, // Aynı yıl önceki işverende kesilen vergi (FS3)
+    includeStartWeekSSC: draftConfig?.includeStartWeekSSC ?? true, // Başlangıç haftası SSC (Salı–Cuma giriş)
     payDate: draft?.payDate ?? "", // Boşsa ayın son iş günü
     leaveHoursTaken: draft?.leaveHoursTaken ?? 0, // Bu dönemde kullanılan yıllık izin (saat)
     notes: draft?.notes ?? "", // Çalışana not (bordroda görünür)
@@ -244,6 +247,7 @@ export default function PayslipWizard({
           startDate: salaryDetails.startDate || undefined,
           previousTaxableIncome: salaryDetails.previousTaxableIncome,
           previousTaxPaid: salaryDetails.previousTaxPaid,
+          includeStartWeekSSC: salaryDetails.includeStartWeekSSC,
         }),
       });
 
@@ -345,6 +349,7 @@ export default function PayslipWizard({
             startDate: salaryDetails.startDate || undefined,
             previousTaxableIncome: salaryDetails.previousTaxableIncome,
             previousTaxPaid: salaryDetails.previousTaxPaid,
+            includeStartWeekSSC: salaryDetails.includeStartWeekSSC,
           },
         }),
       });
@@ -723,6 +728,28 @@ export default function PayslipWizard({
                       </p>
                     </div>
                   </div>
+                  {isMidWeekStart(parseDateOnly(salaryDetails.startDate)) && (
+                    <label className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 h-4 w-4 accent-amber-600"
+                        checked={salaryDetails.includeStartWeekSSC}
+                        onChange={(e) =>
+                          setSalaryDetails({
+                            ...salaryDetails,
+                            includeStartWeekSSC: e.target.checked,
+                          })
+                        }
+                      />
+                      <span>
+                        Pay SSC for the start week
+                        <span className="block text-xs text-slate-500">
+                          Starts mid-week. Untick if a previous employer already
+                          paid SSC for this week.
+                        </span>
+                      </span>
+                    </label>
+                  )}
                   <p className="text-xs text-slate-500">
                     Tax uses the FSS cumulative method: income earned this year
                     (including earlier employers) is projected from the months
@@ -962,7 +989,9 @@ export default function PayslipWizard({
                     </p>
                     <div className="flex justify-between text-slate-600 dark:text-slate-400">
                       <span>Employer SSC</span>
-                      <span>€{employerContributions.sscEmployer.toFixed(2)}</span>
+                      <span>
+                        €{employerContributions.sscEmployer.toFixed(2)}
+                      </span>
                     </div>
                     <div className="flex justify-between text-slate-600 dark:text-slate-400">
                       <span>Maternity Fund (0.3%)</span>
@@ -1000,8 +1029,7 @@ export default function PayslipWizard({
                 <div className="mt-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
                   {issueBlockedMessage ||
                     "You have reached your monthly limit of issued payslips."}{" "}
-                  You can still save this payslip as a draft and issue it
-                  later.
+                  You can still save this payslip as a draft and issue it later.
                   {company.plan !== "pro" && (
                     <Link
                       href="/pricing"
