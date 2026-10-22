@@ -11,6 +11,7 @@ import {
   type PayslipStatus,
 } from "@/utils/payslip-details";
 import { issuePayslip } from "@/lib/payslip/issue";
+import { schedulePayslipArchive } from "@/lib/payslip/pdf-archive";
 import { generateShortToken } from "@/lib/payslip/token";
 import {
   computeMonthlyPayslip,
@@ -234,9 +235,18 @@ export async function issueBulkPayslips(
     allowed,
     CONCURRENCY,
     async (payslipId): Promise<BulkItemResult> => {
-      const result = await issuePayslip(supabase, payslipId, companyId);
+      const result = await issuePayslip(supabase, payslipId, companyId, {
+        archivePdf: false,
+      });
       return { payslipId, ...result };
     },
+  );
+
+  // PDF arşivi yanıttan sonra tek kuyrukta, sırayla (bkz. pdf-archive)
+  schedulePayslipArchive(
+    issued
+      .filter((item) => item.success && item.payslipId)
+      .map((item) => item.payslipId as string),
   );
 
   return [

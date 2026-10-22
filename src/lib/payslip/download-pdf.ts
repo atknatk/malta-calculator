@@ -44,10 +44,38 @@ export async function downloadPayslipPdf(filename: string): Promise<void> {
         format: "a4" as const,
         orientation: "portrait" as const,
       },
-      pagebreak: { mode: "avoid-all" as const },
     };
 
-    await html2pdf().set(opt).from(element).save();
+    // Belge A4 yüksekliğinde; yuvarlama farkı html2pdf'in boş ikinci sayfa
+    // açmasına yol açıyordu. Bordro her zaman tek sayfa: taşma sayfaları
+    // silinir ve görüntü sayfaya sığacak şekilde yeniden çizilir.
+    const worker = html2pdf().set(opt).from(element).toPdf();
+    const pdf = await worker.get("pdf");
+    const canvas = (await worker.get("canvas")) as HTMLCanvasElement;
+
+    while (pdf.getNumberOfPages() > 1) {
+      pdf.deletePage(pdf.getNumberOfPages());
+    }
+    pdf.setPage(1);
+    const pageWidth: number = pdf.internal.pageSize.getWidth();
+    const pageHeight: number = pdf.internal.pageSize.getHeight();
+    const ratio = Math.min(
+      pageWidth / canvas.width,
+      pageHeight / canvas.height,
+    );
+    const width = canvas.width * ratio;
+    const height = canvas.height * ratio;
+    pdf.setFillColor(255, 255, 255);
+    pdf.rect(0, 0, pageWidth, pageHeight, "F");
+    pdf.addImage(
+      canvas.toDataURL("image/jpeg", 0.98),
+      "JPEG",
+      (pageWidth - width) / 2,
+      0,
+      width,
+      height,
+    );
+    pdf.save(filename);
   } catch (error) {
     console.error("PDF generation failed:", error);
     window.print();
