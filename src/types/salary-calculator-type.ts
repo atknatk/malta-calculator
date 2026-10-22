@@ -60,6 +60,9 @@ export type SalaryCalculatorConfig = {
   employmentStartDate?: Date; // İşe başlama tarihi (yıl öncesi/boş = 1 Ocak)
   employmentEndDate?: Date; // İşten ayrılma tarihi (yıl sonrası/boş = 31 Aralık)
   previousEmployment?: PreviousEmployment; // Yıl içi önceki işveren (FS3)
+  // Hafta ortası (Salı–Cuma) başlayanda başlangıç haftasının SSC'si bu
+  // işverence ödenir (önceki işveren o haftayı ödemediyse — Cap. 318 md. 7(3))
+  includeStartWeekSSC?: boolean;
 };
 
 export enum Month {

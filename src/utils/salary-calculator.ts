@@ -225,13 +225,17 @@ function getStatutoryBonusRatio(
 }
 
 /**
- * Çalışma dönemi içindeki haftalık SSC sayısı (Pazartesi sayısı)
+ * Çalışma dönemi içindeki haftalık SSC sayısı (Pazartesi sayısı).
+ * Katkı haftası Pazartesi–Pazar'dır (Cap. 318 md. 2: katkı yılı Ocak'ın ilk
+ * Pazartesi'sinden başlar). includeStartWeek ile Salı–Cuma başlayanın
+ * başlangıç haftası (Pazartesi'si dönem dışında kalan) başlangıç ayına eklenir.
  */
 function getEmployedWeeks(
   year: number,
   monthIndex: number,
   employmentStart: Date,
   employmentEnd: Date,
+  includeStartWeek: boolean,
 ): number {
   const lastDay = new Date(year, monthIndex + 1, 0).getDate();
   let count = 0;
@@ -244,6 +248,15 @@ function getEmployedWeeks(
     ) {
       count++;
     }
+  }
+
+  if (
+    includeStartWeek &&
+    isMidWeekStart(employmentStart) &&
+    employmentStart.getFullYear() === year &&
+    employmentStart.getMonth() === monthIndex
+  ) {
+    count++;
   }
   return count;
 }
@@ -378,18 +391,26 @@ export function calculateMonthlyDeductions(
       ? 0
       : Number(input.allowanceBonus);
 
-    // Hafta sayısı: kıst ayda çalışılan haftalar (Pazartesi sayısı);
-    // aksi halde override → input → yıl bazlı dinamik hesaplama
-    const weeksInMonth = isPartialMonth
-      ? getEmployedWeeks(
-          config.year,
-          monthIndex,
-          employment.start,
-          employment.end,
-        )
-      : (config.weeksPerMonthOverride ??
-        input.weeksInMonth ??
-        getWeeksForMonth(config.year, month));
+    // Ayın 1'inde (Salı–Cuma) başlayanın başlangıç haftası da sayılmalı
+    const isStartMonth =
+      !!config.employmentStartDate &&
+      employment.start.getFullYear() === config.year &&
+      employment.start.getMonth() === monthIndex;
+
+    // Hafta sayısı: kıst ayda / başlangıç ayında çalışılan haftalar
+    // (Pazartesi sayısı); aksi halde override → input → yıl bazlı hesaplama
+    const weeksInMonth =
+      isPartialMonth || (isStartMonth && config.includeStartWeekSSC)
+        ? getEmployedWeeks(
+            config.year,
+            monthIndex,
+            employment.start,
+            employment.end,
+            config.includeStartWeekSSC ?? false,
+          )
+        : (config.weeksPerMonthOverride ??
+          input.weeksInMonth ??
+          getWeeksForMonth(config.year, month));
 
     // Temel hesaplamalar (kıst ayda çalışılan gün oranında)
     const basicSalary = grossWage * employmentRatio;
@@ -566,6 +587,16 @@ export function calculateYearEndTaxPosition(
 }
 
 /**
+ * Tarih hafta ortasına (Salı–Cuma) mı denk geliyor? Başlangıç haftası SSC
+ * seçeneği yalnızca bu durumda anlamlıdır.
+ */
+export function isMidWeekStart(date?: Date): boolean {
+  if (!date) return false;
+  const weekday = date.getDay();
+  return weekday >= 2 && weekday <= 5;
+}
+
+/**
  * "YYYY-MM-DD" metnini yerel tarihe çevirir (geçersizse undefined)
  */
 export function parseDateOnly(value?: string | null): Date | undefined {
@@ -587,6 +618,7 @@ export interface EmploymentPeriodParams {
   endOfMonth?: string; // Ay adı (ayın son günü)
   previousTaxableIncome?: number;
   previousTaxPaid?: number;
+  includeStartWeekSSC?: boolean;
 }
 
 /**
@@ -596,7 +628,10 @@ export function buildEmploymentConfig(
   params: EmploymentPeriodParams,
 ): Pick<
   SalaryCalculatorConfig,
-  "employmentStartDate" | "employmentEndDate" | "previousEmployment"
+  | "employmentStartDate"
+  | "employmentEndDate"
+  | "previousEmployment"
+  | "includeStartWeekSSC"
 > {
   const startMonthIndex = params.startOfMonth
     ? MONTH_ORDER.indexOf(params.startOfMonth as Month)
@@ -625,6 +660,7 @@ export function buildEmploymentConfig(
     employmentEndDate,
     previousEmployment:
       taxableIncome > 0 || taxPaid > 0 ? { taxableIncome, taxPaid } : undefined,
+    includeStartWeekSSC: params.includeStartWeekSSC ?? false,
   };
 }
 

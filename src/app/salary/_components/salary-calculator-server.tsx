@@ -48,6 +48,7 @@ function buildConfig(params: SalarySearchParams): SalaryCalculatorConfig {
       endOfMonth: params.endOfMonth,
       previousTaxableIncome: params.prevIncome,
       previousTaxPaid: params.prevTax,
+      includeStartWeekSSC: params.startWeekSSC,
     }),
   };
 }
