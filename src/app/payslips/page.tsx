@@ -5,6 +5,7 @@ import {
   Check,
   ChevronRight,
   FileText,
+  Layers,
   Pencil,
   Plus,
   Search,
@@ -86,10 +87,24 @@ export default async function PayslipsPage({
         title="Payslips"
         description={`${allPayslips.length} payslip${allPayslips.length === 1 ? "" : "s"}${status ? ` · ${FILTERS.find((f) => f.value === status)?.label.toLowerCase()}` : ""}`}
         actions={
-          <Link href="/payslip/new" className={mdButton()}>
-            <Plus />
-            New payslip
-          </Link>
+          <>
+            <Link
+              href="/payslips/bulk"
+              className={mdButton({ variant: "outlined" })}
+            >
+              <Layers />
+              Bulk payslips
+              {company.plan !== "pro" && (
+                <span className="rounded-md bg-md-tertiary-container px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-md-on-tertiary-container">
+                  Pro
+                </span>
+              )}
+            </Link>
+            <Link href="/payslip/new" className={mdButton()}>
+              <Plus />
+              New payslip
+            </Link>
+          </>
         }
       />
 

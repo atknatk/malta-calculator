@@ -5,24 +5,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { randomBytes } from "crypto";
 import {
   ISSUED_STATUSES,
   PAYSLIP_STATUS,
   type PayslipStatus,
 } from "@/utils/payslip-details";
 import { issuePayslip } from "@/lib/payslip/issue";
-
-// Generate a short random token (6-8 chars, alphanumeric, URL-safe)
-function generateShortToken(length: number = 8): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"; // No O/0/I/l/1 for clarity
-  const bytes = randomBytes(length);
-  let token = "";
-  for (let i = 0; i < length; i++) {
-    token += chars[bytes[i] % chars.length];
-  }
-  return token;
-}
+import { generateShortToken } from "@/lib/payslip/token";
 
 interface PayslipGenerateRequest {
   /** Var olan bir taslağı güncellemek için */
