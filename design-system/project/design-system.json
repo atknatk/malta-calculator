@@ -1,0 +1,48 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": { "v": 1, "at": "2026-10-22T15:36:53Z" },
+  "title": "Malta Calculator",
+  "namespace": "MaltaCalculator",
+  "libraries": [
+    { "name": "react", "version": "18.3.1" },
+    { "name": "react-dom", "version": "18.3.1" }
+  ],
+  "sections": {},
+  "groups": ["Logos"],
+  "assetGroups": {
+    "Logos": {
+      "name": "Logos",
+      "tile": "l",
+      "order": ["logo.png", "logo_squaree.png", "apple-icon.png"],
+      "files": {
+        "logo.png": {
+          "name": "logo.png",
+          "blob": "a017b5488b9ee9f6e0de76b56198671f",
+          "size": 49133,
+          "type": "image/png"
+        },
+        "logo_squaree.png": {
+          "name": "logo_squaree.png",
+          "blob": "8aeaa5b825f0e006cbd354cd5fcb6d46",
+          "size": 52899,
+          "type": "image/png"
+        },
+        "apple-icon.png": {
+          "name": "apple-icon.png",
+          "blob": "909b256d2cc136b325bec53659a909bc",
+          "size": 204971,
+          "type": "image/png"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "docs": { "readme": "project/README.md", "sections": [] },
+  "lastChange": {
+    "by": "Atakan Atik",
+    "at": "2026-10-22T15:57:46Z",
+    "via": "Claude Code · atknatk/malta-calculator@0526f9b",
+    "note": "Live React bundle built from src/components (26 components + 2 markup patterns); bundle.css is the project's Tailwind build wired to tokens."
+  }
+}

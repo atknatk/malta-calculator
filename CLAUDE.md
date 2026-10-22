@@ -220,3 +220,12 @@ Bu projede kullanılabilir özel komutlar:
 - Malta CFR: https://cfr.gov.mt (Vergi oranları)
 - Malta Social Security: https://socialsecurity.gov.mt (SSC oranları)
 - Payroll Working.xlsx: Hesaplama referans dosyası
+
+---
+
+## Design Tokens
+
+- Renk, gölge, gradyan, `--radius` ve `--glass-blur` değerleri **yalnızca** `design-tokens/*.tokens.json` (W3C DTCG) içinde değiştirilir; ardından `npm run tokens` çalıştırılır.
+- `src/app/tokens.css` üretilir — elle düzenleme. `globals.css` içine yeni `:root` renk değişkeni ekleme.
+- Yeni metin/zemin çifti eklerken `design-tokens/contrast.json`'a ekle; `npm run tokens:check` WCAG AA altına düşerse başarısız olur.
+- Design system (Claude artifact) kaynağı `design-system/project/`; paket `npm run design-system` ile üretilir.

@@ -1,0 +1,64 @@
+<!-- @dsCard group="Overlays" height=360 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          M.Sheet,
+          { defaultOpen: true, modal: false },
+          h(
+            M.SheetTrigger,
+            { asChild: true },
+            h(M.Button, { variant: "outline" }, "Open menu"),
+          ),
+          h(
+            M.SheetContent,
+            {
+              onOpenAutoFocus: function (e) {
+                e.preventDefault();
+              },
+              onInteractOutside: function (e) {
+                e.preventDefault();
+              },
+            },
+            h(
+              M.SheetHeader,
+              null,
+              h(M.SheetTitle, null, "Calculators"),
+              h(
+                M.SheetDescription,
+                null,
+                "28 free tools for life and work in Malta.",
+              ),
+            ),
+            h(
+              "nav",
+              { className: "mt-6 flex flex-col gap-1" },
+              [
+                "Salary Calculator",
+                "Net to Gross",
+                "Mortgage Calculator",
+                "Stamp Duty",
+              ].map(function (l) {
+                return h(
+                  M.Button,
+                  { key: l, variant: "ghost", className: "justify-start" },
+                  l,
+                );
+              }),
+            ),
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

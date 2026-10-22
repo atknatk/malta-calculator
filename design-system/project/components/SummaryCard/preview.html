@@ -1,0 +1,45 @@
+<!-- @dsCard group="Data" height=120 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          "div",
+          { className: "grid grid-cols-2 gap-2 sm:grid-cols-4" },
+          h(M.SummaryCard, {
+            icon: I.Euro,
+            label: "Gross / month",
+            value: "€3,500.00",
+          }),
+          h(M.SummaryCard, {
+            icon: I.Info,
+            label: "Tax",
+            value: "€591.67",
+            variant: "warning",
+          }),
+          h(M.SummaryCard, {
+            icon: I.TrendingDown,
+            label: "SSC",
+            value: "€242.36",
+            variant: "danger",
+          }),
+          h(M.SummaryCard, {
+            icon: I.Wallet,
+            label: "Net / month",
+            value: "€2,665.97",
+            variant: "success",
+          }),
+        ),
+      );
+    </script>
+  </body>
+</html>

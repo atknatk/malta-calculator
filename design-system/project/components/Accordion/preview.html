@@ -1,0 +1,47 @@
+<!-- @dsCard group="Data" height=210 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          M.Accordion,
+          {
+            type: "single",
+            collapsible: true,
+            defaultValue: "cola",
+            className: "max-w-xl",
+          },
+          h(
+            M.AccordionItem,
+            { value: "cola" },
+            h(M.AccordionTrigger, null, "What is COLA?"),
+            h(
+              M.AccordionContent,
+              null,
+              "The Cost of Living Adjustment is a statutory bonus paid quarterly to employees in Malta.",
+            ),
+          ),
+          h(
+            M.AccordionItem,
+            { value: "ssc" },
+            h(M.AccordionTrigger, null, "Who pays Class 1 SSC?"),
+            h(
+              M.AccordionContent,
+              null,
+              "Employees and employers each pay 10% of basic weekly wage, up to the weekly cap.",
+            ),
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

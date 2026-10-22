@@ -1,0 +1,48 @@
+<!-- @dsCard group="Overlays" height=110 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          M.TooltipProvider,
+          null,
+          h(
+            "div",
+            { className: "pt-12" },
+            h(
+              M.Tooltip,
+              { defaultOpen: true },
+              h(
+                M.TooltipTrigger,
+                { asChild: true },
+                h(
+                  M.Button,
+                  {
+                    variant: "outline",
+                    size: "icon",
+                    "aria-label": "About the SSC cap",
+                  },
+                  h(I.Info, { className: "h-4 w-4" }),
+                ),
+              ),
+              h(
+                M.TooltipContent,
+                { side: "right" },
+                "Capped at €559.31 per week in 2026",
+              ),
+            ),
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

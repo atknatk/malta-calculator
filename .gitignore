@@ -102,3 +102,10 @@ ios-app/Carthage/
 # Xcode Playground
 ios-app/timeline.xctimeline
 ios-app/playground.xcworkspace
+
+# design system — üretilen dosyalar (npm run design-system)
+/design-system/project/tokens.json
+/design-system/project/fonts/
+/design-system/project/components/bundle.js
+/design-system/project/components/bundle.css
+/scripts/design-system/.tailwind.out.css

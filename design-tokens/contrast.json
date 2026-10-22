@@ -1,0 +1,137 @@
+{
+  "$description": "WCAG 2.2 AA pairs checked in every theme by `npm run tokens:check`. 4.5 = text, 3 = large text, control boundaries, focus indicators and icons.",
+  "pairs": [
+    {
+      "fg": "foreground",
+      "bg": "background",
+      "min": 4.5,
+      "why": "body copy"
+    },
+    {
+      "fg": "foreground",
+      "bg": "card",
+      "min": 4.5,
+      "why": "body copy on cards"
+    },
+    {
+      "fg": "card-foreground",
+      "bg": "card",
+      "min": 4.5,
+      "why": "card text"
+    },
+    {
+      "fg": "popover-foreground",
+      "bg": "popover",
+      "min": 4.5,
+      "why": "menus, tooltips"
+    },
+    {
+      "fg": "muted-foreground",
+      "bg": "background",
+      "min": 4.5,
+      "why": "secondary text"
+    },
+    {
+      "fg": "muted-foreground",
+      "bg": "card",
+      "min": 4.5,
+      "why": "descriptions in cards"
+    },
+    {
+      "fg": "muted-foreground",
+      "bg": "muted",
+      "min": 4.5,
+      "why": "labels on muted tiles"
+    },
+    {
+      "fg": "primary-foreground",
+      "bg": "primary",
+      "min": 4.5,
+      "why": "primary button label"
+    },
+    {
+      "fg": "primary",
+      "bg": "background",
+      "min": 4.5,
+      "why": "links and accent words"
+    },
+    {
+      "fg": "primary",
+      "bg": "card",
+      "min": 4.5,
+      "why": "links in cards"
+    },
+    {
+      "fg": "secondary-foreground",
+      "bg": "secondary",
+      "min": 4.5,
+      "why": "secondary button label"
+    },
+    {
+      "fg": "secondary",
+      "bg": "background",
+      "min": 4.5,
+      "why": "accent words"
+    },
+    {
+      "fg": "accent-foreground",
+      "bg": "accent",
+      "min": 4.5,
+      "why": "hovered ghost/outline"
+    },
+    {
+      "fg": "destructive-foreground",
+      "bg": "destructive",
+      "min": 4.5,
+      "why": "destructive button label"
+    },
+    {
+      "fg": "destructive",
+      "bg": "background",
+      "min": 4.5,
+      "why": "error text"
+    },
+    {
+      "fg": "success",
+      "bg": "background",
+      "min": 4.5,
+      "why": "net pay"
+    },
+    {
+      "fg": "warning",
+      "bg": "background",
+      "min": 4.5,
+      "why": "deductions"
+    },
+    {
+      "fg": "danger",
+      "bg": "background",
+      "min": 4.5,
+      "why": "losses"
+    },
+    {
+      "fg": "ring",
+      "bg": "background",
+      "min": 3,
+      "why": "focus indicator"
+    },
+    {
+      "fg": "ring",
+      "bg": "card",
+      "min": 3,
+      "why": "focus indicator in cards"
+    },
+    {
+      "fg": "input",
+      "bg": "background",
+      "min": 3,
+      "why": "control boundary"
+    },
+    {
+      "fg": "input",
+      "bg": "card",
+      "min": 3,
+      "why": "control boundary in cards"
+    }
+  ]
+}

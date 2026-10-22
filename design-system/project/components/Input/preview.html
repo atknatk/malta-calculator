@@ -1,0 +1,24 @@
+<!-- @dsCard group="Forms" height=104 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          "div",
+          { className: "flex max-w-sm flex-col gap-3" },
+          h(M.Input, { placeholder: "Company name" }),
+          h(M.Input, { defaultValue: "Valletta Holdings Ltd" }),
+        ),
+      );
+    </script>
+  </body>
+</html>

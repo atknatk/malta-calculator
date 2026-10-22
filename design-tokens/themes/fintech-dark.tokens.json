@@ -1,0 +1,20 @@
+{
+  "color": {
+    "$type": "color",
+    "primary": {
+      "$value": { "colorSpace": "hsl", "components": [234, 89, 68] }
+    },
+    "primary-foreground": {
+      "$value": { "colorSpace": "hsl", "components": [20, 14, 8] }
+    },
+    "secondary": {
+      "$value": { "colorSpace": "hsl", "components": [280, 65, 61] }
+    },
+    "secondary-foreground": {
+      "$value": { "colorSpace": "hsl", "components": [220, 20, 8] }
+    },
+    "ring": {
+      "$value": "{color.primary}"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<!-- @dsCard group="Surfaces" height=200 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          "div",
+          { className: "grid gap-4 sm:grid-cols-2" },
+          h(M.CalculatorCard, {
+            href: "#",
+            title: "Salary Calculator",
+            description: "Gross to net with 2026 tax bands, SSC and COLA.",
+            icon: I.Calculator,
+            variant: "primary",
+          }),
+          h(M.CalculatorCard, {
+            href: "#",
+            title: "Mortgage Calculator",
+            description: "Monthly repayments for Maltese home loans.",
+            icon: I.Home,
+          }),
+        ),
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+# Üretilen dosyalar — design-tokens/ ve scripts/design-system/ üretir
+src/app/tokens.css
+design-system/project/tokens.json
+design-system/project/fonts/
+design-system/project/components/bundle.js
+design-system/project/components/bundle.css

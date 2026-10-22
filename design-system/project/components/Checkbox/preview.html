@@ -1,0 +1,34 @@
+<!-- @dsCard group="Forms" height=80 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          "div",
+          { className: "flex flex-col gap-3" },
+          h(
+            "div",
+            { className: "flex items-center gap-2" },
+            h(M.Checkbox, { id: "c1", defaultChecked: true }),
+            h(M.Label, { htmlFor: "c1" }, "Include statutory bonuses"),
+          ),
+          h(
+            "div",
+            { className: "flex items-center gap-2" },
+            h(M.Checkbox, { id: "c2" }),
+            h(M.Label, { htmlFor: "c2" }, "Part-time employment"),
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

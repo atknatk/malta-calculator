@@ -1,0 +1,24 @@
+<!-- @dsCard group="Forms" height=64 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          "div",
+          { className: "grid max-w-sm gap-2" },
+          h(M.Label, { htmlFor: "salary" }, "Gross annual salary"),
+          h(M.Input, { id: "salary", placeholder: "42000" }),
+        ),
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!-- @dsCard group="Forms" height=260 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      function Demo() {
+        var a = useState("42000"),
+          b = useState("1500");
+        return h(
+          "div",
+          { className: "flex max-w-md flex-col gap-4" },
+          h(M.PremiumInput, {
+            icon: I.Wallet,
+            label: "Gross annual salary",
+            value: a[0],
+            onChange: a[1],
+            suffix: "€",
+            description: "Your yearly salary before tax and SSC.",
+            large: true,
+          }),
+          h(M.PremiumInput, {
+            icon: I.Briefcase,
+            label: "Annual bonus",
+            value: b[0],
+            onChange: b[1],
+            suffix: "€",
+          }),
+        );
+      }
+      ReactDOM.createRoot(document.getElementById("root")).render(h(Demo));
+    </script>
+  </body>
+</html>

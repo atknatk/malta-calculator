@@ -1,0 +1,56 @@
+<!-- @dsCard group="Data" height=330 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          M.Table,
+          null,
+          h(
+            M.TableCaption,
+            null,
+            "2026 single rates · tax = income × rate − subtract (MTCA)",
+          ),
+          h(
+            M.TableHeader,
+            null,
+            h(
+              M.TableRow,
+              null,
+              h(M.TableHead, null, "Chargeable income"),
+              h(M.TableHead, { className: "text-right" }, "Rate"),
+              h(M.TableHead, { className: "text-right" }, "Subtract"),
+            ),
+          ),
+          h(
+            M.TableBody,
+            null,
+            [
+              ["€0 – €12,000", "0%", "€0"],
+              ["€12,001 – €16,000", "15%", "€1,800"],
+              ["€16,001 – €60,000", "25%", "€3,400"],
+              ["€60,001 and over", "35%", "€9,400"],
+            ].map(function (r) {
+              return h(
+                M.TableRow,
+                { key: r[0] },
+                h(M.TableCell, null, r[0]),
+                h(M.TableCell, { className: "text-right tabular-nums" }, r[1]),
+                h(M.TableCell, { className: "text-right tabular-nums" }, r[2]),
+              );
+            }),
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

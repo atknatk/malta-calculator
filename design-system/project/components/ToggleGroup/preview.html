@@ -1,0 +1,35 @@
+<!-- @dsCard group="Actions" height=112 -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="root" class="p-4"></div>
+    <script>
+      var M = window.MaltaCalculator,
+        I = M.Icons,
+        h = React.createElement,
+        useState = React.useState;
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        h(
+          "div",
+          { className: "flex flex-col items-start gap-3" },
+          h(
+            M.ToggleGroup,
+            { type: "single", defaultValue: "monthly", variant: "outline" },
+            h(M.ToggleGroupItem, { value: "weekly" }, "Weekly"),
+            h(M.ToggleGroupItem, { value: "monthly" }, "Monthly"),
+            h(M.ToggleGroupItem, { value: "annual" }, "Annual"),
+          ),
+          h(
+            M.Toggle,
+            { defaultPressed: true, "aria-label": "Show in euro" },
+            h(I.Euro, null),
+            "Show in euro",
+          ),
+        ),
+      );
+    </script>
+  </body>
+</html>

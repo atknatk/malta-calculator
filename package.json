@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "tokens": "node scripts/design-system/build-tokens.mjs",
+    "tokens:check": "node scripts/design-system/build-tokens.mjs --check",
+    "design-system": "npm run tokens && node scripts/design-system/build-bundle.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.982.0",
@@ -71,6 +74,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@vitest/ui": "^4.1.7",
+    "esbuild": "0.25.5",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
     "postcss": "^8",
