@@ -54,6 +54,7 @@ interface PayslipDocumentProps {
     fringeBenefits?: number;
   };
   sscWeeks?: number;
+  periodStartDate?: string; // Kıst ay: işe başlama tarihi (YYYY-MM-DD)
   payslipUrl?: string;
   accessToken?: string;
 }
@@ -94,6 +95,7 @@ export default function PayslipDocument({
   salaryConfig,
   earnings,
   sscWeeks = 4,
+  periodStartDate,
   payslipUrl,
   accessToken,
 }: PayslipDocumentProps) {
@@ -103,7 +105,17 @@ export default function PayslipDocument({
   void createdAt;
 
   // Calculate dates
-  const startDate = new Date(periodYear, periodMonth - 1, 1);
+  // Kıst ay: dönem işe başlama tarihinden başlar
+  const parsedStart = periodStartDate
+    ? new Date(`${periodStartDate}T00:00:00`)
+    : null;
+  const startDate =
+    parsedStart &&
+    !isNaN(parsedStart.getTime()) &&
+    parsedStart.getFullYear() === periodYear &&
+    parsedStart.getMonth() === periodMonth - 1
+      ? parsedStart
+      : new Date(periodYear, periodMonth - 1, 1);
   const endDate = new Date(periodYear, periodMonth, 0);
   const rollPeriod = `${startDate.toLocaleDateString("en-GB")} - ${endDate.toLocaleDateString("en-GB")}`;
   const payDate = endDate.toLocaleDateString("en-GB");

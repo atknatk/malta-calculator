@@ -14,6 +14,7 @@ import {
   Wallet,
   Sparkles,
   Baby,
+  Briefcase,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,9 @@ export type SalaryFormValues = {
   birthYear: number;
   startOfMonth?: Month;
   endOfMonth?: Month;
+  startDate?: string; // İşe başlama tarihi (YYYY-MM-DD)
+  previousTaxableIncome?: number; // Aynı yıl önceki işveren matrahı (FS3)
+  previousTaxPaid?: number; // Aynı yıl önceki işverende ödenen vergi (FS3)
   yearlyNonTaxBenefit: number;
   yearlyTaxableBenefit: number;
   monthlyBonus: number;
@@ -71,6 +75,9 @@ export function SalaryCalculatorForm({
     birthYear: valuesProp?.birthYear ?? 1990,
     startOfMonth: valuesProp?.startOfMonth ?? Month.January,
     endOfMonth: valuesProp?.endOfMonth ?? Month.December,
+    startDate: valuesProp?.startDate ?? "",
+    previousTaxableIncome: valuesProp?.previousTaxableIncome ?? 0,
+    previousTaxPaid: valuesProp?.previousTaxPaid ?? 0,
     yearlyNonTaxBenefit: valuesProp?.yearlyNonTaxBenefit ?? 0,
     yearlyTaxableBenefit: valuesProp?.yearlyTaxableBenefit ?? 0,
     monthlyBonus: valuesProp?.monthlyBonus ?? 0,
@@ -83,6 +90,16 @@ export function SalaryCalculatorForm({
     isChildCountEffective(parseInt(formValues.year)) &&
     (formValues.taxRateType === "married" ||
       formValues.taxRateType === "parent");
+
+  // Eski paylaşım linkleri: startDate yoksa startOfMonth'un 1'i gösterilir
+  const startMonthIndex = monthValues.indexOf(
+    formValues.startOfMonth ?? Month.January,
+  );
+  const startDateValue =
+    formValues.startDate ||
+    (startMonthIndex > 0
+      ? `${formValues.year}-${String(startMonthIndex + 1).padStart(2, "0")}-01`
+      : "");
 
   const updateValue = <K extends keyof SalaryFormValues>(
     key: K,
@@ -205,6 +222,97 @@ export function SalaryCalculatorForm({
             based on birth year (before/after 1962).
           </p>
         </GlassSection>
+
+        <GlassSection icon={Briefcase} title="Employment Period">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label
+                htmlFor="employment-start-date"
+                className="text-sm font-medium text-foreground/70"
+              >
+                Start Date
+              </label>
+              <input
+                id="employment-start-date"
+                type="date"
+                min={`${formValues.year}-01-01`}
+                max={`${formValues.year}-12-31`}
+                value={startDateValue}
+                onChange={(e) =>
+                  // Eski "Start Month" parametresini sıfırla; tarih öncelikli
+                  onValuesChangeProp?.({
+                    ...valuesProp,
+                    startDate: e.target.value,
+                    startOfMonth: Month.January,
+                  })
+                }
+                className="w-full h-12 px-4 rounded-xl bg-background/80 backdrop-blur-sm border-2 border-border/50
+                           focus:border-primary focus:ring-0 focus:outline-none
+                           text-foreground font-medium transition-all duration-300"
+              />
+            </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="employment-end-month"
+                className="text-sm font-medium text-foreground/70"
+              >
+                Last Month Worked
+              </label>
+              <select
+                id="employment-end-month"
+                value={formValues.endOfMonth}
+                onChange={(e) =>
+                  updateValue("endOfMonth", e.target.value as Month)
+                }
+                className="w-full h-12 px-4 rounded-xl bg-background/80 backdrop-blur-sm border-2 border-border/50
+                           focus:border-primary focus:ring-0 focus:outline-none
+                           text-foreground font-medium transition-all duration-300 appearance-none
+                           cursor-pointer"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                  backgroundPosition: "right 0.75rem center",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "1.5em 1.5em",
+                  paddingRight: "2.5rem",
+                }}
+              >
+                {monthValues.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Started mid-year? The first month is paid pro-rata (salary by days,
+            SSC by weeks worked, statutory bonuses by the days in their 6-month
+            period) and tax is not calculated as if you worked the full year.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <PremiumInput
+              label="Taxable Income Earlier This Year"
+              value={formValues.previousTaxableIncome || ""}
+              onChange={(v) =>
+                updateValue("previousTaxableIncome", parseFloat(v) || 0)
+              }
+              suffix="€"
+            />
+            <PremiumInput
+              label="Tax Already Paid This Year"
+              value={formValues.previousTaxPaid || ""}
+              onChange={(v) =>
+                updateValue("previousTaxPaid", parseFloat(v) || 0)
+              }
+              suffix="€"
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Optional: from a previous employer this year (see your FS3). Added
+            to the cumulative FSS calculation so the right tax band is used.
+          </p>
+        </GlassSection>
       </div>
 
       {/* Advanced Settings */}
@@ -220,66 +328,6 @@ export function SalaryCalculatorForm({
           onChange={(v) => updateValue("birthYear", parseInt(v) || 1990)}
           description="Used to determine SSC rates (born before/after 1962)"
         />
-
-        {/* Period Selection */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground/70">
-              Start Month
-            </label>
-            <select
-              value={formValues.startOfMonth}
-              onChange={(e) =>
-                updateValue("startOfMonth", e.target.value as Month)
-              }
-              className="w-full h-12 px-4 rounded-xl bg-background/80 backdrop-blur-sm border-2 border-border/50 
-                         focus:border-primary focus:ring-0 focus:outline-none
-                         text-foreground font-medium transition-all duration-300 appearance-none
-                         cursor-pointer"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                backgroundPosition: "right 0.75rem center",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "1.5em 1.5em",
-                paddingRight: "2.5rem",
-              }}
-            >
-              {monthValues.map((month) => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground/70">
-              End Month
-            </label>
-            <select
-              value={formValues.endOfMonth}
-              onChange={(e) =>
-                updateValue("endOfMonth", e.target.value as Month)
-              }
-              className="w-full h-12 px-4 rounded-xl bg-background/80 backdrop-blur-sm border-2 border-border/50 
-                         focus:border-primary focus:ring-0 focus:outline-none
-                         text-foreground font-medium transition-all duration-300 appearance-none
-                         cursor-pointer"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                backgroundPosition: "right 0.75rem center",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "1.5em 1.5em",
-                paddingRight: "2.5rem",
-              }}
-            >
-              {monthValues.map((month) => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
 
         {/* Benefits Section */}
         <GlassSection icon={Gift} title="Benefits">

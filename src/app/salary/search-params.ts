@@ -56,6 +56,12 @@ export const salarySearchParams = {
   // Period params
   startOfMonth: parseAsStringLiteral(monthValues).withDefault("January"),
   endOfMonth: parseAsStringLiteral(monthValues).withDefault("December"),
+  // İşe başlama tarihi (YYYY-MM-DD, boş = yıl başı / startOfMonth)
+  startDate: parseAsString.withDefault(""),
+
+  // Aynı yıl önceki işveren (FS3): vergiye tabi gelir ve ödenen vergi
+  prevIncome: parseAsInteger.withDefault(0),
+  prevTax: parseAsInteger.withDefault(0),
 
   // Advanced params
   birthYear: parseAsInteger.withDefault(1990),
@@ -88,6 +94,9 @@ export type SalarySearchParams = {
   sscCategory: SSCCategory;
   startOfMonth: MonthValue;
   endOfMonth: MonthValue;
+  startDate: string;
+  prevIncome: number;
+  prevTax: number;
   birthYear: number;
   yearlyNonTaxBenefit: number;
   yearlyTaxableBenefit: number;
@@ -107,6 +116,9 @@ export const defaultSalaryParams: SalarySearchParams = {
   sscCategory: "C",
   startOfMonth: "January",
   endOfMonth: "December",
+  startDate: "",
+  prevIncome: 0,
+  prevTax: 0,
   birthYear: 1990,
   yearlyNonTaxBenefit: 0,
   yearlyTaxableBenefit: 0,
