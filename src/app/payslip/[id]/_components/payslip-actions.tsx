@@ -8,6 +8,10 @@ import {
   finalizePayslip,
 } from "@/app/actions/payslip-actions";
 import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
+import {
+  buildPayslipFilename,
+  downloadPayslipPdf,
+} from "@/lib/payslip/download-pdf";
 
 interface PayslipActionsProps {
   payslipId: string;
@@ -72,56 +76,10 @@ export default function PayslipActions({
 
   const handleDownloadPDF = async () => {
     setDownloading(true);
-
-    try {
-      // Dynamic import for html2pdf (client-side only)
-      const html2pdf = (await import("html2pdf.js")).default;
-
-      // Find the payslip document element
-      const element = document.querySelector(
-        "[data-payslip-document]",
-      ) as HTMLElement | null;
-      if (!element) {
-        // Fallback to printing if element not found
-        window.print();
-        return;
-      }
-
-      // Generate filename
-      const filename = payslipNumber
-        ? `${isDraft ? "DRAFT-" : ""}Payslip-${payslipNumber}${employeeName ? `-${employeeName.replace(/\s+/g, "_")}` : ""}.pdf`
-        : "Payslip.pdf";
-
-      // Configure PDF options - no margins since document has internal padding
-      const opt = {
-        margin: 0,
-        filename,
-        image: { type: "jpeg" as const, quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          letterRendering: true,
-          // A4 width at 96 DPI = 794px, ensures consistent rendering
-          windowWidth: 794,
-          windowHeight: 1123,
-        },
-        jsPDF: {
-          unit: "mm" as const,
-          format: "a4" as const,
-          orientation: "portrait" as const,
-        },
-        pagebreak: { mode: "avoid-all" as const },
-      };
-
-      // Generate and download PDF
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error("PDF generation failed:", error);
-      // Fallback to print
-      window.print();
-    } finally {
-      setDownloading(false);
-    }
+    await downloadPayslipPdf(
+      buildPayslipFilename(payslipNumber, employeeName, isDraft),
+    );
+    setDownloading(false);
   };
 
   return (

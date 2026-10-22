@@ -8,7 +8,7 @@ import {
   type PayslipStatus,
 } from "@/utils/payslip-details";
 
-interface PayslipDocumentProps {
+export interface PayslipDocumentProps {
   company: {
     name: string;
     address: string | null;

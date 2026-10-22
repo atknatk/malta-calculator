@@ -1,11 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { cookies } from "next/headers";
+import {
+  TURNSTILE_ACTION,
+  getClientIp,
+  verifyTurnstileToken,
+} from "@/lib/turnstile";
+import {
+  ACCESS_SCOPE,
+  accessCookieName,
+  accessCookieOptions,
+  createAccessCookieValue,
+} from "@/lib/payslip/access-cookie";
+import { firstRelation } from "@/lib/payslip/document-props";
+
+const EMPLOYEE_ACCESS_MAX_AGE = 60 * 60 * 24; // 24 hours
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { payslipId, pin } = body;
+    const { payslipId, pin, captchaToken } = body as {
+      payslipId?: string;
+      pin?: string;
+      captchaToken?: string;
+    };
 
     if (!payslipId || !pin) {
       return NextResponse.json(
@@ -15,10 +33,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate PIN format (DDMMYYYY)
-    if (pin.length !== 8 || !/^\d{8}$/.test(pin)) {
+    if (!/^\d{8}$/.test(pin)) {
       return NextResponse.json(
         { success: false, error: "Invalid PIN format. Use DDMMYYYY format." },
         { status: 400 },
+      );
+    }
+
+    // Kaba kuvvet denemelerine karşı her denemede captcha
+    const captchaOk = await verifyTurnstileToken(
+      captchaToken,
+      TURNSTILE_ACTION.PAYSLIP_PIN,
+      getClientIp(request.headers),
+    );
+    if (!captchaOk) {
+      return NextResponse.json(
+        { success: false, error: "Security check failed. Please try again." },
+        { status: 403 },
       );
     }
 
@@ -65,48 +96,43 @@ export async function POST(request: NextRequest) {
         { status: 404 },
       );
     }
-    const employeeData = (
-      payslip as { employee: { date_of_birth: string | null }[] }
-    ).employee;
-    const employee = employeeData?.[0] || null;
 
-    if (!employee?.date_of_birth) {
-      // No DOB set, set auth cookie directly
-      const cookieStore = await cookies();
-      cookieStore.set(`payslip_auth_${payslipId}`, "true", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24, // 24 hours
-      });
+    // Supabase tekil ilişkiyi nesne olarak döndürür (eski kod dizi
+    // varsaydığı için doğum tarihi hiç okunmuyor, her PIN kabul ediliyordu)
+    const employee = firstRelation(
+      (payslip as { employee: unknown }).employee as
+        | { date_of_birth: string | null }
+        | { date_of_birth: string | null }[]
+        | null,
+    );
 
-      return NextResponse.json({ success: true });
+    // Doğum tarihi yoksa PIN gerekmez; varsa birebir eşleşmeli
+    if (employee?.date_of_birth) {
+      // YYYY-MM-DD metninden karşılaştır (saat dilimi kaymasını önler)
+      const [dobYear, dobMonth, dobDay] = employee.date_of_birth
+        .substring(0, 10)
+        .split("-")
+        .map(Number);
+
+      if (day !== dobDay || month !== dobMonth || year !== dobYear) {
+        return NextResponse.json(
+          { success: false, error: "Incorrect PIN. Please try again." },
+          { status: 401 },
+        );
+      }
     }
 
-    // Compare with stored date of birth
-    const dob = new Date(employee.date_of_birth);
-    const enteredDate = new Date(year, month - 1, day);
-
-    // Compare dates (ignore time)
-    const dobDay = dob.getDate();
-    const dobMonth = dob.getMonth() + 1;
-    const dobYear = dob.getFullYear();
-
-    if (day !== dobDay || month !== dobMonth || year !== dobYear) {
-      return NextResponse.json(
-        { success: false, error: "Incorrect PIN. Please try again." },
-        { status: 401 },
-      );
-    }
-
-    // Set authentication cookie
+    // Set signed authentication cookie
     const cookieStore = await cookies();
-    cookieStore.set(`payslip_auth_${payslipId}`, "true", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24, // 24 hours
-    });
+    cookieStore.set(
+      accessCookieName(ACCESS_SCOPE.EMPLOYEE, payslipId),
+      createAccessCookieValue(
+        ACCESS_SCOPE.EMPLOYEE,
+        payslipId,
+        EMPLOYEE_ACCESS_MAX_AGE,
+      ),
+      accessCookieOptions(EMPLOYEE_ACCESS_MAX_AGE),
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {

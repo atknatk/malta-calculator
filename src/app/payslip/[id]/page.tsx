@@ -8,12 +8,8 @@ import {
 } from "@/app/actions/payslip-actions";
 import PayslipDocument from "./_components/payslip-document";
 import PayslipActions from "./_components/payslip-actions";
-import {
-  PAYSLIP_STATUS,
-  buildPayslipNumber,
-  calculateEmployerContributions,
-  calculateLeaveEntitlement,
-} from "@/utils/payslip-details";
+import { PAYSLIP_STATUS } from "@/utils/payslip-details";
+import { buildPayslipDocumentProps } from "@/lib/payslip/document-props";
 
 const months = [
   "January",
@@ -50,34 +46,6 @@ export default async function PayslipViewPage({
 
   const isDraft = payslip.status === PAYSLIP_STATUS.DRAFT;
 
-  // Extract deductions and salary config from payslip
-  const deductions = payslip.deductions as {
-    incomeTax: number;
-    sscEmployee: number;
-    sscEmployer?: number;
-    maternityFund?: number;
-    sscBase?: number;
-    cola?: number;
-    bonus?: number;
-    allowance?: number;
-    sscWeeks?: number;
-    periodStartDate?: string; // Kıst ay: işe başlama tarihi (YYYY-MM-DD)
-    employmentRatio?: number;
-    payDate?: string;
-    leaveHoursTaken?: number;
-    notes?: string;
-    salaryConfig?: {
-      annualGross?: number;
-      taxType?: "single" | "married" | "parent";
-      childCount?: number;
-      sscCategory?: string;
-      birthYear?: number;
-      startDate?: string;
-    };
-  };
-
-  const salaryConfig = deductions.salaryConfig;
-
   // Get Year-to-Date totals (taslaksa kendi tutarları da eklenir)
   const ytdTotals = await getYearToDateTotals(
     payslip.employee_id,
@@ -86,56 +54,13 @@ export default async function PayslipViewPage({
     isDraft ? payslip : undefined,
   );
 
-  const payslipNumber = buildPayslipNumber(
-    payslip.company.name,
-    payslip.period_year,
-    payslip.period_month,
-    payslip.id,
+  const documentProps = buildPayslipDocumentProps(
+    payslip,
+    payslip.company,
+    payslip.employee,
+    ytdTotals,
   );
-
-  // Calculate basic salary (gross minus extras)
-  const basicSalary =
-    payslip.gross_salary -
-    (deductions.cola || 0) -
-    (deductions.bonus || 0) -
-    (deductions.allowance || 0);
-
-  // Build earnings object
-  const earnings = {
-    basicSalary,
-    cola: deductions.cola || 0,
-    bonus: deductions.bonus || 0,
-    allowance: deductions.allowance || 0,
-  };
-
-  // İşveren katkıları: eski bordrolarda kayıtlı değilse çalışan SSC'sinden türet
-  const sscWeeks = deductions.sscWeeks ?? 4;
-  const employerContributions =
-    deductions.sscEmployer !== undefined
-      ? {
-          sscEmployer: deductions.sscEmployer,
-          maternityFund: deductions.maternityFund ?? 0,
-        }
-      : deductions.sscBase !== undefined
-        ? calculateEmployerContributions({
-            sscEmployee: deductions.sscEmployee,
-            sscBase: deductions.sscBase,
-            sscWeeks,
-          })
-        : undefined;
-
-  // Yıllık izin: kayıtlı izin saatleri olan bordrolarda gösterilir
-  const leave =
-    deductions.leaveHoursTaken !== undefined
-      ? {
-          entitledHours: calculateLeaveEntitlement(
-            payslip.period_year,
-            salaryConfig?.startDate,
-          ),
-          takenThisPeriod: deductions.leaveHoursTaken,
-          takenToDate: ytdTotals.leaveHoursTaken,
-        }
-      : undefined;
+  const { payslipNumber } = documentProps;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -215,54 +140,7 @@ export default async function PayslipViewPage({
               lineHeight: "1.4",
             }}
           >
-            <PayslipDocument
-              company={{
-                name: payslip.company.name,
-                address: payslip.company.address,
-                tax_number: payslip.company.tax_number,
-                logo_url: payslip.company.logo_url,
-                plan: payslip.company.plan,
-              }}
-              employee={{
-                name: payslip.employee.name,
-                position: payslip.employee.position,
-                employee_code: payslip.employee.employee_code,
-                email: payslip.employee.email,
-                address: (payslip.employee as { address?: string | null })
-                  .address,
-                id_number: (payslip.employee as { id_number?: string | null })
-                  .id_number,
-                ss_number: (payslip.employee as { ss_number?: string | null })
-                  .ss_number,
-                department: (payslip.employee as { department?: string | null })
-                  .department,
-                section: (payslip.employee as { section?: string | null })
-                  .section,
-                unit: (payslip.employee as { unit?: string | null }).unit,
-                grade: (payslip.employee as { grade?: string | null }).grade,
-              }}
-              periodMonth={payslip.period_month}
-              periodYear={payslip.period_year}
-              grossSalary={payslip.gross_salary}
-              netSalary={payslip.net_salary}
-              incomeTax={deductions.incomeTax}
-              sscEmployee={deductions.sscEmployee}
-              createdAt={payslip.created_at}
-              updatedAt={payslip.updated_at}
-              payslipNumber={payslipNumber}
-              ytdTotals={ytdTotals}
-              salaryConfig={salaryConfig}
-              earnings={earnings}
-              sscWeeks={sscWeeks}
-              periodStartDate={deductions.periodStartDate}
-              employmentRatio={deductions.employmentRatio}
-              payDate={deductions.payDate}
-              employerContributions={employerContributions}
-              leave={leave}
-              notes={deductions.notes}
-              status={payslip.status}
-              accessToken={payslip.access_token}
-            />
+            <PayslipDocument {...documentProps} />
           </div>
         </div>
       </main>

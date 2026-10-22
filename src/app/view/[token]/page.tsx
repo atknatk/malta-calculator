@@ -1,60 +1,14 @@
 import { notFound } from "next/navigation";
-import { createAdminClient } from "@/lib/supabase/admin";
-import PayslipViewer from "./_components/payslip-viewer";
-import PinAuth from "./_components/pin-auth";
 import { cookies } from "next/headers";
-
-interface Payslip {
-  id: string;
-  period_month: number;
-  period_year: number;
-  gross_salary: number;
-  net_salary: number;
-  deductions: {
-    incomeTax: number;
-    sscEmployee: number;
-  };
-  created_at: string;
-  access_token: string;
-  employee: {
-    id: string;
-    name: string;
-    position: string | null;
-    employee_code: string | null;
-    email: string | null;
-    date_of_birth: string | null;
-  };
-  company: {
-    name: string;
-    address: string | null;
-    tax_number: string | null;
-    logo_url: string | null;
-    plan: "free" | "basic" | "pro";
-  };
-}
-
-async function getPayslipByToken(token: string): Promise<Payslip | null> {
-  const supabase = createAdminClient();
-
-  const { data, error } = await supabase
-    .from("payslips")
-    .select(
-      `
-            *,
-            employee:employees(*),
-            company:companies(*)
-        `,
-    )
-    .eq("access_token", token)
-    .eq("status", "final") // Taslaklar çalışana gösterilmez
-    .single();
-
-  if (error || !data) {
-    return null;
-  }
-
-  return data as unknown as Payslip;
-}
+import { createAdminClient } from "@/lib/supabase/admin";
+import { fetchPublishedPayslipDocument } from "@/lib/payslip/document-props";
+import {
+  ACCESS_SCOPE,
+  accessCookieName,
+  isValidAccessCookie,
+} from "@/lib/payslip/access-cookie";
+import PublicPayslipPage from "@/components/payslip/public-payslip-page";
+import PinAuth from "./_components/pin-auth";
 
 export default async function EmployeeViewPage({
   params,
@@ -62,32 +16,45 @@ export default async function EmployeeViewPage({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
-  const payslip = await getPayslipByToken(token);
+  const supabase = createAdminClient();
 
-  if (!payslip) {
+  // Taslaklar çalışana gösterilmez (yalnızca yayınlanmış bordrolar)
+  const result = await fetchPublishedPayslipDocument(supabase, {
+    column: "access_token",
+    value: token,
+  });
+
+  if (!result) {
     notFound();
   }
 
-  // Check if user is authenticated via cookie
+  const { payslip, employee, props } = result;
+
+  // İmzalı çerez: PIN (doğum tarihi) doğrulandıysa
   const cookieStore = await cookies();
-  const authCookie = cookieStore.get(`payslip_auth_${payslip.id}`);
-  const isAuthenticated = authCookie?.value === "true";
+  const isAuthenticated = isValidAccessCookie(
+    ACCESS_SCOPE.EMPLOYEE,
+    payslip.id,
+    cookieStore.get(accessCookieName(ACCESS_SCOPE.EMPLOYEE, payslip.id))
+      ?.value,
+  );
 
   // If employee has date_of_birth and user is not authenticated, show PIN auth
-  if (payslip.employee.date_of_birth && !isAuthenticated) {
+  if (employee.date_of_birth && !isAuthenticated) {
     return (
       <PinAuth
         payslipId={payslip.id}
-        employeeName={payslip.employee.name}
+        employeeName={employee.name}
         token={token}
       />
     );
   }
 
-  return <PayslipViewer payslip={payslip} />;
+  return <PublicPayslipPage document={props} />;
 }
 
 export const metadata = {
   title: "View Payslip",
   description: "View your payslip securely",
+  robots: { index: false, follow: false },
 };
