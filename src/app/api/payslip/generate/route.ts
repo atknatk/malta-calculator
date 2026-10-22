@@ -1,11 +1,12 @@
 /**
  * Payslip Generate API
- * Creates a new payslip and saves it to database
+ * Creates a payslip (draft or final) or updates an existing draft
  */
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { randomBytes } from "crypto";
+import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
 
 // Generate a short random token (6-8 chars, alphanumeric, URL-safe)
 function generateShortToken(length: number = 8): string {
@@ -19,6 +20,10 @@ function generateShortToken(length: number = 8): string {
 }
 
 interface PayslipGenerateRequest {
+  /** Var olan bir taslağı güncellemek için */
+  payslipId?: string;
+  /** Varsayılan "final" (geriye dönük uyumluluk) */
+  status?: PayslipStatus;
   employeeId: string;
   periodMonth: number;
   periodYear: number;
@@ -28,9 +33,16 @@ interface PayslipGenerateRequest {
     incomeTax: number;
     sscEmployee: number;
     sscEmployer?: number;
+    maternityFund?: number;
+    sscBase?: number;
     cola?: number;
     bonus?: number;
     allowance?: number;
+    sscWeeks?: number;
+    periodStartDate?: string;
+    payDate?: string;
+    leaveHoursTaken?: number;
+    notes?: string;
   };
   salaryConfig?: {
     annualGross: number;
@@ -38,21 +50,28 @@ interface PayslipGenerateRequest {
     childCount: number;
     sscCategory: string;
     birthYear: number;
+    startDate?: string;
+    previousTaxableIncome?: number;
+    previousTaxPaid?: number;
   };
 }
 
 interface PayslipGenerateResponse {
   success: boolean;
   payslipId?: string;
+  status?: PayslipStatus;
   error?: string;
 }
 
-// Plan limits
+// Plan limits (yalnızca yayınlanan bordrolar sayılır)
 const PLAN_LIMITS = {
   free: { payslipsPerMonth: 2 },
   basic: { payslipsPerMonth: 10 },
   pro: { payslipsPerMonth: 100 },
 };
+
+const isFiniteNumber = (value: unknown): value is number =>
+  typeof value === "number" && Number.isFinite(value);
 
 export async function POST(
   request: NextRequest,
@@ -68,9 +87,22 @@ export async function POST(
     }
 
     const body: PayslipGenerateRequest = await request.json();
+    const status: PayslipStatus =
+      body.status === PAYSLIP_STATUS.DRAFT
+        ? PAYSLIP_STATUS.DRAFT
+        : PAYSLIP_STATUS.FINAL;
 
     // Validate required fields
-    if (!body.employeeId || !body.periodMonth || !body.periodYear) {
+    if (
+      !body.employeeId ||
+      !body.periodMonth ||
+      !body.periodYear ||
+      !isFiniteNumber(body.grossSalary) ||
+      !isFiniteNumber(body.netSalary) ||
+      !body.deductions ||
+      !isFiniteNumber(body.deductions.incomeTax) ||
+      !isFiniteNumber(body.deductions.sscEmployee)
+    ) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
         { status: 400 },
@@ -99,37 +131,40 @@ export async function POST(
     };
     const limits = PLAN_LIMITS[companyData.plan] || PLAN_LIMITS.free;
 
-    // Check monthly payslip limit
-    const now = new Date();
-    const startOfMonth = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      1,
-    ).toISOString();
-    const endOfMonth = new Date(
-      now.getFullYear(),
-      now.getMonth() + 1,
-      0,
-      23,
-      59,
-      59,
-    ).toISOString();
+    // Check monthly limit only when issuing — drafts are free
+    if (status === PAYSLIP_STATUS.FINAL) {
+      const now = new Date();
+      const startOfMonth = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        1,
+      ).toISOString();
+      const endOfMonth = new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        0,
+        23,
+        59,
+        59,
+      ).toISOString();
 
-    const { count: payslipCount } = await supabase
-      .from("payslips")
-      .select("*", { count: "exact", head: true })
-      .eq("company_id", companyData.id)
-      .gte("created_at", startOfMonth)
-      .lte("created_at", endOfMonth);
+      const { count: payslipCount } = await supabase
+        .from("payslips")
+        .select("*", { count: "exact", head: true })
+        .eq("company_id", companyData.id)
+        .eq("status", PAYSLIP_STATUS.FINAL)
+        .gte("finalized_at", startOfMonth)
+        .lte("finalized_at", endOfMonth);
 
-    if ((payslipCount ?? 0) >= limits.payslipsPerMonth) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `You have reached your limit of ${limits.payslipsPerMonth} payslips this month.`,
-        },
-        { status: 429 },
-      );
+      if ((payslipCount ?? 0) >= limits.payslipsPerMonth) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: `You have reached your limit of ${limits.payslipsPerMonth} issued payslips this month. You can still save it as a draft.`,
+          },
+          { status: 429 },
+        );
+      }
     }
 
     // Verify employee belongs to company
@@ -147,45 +182,101 @@ export async function POST(
       );
     }
 
-    // Check if payslip already exists for this period
+    // Aynı çalışan + dönem için var olan bordro
     const { data: existingPayslip } = await supabase
       .from("payslips")
-      .select("id")
+      .select("id, status")
       .eq("employee_id", body.employeeId)
       .eq("period_month", body.periodMonth)
       .eq("period_year", body.periodYear)
-      .single();
+      .maybeSingle();
 
-    if (existingPayslip) {
+    const existing = existingPayslip as {
+      id: string;
+      status: PayslipStatus;
+    } | null;
+
+    if (existing?.status === PAYSLIP_STATUS.FINAL) {
       return NextResponse.json(
-        { success: false, error: "A payslip already exists for this period" },
+        {
+          success: false,
+          error: "An issued payslip already exists for this period",
+        },
         { status: 409 },
       );
     }
 
-    // Generate short access token for payslip verification (8 chars)
-    const accessToken = generateShortToken(8);
+    // Güncellenecek taslak: açıkça verilen ya da aynı döneme ait olan
+    let draftId: string | null = null;
+    if (body.payslipId) {
+      const { data: draft } = await supabase
+        .from("payslips")
+        .select("id, status")
+        .eq("id", body.payslipId)
+        .eq("company_id", companyData.id)
+        .maybeSingle();
 
-    // Create payslip
-    const { data: payslip, error: createError } = await supabase
-      .from("payslips")
-      .insert({
-        company_id: companyData.id,
-        employee_id: body.employeeId,
-        period_month: body.periodMonth,
-        period_year: body.periodYear,
-        gross_salary: body.grossSalary,
-        net_salary: body.netSalary,
-        deductions: body.deductions,
-        access_token: accessToken,
-      })
-      .select("id")
-      .single();
+      const draftRow = draft as { id: string; status: PayslipStatus } | null;
+      if (!draftRow || draftRow.status !== PAYSLIP_STATUS.DRAFT) {
+        return NextResponse.json(
+          { success: false, error: "Draft not found or already issued" },
+          { status: 404 },
+        );
+      }
+      if (existing && existing.id !== draftRow.id) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Another draft already exists for this employee and period",
+          },
+          { status: 409 },
+        );
+      }
+      draftId = draftRow.id;
+    } else if (existing) {
+      draftId = existing.id;
+    }
 
-    if (createError || !payslip) {
-      console.error("Error creating payslip:", createError);
+    const now = new Date().toISOString();
+    const values = {
+      employee_id: body.employeeId,
+      period_month: body.periodMonth,
+      period_year: body.periodYear,
+      gross_salary: body.grossSalary,
+      net_salary: body.netSalary,
+      // salaryConfig deductions jsonb içinde saklanır (ayrı kolon yok)
+      deductions: {
+        ...body.deductions,
+        ...(body.salaryConfig ? { salaryConfig: body.salaryConfig } : {}),
+      },
+      status,
+      updated_at: now,
+      finalized_at: status === PAYSLIP_STATUS.FINAL ? now : null,
+    };
+
+    const { data: payslip, error: saveError } = draftId
+      ? await supabase
+          .from("payslips")
+          .update(values)
+          .eq("id", draftId)
+          .eq("company_id", companyData.id)
+          .select("id")
+          .single()
+      : await supabase
+          .from("payslips")
+          .insert({
+            ...values,
+            company_id: companyData.id,
+            // Short access token for payslip verification (8 chars)
+            access_token: generateShortToken(8),
+          })
+          .select("id")
+          .single();
+
+    if (saveError || !payslip) {
+      console.error("Error saving payslip:", saveError);
       return NextResponse.json(
-        { success: false, error: "Failed to create payslip" },
+        { success: false, error: "Failed to save payslip" },
         { status: 500 },
       );
     }
@@ -193,6 +284,7 @@ export async function POST(
     return NextResponse.json({
       success: true,
       payslipId: (payslip as { id: string }).id,
+      status,
     });
   } catch (error) {
     console.error("Payslip generate API error:", error);

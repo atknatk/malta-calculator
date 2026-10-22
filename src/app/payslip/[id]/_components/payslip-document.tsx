@@ -1,6 +1,12 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
+import {
+  PAYSLIP_STATUS,
+  STANDARD_MONTHLY_HOURS,
+  formatOrdinalDate,
+  type PayslipStatus,
+} from "@/utils/payslip-details";
 
 interface PayslipDocumentProps {
   company: {
@@ -30,6 +36,7 @@ interface PayslipDocumentProps {
   incomeTax: number;
   sscEmployee: number;
   createdAt: string;
+  updatedAt?: string;
   payslipNumber: string;
   ytdTotals: {
     grossTotal: number;
@@ -55,6 +62,19 @@ interface PayslipDocumentProps {
   };
   sscWeeks?: number;
   periodStartDate?: string; // Kıst ay: işe başlama tarihi (YYYY-MM-DD)
+  employmentRatio?: number; // Kıst ayda çalışılan gün oranı (0-1)
+  payDate?: string; // YYYY-MM-DD
+  employerContributions?: {
+    sscEmployer: number;
+    maternityFund: number;
+  };
+  leave?: {
+    entitledHours: number;
+    takenThisPeriod: number;
+    takenToDate: number;
+  };
+  notes?: string;
+  status?: PayslipStatus;
   payslipUrl?: string;
   accessToken?: string;
 }
@@ -75,10 +95,94 @@ const months = [
 ];
 
 const TAX_TYPE_LABELS: Record<string, string> = {
-  single: "Single Rates",
-  married: "Married Rates",
-  parent: "Parent Rates",
+  single: "Single",
+  married: "Married",
+  parent: "Parent",
 };
+
+// Baskı/PDF'te aynı görünmesi için renkler inline tanımlı
+const ACCENT = "#c2410c";
+const INK = "#1f2937";
+const MUTED = "#6b7280";
+const RULE = `1px solid ${ACCENT}`;
+
+const fmt = (amount: number): string =>
+  `€${amount.toLocaleString("en-MT", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+
+const fmtHours = (hours: number): string => hours.toFixed(2);
+
+function DraftWatermark() {
+  // html2canvas transform'ları destekler; arka plan SVG'si yerine span ızgarası
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          inset: "-20%",
+          display: "grid",
+          gridTemplateColumns: "repeat(9, 1fr)",
+          gap: "18px 0",
+          transform: "rotate(-35deg)",
+        }}
+      >
+        {Array.from({ length: 9 * 22 }).map((_, i) => (
+          <span
+            key={i}
+            style={{
+              color: "#9ca3af",
+              opacity: 0.28,
+              fontSize: "12px",
+              fontWeight: 600,
+              textAlign: "center",
+            }}
+          >
+            Draft
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({
+  label,
+  columns,
+}: {
+  label: string;
+  columns: string[];
+}) {
+  return (
+    <tr style={{ borderBottom: RULE }}>
+      <th
+        style={{ color: ACCENT, fontWeight: 400, textAlign: "left" }}
+        className="pb-1.5 text-[13px]"
+      >
+        {label}
+      </th>
+      {columns.map((col) => (
+        <th
+          key={col}
+          style={{ color: ACCENT, fontWeight: 400, textAlign: "right" }}
+          className="pb-1.5 pl-3 text-[13px]"
+        >
+          {col}
+        </th>
+      ))}
+    </tr>
+  );
+}
 
 export default function PayslipDocument({
   company,
@@ -90,22 +194,26 @@ export default function PayslipDocument({
   incomeTax,
   sscEmployee,
   createdAt,
+  updatedAt,
   payslipNumber,
   ytdTotals,
   salaryConfig,
   earnings,
   sscWeeks = 4,
   periodStartDate,
+  employmentRatio = 1,
+  payDate,
+  employerContributions,
+  leave,
+  notes,
+  status = PAYSLIP_STATUS.FINAL,
   payslipUrl,
   accessToken,
 }: PayslipDocumentProps) {
-  const period = `${months[periodMonth - 1]} ${periodYear}`;
+  const isDraft = status === PAYSLIP_STATUS.DRAFT;
   const isPaidPlan = company.plan !== "free";
 
-  void createdAt;
-
-  // Calculate dates
-  // Kıst ay: dönem işe başlama tarihinden başlar
+  // Dönem: kıst ayda işe başlama tarihinden başlar
   const parsedStart = periodStartDate
     ? new Date(`${periodStartDate}T00:00:00`)
     : null;
@@ -117,397 +225,356 @@ export default function PayslipDocument({
       ? parsedStart
       : new Date(periodYear, periodMonth - 1, 1);
   const endDate = new Date(periodYear, periodMonth, 0);
-  const rollPeriod = `${startDate.toLocaleDateString("en-GB")} - ${endDate.toLocaleDateString("en-GB")}`;
-  const payDate = endDate.toLocaleDateString("en-GB");
+  const payPeriod = `${formatOrdinalDate(startDate)} to ${formatOrdinalDate(endDate)}`;
+  const payDay = formatOrdinalDate(payDate || endDate);
+  const lastUpdated = formatOrdinalDate(updatedAt || createdAt);
 
-  // Printed timestamp
-  const printedDate = new Date().toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-  const printedTime = new Date().toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  // Earnings breakdown
-  const basicSalary = earnings?.basicSalary || grossSalary;
+  // Earnings
+  const basicSalary = earnings?.basicSalary ?? grossSalary;
   const cola = earnings?.cola || 0;
   const bonus = earnings?.bonus || 0;
   const allowance = earnings?.allowance || 0;
+  const basicHours = STANDARD_MONTHLY_HOURS * employmentRatio;
+  const hourlyRate = basicHours > 0 ? basicSalary / basicHours : 0;
 
-  // Calculate hourly rate (173.33 standard hours)
-  const monthlyHours = 173.33;
-  const hourlyRate = basicSalary / monthlyHours;
+  const earningRows: { label: string; hint?: string; hours?: number; amount: number }[] = [
+    {
+      label: "Basic Pay",
+      hint:
+        employmentRatio < 1
+          ? `pro-rata ${Math.round(employmentRatio * 100)}% · ${fmt(hourlyRate)}/h`
+          : `${fmt(hourlyRate)}/h`,
+      hours: basicHours,
+      amount: basicSalary,
+    },
+    ...(cola > 0 ? [{ label: "Statutory Bonus", hint: "COLA", amount: cola }] : []),
+    ...(allowance > 0 ? [{ label: "Allowance", amount: allowance }] : []),
+    ...(bonus > 0 ? [{ label: "Bonus", amount: bonus }] : []),
+  ];
 
-  // Tax type label
-  const taxTypeLabel = salaryConfig?.taxType
-    ? TAX_TYPE_LABELS[salaryConfig.taxType] || "Single Rates"
-    : "Single Rates";
-
-  // Total deductions
+  // Deductions
+  const taxTypeLabel = TAX_TYPE_LABELS[salaryConfig?.taxType || "single"];
+  const childHint =
+    salaryConfig?.taxType !== "single" && (salaryConfig?.childCount ?? 0) > 0
+      ? ` · ${salaryConfig?.childCount === 1 ? "1 child" : "2+ children"}`
+      : "";
+  const sscCategory = salaryConfig?.sscCategory || "C";
   const totalDeductions = incomeTax + sscEmployee;
+  const employerTotal = employerContributions
+    ? employerContributions.sscEmployer + employerContributions.maternityFund
+    : 0;
 
-  // QR Code URL - use short accessToken (8 chars), fallback to payslipNumber
+  const employmentType = sscCategory === "B" ? "PT" : "FT";
+
+  // QR: yalnızca yayınlanmış bordrolar doğrulanabilir
   const baseUrl = "https://maltacalculator.com";
   const verifyToken = accessToken || payslipNumber;
   const qrUrl = payslipUrl || `${baseUrl}/v/${verifyToken}`;
 
-  // Format currency - all black, no color
-  const fmt = (amount: number) => {
-    return amount.toLocaleString("en-MT", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
+  const leaveRemaining = leave
+    ? Math.max(0, leave.entitledHours - leave.takenToDate)
+    : 0;
+
+  const companyAddressLines = (company.address || "")
+    .split(/\n|,\s*/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const employeeAddressLines = (employee.address || "")
+    .split(/\n|,\s*/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 
   return (
     <div
       data-payslip-document
-      className="mx-auto bg-white text-black"
+      className="relative mx-auto bg-white"
       style={{
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily:
+          "'Open Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+        color: INK,
         width: "210mm",
         height: "297mm",
         maxHeight: "297mm",
-        padding: "6mm",
+        padding: "14mm 14mm 10mm",
         boxSizing: "border-box",
-        fontSize: "10px",
-        lineHeight: "1.4",
+        fontSize: "12px",
+        lineHeight: "1.45",
         overflow: "hidden",
       }}
     >
-      {/* Main Container - fills A4 */}
+      {isDraft && <DraftWatermark />}
+
       <div
-        className="flex flex-col"
-        style={{
-          height: "calc(297mm - 12mm)",
-          maxHeight: "calc(297mm - 12mm)",
-        }}
+        className="relative flex flex-col"
+        style={{ height: "100%", zIndex: 1 }}
       >
-        {/* ============ HEADER ============ */}
-        <div className="border-b-2 border-black pb-3 mb-3">
-          <div className="flex justify-between items-start">
-            {/* Left: Company Info */}
-            <div className="flex items-start gap-3">
-              {isPaidPlan && company.logo_url && (
-                <img
-                  src={company.logo_url}
-                  alt={company.name}
-                  className="h-14 max-w-[240px] object-contain"
-                />
-              )}
-              <div>
-                <h1 className="text-xl font-bold">{company.name}</h1>
-                {company.address && (
-                  <p className="text-xs mt-0.5 whitespace-pre-line">
-                    {company.address}
-                  </p>
-                )}
-                {company.tax_number && (
-                  <p className="text-xs">PE Number: {company.tax_number}</p>
-                )}
-              </div>
+        {/* ============ TOP: QR / LOGO ============ */}
+        <div className="flex items-start justify-between">
+          {isDraft ? (
+            <div
+              className="flex h-[88px] w-[88px] items-center justify-center text-center text-[10px] font-bold uppercase leading-tight"
+              style={{ border: `2px dashed ${ACCENT}`, color: ACCENT }}
+            >
+              Draft
+              <br />
+              not valid
             </div>
+          ) : (
+            <QRCodeSVG
+              value={qrUrl}
+              size={88}
+              level="M"
+              bgColor="#ffffff"
+              fgColor="#000000"
+            />
+          )}
+          {isPaidPlan && company.logo_url ? (
+            <img
+              src={company.logo_url}
+              alt={company.name}
+              className="max-h-12 max-w-[200px] object-contain"
+            />
+          ) : (
+            <span
+              className="text-[15px] font-bold italic"
+              style={{ color: ACCENT }}
+            >
+              {company.name}
+            </span>
+          )}
+        </div>
 
-            {/* Right: Title + QR */}
-            <div className="text-right flex items-start gap-3">
-              <div>
-                <h2 className="text-2xl font-bold tracking-tight">PAYSLIP</h2>
-                <p className="text-base font-semibold">{period}</p>
-                <p className="text-[9px] font-mono">{payslipNumber}</p>
-              </div>
-              <div className="border border-black p-0.5 bg-white">
-                <QRCodeSVG
-                  value={qrUrl}
-                  size={60}
-                  level="M"
-                  bgColor="#ffffff"
-                  fgColor="#000000"
-                />
-              </div>
-            </div>
+        {/* ============ PARTIES ============ */}
+        <div className="mt-8 flex justify-between gap-8">
+          <div>
+            <p className="text-[14px] font-bold">{employee.name}</p>
+            {employee.position && (
+              <p>
+                {employee.position} ({employmentType})
+              </p>
+            )}
+            {employeeAddressLines.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+            {employee.id_number && <p>ID: {employee.id_number}</p>}
+            {employee.ss_number && <p>SSC No: {employee.ss_number}</p>}
+            {(employee.employee_code || employee.department) && (
+              <p style={{ color: MUTED }}>
+                {[employee.employee_code, employee.department]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
+            )}
+          </div>
+          <div className="text-right">
+            <p className="text-[14px] font-bold">{company.name}</p>
+            {companyAddressLines.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+            {company.tax_number && <p>PE No: {company.tax_number}</p>}
           </div>
         </div>
 
-        {/* ============ EMPLOYEE & PERIOD INFO ============ */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          {/* Employee Details */}
-          <div className="border border-gray-400">
-            <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
-              Employee Details
-            </div>
-            <div className="p-2">
-              <table className="w-full text-xs">
-                <tbody>
-                  <tr>
-                    <td className="py-1 font-semibold w-24">Name</td>
-                    <td className="py-1">{employee.name}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">Employee Code</td>
-                    <td className="py-1">{employee.employee_code || "-"}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">Position</td>
-                    <td className="py-1">{employee.position || "-"}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">ID Number</td>
-                    <td className="py-1">{employee.id_number || "-"}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">SS Number</td>
-                    <td className="py-1">{employee.ss_number || "-"}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">Department</td>
-                    <td className="py-1">{employee.department || "-"}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        {/* ============ TITLE ============ */}
+        <div className="mt-10 flex items-end justify-between">
+          <div>
+            <h1
+              className="font-bold leading-none tracking-tight"
+              style={{ fontSize: "44px" }}
+            >
+              Payslip
+            </h1>
+            <p className="mt-2 text-[11px]" style={{ color: MUTED }}>
+              {months[periodMonth - 1]} {periodYear} · No. {payslipNumber}
+            </p>
           </div>
-
-          {/* Pay Period Details */}
-          <div className="border border-gray-400">
-            <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
-              Pay Period Details
-            </div>
-            <div className="p-2">
-              <table className="w-full text-xs">
-                <tbody>
-                  <tr>
-                    <td className="py-1 font-semibold w-24">Period</td>
-                    <td className="py-1">{period}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">Date Range</td>
-                    <td className="py-1">{rollPeriod}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">Pay Date</td>
-                    <td className="py-1">{payDate}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">Tax Status</td>
-                    <td className="py-1">{taxTypeLabel}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">SSC Weeks</td>
-                    <td className="py-1">{sscWeeks} weeks</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1 font-semibold">SSC Category</td>
-                    <td className="py-1">
-                      Category {salaryConfig?.sscCategory || "C"}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div className="text-right text-[14px]">
+            <p style={{ color: ACCENT }}>Pay Day</p>
+            <p>{payDay}</p>
+            <p style={{ color: ACCENT }}>Pay Period</p>
+            <p>{payPeriod}</p>
           </div>
         </div>
 
-        {/* ============ EARNINGS ============ */}
-        <div className="border border-gray-400 mb-4">
-          <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
-            Earnings
-          </div>
-          <table className="w-full text-xs">
+        {/* ============ EARNINGS & DEDUCTIONS ============ */}
+        <div className="mt-3 grid grid-cols-2 gap-10">
+          <table className="w-full self-start text-[13px]">
             <thead>
-              <tr className="border-b border-gray-300 bg-gray-50">
-                <th className="py-1.5 px-2 text-left font-semibold">
-                  Description
-                </th>
-                <th className="py-1.5 px-2 text-right font-semibold w-20">
-                  Hours
-                </th>
-                <th className="py-1.5 px-2 text-right font-semibold w-24">
-                  Rate (€)
-                </th>
-                <th className="py-1.5 px-2 text-right font-semibold w-28">
-                  Amount (€)
-                </th>
-              </tr>
+              <SectionHeader label="Earnings" columns={["Hours", "Amount"]} />
             </thead>
             <tbody>
-              <tr className="border-b border-gray-400">
-                <td className="py-1.5 px-2">Basic Salary</td>
-                <td className="py-1.5 px-2 text-right">
-                  {monthlyHours.toFixed(2)}
-                </td>
-                <td className="py-1.5 px-2 text-right">
-                  {hourlyRate.toFixed(4)}
-                </td>
-                <td className="py-1.5 px-2 text-right font-medium">
-                  {fmt(basicSalary)}
-                </td>
-              </tr>
-              {cola > 0 && (
-                <tr className="border-b border-gray-400">
-                  <td className="py-1.5 px-2">
-                    Cost of Living Adjustment (COLA)
+              {earningRows.map((row) => (
+                <tr key={row.label} style={{ borderBottom: RULE }}>
+                  <td className="py-2.5">
+                    {row.label}
+                    {row.hint && (
+                      <span className="ml-1 text-[9px]" style={{ color: MUTED }}>
+                        {row.hint}
+                      </span>
+                    )}
                   </td>
-                  <td className="py-1.5 px-2 text-right">-</td>
-                  <td className="py-1.5 px-2 text-right">-</td>
-                  <td className="py-1.5 px-2 text-right font-medium">
-                    {fmt(cola)}
+                  <td className="py-2.5 pl-3 text-right">
+                    {row.hours !== undefined ? fmtHours(row.hours) : ""}
                   </td>
+                  <td className="py-2.5 pl-3 text-right">{fmt(row.amount)}</td>
                 </tr>
-              )}
-              {allowance > 0 && (
-                <tr className="border-b border-gray-400">
-                  <td className="py-1.5 px-2">Allowance</td>
-                  <td className="py-1.5 px-2 text-right">-</td>
-                  <td className="py-1.5 px-2 text-right">-</td>
-                  <td className="py-1.5 px-2 text-right font-medium">
-                    {fmt(allowance)}
-                  </td>
-                </tr>
-              )}
-              {bonus > 0 && (
-                <tr className="border-b border-gray-400">
-                  <td className="py-1.5 px-2">Bonus</td>
-                  <td className="py-1.5 px-2 text-right">-</td>
-                  <td className="py-1.5 px-2 text-right">-</td>
-                  <td className="py-1.5 px-2 text-right font-medium">
-                    {fmt(bonus)}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-            <tfoot>
-              <tr className="border-t border-gray-400 bg-gray-50">
-                <td colSpan={3} className="py-2 px-2 font-bold text-sm">
-                  GROSS PAY
+              ))}
+              <tr>
+                <td className="pt-3 font-bold" colSpan={2}>
+                  Total Earnings
                 </td>
-                <td className="py-2 px-2 text-right font-bold text-sm">
-                  € {fmt(grossSalary)}
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-
-        {/* ============ DEDUCTIONS ============ */}
-        <div className="border border-gray-400 mb-4">
-          <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
-            Deductions
-          </div>
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-gray-300 bg-gray-50">
-                <th className="py-1.5 px-2 text-left font-semibold">
-                  Description
-                </th>
-                <th className="py-1.5 px-2 text-right font-semibold w-28">
-                  Amount (€)
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-gray-400">
-                <td className="py-1.5 px-2">
-                  Income Tax (FSS - {taxTypeLabel})
-                </td>
-                <td className="py-1.5 px-2 text-right font-medium">
-                  {fmt(incomeTax)}
-                </td>
-              </tr>
-              <tr className="border-b border-gray-400">
-                <td className="py-1.5 px-2">
-                  Social Security Contribution ({sscWeeks} weeks)
-                </td>
-                <td className="py-1.5 px-2 text-right font-medium">
-                  {fmt(sscEmployee)}
+                <td className="pt-3 text-right font-bold">
+                  {fmt(grossSalary)}
                 </td>
               </tr>
             </tbody>
-            <tfoot>
-              <tr className="border-t border-gray-400 bg-gray-50">
-                <td className="py-2 px-2 font-bold text-sm">
-                  TOTAL DEDUCTIONS
-                </td>
-                <td className="py-2 px-2 text-right font-bold text-sm">
-                  € {fmt(totalDeductions)}
-                </td>
-              </tr>
-            </tfoot>
           </table>
-        </div>
 
-        {/* ============ NET PAY ============ */}
-        <div className="border-2 border-black mb-4 bg-gray-100">
-          <div className="flex justify-between items-center px-3 py-3">
-            <span className="text-lg font-bold">NET PAY</span>
-            <span className="text-2xl font-bold">€ {fmt(netSalary)}</span>
+          <div className="self-start">
+            <table className="w-full text-[13px]">
+              <thead>
+                <SectionHeader label="Deductions" columns={["Amount"]} />
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: RULE }}>
+                  <td className="py-2.5">
+                    SSC {sscCategory}
+                    <span className="ml-1 text-[9px]" style={{ color: MUTED }}>
+                      {sscWeeks} weeks
+                    </span>
+                  </td>
+                  <td className="py-2.5 pl-3 text-right">
+                    {fmt(sscEmployee)}
+                  </td>
+                </tr>
+                <tr style={{ borderBottom: RULE }}>
+                  <td className="py-2.5">
+                    FSS {taxTypeLabel}
+                    <span className="ml-1 text-[9px]" style={{ color: MUTED }}>
+                      Taxable {fmt(grossSalary)}
+                      {childHint}
+                    </span>
+                  </td>
+                  <td className="py-2.5 pl-3 text-right">{fmt(incomeTax)}</td>
+                </tr>
+                <tr>
+                  <td className="pt-3 font-bold">Total Deductions</td>
+                  <td className="pt-3 text-right font-bold">
+                    {fmt(totalDeductions)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            {employerContributions && employerTotal > 0 && (
+              <div className="mt-6 text-right text-[10px] leading-snug">
+                <p>Your employer has contributed:</p>
+                <p>{fmt(employerContributions.sscEmployer)} in SSC,</p>
+                <p>
+                  {fmt(employerContributions.maternityFund)} in Maternity Fund
+                </p>
+                <p className="mt-1" style={{ color: MUTED }}>
+                  Total cost to employer: {fmt(grossSalary + employerTotal)}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* ============ YEAR TO DATE ============ */}
-        <div className="border border-gray-400 mb-4">
-          <div className="border-b border-gray-400 bg-gray-50 px-2 py-1 font-bold text-xs uppercase tracking-wide">
-            Year to Date Summary ({periodYear})
+        {/* ============ NOTES ============ */}
+        {notes && (
+          <div
+            className="mt-8 rounded-sm px-3 py-2 text-[11px]"
+            style={{ borderLeft: `3px solid ${ACCENT}`, background: "#fff7ed" }}
+          >
+            <span className="font-semibold">Note: </span>
+            <span className="whitespace-pre-line">{notes}</span>
           </div>
-          <div className="grid grid-cols-4 divide-x divide-gray-300">
-            <div className="p-2 text-center">
-              <div className="text-[10px] font-semibold mb-0.5">
-                Gross Earnings
-              </div>
-              <div className="text-sm font-bold">
-                € {fmt(ytdTotals.grossTotal)}
-              </div>
-            </div>
-            <div className="p-2 text-center">
-              <div className="text-[10px] font-semibold mb-0.5">Total Tax</div>
-              <div className="text-sm font-bold">
-                € {fmt(ytdTotals.taxTotal)}
-              </div>
-            </div>
-            <div className="p-2 text-center">
-              <div className="text-[10px] font-semibold mb-0.5">Total SSC</div>
-              <div className="text-sm font-bold">
-                € {fmt(ytdTotals.sscTotal)}
-              </div>
-            </div>
-            <div className="p-2 text-center">
-              <div className="text-[10px] font-semibold mb-0.5">
-                Net to Date
-              </div>
-              <div className="text-sm font-bold">
-                € {fmt(ytdTotals.netTotal)}
-              </div>
-            </div>
-          </div>
+        )}
+
+        <div className="flex-grow" />
+
+        {/* ============ TAKE-HOME PAY ============ */}
+        <div
+          className="flex items-center justify-between py-4"
+          style={{ borderTop: `1.5px solid ${ACCENT}` }}
+        >
+          <span className="text-[26px] font-bold">TAKE-HOME PAY</span>
+          <span className="text-[28px] font-bold">{fmt(netSalary)}</span>
         </div>
 
-        {/* ============ SPACER - pushes footer down ============ */}
-        <div className="flex-grow"></div>
+        {/* ============ TOTALS TO DATE & LEAVE ============ */}
+        <div
+          className="grid grid-cols-2 gap-10 pb-2 text-[12px]"
+          style={{ borderBottom: RULE }}
+        >
+          <div>
+            <p className="mb-1 text-[12px]" style={{ color: ACCENT }}>
+              Totals to Date ({periodYear})
+            </p>
+            {[
+              ["Gross", ytdTotals.grossTotal],
+              ["FSS", ytdTotals.taxTotal],
+              ["SSC", ytdTotals.sscTotal],
+              ["Total Take-Home Pay", ytdTotals.netTotal],
+            ].map(([label, value]) => (
+              <div key={label as string} className="flex justify-between">
+                <span>{label}</span>
+                <span>{fmt(value as number)}</span>
+              </div>
+            ))}
+          </div>
+          {leave && (
+            <div>
+              <p
+                className="mb-1 text-right text-[12px]"
+                style={{ color: ACCENT }}
+              >
+                Vacation Leave (hours)
+              </p>
+              {[
+                ["Entitled this year", leave.entitledHours],
+                ["Taken this period", leave.takenThisPeriod],
+                ["Taken to date", leave.takenToDate],
+                ["Remaining", leaveRemaining],
+              ].map(([label, value]) => (
+                <div key={label as string} className="flex justify-between">
+                  <span>{label}</span>
+                  <span>{fmtHours(value as number)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* ============ FOOTER ============ */}
-        <div className="border-t border-gray-400 pt-3 mt-3">
-          <div className="flex justify-between items-end text-[10px]">
-            <div>
-              {!isPaidPlan && (
-                <div className="font-bold text-xs mb-0.5">
-                  Generated by Malta Calculator
-                </div>
-              )}
-              <div>
-                This payslip is computer generated and does not require a
-                signature.
-              </div>
-              <div className="mt-0.5 font-mono text-[9px]">Verify: {qrUrl}</div>
-            </div>
-            <div className="text-right">
-              <div>Document ID: {payslipNumber}</div>
-              <div>
-                Printed: {printedDate} at {printedTime}
-              </div>
-            </div>
+        <div
+          className="mt-2 flex items-start justify-between gap-4 text-[9.5px]"
+          style={{ color: ACCENT }}
+        >
+          <div>
+            <p>
+              © {periodYear} {company.name}
+            </p>
+            {!isPaidPlan && (
+              <p style={{ color: MUTED }}>Generated by Malta Calculator</p>
+            )}
           </div>
+          <div className="text-center" style={{ color: MUTED }}>
+            {isDraft ? (
+              <p className="font-semibold uppercase" style={{ color: ACCENT }}>
+                Draft — not issued, subject to change
+              </p>
+            ) : (
+              <>
+                <p>Computer generated, no signature required.</p>
+                <p className="font-mono">Verify: {qrUrl}</p>
+              </>
+            )}
+          </div>
+          <p className="text-right">
+            This payslip was last updated on {lastUpdated}
+          </p>
         </div>
       </div>
     </div>

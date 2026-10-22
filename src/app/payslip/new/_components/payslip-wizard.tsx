@@ -15,6 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {
+  PAYSLIP_STATUS,
+  calculateEmployerContributions,
+  getLastWorkingDay,
+  type PayslipStatus,
+} from "@/utils/payslip-details";
 
 interface Company {
   id: string;
@@ -29,10 +35,37 @@ interface Employee {
   employee_code: string | null;
 }
 
+export interface PayslipDraft {
+  payslipId: string;
+  employeeId: string;
+  periodMonth: number;
+  periodYear: number;
+  salaryConfig?: {
+    annualGross?: number;
+    taxType?: "single" | "married" | "parent";
+    childCount?: number;
+    sscCategory?: string;
+    birthYear?: number;
+    startDate?: string;
+    previousTaxableIncome?: number;
+    previousTaxPaid?: number;
+  };
+  bonus?: number;
+  allowance?: number;
+  payDate?: string;
+  leaveHoursTaken?: number;
+  notes?: string;
+}
+
 interface PayslipWizardProps {
   company: Company;
   employees: Employee[];
   selectedEmployeeId?: string;
+  /** Düzenlenen taslak (varsa sihirbaz onunla doldurulur) */
+  draft?: PayslipDraft;
+  /** Aylık limit dolduysa yalnızca taslak kaydedilebilir */
+  canIssue?: boolean;
+  issueBlockedMessage?: string;
 }
 
 const months = [
@@ -54,36 +87,54 @@ export default function PayslipWizard({
   company,
   employees,
   selectedEmployeeId,
+  draft,
+  canIssue = true,
+  issueBlockedMessage,
 }: PayslipWizardProps) {
   const router = useRouter();
   const currentDate = new Date();
+  const initialEmployeeId = draft?.employeeId ?? selectedEmployeeId;
+  const draftConfig = draft?.salaryConfig;
 
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
+  // Taslak düzenlenirken doğrudan maaş adımından başla
+  const [step, setStep] = useState(draft ? 2 : 1);
+  const [loading, setLoading] = useState<PayslipStatus | "calculate" | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
 
   // Step 1: Employee selection
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
-    selectedEmployeeId
-      ? employees.find((e) => e.id === selectedEmployeeId) || null
+    initialEmployeeId
+      ? employees.find((e) => e.id === initialEmployeeId) || null
       : null,
   );
 
   // Step 2: Salary details - enhanced with all parameters
   const [salaryDetails, setSalaryDetails] = useState({
-    month: currentDate.getMonth() + 1, // 1-12
-    year: currentDate.getFullYear(),
-    annualGrossSalary: 24000, // Annual salary for API
-    taxType: "single" as "single" | "married" | "parent",
-    childCount: 0 as 0 | 1 | 2, // Number of children (2026+)
-    sscCategory: "C" as "A" | "B" | "C" | "D",
-    birthYear: 1990,
-    bonus: 0, // One-time bonus for this month
-    allowance: 0, // Monthly allowance
-    startDate: "", // İşe başlama tarihi (YYYY-MM-DD) — kıst bordro için
-    previousTaxableIncome: 0, // Aynı yıl önceki işveren matrahı (FS3)
-    previousTaxPaid: 0, // Aynı yıl önceki işverende kesilen vergi (FS3)
+    month: draft?.periodMonth ?? currentDate.getMonth() + 1, // 1-12
+    year: draft?.periodYear ?? currentDate.getFullYear(),
+    annualGrossSalary: draftConfig?.annualGross ?? 24000, // Annual salary for API
+    taxType: (draftConfig?.taxType ?? "single") as
+      | "single"
+      | "married"
+      | "parent",
+    childCount: (draftConfig?.childCount ?? 0) as 0 | 1 | 2, // Number of children (2026+)
+    sscCategory: (draftConfig?.sscCategory ?? "C") as "A" | "B" | "C" | "D",
+    birthYear: draftConfig?.birthYear ?? 1990,
+    bonus: draft?.bonus ?? 0, // One-time bonus for this month
+    allowance: draft?.allowance ?? 0, // Monthly allowance
+    startDate: draftConfig?.startDate ?? "", // İşe başlama tarihi (YYYY-MM-DD) — kıst bordro için
+    previousTaxableIncome: draftConfig?.previousTaxableIncome ?? 0, // Aynı yıl önceki işveren matrahı (FS3)
+    previousTaxPaid: draftConfig?.previousTaxPaid ?? 0, // Aynı yıl önceki işverende kesilen vergi (FS3)
+    payDate: draft?.payDate ?? "", // Boşsa ayın son iş günü
+    leaveHoursTaken: draft?.leaveHoursTaken ?? 0, // Bu dönemde kullanılan yıllık izin (saat)
+    notes: draft?.notes ?? "", // Çalışana not (bordroda görünür)
   });
+
+  const effectivePayDate =
+    salaryDetails.payDate ||
+    getLastWorkingDay(salaryDetails.year, salaryDetails.month);
 
   // Show child count for married/parent in 2026+
   const showChildCount = useMemo(
@@ -106,10 +157,23 @@ export default function PayslipWizard({
     allowance: number;
     employmentRatio: number;
     sscWeeks: number;
+    sscBase: number;
   } | null>(null);
 
+  const employerContributions = useMemo(
+    () =>
+      calculationResult
+        ? calculateEmployerContributions({
+            sscEmployee: calculationResult.sscEmployee,
+            sscBase: calculationResult.sscBase,
+            sscWeeks: calculationResult.sscWeeks,
+          })
+        : null,
+    [calculationResult],
+  );
+
   const handleCalculate = async () => {
-    setLoading(true);
+    setLoading("calculate");
     setError(null);
 
     try {
@@ -222,6 +286,7 @@ export default function PayslipWizard({
           allowance: salaryDetails.allowance,
           employmentRatio: monthlyData?.employmentRatio ?? 1,
           sscWeeks: monthlyData?.sscWeeks ?? 4,
+          sscBase: monthlyData?.sscBase ?? 0,
         });
         setStep(3);
       } else {
@@ -230,14 +295,14 @@ export default function PayslipWizard({
     } catch {
       setError("API error occurred");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (status: PayslipStatus) => {
     if (!selectedEmployee || !calculationResult) return;
 
-    setLoading(true);
+    setLoading(status);
     setError(null);
 
     try {
@@ -245,6 +310,8 @@ export default function PayslipWizard({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          payslipId: draft?.payslipId,
+          status,
           employeeId: selectedEmployee.id,
           periodMonth: salaryDetails.month,
           periodYear: salaryDetails.year,
@@ -257,6 +324,15 @@ export default function PayslipWizard({
             bonus: calculationResult.bonus,
             allowance: calculationResult.allowance,
             sscWeeks: calculationResult.sscWeeks,
+            sscBase: calculationResult.sscBase,
+            sscEmployer: employerContributions?.sscEmployer ?? 0,
+            maternityFund: employerContributions?.maternityFund ?? 0,
+            employmentRatio: calculationResult.employmentRatio,
+            payDate: effectivePayDate,
+            leaveHoursTaken: salaryDetails.leaveHoursTaken,
+            ...(salaryDetails.notes.trim()
+              ? { notes: salaryDetails.notes.trim() }
+              : {}),
             ...(calculationResult.employmentRatio < 1 && salaryDetails.startDate
               ? { periodStartDate: salaryDetails.startDate }
               : {}),
@@ -279,12 +355,12 @@ export default function PayslipWizard({
       if (data.success) {
         router.push(`/payslip/${data.payslipId}`);
       } else {
-        setError(data.error || "Failed to create payslip");
+        setError(data.error || "Failed to save payslip");
       }
     } catch {
       setError("An error occurred");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -304,7 +380,7 @@ export default function PayslipWizard({
             </span>
             <span className="text-slate-400">/</span>
             <span className="text-slate-600 dark:text-slate-400">
-              New Payslip
+              {draft ? "Edit Draft" : "New Payslip"}
             </span>
           </div>
           <UserButton afterSignOutUrl="/" />
@@ -320,7 +396,7 @@ export default function PayslipWizard({
               <span>
                 {step === 1 && "Select Employee"}
                 {step === 2 && "Salary Details"}
-                {step === 3 && "Preview & Generate"}
+                {step === 3 && "Preview & Save"}
               </span>
             </div>
             <div className="flex gap-2">
@@ -404,6 +480,7 @@ export default function PayslipWizard({
                           setSalaryDetails({
                             ...salaryDetails,
                             month: parseInt(v),
+                            payDate: "",
                           })
                         }
                       >
@@ -424,6 +501,7 @@ export default function PayslipWizard({
                           setSalaryDetails({
                             ...salaryDetails,
                             year: parseInt(v),
+                            payDate: "",
                           })
                         }
                       >
@@ -671,6 +749,64 @@ export default function PayslipWizard({
                     worked the full year.
                   </p>
                 </div>
+
+                {/* Payslip details: pay date, leave, note */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label>Pay Date</Label>
+                    <Input
+                      type="date"
+                      value={effectivePayDate}
+                      onChange={(e) =>
+                        setSalaryDetails({
+                          ...salaryDetails,
+                          payDate: e.target.value,
+                        })
+                      }
+                    />
+                    <p className="text-xs text-slate-500">
+                      Defaults to the last working day of the month
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Vacation Leave Taken (hours)</Label>
+                    <Input
+                      type="number"
+                      min={0}
+                      step={0.5}
+                      value={salaryDetails.leaveHoursTaken || ""}
+                      onChange={(e) =>
+                        setSalaryDetails({
+                          ...salaryDetails,
+                          leaveHoursTaken: Math.max(
+                            0,
+                            parseFloat(e.target.value) || 0,
+                          ),
+                        })
+                      }
+                      placeholder="0"
+                    />
+                    <p className="text-xs text-slate-500">
+                      Shown with the yearly balance on the payslip
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Note to Employee (optional)</Label>
+                  <textarea
+                    value={salaryDetails.notes}
+                    maxLength={300}
+                    rows={2}
+                    onChange={(e) =>
+                      setSalaryDetails({
+                        ...salaryDetails,
+                        notes: e.target.value,
+                      })
+                    }
+                    placeholder="e.g. Includes June statutory bonus"
+                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  />
+                </div>
               </div>
 
               {error && (
@@ -690,10 +826,12 @@ export default function PayslipWizard({
                 <Button
                   type="button"
                   onClick={handleCalculate}
-                  disabled={loading}
+                  disabled={loading !== null}
                   className="bg-amber-600 hover:bg-amber-700"
                 >
-                  {loading ? "Calculating..." : "Calculate & Preview →"}
+                  {loading === "calculate"
+                    ? "Calculating..."
+                    : "Calculate & Preview →"}
                 </Button>
               </div>
             </div>
@@ -836,6 +974,34 @@ export default function PayslipWizard({
                   </div>
                 </div>
 
+                {employerContributions && employerContributions.total > 0 && (
+                  <div className="mt-4 space-y-1 rounded-lg bg-white p-3 text-sm dark:bg-slate-800">
+                    <p className="text-xs font-semibold uppercase text-slate-500">
+                      Employer contributions
+                    </p>
+                    <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                      <span>Employer SSC</span>
+                      <span>€{employerContributions.sscEmployer.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                      <span>Maternity Fund (0.3%)</span>
+                      <span>
+                        €{employerContributions.maternityFund.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between font-medium text-slate-900 dark:text-white">
+                      <span>Total cost to employer</span>
+                      <span>
+                        €
+                        {(
+                          calculationResult.grossSalary +
+                          employerContributions.total
+                        ).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {company.plan === "free" && (
                   <div className="mt-4 rounded bg-slate-200/50 p-2 text-center text-xs text-slate-500">
                     Powered by Malta Calculator
@@ -849,18 +1015,55 @@ export default function PayslipWizard({
                 </div>
               )}
 
-              <div className="mt-6 flex justify-between">
+              {!canIssue && (
+                <div className="mt-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+                  {issueBlockedMessage ||
+                    "You have reached your monthly limit of issued payslips."}{" "}
+                  You can still save this payslip as a draft and issue it
+                  later.
+                  {company.plan !== "pro" && (
+                    <Link
+                      href="/pricing"
+                      className="ml-1 font-semibold underline"
+                    >
+                      Upgrade plan
+                    </Link>
+                  )}
+                </div>
+              )}
+
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
                 <Button variant="ghost" onClick={() => setStep(2)}>
                   ← Edit
                 </Button>
-                <Button
-                  onClick={handleGenerate}
-                  disabled={loading}
-                  className="bg-amber-600 hover:bg-amber-700"
-                >
-                  {loading ? "Creating..." : "✓ Create Payslip"}
-                </Button>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleGenerate(PAYSLIP_STATUS.DRAFT)}
+                    disabled={loading !== null}
+                  >
+                    {loading === PAYSLIP_STATUS.DRAFT
+                      ? "Saving..."
+                      : draft
+                        ? "Update Draft"
+                        : "Save as Draft"}
+                  </Button>
+                  <Button
+                    onClick={() => handleGenerate(PAYSLIP_STATUS.FINAL)}
+                    disabled={loading !== null || !canIssue}
+                    className="bg-amber-600 hover:bg-amber-700"
+                  >
+                    {loading === PAYSLIP_STATUS.FINAL
+                      ? "Issuing..."
+                      : "✓ Issue Payslip"}
+                  </Button>
+                </div>
               </div>
+              <p className="mt-3 text-right text-xs text-slate-500">
+                Drafts are private, editable and don&apos;t count towards your
+                monthly limit. Issued payslips are locked and visible to the
+                employee.
+              </p>
             </div>
           )}
 

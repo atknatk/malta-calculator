@@ -46,6 +46,7 @@ async function getPayslipByToken(token: string): Promise<Payslip | null> {
         `,
     )
     .eq("access_token", token)
+    .eq("status", "final") // Taslaklar çalışana gösterilmez
     .single();
 
   if (error || !data) {

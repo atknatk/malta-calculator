@@ -102,7 +102,10 @@ export interface Database {
           deductions: Json;
           pdf_url: string | null;
           access_token: string;
+          status: "draft" | "final";
           created_at: string;
+          updated_at: string;
+          finalized_at: string | null;
         };
         Insert: {
           id?: string;
@@ -115,7 +118,10 @@ export interface Database {
           deductions: Json;
           pdf_url?: string | null;
           access_token?: string;
+          status?: "draft" | "final";
           created_at?: string;
+          updated_at?: string;
+          finalized_at?: string | null;
         };
         Update: {
           id?: string;
@@ -128,7 +134,10 @@ export interface Database {
           deductions?: Json;
           pdf_url?: string | null;
           access_token?: string;
+          status?: "draft" | "final";
           created_at?: string;
+          updated_at?: string;
+          finalized_at?: string | null;
         };
       };
       daily_usage: {
