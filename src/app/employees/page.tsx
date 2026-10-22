@@ -17,7 +17,9 @@ import {
   mdButton,
 } from "@/components/admin/admin-ui";
 import EmployeeForm from "./_components/employee-form";
+import { getEmployeeAppStatuses } from "@/app/actions/employee-app-actions";
 import EmployeeActionsMenu from "./_components/employee-actions-menu";
+import EmployeeAppAccess from "./_components/employee-app-access";
 
 export default async function EmployeesPage() {
   const { userId } = await auth();
@@ -32,9 +34,10 @@ export default async function EmployeesPage() {
     redirect("/onboarding");
   }
 
-  const [employees, usage] = await Promise.all([
+  const [employees, usage, appStatuses] = await Promise.all([
     getEmployees(),
     getUsageLimits(),
+    getEmployeeAppStatuses(),
   ]);
   const atLimit = usage.employees.used >= usage.employees.limit;
 
@@ -90,6 +93,13 @@ export default async function EmployeesPage() {
                     )}
                   </div>
                   <div className="flex items-center">
+                    <EmployeeAppAccess
+                      employeeId={employee.id}
+                      employeeName={employee.name}
+                      email={employee.email}
+                      status={appStatuses[employee.id] ?? "none"}
+                      planAllows={company.plan === "pro"}
+                    />
                     <EmployeeActionsMenu
                       employeeId={employee.id}
                       employeeName={employee.name}

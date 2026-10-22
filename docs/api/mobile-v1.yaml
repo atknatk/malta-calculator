@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: Malta Payslips — Employee Mobile API
+  version: 1.0.0
+  description: |
+    Native iOS (and later Android) employee app API. Every request carries the
+    Clerk session token: `Authorization: Bearer <token>` (Clerk iOS/Android SDK,
+    email-code sign-in). Access is scoped to the employee records linked to the
+    signed-in user (`employee_accounts`). Only issued (`final`) and withdrawn
+    (`void`) payslips are ever returned; drafts never leave the server.
+
+    Linking: a company invites an employee by email from the admin panel. When
+    the employee signs in with that (Clerk-verified) email, `GET /me` links the
+    pending invite automatically. Call `GET /me` right after sign-in.
+
+    Errors: `{ "error": { "code": string, "message": string } }`
+    codes: unauthorized (401), not_found (404), invalid_request (400), internal (500).
+servers:
+  - url: https://www.maltacalculator.com/api/mobile/v1
+security:
+  - clerkSession: []
+paths:
+  /me:
+    get:
+      summary: Current user, claims pending invites, lists employments
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [user, employments]
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      emails: { type: array, items: { type: string } }
+                  employments:
+                    type: array
+                    items: { $ref: "#/components/schemas/Employment" }
+    delete:
+      summary: Delete the account (App Store requirement)
+      description: Unlinks employments, removes devices and notifications, deletes the Clerk user (unless it also owns a company). Payslips stay with the employer.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { type: object, properties: { deleted: { type: boolean } } }
+  /payslips:
+    get:
+      summary: Issued and withdrawn payslips, newest period first
+      parameters:
+        - { name: year, in: query, schema: { type: integer } }
+        - { name: employeeId, in: query, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payslips:
+                    type: array
+                    items: { $ref: "#/components/schemas/PayslipListItem" }
+  /payslips/{id}:
+    get:
+      summary: One payslip with its frozen document data
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payslip:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      employeeId: { type: string }
+                      companyId: { type: string }
+                      status: { type: string, enum: [final, void] }
+                      issuedAt: { type: [string, "null"], format: date-time }
+                      voidedAt: { type: [string, "null"], format: date-time }
+                      voidReason: { type: [string, "null"] }
+                      integrity:
+                        type: string
+                        enum: [verified, mismatch, legacy]
+                        description: verified = snapshot matches its SHA-256 fingerprint
+                      fingerprint: { type: [string, "null"], example: "3F2A 9C1E 5B7D 4E8A" }
+                  document:
+                    type: object
+                    description: PayslipDocumentProps (src/app/payslip/[id]/_components/payslip-document.tsx) — company, employee, period, gross/net, incomeTax, sscEmployee, ytdTotals, payslipNumber, earnings/leave details. Render natively; generate the PDF on device.
+        "404": { description: Not found or not yours }
+  /summary:
+    get:
+      summary: Year totals per employer (final payslips only)
+      parameters:
+        - { name: year, in: query, schema: { type: integer }, description: defaults to the current year }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  year: { type: integer }
+                  employers:
+                    type: array
+                    items: { $ref: "#/components/schemas/YearSummary" }
+  /devices:
+    post:
+      summary: Register an FCM push token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fcmToken, platform]
+              properties:
+                fcmToken: { type: string }
+                platform: { type: string, enum: [ios, android] }
+                appVersion: { type: string }
+      responses:
+        "200": { description: "{ registered: true }" }
+    delete:
+      summary: Unregister a push token (on sign-out)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fcmToken]
+              properties: { fcmToken: { type: string } }
+      responses:
+        "200": { description: "{ unregistered: true }" }
+  /notifications:
+    get:
+      summary: Latest 50 in-app notifications and unread count
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unreadCount: { type: integer }
+                  notifications:
+                    type: array
+                    items: { $ref: "#/components/schemas/Notification" }
+  /notifications/read:
+    post:
+      summary: Mark notifications read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: [ids]
+                  properties: { ids: { type: array, items: { type: string, format: uuid } } }
+                - type: object
+                  required: [all]
+                  properties: { all: { const: true } }
+      responses:
+        "200": { description: "{ updated: true }" }
+components:
+  securitySchemes:
+    clerkSession:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Employment:
+      type: object
+      properties:
+        employeeId: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        companyName: { type: string }
+        companyLogoUrl: { type: [string, "null"] }
+        employeeName: { type: string }
+        position: { type: [string, "null"] }
+        employeeCode: { type: [string, "null"] }
+        linkedAt: { type: string, format: date-time }
+    PayslipListItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        employeeId: { type: string }
+        companyId: { type: string }
+        companyName: { type: string }
+        payslipNumber: { type: string, example: ACM-2026-10-3F2A }
+        periodMonth: { type: integer, minimum: 1, maximum: 12 }
+        periodYear: { type: integer }
+        grossSalary: { type: number }
+        netSalary: { type: number }
+        incomeTax: { type: number }
+        sscEmployee: { type: number }
+        status: { type: string, enum: [final, void] }
+        issuedAt: { type: [string, "null"], format: date-time }
+        voidedAt: { type: [string, "null"], format: date-time }
+        voidReason: { type: [string, "null"] }
+        replacesPayslipId: { type: [string, "null"] }
+        replacedByPayslipId: { type: [string, "null"], description: set on a void payslip when a corrected one exists }
+    YearSummary:
+      type: object
+      properties:
+        employeeId: { type: string }
+        companyId: { type: string }
+        companyName: { type: string }
+        year: { type: integer }
+        payslipCount: { type: integer }
+        grossTotal: { type: number }
+        netTotal: { type: number }
+        taxTotal: { type: number }
+        sscTotal: { type: number }
+    Notification:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        type: { type: string, enum: [payslip_issued, payslip_voided, fs3_issued] }
+        title: { type: string }
+        body: { type: string }
+        data:
+          type: object
+          description: "Deep link data, e.g. { type, payslipId }. Push payloads carry the same keys."
+        readAt: { type: [string, "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
