@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import TurnstileWidget, {
   TURNSTILE_SITE_KEY,
 } from "@/components/turnstile-widget";
+import { TURNSTILE_ACTION } from "@/lib/turnstile";
 
 interface PinAuthProps {
   payslipId: string;
@@ -102,7 +103,7 @@ export default function PinAuth({
           </div>
 
           <TurnstileWidget
-            action="payslip-pin"
+            action={TURNSTILE_ACTION.PAYSLIP_PIN}
             onToken={setCaptchaToken}
             resetKey={captchaResetKey}
           />

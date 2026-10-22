@@ -6,7 +6,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { getClientIp, verifyTurnstileToken } from "@/lib/turnstile";
+import {
+  TURNSTILE_ACTION,
+  getClientIp,
+  verifyTurnstileToken,
+} from "@/lib/turnstile";
 import {
   ACCESS_SCOPE,
   accessCookieName,
@@ -33,6 +37,7 @@ export async function POST(request: NextRequest) {
 
     const captchaOk = await verifyTurnstileToken(
       body.captchaToken,
+      TURNSTILE_ACTION.PAYSLIP_VERIFY,
       getClientIp(request.headers),
     );
     if (!captchaOk) {

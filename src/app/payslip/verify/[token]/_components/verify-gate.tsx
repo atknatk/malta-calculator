@@ -6,6 +6,7 @@ import { ShieldCheck } from "lucide-react";
 import TurnstileWidget, {
   TURNSTILE_SITE_KEY,
 } from "@/components/turnstile-widget";
+import { TURNSTILE_ACTION } from "@/lib/turnstile";
 
 interface VerifyGateProps {
   token: string;
@@ -63,7 +64,7 @@ export default function VerifyGate({
 
         <div className="mt-6 space-y-4">
           <TurnstileWidget
-            action="payslip-verify"
+            action={TURNSTILE_ACTION.PAYSLIP_VERIFY}
             onToken={setCaptchaToken}
             resetKey={captchaResetKey}
           />

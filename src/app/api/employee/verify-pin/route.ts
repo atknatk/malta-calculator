@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { cookies } from "next/headers";
-import { getClientIp, verifyTurnstileToken } from "@/lib/turnstile";
+import {
+  TURNSTILE_ACTION,
+  getClientIp,
+  verifyTurnstileToken,
+} from "@/lib/turnstile";
 import {
   ACCESS_SCOPE,
   accessCookieName,
@@ -39,6 +43,7 @@ export async function POST(request: NextRequest) {
     // Kaba kuvvet denemelerine karşı her denemede captcha
     const captchaOk = await verifyTurnstileToken(
       captchaToken,
+      TURNSTILE_ACTION.PAYSLIP_PIN,
       getClientIp(request.headers),
     );
     if (!captchaOk) {
