@@ -1,8 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { CreditCard, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { mdButton } from "@/components/admin/admin-ui";
 
-export default function ManageSubscriptionButton() {
+export default function ManageSubscriptionButton({
+  compact = false,
+}: {
+  compact?: boolean;
+}) {
   const [loading, setLoading] = useState(false);
 
   const handleManageSubscription = async () => {
@@ -18,10 +26,12 @@ export default function ManageSubscriptionButton() {
         window.location.href = data.url;
       } else {
         console.error("No portal URL returned");
+        toast.error("Couldn't open the billing portal. Please try again.");
         setLoading(false);
       }
     } catch (error) {
       console.error("Portal error:", error);
+      toast.error("Couldn't open the billing portal. Please try again.");
       setLoading(false);
     }
   };
@@ -30,10 +40,18 @@ export default function ManageSubscriptionButton() {
     <button
       onClick={handleManageSubscription}
       disabled={loading}
-      className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+      className={cn(
+        compact
+          ? "inline-flex items-center gap-1.5 text-sm font-semibold hover:underline disabled:opacity-50"
+          : mdButton({ variant: "tonal" }),
+      )}
     >
-      <span>💳</span>
-      {loading ? "Loading..." : "Manage Subscription"}
+      {loading ? (
+        <Loader2 className="size-4 animate-spin" />
+      ) : (
+        <CreditCard className="size-4" />
+      )}
+      {loading ? "Opening portal…" : "Manage subscription"}
     </button>
   );
 }

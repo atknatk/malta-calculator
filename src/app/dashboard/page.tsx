@@ -1,13 +1,52 @@
-import { UserButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import {
+  ArrowRight,
+  Building2,
+  ChevronRight,
+  CreditCard,
+  FileText,
+  Plus,
+  Sparkles,
+  UserPlus,
+  Users,
+} from "lucide-react";
 import {
   getCompany,
   getUsageLimits,
   getRecentPayslips,
 } from "@/app/actions/payslip-actions";
+import {
+  Avatar,
+  CardHeader,
+  EmptyState,
+  LinearProgress,
+  MdCard,
+  PLAN_LABELS,
+  PageHeader,
+  StatusChip,
+  formatEuro,
+  mdButton,
+} from "@/components/admin/admin-ui";
+import PayslipStatusChip from "@/components/admin/payslip-status-chip";
 import ManageSubscriptionButton from "./_components/manage-subscription-button";
+
+const UNLIMITED = 999999;
+
+function greeting(): string {
+  // Malta saatine göre selamlama
+  const hour = Number(
+    new Date().toLocaleString("en-GB", {
+      hour: "numeric",
+      hour12: false,
+      timeZone: "Europe/Malta",
+    }),
+  );
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
 
 export default async function DashboardPage() {
   const [{ userId }, user] = await Promise.all([auth(), currentUser()]);
@@ -29,202 +68,256 @@ export default async function DashboardPage() {
     getRecentPayslips(5),
   ]);
 
-  const planLabels: Record<string, string> = {
-    free: "Free Plan",
-    basic: "Basic Plan",
-    pro: "Pro Plan",
-  };
+  const drafts = recentPayslips.filter((p) => p.status === "draft").length;
+
+  const stats = [
+    {
+      label: "Employees",
+      icon: Users,
+      used: usage.employees.used,
+      limit: usage.employees.limit,
+      href: "/employees",
+      tone: "bg-md-tertiary-container text-md-on-tertiary-container",
+    },
+    {
+      label: "Payslips this month",
+      icon: FileText,
+      used: usage.payslips.used,
+      limit: usage.payslips.limit,
+      href: "/payslips",
+      tone: "bg-md-primary-container text-md-on-primary-container",
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-slate-900/80">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="text-xl font-bold text-amber-600">
-              Malta Calculator
+    <>
+      <PageHeader
+        eyebrow={<span className="hidden lg:inline">{company.name}</span>}
+        title={`${greeting()}, ${user?.firstName || "there"}`}
+        description="Here's what's happening with your payroll this month."
+        actions={
+          <>
+            <Link
+              href="/employees"
+              className={mdButton({ variant: "outlined" })}
+            >
+              <UserPlus />
+              Add employee
             </Link>
-            <span className="rounded-md bg-gradient-to-r from-violet-500 to-purple-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-              Beta
-            </span>
-          </div>
+            <Link href="/payslip/new" className={mdButton()}>
+              <Plus />
+              New payslip
+            </Link>
+          </>
+        }
+      />
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600 dark:text-slate-400">
-              {company.name}
-            </span>
-            <span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900 dark:text-amber-300">
-              {planLabels[company.plan]}
-            </span>
-            <UserButton afterSignOutUrl="/" />
+      {/* Usage & plan */}
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+        {stats.map((stat) => {
+          const Icon = stat.icon;
+          const unlimited = stat.limit >= UNLIMITED;
+          return (
+            <Link
+              key={stat.label}
+              href={stat.href}
+              className="group rounded-3xl bg-md-surface-container-lowest p-4 shadow-md-1 sm:p-5 transition hover:shadow-md-2 dark:bg-md-surface-container-low"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <div
+                  className={`flex size-10 items-center justify-center rounded-xl ${stat.tone}`}
+                >
+                  <Icon className="size-5" />
+                </div>
+                <ChevronRight className="size-5 text-md-on-surface-variant opacity-0 transition group-hover:opacity-100" />
+              </div>
+              <p className="text-[13px] text-md-on-surface-variant">
+                {stat.label}
+              </p>
+              <p className="mt-1 text-[32px] font-normal leading-10 tracking-tight text-md-on-surface">
+                {stat.used}
+                <span className="text-lg text-md-on-surface-variant">
+                  {" "}
+                  / {unlimited ? "∞" : stat.limit}
+                </span>
+              </p>
+              {!unlimited && (
+                <LinearProgress
+                  value={stat.used}
+                  max={stat.limit}
+                  className="mt-3"
+                />
+              )}
+            </Link>
+          );
+        })}
+
+        <div className="col-span-2 flex flex-col rounded-3xl bg-gradient-to-br from-md-primary-container via-md-secondary-container to-md-tertiary-container p-5 text-md-on-primary-container md:col-span-1">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-white/50 dark:bg-black/20">
+              <CreditCard className="size-5" />
+            </div>
+            <StatusChip className="bg-white/60 text-md-on-primary-container dark:bg-black/25">
+              Current plan
+            </StatusChip>
+          </div>
+          <p className="text-[13px] opacity-80">Subscription</p>
+          <p className="mt-1 text-[32px] leading-10 tracking-tight">
+            {PLAN_LABELS[company.plan]}
+          </p>
+          <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-3">
+            {company.plan !== "pro" && (
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline"
+              >
+                <Sparkles className="size-4" />
+                {company.plan === "free"
+                  ? "Upgrade to Basic · €4.99/mo"
+                  : "Upgrade to Pro · €29.99/mo"}
+              </Link>
+            )}
+            {company.plan !== "free" && <ManageSubscriptionButton compact />}
           </div>
         </div>
-      </header>
+      </div>
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-4xl">
-          <h1 className="mb-2 text-3xl font-bold text-slate-900 dark:text-white">
-            Hello, {user?.firstName || "User"} 👋
-          </h1>
-          <p className="mb-8 text-slate-500">
-            Welcome to your {company.name} dashboard
-          </p>
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Recent payslips */}
+        <MdCard className="lg:col-span-2">
+          <CardHeader
+            title="Recent payslips"
+            subtitle={
+              drafts > 0
+                ? `${drafts} draft${drafts === 1 ? "" : "s"} waiting to be issued`
+                : "Your latest payroll activity"
+            }
+            action={
+              recentPayslips.length > 0 && (
+                <Link
+                  href="/payslips"
+                  className={mdButton({ variant: "text", size: "sm" })}
+                >
+                  View all
+                  <ArrowRight />
+                </Link>
+              )
+            }
+          />
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Quick Actions */}
-            <div className="rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
-                Quick Actions
-              </h2>
-              <div className="space-y-3">
-                <Link
-                  href="/payslip/new"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-600 px-4 py-3 font-medium text-white transition hover:bg-amber-700"
-                >
-                  <span>➕</span>
-                  Create New Payslip
+          {recentPayslips.length === 0 ? (
+            <EmptyState
+              icon={<FileText />}
+              title="No payslips yet"
+              description="Create your first payslip. It takes about a minute, and Malta tax, SSC and COLA are worked out for you."
+              action={
+                <Link href="/payslip/new" className={mdButton()}>
+                  <Plus />
+                  Create payslip
                 </Link>
-                <Link
-                  href="/employees"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
-                >
-                  <span>👥</span>
-                  Manage Employees
-                </Link>
-                <Link
-                  href="/settings"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
-                >
-                  <span>⚙️</span>
-                  Company Settings
-                </Link>
-                {company.plan !== "free" && <ManageSubscriptionButton />}
-                {company.plan === "free" && (
-                  <Link
-                    href="/pricing"
-                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 font-medium text-amber-700 transition hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-300 dark:hover:bg-amber-900"
-                  >
-                    <span>⬆️</span>
-                    Upgrade Plan
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            {/* Usage Stats */}
-            <div className="rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
-                This Month&apos;s Usage
-              </h2>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between rounded-lg bg-slate-50 p-3 dark:bg-slate-700">
-                  <span className="text-slate-600 dark:text-slate-300">
-                    👥 Employees
-                  </span>
-                  <span className="text-xl font-bold text-amber-600">
-                    {usage.employees.used}/
-                    {usage.employees.limit === 999999
-                      ? "∞"
-                      : usage.employees.limit}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between rounded-lg bg-slate-50 p-3 dark:bg-slate-700">
-                  <span className="text-slate-600 dark:text-slate-300">
-                    📄 Payslips (This Month)
-                  </span>
-                  <span className="text-xl font-bold text-amber-600">
-                    {usage.payslips.used}/
-                    {usage.payslips.limit === 999999
-                      ? "∞"
-                      : usage.payslips.limit}
-                  </span>
-                </div>
-              </div>
-              {company.plan === "free" && (
-                <Link
-                  href="/pricing"
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-amber-600 hover:to-orange-700"
-                >
-                  Upgrade to Basic — €4.99/mo
-                </Link>
-              )}
-              {company.plan === "basic" && (
-                <Link
-                  href="/pricing"
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-violet-600 hover:to-purple-700"
-                >
-                  Upgrade to Pro — €29.99/mo
-                </Link>
-              )}
-            </div>
-
-            {/* Recent Payslips */}
-            <div className="rounded-xl border bg-white p-6 shadow-sm md:col-span-2 dark:bg-slate-800 dark:border-slate-700">
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                  Recent Payslips
-                </h2>
-                {recentPayslips.length > 0 && (
-                  <Link
-                    href="/payslips"
-                    className="text-sm font-medium text-amber-600 hover:text-amber-700"
-                  >
-                    View all →
-                  </Link>
-                )}
-              </div>
-
-              {recentPayslips.length === 0 ? (
-                <div className="rounded-lg border border-dashed border-slate-300 p-8 text-center dark:border-slate-600">
-                  <p className="text-slate-500">No payslips created yet</p>
-                  <p className="mt-2 text-sm text-slate-400">
-                    Click the button above to create your first payslip
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {recentPayslips.map((payslip) => (
-                    <div
-                      key={payslip.id}
-                      className="flex items-center justify-between rounded-lg border border-slate-100 px-4 py-3 dark:border-slate-700"
+              }
+            />
+          ) : (
+            <ul className="px-2 pb-3">
+              {recentPayslips.map((payslip) => {
+                const isDraft = payslip.status === "draft";
+                return (
+                  <li key={payslip.id}>
+                    <Link
+                      href={`/payslip/${payslip.id}`}
+                      className="flex items-center gap-4 rounded-2xl px-4 py-3 transition hover:bg-md-on-surface/[0.04]"
                     >
-                      <div>
-                        <p className="flex items-center gap-2 font-medium text-slate-900 dark:text-white">
+                      <Avatar name={payslip.employee.name} />
+                      <div className="min-w-0 flex-1">
+                        <p className="flex items-center gap-2 truncate text-sm font-medium text-md-on-surface">
                           {payslip.employee.name}
-                          {payslip.status === "draft" && (
-                            <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[11px] font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
-                              Draft
-                            </span>
+                          {isDraft && (
+                            <PayslipStatusChip status={payslip.status} />
                           )}
                         </p>
-                        <p className="text-sm text-slate-500">
+                        <p className="text-[13px] text-md-on-surface-variant">
                           {new Date(
                             payslip.period_year,
                             payslip.period_month - 1,
-                          ).toLocaleDateString("en-US", {
+                          ).toLocaleDateString("en-GB", {
                             month: "long",
                             year: "numeric",
                           })}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-amber-600">
-                          €{payslip.net_salary.toLocaleString()}
+                        <p className="text-sm font-semibold tabular-nums text-md-on-surface">
+                          {formatEuro(payslip.net_salary)}
                         </p>
-                        <Link
-                          href={`/payslip/${payslip.id}`}
-                          className="text-sm text-slate-500 hover:text-amber-600"
-                        >
-                          {payslip.status === "draft" ? "Review →" : "View →"}
-                        </Link>
+                        <p className="text-xs text-md-on-surface-variant">
+                          Net pay
+                        </p>
                       </div>
+                      <ChevronRight className="hidden size-5 text-md-on-surface-variant sm:block" />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </MdCard>
+
+        {/* Shortcuts */}
+        <MdCard>
+          <CardHeader title="Shortcuts" subtitle="Common tasks" />
+          <ul className="px-2 pb-3">
+            {[
+              {
+                href: "/payslip/new",
+                icon: Plus,
+                title: "Create payslip",
+                desc: "Run payroll for one employee",
+              },
+              {
+                href: "/employees",
+                icon: Users,
+                title: "Manage employees",
+                desc: "Add, edit or remove staff",
+              },
+              {
+                href: "/settings",
+                icon: Building2,
+                title: "Company settings",
+                desc: "Logo, address and tax number",
+              },
+              {
+                href: "/settings#billing",
+                icon: CreditCard,
+                title: "Plan & billing",
+                desc: "Usage, invoices and upgrades",
+              },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <li key={item.title}>
+                  <Link
+                    href={item.href}
+                    className="flex items-center gap-4 rounded-2xl px-4 py-3 transition hover:bg-md-on-surface/[0.04]"
+                  >
+                    <div className="flex size-10 items-center justify-center rounded-full bg-md-surface-container-high text-md-on-surface-variant">
+                      <Icon className="size-5" />
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-md-on-surface">
+                        {item.title}
+                      </p>
+                      <p className="text-[13px] text-md-on-surface-variant">
+                        {item.desc}
+                      </p>
+                    </div>
+                    <ChevronRight className="size-5 text-md-on-surface-variant" />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </MdCard>
+      </div>
+    </>
   );
 }

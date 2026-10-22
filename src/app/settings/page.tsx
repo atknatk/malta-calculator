@@ -1,8 +1,19 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
-import { getCompany } from "@/app/actions/payslip-actions";
+import { Check, CreditCard, Sparkles } from "lucide-react";
+import { getCompany, getUsageLimits } from "@/app/actions/payslip-actions";
+import { PLANS } from "@/lib/stripe";
+import {
+  CardHeader,
+  LinearProgress,
+  MdCard,
+  PLAN_LABELS,
+  PageHeader,
+  StatusChip,
+  mdButton,
+} from "@/components/admin/admin-ui";
+import ManageSubscriptionButton from "@/app/dashboard/_components/manage-subscription-button";
 import CompanySettingsForm from "./_components/company-settings-form";
 
 export default async function SettingsPage() {
@@ -18,51 +29,122 @@ export default async function SettingsPage() {
     redirect("/onboarding");
   }
 
+  const usage = await getUsageLimits();
+  const plan = PLANS[company.plan];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-slate-900/80">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="text-xl font-bold text-amber-600">
-              Malta Calculator
-            </Link>
-            <span className="rounded-md bg-gradient-to-r from-violet-500 to-purple-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-              Beta
-            </span>
-          </div>
+    <>
+      <PageHeader
+        title="Settings"
+        description="Manage your company profile, branding and subscription"
+      />
 
-          <div className="flex items-center gap-4">
-            <Link
-              href="/dashboard"
-              className="text-sm text-slate-600 hover:text-amber-600 dark:text-slate-400"
-            >
-              Dashboard
-            </Link>
-            <UserButton afterSignOutUrl="/" />
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-2xl">
-          <div className="mb-8">
-            <Link
-              href="/dashboard"
-              className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-amber-600"
-            >
-              ← Back to Dashboard
-            </Link>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-              Company Settings
-            </h1>
-            <p className="mt-2 text-slate-500">
-              Manage your company information and logo
-            </p>
-          </div>
-
+      <div className="grid items-start gap-6 lg:grid-cols-5">
+        <div className="lg:col-span-3">
           <CompanySettingsForm company={company} />
         </div>
-      </main>
-    </div>
+
+        {/* Plan & billing */}
+        <div id="billing" className="scroll-mt-24 lg:col-span-2">
+          <MdCard>
+            <CardHeader
+              title="Plan & billing"
+              subtitle="Usage resets on the 1st of every month"
+              icon={<CreditCard />}
+            />
+            <div className="space-y-5 px-6 pb-6 pt-4">
+              <div className="flex items-center justify-between rounded-2xl bg-md-surface-container p-4">
+                <div>
+                  <p className="text-[13px] text-md-on-surface-variant">
+                    Current plan
+                  </p>
+                  <p className="text-2xl text-md-on-surface">
+                    {PLAN_LABELS[company.plan]}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl text-md-on-surface">
+                    {plan.price === 0 ? "€0" : `€${plan.price}`}
+                  </p>
+                  <p className="text-xs text-md-on-surface-variant">
+                    per month
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <div className="mb-1.5 flex justify-between text-sm">
+                    <span className="text-md-on-surface-variant">
+                      Employees
+                    </span>
+                    <span className="font-medium tabular-nums text-md-on-surface">
+                      {usage.employees.used} / {usage.employees.limit}
+                    </span>
+                  </div>
+                  <LinearProgress
+                    value={usage.employees.used}
+                    max={usage.employees.limit}
+                  />
+                </div>
+                <div>
+                  <div className="mb-1.5 flex justify-between text-sm">
+                    <span className="text-md-on-surface-variant">
+                      Payslips issued this month
+                    </span>
+                    <span className="font-medium tabular-nums text-md-on-surface">
+                      {usage.payslips.used} / {usage.payslips.limit}
+                    </span>
+                  </div>
+                  <LinearProgress
+                    value={usage.payslips.used}
+                    max={usage.payslips.limit}
+                  />
+                  <p className="mt-1.5 text-xs text-md-on-surface-variant">
+                    Drafts don&apos;t count towards your limit.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-2 flex items-center gap-2 text-sm font-medium text-md-on-surface">
+                  Included
+                  <StatusChip tone="primary">{plan.name}</StatusChip>
+                </p>
+                <ul className="space-y-1.5">
+                  {plan.features.map((feature) => (
+                    <li
+                      key={feature}
+                      className="flex items-center gap-2 text-sm text-md-on-surface-variant"
+                    >
+                      <Check className="size-4 text-md-primary" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-wrap gap-2 border-t border-md-outline-variant/50 pt-5">
+                {company.plan !== "pro" && (
+                  <Link href="/pricing" className={mdButton()}>
+                    <Sparkles />
+                    {company.plan === "free"
+                      ? "Upgrade plan"
+                      : "Upgrade to Pro"}
+                  </Link>
+                )}
+                {company.plan !== "free" && <ManageSubscriptionButton />}
+              </div>
+              {company.plan !== "free" && (
+                <p className="text-xs text-md-on-surface-variant">
+                  Invoices, payment method and cancellation are managed securely
+                  in the Stripe billing portal.
+                </p>
+              )}
+            </div>
+          </MdCard>
+        </div>
+      </div>
+    </>
   );
 }

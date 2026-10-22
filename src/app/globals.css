@@ -182,6 +182,75 @@
   }
 }
 
+/* ========================================
+   ADMIN PANEL - MATERIAL 3 TOKENS
+   Malta altın tohum rengiyle üretilmiş M3 ton paleti (RGB üçlüleri)
+   ======================================== */
+@layer base {
+  :root {
+    --md-primary: 133 84 0;
+    --md-on-primary: 255 255 255;
+    --md-primary-container: 255 221 184;
+    --md-on-primary-container: 42 24 0;
+    --md-secondary-container: 251 222 191;
+    --md-on-secondary-container: 40 24 6;
+    --md-tertiary: 0 101 139;
+    --md-tertiary-container: 197 231 255;
+    --md-on-tertiary-container: 0 30 45;
+    --md-success: 22 108 62;
+    --md-success-container: 196 238 206;
+    --md-on-success-container: 0 33 15;
+    --md-warning-container: 255 224 196;
+    --md-on-warning-container: 74 40 0;
+    --md-error: 186 26 26;
+    --md-error-container: 255 218 214;
+    --md-on-error-container: 65 0 2;
+    --md-surface: 253 250 247;
+    --md-surface-dim: 230 216 204;
+    --md-surface-container-lowest: 255 255 255;
+    --md-surface-container-low: 248 243 238;
+    --md-surface-container: 243 237 231;
+    --md-surface-container-high: 237 231 225;
+    --md-surface-container-highest: 231 225 219;
+    --md-on-surface: 32 27 22;
+    --md-on-surface-variant: 80 69 57;
+    --md-outline: 130 117 104;
+    --md-outline-variant: 213 196 181;
+  }
+
+  .dark {
+    --md-primary: 255 185 92;
+    --md-on-primary: 70 42 0;
+    --md-primary-container: 100 63 0;
+    --md-on-primary-container: 255 221 184;
+    --md-secondary-container: 87 67 46;
+    --md-on-secondary-container: 251 222 191;
+    --md-tertiary: 127 208 255;
+    --md-tertiary-container: 0 76 105;
+    --md-on-tertiary-container: 197 231 255;
+    --md-success: 140 214 160;
+    --md-success-container: 0 82 42;
+    --md-on-success-container: 196 238 206;
+    --md-warning-container: 105 60 0;
+    --md-on-warning-container: 255 224 196;
+    --md-error: 255 180 171;
+    --md-error-container: 147 0 10;
+    --md-on-error-container: 255 218 214;
+    --md-surface: 24 19 14;
+    --md-surface-dim: 24 19 14;
+    --md-surface-container-lowest: 18 13 9;
+    --md-surface-container-low: 32 27 22;
+    --md-surface-container: 37 31 26;
+    --md-surface-container-high: 48 41 36;
+    --md-surface-container-highest: 59 52 46;
+    --md-on-surface: 237 224 213;
+    --md-on-surface-variant: 213 196 181;
+    --md-outline: 158 142 129;
+    --md-outline-variant: 80 69 57;
+  }
+}
+
+
 @layer base {
   * {
     @apply border-border;

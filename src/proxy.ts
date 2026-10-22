@@ -6,6 +6,8 @@ const isProtectedRoute = createRouteMatcher([
   "/payslip(.*)",
   "/company(.*)",
   "/employees(.*)",
+  "/payslips(.*)",
+  "/settings(.*)",
   "/onboarding(.*)",
 ]);
 

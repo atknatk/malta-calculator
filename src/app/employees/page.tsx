@@ -1,9 +1,23 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { getCompany, getEmployees } from "@/app/actions/payslip-actions";
-import AddEmployeeForm from "./_components/add-employee-form";
+import { FilePlus2, Mail, UserPlus, Users } from "lucide-react";
+import {
+  getCompany,
+  getEmployees,
+  getUsageLimits,
+} from "@/app/actions/payslip-actions";
+import {
+  Avatar,
+  CardHeader,
+  EmptyState,
+  LinearProgress,
+  MdCard,
+  PageHeader,
+  mdButton,
+} from "@/components/admin/admin-ui";
+import EmployeeForm from "./_components/employee-form";
+import EmployeeActionsMenu from "./_components/employee-actions-menu";
 
 export default async function EmployeesPage() {
   const { userId } = await auth();
@@ -18,104 +32,126 @@ export default async function EmployeesPage() {
     redirect("/onboarding");
   }
 
-  const employees = await getEmployees();
+  const [employees, usage] = await Promise.all([
+    getEmployees(),
+    getUsageLimits(),
+  ]);
+  const atLimit = usage.employees.used >= usage.employees.limit;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-slate-900/80">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/dashboard"
-              className="text-xl font-bold text-amber-600"
-            >
-              Malta Calculator
-            </Link>
-            <span className="text-slate-400">/</span>
-            <span className="text-slate-600 dark:text-slate-400">
-              Employees
-            </span>
-          </div>
-          <UserButton afterSignOutUrl="/" />
-        </div>
-      </header>
+    <>
+      <PageHeader
+        title="Employees"
+        description={`${employees.length} employee${employees.length !== 1 ? "s" : ""} registered`}
+      />
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-8 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-                Employees
-              </h1>
-              <p className="mt-1 text-slate-500">
-                {employees.length} employee{employees.length !== 1 ? "s" : ""}{" "}
-                registered
-              </p>
-            </div>
+      <div className="grid items-start gap-6 lg:grid-cols-5">
+        {/* Employee list */}
+        <MdCard className="overflow-hidden lg:col-span-3">
+          <CardHeader
+            title="Team"
+            subtitle={`${usage.employees.used} of ${usage.employees.limit} seats used on your plan`}
+          />
+          <div className="px-6 pb-4">
+            <LinearProgress
+              value={usage.employees.used}
+              max={usage.employees.limit}
+            />
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Add Employee Card */}
-            <div className="rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
-                Add New Employee
-              </h2>
-              <AddEmployeeForm />
-            </div>
-
-            {/* Employee List */}
-            <div className="rounded-xl border bg-white p-6 shadow-sm lg:col-span-2 dark:bg-slate-800 dark:border-slate-700">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
-                Registered Employees
-              </h2>
-
-              {employees.length === 0 ? (
-                <div className="rounded-lg border border-dashed border-slate-300 p-8 text-center dark:border-slate-600">
-                  <p className="text-slate-500">No employees added yet</p>
-                  <p className="mt-2 text-sm text-slate-400">
-                    Use the form on the left to add your first employee
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {employees.map((employee) => (
-                    <div
-                      key={employee.id}
-                      className="flex items-center justify-between rounded-lg border border-slate-100 px-4 py-3 dark:border-slate-700"
+          {employees.length === 0 ? (
+            <EmptyState
+              icon={<Users />}
+              title="No employees yet"
+              description="Add your first employee with the form. You can generate their payslip right after."
+            />
+          ) : (
+            <ul className="divide-y divide-md-outline-variant/50 border-t border-md-outline-variant/50">
+              {employees.map((employee) => (
+                <li
+                  key={employee.id}
+                  className="flex items-center gap-4 px-5 py-4 transition hover:bg-md-on-surface/[0.03]"
+                >
+                  <Avatar name={employee.name} />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-md-on-surface">
+                      {employee.name}
+                    </p>
+                    <p className="truncate text-[13px] text-md-on-surface-variant">
+                      {employee.position || "No position"}
+                      {employee.employee_code && ` · ${employee.employee_code}`}
+                      {employee.department && ` · ${employee.department}`}
+                    </p>
+                    {employee.email && (
+                      <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-md-on-surface-variant/80">
+                        <Mail className="size-3" />
+                        {employee.email}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center">
+                    <EmployeeActionsMenu
+                      employeeId={employee.id}
+                      employeeName={employee.name}
+                      values={{
+                        name: employee.name,
+                        email: employee.email ?? "",
+                        employeeCode: employee.employee_code ?? "",
+                        position: employee.position ?? "",
+                        phone: employee.phone ?? "",
+                        dateOfBirth: employee.date_of_birth ?? "",
+                        address: employee.address ?? "",
+                        idNumber: employee.id_number ?? "",
+                        ssNumber: employee.ss_number ?? "",
+                        department: employee.department ?? "",
+                        section: employee.section ?? "",
+                        unit: employee.unit ?? "",
+                        grade: employee.grade ?? "",
+                      }}
+                    />
+                    <Link
+                      href={`/payslip/new?employeeId=${employee.id}`}
+                      className={`${mdButton({ variant: "tonal", size: "sm" })} ml-2`}
                     >
-                      <div>
-                        <p className="font-medium text-slate-900 dark:text-white">
-                          {employee.name}
-                        </p>
-                        <p className="text-sm text-slate-500">
-                          {employee.position || "No position specified"}
-                          {employee.employee_code &&
-                            ` • ${employee.employee_code}`}
-                        </p>
-                      </div>
-                      <Link
-                        href={`/payslip/new?employeeId=${employee.id}`}
-                        className="rounded-lg bg-amber-100 px-3 py-1.5 text-sm font-medium text-amber-700 transition hover:bg-emerald-200 dark:bg-amber-900 dark:text-amber-300"
-                      >
-                        Generate Payslip
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+                      <FilePlus2 />
+                      <span className="hidden sm:inline">Payslip</span>
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </MdCard>
 
-          <div className="mt-6">
-            <Link
-              href="/dashboard"
-              className="text-sm text-slate-500 hover:text-amber-600"
-            >
-              ← Back to Dashboard
-            </Link>
+        {/* Add employee */}
+        <MdCard className="lg:sticky lg:top-10 lg:col-span-2">
+          <CardHeader
+            title="Add employee"
+            subtitle="Only the name is required"
+            icon={<UserPlus />}
+          />
+          <div className="px-6 pb-6 pt-3">
+            {atLimit ? (
+              <div className="rounded-2xl bg-md-warning-container p-4 text-sm text-md-on-warning-container">
+                <p className="font-medium">
+                  You&apos;ve reached your plan&apos;s employee limit.
+                </p>
+                <p className="mt-1 opacity-80">
+                  Upgrade to add more people to your payroll.
+                </p>
+                <Link
+                  href="/pricing"
+                  className={`${mdButton({ size: "sm" })} mt-3`}
+                >
+                  See plans
+                </Link>
+              </div>
+            ) : (
+              <EmployeeForm />
+            )}
           </div>
-        </div>
-      </main>
-    </div>
+        </MdCard>
+      </div>
+    </>
   );
 }
