@@ -1,17 +1,19 @@
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import {
   getCompany,
   getEmployees,
   canGeneratePayslip,
+  getPayslipById,
 } from "@/app/actions/payslip-actions";
-import PayslipWizard from "./_components/payslip-wizard";
+import PayslipWizard, { type PayslipDraft } from "./_components/payslip-wizard";
+import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 import Link from "next/link";
 
 export default async function NewPayslipPage({
   searchParams,
 }: {
-  searchParams: Promise<{ employeeId?: string }>;
+  searchParams: Promise<{ employeeId?: string; draft?: string }>;
 }) {
   const { userId } = await auth();
 
@@ -29,6 +31,36 @@ export default async function NewPayslipPage({
   const canGenerate = await canGeneratePayslip();
   const params = await searchParams;
   const selectedEmployeeId = params.employeeId;
+
+  // Taslak düzenleme: yalnızca bu şirkete ait taslaklar
+  let draft: PayslipDraft | undefined;
+  if (params.draft) {
+    const payslip = await getPayslipById(params.draft);
+    if (!payslip) notFound();
+    if (payslip.status !== PAYSLIP_STATUS.DRAFT) {
+      redirect(`/payslip/${payslip.id}`);
+    }
+    const d = payslip.deductions as {
+      bonus?: number;
+      allowance?: number;
+      payDate?: string;
+      leaveHoursTaken?: number;
+      notes?: string;
+      salaryConfig?: PayslipDraft["salaryConfig"];
+    };
+    draft = {
+      payslipId: payslip.id,
+      employeeId: payslip.employee_id,
+      periodMonth: payslip.period_month,
+      periodYear: payslip.period_year,
+      salaryConfig: d.salaryConfig,
+      bonus: d.bonus,
+      allowance: d.allowance,
+      payDate: d.payDate,
+      leaveHoursTaken: d.leaveHoursTaken,
+      notes: d.notes,
+    };
+  }
 
   if (employees.length === 0) {
     return (
@@ -54,46 +86,16 @@ export default async function NewPayslipPage({
     );
   }
 
-  if (!canGenerate.allowed) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-        <div className="mx-auto max-w-md rounded-xl border bg-white p-8 text-center shadow-lg dark:bg-slate-800 dark:border-slate-700">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
-            <span className="text-3xl">⚠️</span>
-          </div>
-          <h2 className="mb-2 text-xl font-bold text-slate-900 dark:text-white">
-            Monthly Limit Reached
-          </h2>
-          <p className="mb-6 text-slate-500">
-            {canGenerate.message ||
-              "You have reached your payslip limit for this month."}
-          </p>
-          {company.plan === "free" && (
-            <Link
-              href="/pricing"
-              className="inline-block rounded-lg bg-amber-600 px-6 py-3 font-medium text-white transition hover:bg-amber-700"
-            >
-              ⬆️ Upgrade Plan
-            </Link>
-          )}
-          <div className="mt-4">
-            <Link
-              href="/dashboard"
-              className="text-sm text-slate-500 hover:text-amber-600"
-            >
-              ← Back to Dashboard
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+  // Limit dolu olsa bile sihirbaz açılır: taslak kaydedilebilir, yayınlama
+  // butonu kapalıdır
   return (
     <PayslipWizard
       company={company}
       employees={employees}
       selectedEmployeeId={selectedEmployeeId}
+      draft={draft}
+      canIssue={canGenerate.allowed}
+      issueBlockedMessage={canGenerate.message}
     />
   );
 }

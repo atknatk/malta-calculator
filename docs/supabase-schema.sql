@@ -48,7 +48,10 @@ CREATE TABLE payslips (
   deductions JSONB NOT NULL DEFAULT '{}',
   pdf_url TEXT,
   access_token TEXT UNIQUE DEFAULT uuid_generate_v4()::text,
+  status TEXT NOT NULL DEFAULT 'final' CHECK (status IN ('draft', 'final')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  finalized_at TIMESTAMPTZ,
   
   -- Unique constraint: one payslip per employee per month
   CONSTRAINT unique_payslip_per_period UNIQUE (employee_id, period_month, period_year)
@@ -71,6 +74,7 @@ CREATE INDEX idx_payslips_company ON payslips(company_id);
 CREATE INDEX idx_payslips_employee ON payslips(employee_id);
 CREATE INDEX idx_payslips_period ON payslips(period_year, period_month);
 CREATE INDEX idx_payslips_access_token ON payslips(access_token);
+CREATE INDEX idx_payslips_company_status ON payslips(company_id, status);
 CREATE INDEX idx_daily_usage_company_date ON daily_usage(company_id, date);
 
 -- Row Level Security (RLS)
@@ -143,7 +147,7 @@ CREATE POLICY "Users can insert own company payslips" ON payslips
 
 -- Public access policy for payslips via access_token (for employees)
 CREATE POLICY "Anyone can view payslip with valid token" ON payslips
-  FOR SELECT USING (access_token IS NOT NULL);
+  FOR SELECT USING (access_token IS NOT NULL AND status = 'final');
 
 -- RLS Policies for Daily Usage
 CREATE POLICY "Users can view own usage" ON daily_usage

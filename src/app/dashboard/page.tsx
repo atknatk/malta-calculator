@@ -188,8 +188,13 @@ export default async function DashboardPage() {
                       className="flex items-center justify-between rounded-lg border border-slate-100 px-4 py-3 dark:border-slate-700"
                     >
                       <div>
-                        <p className="font-medium text-slate-900 dark:text-white">
+                        <p className="flex items-center gap-2 font-medium text-slate-900 dark:text-white">
                           {payslip.employee.name}
+                          {payslip.status === "draft" && (
+                            <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[11px] font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
+                              Draft
+                            </span>
+                          )}
                         </p>
                         <p className="text-sm text-slate-500">
                           {new Date(
@@ -209,7 +214,7 @@ export default async function DashboardPage() {
                           href={`/payslip/${payslip.id}`}
                           className="text-sm text-slate-500 hover:text-amber-600"
                         >
-                          View →
+                          {payslip.status === "draft" ? "Review →" : "View →"}
                         </Link>
                       </div>
                     </div>

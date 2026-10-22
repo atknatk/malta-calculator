@@ -57,6 +57,7 @@ export default async function PayslipVerifyPage({
     .from("payslips")
     .select(selectQuery)
     .eq("access_token", token)
+    .eq("status", "final") // Taslaklar doğrulanamaz
     .single();
 
   // If not found, try by payslip ID (UUID - for backwards compatibility)
@@ -65,6 +66,7 @@ export default async function PayslipVerifyPage({
       .from("payslips")
       .select(selectQuery)
       .eq("id", token)
+      .eq("status", "final") // Taslaklar doğrulanamaz
       .single();
 
     payslip = result.data;

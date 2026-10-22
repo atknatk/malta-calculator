@@ -1,17 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import {
+  deleteDraftPayslip,
+  finalizePayslip,
+} from "@/app/actions/payslip-actions";
+import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
 
 interface PayslipActionsProps {
+  payslipId: string;
+  status: PayslipStatus;
   payslipNumber?: string;
   employeeName?: string;
 }
 
 export default function PayslipActions({
+  payslipId,
+  status,
   payslipNumber,
   employeeName,
 }: PayslipActionsProps) {
+  const router = useRouter();
   const [downloading, setDownloading] = useState(false);
+  const [pending, startTransition] = useTransition();
+  // İki adımlı onay: geri alınamayan işlemler için ikinci tıklama gerekir
+  const [confirming, setConfirming] = useState<"issue" | "delete" | null>(
+    null,
+  );
+  const [error, setError] = useState<string | null>(null);
+  const isDraft = status === PAYSLIP_STATUS.DRAFT;
+
+  const handleIssue = () => {
+    if (confirming !== "issue") {
+      setConfirming("issue");
+      return;
+    }
+    setError(null);
+    startTransition(async () => {
+      const result = await finalizePayslip(payslipId);
+      setConfirming(null);
+      if (result.success) {
+        router.refresh();
+      } else {
+        setError(result.error || "Failed to issue payslip");
+      }
+    });
+  };
+
+  const handleDelete = () => {
+    if (confirming !== "delete") {
+      setConfirming("delete");
+      return;
+    }
+    setError(null);
+    startTransition(async () => {
+      const result = await deleteDraftPayslip(payslipId);
+      if (result.success) {
+        router.push("/payslips?status=draft");
+      } else {
+        setConfirming(null);
+        setError(result.error || "Failed to delete draft");
+      }
+    });
+  };
 
   const handlePrint = () => {
     window.print();
@@ -36,7 +89,7 @@ export default function PayslipActions({
 
       // Generate filename
       const filename = payslipNumber
-        ? `Payslip-${payslipNumber}${employeeName ? `-${employeeName.replace(/\s+/g, "_")}` : ""}.pdf`
+        ? `${isDraft ? "DRAFT-" : ""}Payslip-${payslipNumber}${employeeName ? `-${employeeName.replace(/\s+/g, "_")}` : ""}.pdf`
         : "Payslip.pdf";
 
       // Configure PDF options - no margins since document has internal padding
@@ -72,7 +125,26 @@ export default function PayslipActions({
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-wrap justify-end gap-3">
+      {isDraft && (
+        <>
+          <button
+            onClick={handleDelete}
+            disabled={pending}
+            onBlur={() => !pending && setConfirming(null)}
+            className="rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:hover:bg-red-950/40"
+          >
+            {confirming === "delete" ? "Click again to delete" : "Delete draft"}
+          </button>
+          <Link
+            href={`/payslip/new?draft=${payslipId}`}
+            className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+          >
+            Edit draft
+          </Link>
+        </>
+      )}
       <button
         onClick={handlePrint}
         className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
@@ -135,10 +207,26 @@ export default function PayslipActions({
                 d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
               />
             </svg>
-            Download PDF
+            {isDraft ? "Draft PDF" : "Download PDF"}
           </>
         )}
       </button>
+      {isDraft && (
+        <button
+          onClick={handleIssue}
+          disabled={pending}
+          onBlur={() => !pending && setConfirming(null)}
+          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-wait disabled:opacity-70"
+        >
+          {pending && confirming === "issue"
+            ? "Issuing..."
+            : confirming === "issue"
+              ? "Confirm: issue to employee"
+              : "✓ Issue payslip"}
+        </button>
+      )}
+    </div>
+    {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 }

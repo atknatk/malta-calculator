@@ -3,6 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { PAYSLIP_STATUS, type PayslipStatus } from "@/utils/payslip-details";
 
 // Use admin client since we verify auth with Clerk
 // This bypasses RLS but is safe because we check userId
@@ -55,7 +56,10 @@ interface Payslip {
   deductions: Record<string, unknown>;
   pdf_url: string | null;
   access_token: string;
+  status: PayslipStatus;
   created_at: string;
+  updated_at: string;
+  finalized_at: string | null;
 }
 
 // ============ COMPANY ACTIONS ============
@@ -308,12 +312,14 @@ export async function getUsageLimits(): Promise<{
     59,
   ).toISOString();
 
+  // Limit yalnızca bu ay yayınlanan bordroları sayar; taslaklar ücretsiz
   const { count: payslipCount } = await supabase
     .from("payslips")
     .select("*", { count: "exact", head: true })
     .eq("company_id", companyData.id)
-    .gte("created_at", startOfMonth)
-    .lte("created_at", endOfMonth);
+    .eq("status", PAYSLIP_STATUS.FINAL)
+    .gte("finalized_at", startOfMonth)
+    .lte("finalized_at", endOfMonth);
 
   return {
     employees: { used: employeeCount ?? 0, limit: limits.employees },
@@ -389,18 +395,34 @@ export async function getRecentPayslips(
   return (data as (Payslip & { employee: Employee })[]) || [];
 }
 
-export async function getYearToDateTotals(
-  employeeId: string,
-  year: number,
-  upToMonth: number,
-): Promise<{
+export interface YearToDateTotals {
   grossTotal: number;
   taxTotal: number;
   sscTotal: number;
   netTotal: number;
-}> {
+  leaveHoursTaken: number;
+}
+
+const EMPTY_YTD: YearToDateTotals = {
+  grossTotal: 0,
+  taxTotal: 0,
+  sscTotal: 0,
+  netTotal: 0,
+  leaveHoursTaken: 0,
+};
+
+/**
+ * Yıl başından bu döneme kadar toplamlar. Yalnızca yayınlanmış bordrolar
+ * sayılır; görüntülenen bordro taslaksa kendi tutarları da eklenir.
+ */
+export async function getYearToDateTotals(
+  employeeId: string,
+  year: number,
+  upToMonth: number,
+  currentDraft?: Pick<Payslip, "gross_salary" | "net_salary" | "deductions">,
+): Promise<YearToDateTotals> {
   const { userId } = await auth();
-  if (!userId) return { grossTotal: 0, taxTotal: 0, sscTotal: 0, netTotal: 0 };
+  if (!userId) return { ...EMPTY_YTD };
 
   const supabase = createAdminClient();
 
@@ -411,42 +433,177 @@ export async function getYearToDateTotals(
     .eq("clerk_user_id", userId)
     .single();
 
-  if (!company) return { grossTotal: 0, taxTotal: 0, sscTotal: 0, netTotal: 0 };
+  if (!company) return { ...EMPTY_YTD };
 
-  // Get all payslips for this employee in this year up to the specified month
+  // Get all issued payslips for this employee in this year up to the month
   const { data: payslips, error } = await supabase
     .from("payslips")
     .select("gross_salary, net_salary, deductions")
     .eq("employee_id", employeeId)
     .eq("company_id", (company as { id: string }).id)
+    .eq("status", PAYSLIP_STATUS.FINAL)
     .eq("period_year", year)
     .lte("period_month", upToMonth);
 
   if (error || !payslips) {
     console.error("Error fetching YTD totals:", error);
-    return { grossTotal: 0, taxTotal: 0, sscTotal: 0, netTotal: 0 };
+    return { ...EMPTY_YTD };
   }
 
-  // Sum up all the values
-  let grossTotal = 0;
-  let taxTotal = 0;
-  let sscTotal = 0;
-  let netTotal = 0;
+  const rows = currentDraft ? [...payslips, currentDraft] : payslips;
+  const totals = { ...EMPTY_YTD };
 
-  for (const payslip of payslips) {
-    grossTotal += payslip.gross_salary || 0;
-    netTotal += payslip.net_salary || 0;
+  for (const payslip of rows) {
+    totals.grossTotal += payslip.gross_salary || 0;
+    totals.netTotal += payslip.net_salary || 0;
     const deductions = payslip.deductions as {
       incomeTax?: number;
       sscEmployee?: number;
+      leaveHoursTaken?: number;
     } | null;
     if (deductions) {
-      taxTotal += deductions.incomeTax || 0;
-      sscTotal += deductions.sscEmployee || 0;
+      totals.taxTotal += deductions.incomeTax || 0;
+      totals.sscTotal += deductions.sscEmployee || 0;
+      totals.leaveHoursTaken += deductions.leaveHoursTaken || 0;
     }
   }
 
-  return { grossTotal, taxTotal, sscTotal, netTotal };
+  return totals;
+}
+
+export async function getPayslips(
+  status?: PayslipStatus,
+): Promise<(Payslip & { employee: Employee })[]> {
+  const { userId } = await auth();
+  if (!userId) return [];
+
+  const supabase = createAdminClient();
+
+  const { data: company } = await supabase
+    .from("companies")
+    .select("id")
+    .eq("clerk_user_id", userId)
+    .single();
+
+  if (!company) return [];
+
+  let query = supabase
+    .from("payslips")
+    .select(
+      `
+      *,
+      employee:employees(*)
+    `,
+    )
+    .eq("company_id", (company as { id: string }).id)
+    .order("period_year", { ascending: false })
+    .order("period_month", { ascending: false })
+    .order("updated_at", { ascending: false });
+
+  if (status) {
+    query = query.eq("status", status);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching payslips:", error);
+    return [];
+  }
+
+  return (data as (Payslip & { employee: Employee })[]) || [];
+}
+
+/**
+ * Taslağı yayınla: çalışana görünür olur, doğrulama QR'ı aktifleşir ve
+ * aylık plan limitine sayılır. Yayınlanan bordro artık düzenlenemez.
+ */
+export async function finalizePayslip(
+  payslipId: string,
+): Promise<{ success: boolean; error?: string }> {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Not authenticated" };
+
+  const supabase = createAdminClient();
+
+  const { data: company } = await supabase
+    .from("companies")
+    .select("id")
+    .eq("clerk_user_id", userId)
+    .single();
+
+  if (!company) return { success: false, error: "Company not found" };
+
+  const limit = await canGeneratePayslip();
+  if (!limit.allowed) {
+    return { success: false, error: limit.message };
+  }
+
+  const now = new Date().toISOString();
+  const { data, error } = await supabase
+    .from("payslips")
+    .update({
+      status: PAYSLIP_STATUS.FINAL,
+      finalized_at: now,
+      updated_at: now,
+    })
+    .eq("id", payslipId)
+    .eq("company_id", (company as { id: string }).id)
+    .eq("status", PAYSLIP_STATUS.DRAFT)
+    .select("id");
+
+  if (error) {
+    console.error("Error finalizing payslip:", error);
+    return { success: false, error: "Failed to issue payslip" };
+  }
+
+  if (!data || data.length === 0) {
+    return { success: false, error: "Draft not found or already issued" };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/payslips");
+  revalidatePath(`/payslip/${payslipId}`);
+  return { success: true };
+}
+
+/** Yalnızca taslaklar silinebilir; yayınlanmış bordro kayıt olarak kalır */
+export async function deleteDraftPayslip(
+  payslipId: string,
+): Promise<{ success: boolean; error?: string }> {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Not authenticated" };
+
+  const supabase = createAdminClient();
+
+  const { data: company } = await supabase
+    .from("companies")
+    .select("id")
+    .eq("clerk_user_id", userId)
+    .single();
+
+  if (!company) return { success: false, error: "Company not found" };
+
+  const { data, error } = await supabase
+    .from("payslips")
+    .delete()
+    .eq("id", payslipId)
+    .eq("company_id", (company as { id: string }).id)
+    .eq("status", PAYSLIP_STATUS.DRAFT)
+    .select("id");
+
+  if (error) {
+    console.error("Error deleting draft:", error);
+    return { success: false, error: "Failed to delete draft" };
+  }
+
+  if (!data || data.length === 0) {
+    return { success: false, error: "Draft not found" };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/payslips");
+  return { success: true };
 }
 
 export async function getPayslipById(

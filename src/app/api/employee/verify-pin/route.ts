@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
             `,
       )
       .eq("id", payslipId)
+      .eq("status", "final")
       .single();
 
     if (error || !payslip) {
