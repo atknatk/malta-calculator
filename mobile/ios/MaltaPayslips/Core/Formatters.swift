@@ -22,7 +22,10 @@ enum Formatters {
     }
 
     static func period(month: Int, year: Int) -> String {
-        let symbols = Calendar(identifier: .gregorian).monthSymbols
+        // Arayüz İngilizce; cihaz dilinden bağımsız ay adları
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "en_US_POSIX")
+        let symbols = calendar.monthSymbols
         let name = (1...12).contains(month) ? symbols[month - 1] : "\(month)"
         return "\(name) \(year)"
     }
