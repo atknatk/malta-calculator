@@ -1,6 +1,8 @@
 /**
  * Malta VRT (Vehicle Roadworthiness Test) Calculator
- * Based on Transport Malta vehicle inspection regulations
+ *
+ * Kaynak: S.L. 65.15 Motor Vehicle Roadworthiness Test Regulations
+ * (konsolide 1 Ağustos 2025) — Second ve Eighth Schedule.
  */
 
 export interface VRTInput {
@@ -14,12 +16,12 @@ export interface VRTInput {
     | "trailer";
   /** Vehicle age in years */
   vehicleAge: number;
-  /** Gross vehicle weight in kg (for commercial) */
+  /** Gross vehicle weight in kg (buses/trailers: > 3,500 kg = heavy) */
   grossWeight?: number;
   /** Is it a re-test */
   isRetest: boolean;
-  /** Number of axles (for heavy vehicles) */
-  axles?: number;
+  /** Odometer reading in km (cars/vans: annual test above 160,000 km) */
+  mileageKm?: number;
 }
 
 export interface VRTOutput {
@@ -38,80 +40,77 @@ export interface VRTOutput {
 }
 
 /**
- * VRT fees by vehicle type (EUR)
+ * S.L. 65.15 Eighth Schedule — maksimum "full fee" (KDV ve idari ücret dahil,
+ * 1 Ocak 2023'ten beri). Re-test en fazla tam ücretin %50'si.
+ * Otobüs ve römorklar: ≤ 3.5 t €41.32, > 3.5 t €46.10.
  */
 const VRT_FEES = {
-  car: {
-    standard: 36,
-    retest: 18,
-  },
-  motorcycle: {
-    standard: 25,
-    retest: 12,
-  },
-  commercial_light: {
-    standard: 42, // Up to 3.5 tonnes
-    retest: 21,
-  },
-  commercial_heavy: {
-    standard: 58, // Over 3.5 tonnes
-    retest: 29,
-  },
-  bus: {
-    standard: 65,
-    retest: 32,
-  },
-  trailer: {
-    standard: 30,
-    retest: 15,
-  },
+  car: 30.27,
+  motorcycle: 24.33,
+  commercial_light: 41.32,
+  commercial_heavy: 46.1,
+  bus: { light: 41.32, heavy: 46.1 },
+  trailer: { light: 41.32, heavy: 46.1 },
 };
 
-/**
- * Test frequency rules based on vehicle age
- */
-const TEST_FREQUENCY = {
-  car: [
-    { maxAge: 4, months: 0 }, // New cars: first test at 4 years
-    { maxAge: 10, months: 24 }, // 4-10 years: every 2 years
-    { maxAge: Infinity, months: 12 }, // 10+ years: annual
-  ],
-  motorcycle: [
-    { maxAge: 4, months: 0 },
-    { maxAge: 10, months: 24 },
-    { maxAge: Infinity, months: 12 },
-  ],
-  commercial_light: [
-    { maxAge: 1, months: 0 }, // First test at 1 year
-    { maxAge: Infinity, months: 12 }, // Then annual
-  ],
-  commercial_heavy: [
-    { maxAge: 1, months: 0 },
-    { maxAge: Infinity, months: 12 },
-  ],
-  bus: [
-    { maxAge: 1, months: 0 },
-    { maxAge: Infinity, months: 6 }, // Every 6 months
-  ],
-  trailer: [
-    { maxAge: 1, months: 0 },
-    { maxAge: Infinity, months: 12 },
-  ],
-};
+const RETEST_RATIO = 0.5;
+const HEAVY_WEIGHT_KG = 3500;
+const HIGH_MILEAGE_KM = 160000;
+
+interface TestSchedule {
+  /** İlk test: ilk tescilden kaç yıl sonra */
+  firstTestYears: number;
+  /** Sonraki test aralığı (ay) */
+  intervalMonths: number;
+  /** 160,000 km sonrası yıllık mı */
+  annualOverHighMileage: boolean;
+}
 
 /**
- * Get test frequency for vehicle type and age
+ * S.L. 65.15 Second/Eighth Schedule test sıklık kodları:
+ *   B: 1 yıl, sonra yıllık · C: 2 yıl, sonra 2 yılda bir
+ *   D: 4 yıl, sonra 2 yılda bir · E: 160,000 km sonrası yıllık
+ * Motosiklet (Category VII, >125cc): kod A — bakanlık bildirimiyle belirlenir.
  */
-function getTestFrequency(vehicleType: string, age: number): number {
-  const rules =
-    TEST_FREQUENCY[vehicleType as keyof typeof TEST_FREQUENCY] ||
-    TEST_FREQUENCY.car;
-  for (const rule of rules) {
-    if (age <= rule.maxAge) {
-      return rule.months;
-    }
+function getSchedule(
+  vehicleType: VRTInput["vehicleType"],
+  heavy: boolean,
+): TestSchedule | null {
+  switch (vehicleType) {
+    case "car":
+      return {
+        firstTestYears: 4,
+        intervalMonths: 24,
+        annualOverHighMileage: true,
+      };
+    case "commercial_light":
+      return {
+        firstTestYears: 2,
+        intervalMonths: 24,
+        annualOverHighMileage: true,
+      };
+    case "commercial_heavy":
+    case "bus":
+      return {
+        firstTestYears: 1,
+        intervalMonths: 12,
+        annualOverHighMileage: false,
+      };
+    case "trailer":
+      return heavy
+        ? {
+            firstTestYears: 1,
+            intervalMonths: 12,
+            annualOverHighMileage: false,
+          }
+        : {
+            firstTestYears: 2,
+            intervalMonths: 24,
+            annualOverHighMileage: false,
+          };
+    case "motorcycle":
+      return null;
   }
-  return 12;
 }
 
 /**
@@ -119,75 +118,74 @@ function getTestFrequency(vehicleType: string, age: number): number {
  */
 export function calculateVRT(input: VRTInput): VRTOutput {
   const { vehicleType, vehicleAge, isRetest } = input;
+  const heavy = (input.grossWeight ?? 0) > HEAVY_WEIGHT_KG;
+  const highMileage = (input.mileageKm ?? 0) > HIGH_MILEAGE_KM;
 
-  const fees = VRT_FEES[vehicleType] || VRT_FEES.car;
-  const testFee = isRetest ? fees.retest : fees.standard;
-  const retestFee = fees.retest;
+  const feeEntry = VRT_FEES[vehicleType] ?? VRT_FEES.car;
+  const fullFee =
+    typeof feeEntry === "number"
+      ? feeEntry
+      : heavy
+        ? feeEntry.heavy
+        : feeEntry.light;
+  const retestFee = Math.round(fullFee * RETEST_RATIO * 100) / 100;
+  const testFee = isRetest ? retestFee : fullFee;
 
-  const frequencyMonths = getTestFrequency(vehicleType, vehicleAge);
+  const schedule = getSchedule(vehicleType, heavy);
 
-  // Calculate next test due
-  let nextTestDue = frequencyMonths;
-  if (frequencyMonths === 0) {
-    // Vehicle doesn't need test yet
-    if (vehicleType === "car" || vehicleType === "motorcycle") {
-      nextTestDue = (4 - vehicleAge) * 12; // Months until 4 years old
-    } else {
-      nextTestDue = (1 - vehicleAge) * 12; // Months until 1 year old
-    }
-  }
-
-  // Generate frequency description
+  let nextTestDue = 0;
   let frequency = "";
-  if (frequencyMonths === 0) {
-    if (vehicleType === "car" || vehicleType === "motorcycle") {
-      frequency = "First test required at 4 years old";
+  if (!schedule) {
+    frequency =
+      "Interval set by ministerial notice — confirm with Transport Malta";
+  } else {
+    const annual = schedule.annualOverHighMileage && highMileage;
+    const interval = annual ? 12 : schedule.intervalMonths;
+    if (vehicleAge < schedule.firstTestYears && !annual) {
+      nextTestDue = (schedule.firstTestYears - vehicleAge) * 12;
+      frequency = `First test ${schedule.firstTestYears} year${schedule.firstTestYears === 1 ? "" : "s"} after first registration, then ${schedule.intervalMonths === 12 ? "every year" : "every 2 years"}`;
     } else {
-      frequency = "First test required at 1 year old";
+      nextTestDue = interval;
+      frequency =
+        interval === 12
+          ? annual
+            ? "Annual (over 160,000 km)"
+            : "Annual test required"
+          : "Every 2 years";
     }
-  } else if (frequencyMonths === 6) {
-    frequency = "Every 6 months";
-  } else if (frequencyMonths === 12) {
-    frequency = "Annual test required";
-  } else if (frequencyMonths === 24) {
-    frequency = "Every 2 years";
   }
 
-  // Generate description
-  let description = "";
   const vehicleNames: { [key: string]: string } = {
     car: "private car",
     motorcycle: "motorcycle",
-    commercial_light: "light commercial vehicle",
-    commercial_heavy: "heavy commercial vehicle",
+    commercial_light: "light commercial vehicle (N1)",
+    commercial_heavy: "heavy goods vehicle (N2/N3)",
     bus: "bus/minibus",
     trailer: "trailer",
   };
 
-  if (isRetest) {
-    description = `Re-test fee for ${vehicleNames[vehicleType]} after failed initial inspection.`;
-  } else {
-    description = `VRT inspection fee for ${vehicleNames[vehicleType]}, ${vehicleAge} years old.`;
-  }
+  const description = isRetest
+    ? `Maximum re-test fee for a ${vehicleNames[vehicleType]} (50% of the full fee).`
+    : `Maximum official VRT fee for a ${vehicleNames[vehicleType]} under S.L. 65.15, including VAT. Test stations may charge less.`;
 
-  // Important notes
   const notes: string[] = [
-    "Book your appointment online at Transport Malta website",
-    "Bring vehicle registration document (log book)",
-    "Vehicle must have valid insurance",
-    "No major visible defects allowed (lights, tyres, etc.)",
+    "VRT = Vehicle Roadworthiness Test, done at licensed private test stations",
+    "A pass must be dated within 90 days before your road licence renewal",
+    "Bring the vehicle logbook and a valid insurance cover",
+    "A re-test costs at most 50% of the full fee",
   ];
 
-  if (
-    vehicleAge >= 10 &&
-    (vehicleType === "car" || vehicleType === "motorcycle")
-  ) {
-    notes.push("Annual testing required for vehicles 10+ years old");
+  if (vehicleType === "car" || vehicleType === "commercial_light") {
+    notes.push("Once the odometer passes 160,000 km, the test becomes annual");
   }
-
-  if (vehicleType === "bus") {
-    notes.push("Buses require inspection every 6 months");
+  if (vehicleType === "motorcycle") {
+    notes.push(
+      "Motorcycles over 125cc are in the test scheme, but the interval is set by ministerial notice",
+    );
   }
+  notes.push(
+    "Taxis, chauffeur-driven cars and ambulances need an annual test from year 1",
+  );
 
   return {
     testFee,
@@ -206,8 +204,8 @@ export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("en-MT", {
     style: "currency",
     currency: "EUR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(amount);
 }
 
@@ -217,6 +215,6 @@ export function formatCurrency(amount: number): string {
 export function getVRTInfo() {
   return {
     fees: VRT_FEES,
-    frequency: TEST_FREQUENCY,
+    retestRatio: RETEST_RATIO,
   };
 }

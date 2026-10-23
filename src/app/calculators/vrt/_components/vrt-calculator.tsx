@@ -28,10 +28,18 @@ export function VRTCalculator() {
   const [vehicleType, setVehicleType] = useState<VehicleType>("car");
   const [vehicleAge, setVehicleAge] = useState(5);
   const [isRetest, setIsRetest] = useState(false);
+  const [highMileage, setHighMileage] = useState(false);
+  const [isHeavy, setIsHeavy] = useState(false);
 
   const result = useMemo<VRTOutput>(() => {
-    return calculateVRT({ vehicleType, vehicleAge, isRetest });
-  }, [vehicleType, vehicleAge, isRetest]);
+    return calculateVRT({
+      vehicleType,
+      vehicleAge,
+      isRetest,
+      mileageKm: highMileage ? 160001 : 0,
+      grossWeight: isHeavy ? 3501 : 0,
+    });
+  }, [vehicleType, vehicleAge, isRetest, highMileage, isHeavy]);
 
   return (
     <div className="space-y-8">
@@ -42,13 +50,14 @@ export function VRTCalculator() {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
           <ClipboardCheck className="h-4 w-4" />
-          Transport Malta
+          S.L. 65.15 (2026)
         </div>
         <h1 className="font-cal text-3xl md:text-4xl font-bold">
           VRT Calculator
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Calculate your Vehicle Roadworthiness Test (MOT) fees in Malta.
+          Check the maximum Vehicle Roadworthiness Test (MOT) fee and when your
+          next test is due in Malta.
         </p>
       </motion.div>
 
@@ -115,6 +124,30 @@ export function VRTCalculator() {
                 <span>20 years</span>
               </div>
             </div>
+
+            {(vehicleType === "car" || vehicleType === "commercial_light") && (
+              <label className="flex items-center gap-2 text-sm cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={highMileage}
+                  onChange={(e) => setHighMileage(e.target.checked)}
+                  className="accent-primary"
+                />
+                Odometer over 160,000 km
+              </label>
+            )}
+
+            {(vehicleType === "bus" || vehicleType === "trailer") && (
+              <label className="flex items-center gap-2 text-sm cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isHeavy}
+                  onChange={(e) => setIsHeavy(e.target.checked)}
+                  className="accent-primary"
+                />
+                Gross weight over 3.5 tonnes
+              </label>
+            )}
 
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/70">
@@ -203,21 +236,20 @@ export function VRTCalculator() {
             </div>
           </div>
 
-          {vehicleAge < 4 &&
-            (vehicleType === "car" || vehicleType === "motorcycle") && (
-              <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20">
-                <div className="flex gap-3">
-                  <Calendar className="h-5 w-5 text-green-500" />
-                  <div className="text-sm">
-                    <p className="font-medium">No VRT Required Yet</p>
-                    <p className="text-xs text-muted-foreground">
-                      Cars and motorcycles don&apos;t need VRT until 4 years
-                      old.
-                    </p>
-                  </div>
+          {vehicleAge < 4 && vehicleType === "car" && !highMileage && (
+            <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20">
+              <div className="flex gap-3">
+                <Calendar className="h-5 w-5 text-green-500" />
+                <div className="text-sm">
+                  <p className="font-medium">No VRT Required Yet</p>
+                  <p className="text-xs text-muted-foreground">
+                    Private cars need their first VRT 4 years after first
+                    registration, then every 2 years.
+                  </p>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
           <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
             <div className="flex gap-3">
@@ -225,7 +257,7 @@ export function VRTCalculator() {
               <div className="text-sm text-muted-foreground">
                 <p className="font-medium text-foreground mb-1">Notes</p>
                 <ul className="list-disc list-inside text-xs space-y-1">
-                  {result.notes.slice(0, 4).map((note, i) => (
+                  {result.notes.map((note, i) => (
                     <li key={i}>{note}</li>
                   ))}
                 </ul>

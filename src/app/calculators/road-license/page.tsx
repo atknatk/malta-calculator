@@ -54,7 +54,7 @@ export default function RoadLicensePage() {
         features={[
           "CO2-based fee calculation",
           "Engine capacity rate lookup",
-          "Electric and hybrid vehicle discounts",
+          "EV and plug-in hybrid (50 km+) exemption",
           "Commercial and motorcycle rates",
           "Annual renewal fee estimation",
         ]}
@@ -82,7 +82,7 @@ export default function RoadLicensePage() {
             question:
               "What are the penalties for late road license renewal in Malta?",
             answer:
-              "Driving without a valid road license in Malta is an offence. Late renewal incurs surcharges on top of the standard fee. Vehicles caught without a valid road license may be fined by the police or Transport Malta enforcement officers. It is advisable to renew before the expiry date to avoid penalties.",
+              "Driving without a valid road license in Malta is an offence. If you renew more than 3 months late, Transport Malta adds €10 for each month of delay, up to a maximum of €100, on top of the standard fee. Vehicles caught on the road without a valid road license may also be fined by the police or Transport Malta enforcement officers. Remember that cars due for a roadworthiness test need a VRT pass dated within 90 days before renewal.",
           },
           {
             question:

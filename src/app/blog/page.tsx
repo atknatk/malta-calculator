@@ -335,7 +335,7 @@ const blogPosts: BlogPost[] = [
     slug: "malta-vehicle-registration-tax-guide-2026",
     title: "Malta Vehicle Registration Tax 2026: CO2-Based Tax Guide",
     description:
-      "Malta vehicle registration tax guide. CO2 emission bands, electric vehicle exemptions, age depreciation, and EU/non-EU import rules.",
+      "Malta vehicle registration tax guide. WLTP and NEDC CO2 rates, length rates, electric vehicle exemptions, minimum tax and EU/non-EU import rules.",
     date: "January 2026",
     readTime: "8 min read",
     category: "Transport",

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
   title: "Vehicle Registration Tax Calculator | Malta Calculator",
   description:
-    "Calculate vehicle registration tax in Malta based on CO2 emissions. Includes electric/hybrid discounts, age depreciation, and EU/non-EU import duties.",
+    "Calculate Malta vehicle registration tax from CO2 (WLTP or NEDC), length and value. Covers EV/PHEV exemption, 30% hybrid CO2 cut and the non-EU minimum tax.",
   alternates: pageAlternates("/calculators/vehicle-registration-tax"),
   openGraph: {
     ...ogMetadata,
@@ -51,47 +51,47 @@ export default function VehicleRegistrationTaxPage() {
       />
       <CalculatorJsonLd
         name="Vehicle Registration Tax Calculator Malta"
-        description="Calculate vehicle registration tax in Malta based on CO2 emissions, vehicle value, and age with electric and hybrid discounts."
+        description="Calculate Malta's one-time vehicle registration tax from CO2 emissions (WLTP or NEDC), car length and Registration Value, including EV/PHEV exemptions and the non-EU minimum tax."
         slug="vehicle-registration-tax"
         category="Vehicle Tax Calculator"
         features={[
-          "CO2 emissions-based VRT calculation",
-          "Vehicle value factor adjustment",
-          "Age depreciation for used vehicles",
-          "Electric and hybrid vehicle exemptions",
-          "EU and non-EU import duty estimation",
+          "CO2 + length registration tax formula (SOPV-02)",
+          "WLTP and NEDC CO2 rate tables by Euro standard",
+          "30% CO2 reduction for non-plug-in hybrids",
+          "BEV and PHEV (50 km+ range) exemption",
+          "Non-EU minimum tax for used cars over 5 years",
+          "EU and non-EU import duty and VAT estimation",
         ]}
       />
       <CustomFAQJsonLd
         questions={[
           {
-            question:
-              "How is Vehicle Registration Tax (VRT) calculated in Malta?",
+            question: "How is vehicle registration tax calculated in Malta?",
             answer:
-              "Vehicle Registration Tax in Malta is calculated using a formula that combines the vehicle's CO2 emissions (g/km) with its taxable value. The CO2 emissions determine a rate per gram, which is then applied to the vehicle's value after depreciation adjustments. Higher CO2 vehicles attract significantly higher tax rates.",
+              "For M1 passenger cars, Transport Malta SOPV-02 sets the formula: Registration Tax = (CO2 g/km × Registration Value × CO2 rate%) + (Length mm × Registration Value × Length rate%). The Registration Value is the invoice / CIF value for a new car, and Transport Malta's online valuation (the Malta market value) for a used car. Higher CO2 and longer cars attract higher percentage rates. If no CO2 value is available, the highest band applies.",
           },
           {
             question:
-              "What role do CO2 emissions play in Malta VRT calculation?",
+              "What role do CO2 emissions play in Malta's registration tax?",
             answer:
-              "CO2 emissions are the primary driver of VRT in Malta. Vehicles are categorised into CO2 bands: 0 g/km (electric, lowest/zero rate), up to 100 g/km, 101-130 g/km, 131-160 g/km, 161-200 g/km, and above 200 g/km (highest rate). The higher the CO2 output, the greater the percentage of vehicle value charged as VRT.",
+              "CO2 emissions decide the main rate. Cars whose original Certificate of Conformity shows WLTP values (generally type-approved from 2021) use the WLTP table: 0.040% for 0–120 g/km, 0.045% for 121–140, 0.050% for 141–150, 0.060% for 151–160, 0.070% for 161–190, 0.100% for 191–230, 0.110% for 231–260 and 0.143% above 260 g/km. Other cars use the NEDC table, where the rate also depends on the car's Euro standard — from 0.07% for a Euro 6 car up to 100 g/km to 0.47% for a car three or more standards behind above 250 g/km (older high-particulate diesels pay up to 0.75%). Non-plug-in hybrids have their CO2 figure reduced by 30% and LPG cars by 10% before the table is applied.",
           },
           {
             question:
               "How does vehicle value affect the registration tax in Malta?",
             answer:
-              "The vehicle's retail value (or customs value for imports) forms the tax base for VRT in Malta. This value is subject to age-based depreciation: the longer a vehicle has been in use, the lower its taxable value. Transport Malta uses official depreciation schedules to determine the adjusted taxable value.",
+              "Both the CO2 part and the length part of the formula are multiplied by the Registration Value, so a more expensive car pays proportionally more. For new cars this is the invoice / CIF value. For used cars it is Transport Malta's online valuation at valuation.vehicleregistration.gov.mt, which already reflects the car's age and Malta market value — there is no separate statutory age-depreciation table. Vehicles missing from the database can be valued manually through Form VEH 14.",
           },
           {
             question:
-              "Is there a difference in VRT for new versus used vehicles in Malta?",
+              "Is registration tax different for new and used vehicles in Malta?",
             answer:
-              "Yes. New vehicles are taxed on their full retail price, while used vehicles benefit from age depreciation which reduces the taxable value. For example, a vehicle that is 3 years old may have its value reduced by a set percentage before VRT is applied. This makes second-hand imports generally less expensive from a VRT perspective.",
+              "The formula is the same, but the Registration Value differs: new cars use their invoice / CIF value, used cars use Transport Malta's market valuation, which is usually lower for older cars. Older Euro standards are not banned, but on the NEDC table they pay higher rates. Used cars over 5 years old imported from outside the EU, including the UK, must pay at least a minimum registration tax, ranging from €900 (0–100 g/km, year 6) to €37,437 (over 250 g/km, 14+ years). Used cars from other EU countries are not subject to this minimum.",
           },
           {
-            question: "Are there VRT exemptions in Malta?",
+            question: "Are there registration tax exemptions in Malta?",
             answer:
-              "Yes, certain vehicle categories may qualify for VRT exemptions or reductions in Malta. Fully electric vehicles (BEV) are exempt from VRT or pay a reduced rate. Vehicles adapted for use by persons with disabilities may also qualify for exemptions. Diplomatic vehicles and certain government vehicles have separate rules. Applying for exemptions requires documentation submitted to Transport Malta.",
+              "Yes. Battery electric vehicles and plug-in hybrids with at least 50 km of electric range are fully exempt. From 1 January 2026, motorcycles up to 350cc and electric motorcycles pay 0%. One car or motorcycle brought in under the Transfer of Residence scheme (24 months' ownership and 24 months living abroad, Form VEH 007) is exempt, although tax becomes due if it is later sold in Malta. Vintage vehicles 50 years or older pay 0%, while those aged 30–49 pay roughly 25.5%–37.5% of their estimated value depending on engine size. Vehicles adapted for persons with disabilities may also qualify for relief through Transport Malta.",
           },
         ]}
       />
@@ -102,7 +102,7 @@ export default function VehicleRegistrationTaxPage() {
           <RelatedGuide
             href="/blog/malta-vehicle-registration-tax-guide-2026"
             title="Malta Vehicle Registration Tax Guide 2026"
-            description="Complete guide to VRT rates, CO2 bands, and exemptions for vehicles in Malta."
+            description="Complete guide to registration tax rates, CO2 bands, and exemptions for vehicles in Malta."
           />
           <AffiliateCard slug="vehicle-registration-tax" />
           <RelatedCalculators slug="vehicle-registration-tax" />

@@ -21,6 +21,7 @@ import {
   type FuelType,
   type Currency,
 } from "@/utils/import-vehicle-calculator";
+import type { Co2TestCycle } from "@/utils/malta-registration-tax";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -87,6 +88,7 @@ export function ImportVehicleCalculator() {
   const [currency, setCurrency] = useState<Currency>("EUR");
   const [modelYear, setModelYear] = useState(CURRENT_YEAR - 3);
   const [co2Emissions, setCo2Emissions] = useState(130);
+  const [co2TestCycle, setCo2TestCycle] = useState<Co2TestCycle | null>(null);
   const [lengthMm, setLengthMm] = useState(4400);
   const [fuelType, setFuelType] = useState<FuelType>("petrol");
   const [isEU, setIsEU] = useState(true);
@@ -106,6 +108,7 @@ export function ImportVehicleCalculator() {
       currency,
       modelYear,
       co2Emissions: fuelType === "electric" ? 0 : co2Emissions,
+      co2TestCycle: co2TestCycle ?? undefined,
       lengthMm,
       fuelType,
       isEU,
@@ -124,6 +127,7 @@ export function ImportVehicleCalculator() {
     currency,
     modelYear,
     co2Emissions,
+    co2TestCycle,
     lengthMm,
     fuelType,
     isEU,
@@ -149,15 +153,15 @@ export function ImportVehicleCalculator() {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
           <Ship className="h-4 w-4" />
-          Transport Malta — SOPV-02 (2026)
+          Transport Malta — SOPV 02 v38 (2026)
         </div>
         <h1 className="font-cal text-3xl md:text-4xl font-bold">
           Import Vehicle Calculator
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Estimate the total cost of importing a vehicle to Malta, including
-          customs duty, VAT, the SOPV-02 CO2 + length registration tax, and
-          vintage concessions for cars ≥ 30 years old.
+          customs duty, VAT, the SOPV 02 CO2 + length registration tax, the
+          non-EU minimum tax and vintage rules for cars ≥ 30 years old.
         </p>
       </motion.div>
 
@@ -339,6 +343,38 @@ export function ImportVehicleCalculator() {
               />
             )}
 
+            {fuelType !== "electric" && fuelType !== "plugin_hybrid" && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground/70">
+                  CO2 Test Cycle on the CoC
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {(["wltp", "nedc"] as const).map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setCo2TestCycle(c)}
+                      className={cn(
+                        "p-2.5 rounded-xl border text-sm font-medium transition-all",
+                        result.co2TestCycle === c
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border/50 bg-background/50 hover:border-primary/50",
+                      )}
+                    >
+                      {c.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Rate applied: {result.co2RatePercent}% per g/km × RV
+                  {result.co2TestCycle === "nedc" &&
+                    ` (NEDC, ${result.euroStandard})`}
+                  . WLTP rates need an original CoC with WLTP values (most cars
+                  from 2021).
+                </p>
+              </div>
+            )}
+
             <SliderInput
               label="Vehicle Length"
               value={lengthMm}
@@ -430,7 +466,8 @@ export function ImportVehicleCalculator() {
                   <div className="text-muted-foreground">
                     Eligible when you're moving residence to Malta, you owned
                     the vehicle ≥ 24 months and lived outside Malta ≥ 24 months.
-                    Form VEH 007. 1-year resale restriction post-import.
+                    Form VEH 007, €100 fee. Registration tax becomes due if you
+                    later sell the vehicle in Malta.
                   </div>
                 </div>
               </label>
@@ -448,7 +485,8 @@ export function ImportVehicleCalculator() {
                   </div>
                   <div className="text-muted-foreground">
                     Legal in Malta but Malta is RHD. Affects parking,
-                    overtaking, and may need headlight adjustment for VRT.
+                    overtaking, and may need headlight adjustment for the
+                    roadworthiness test.
                   </div>
                 </div>
               </label>
@@ -456,7 +494,7 @@ export function ImportVehicleCalculator() {
               <div className="flex items-end gap-3 pt-1">
                 <div className="flex-1">
                   <label className="text-xs font-medium text-foreground/70 block mb-1">
-                    Odometer (km) — optional, drives VRT requirement
+                    Odometer (km) — optional, drives roadworthiness test rule
                   </label>
                   <NumericInput
                     value={mileageKm ?? ""}
@@ -470,7 +508,7 @@ export function ImportVehicleCalculator() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground pb-1">
-                  VRT trigger: &gt; 4 y or &gt; 160 000 km
+                  Test needed: &gt; 4 y or &gt; 160 000 km
                 </p>
               </div>
             </div>
@@ -483,26 +521,6 @@ export function ImportVehicleCalculator() {
           transition={{ delay: 0.2 }}
           className="space-y-6"
         >
-          {result.registrationBlocked && (
-            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30">
-              <div className="flex gap-3">
-                <AlertTriangle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
-                <div className="text-sm">
-                  <p className="font-semibold text-red-600 dark:text-red-400">
-                    Normal registration not permitted
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Under SOPV-02 / Directive 2007/46/EC, Malta only registers
-                    vehicles meeting Euro 5b/6b or higher emission standards.
-                    Detected: <strong>{result.euroStandard}</strong>. The
-                    vintage / classic path (FMVA + Form VEH 15) is the only
-                    available route for this vehicle.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
           {result.toreApplied && (
             <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
               <div className="flex gap-3">
@@ -512,47 +530,43 @@ export function ImportVehicleCalculator() {
                     Transfer of Residence — Registration Tax waived
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Form VEH 007 grants full RegTax + VAT-on-RegTax exemption
-                    for one M1 vehicle when moving residence to Malta. Apply
-                    within 30 days of arrival. The vehicle is{" "}
-                    <strong>locked for resale for 12 months</strong> after
-                    import (recorded in the logbook).
+                    Form VEH 007 waives registration tax for one car or
+                    motorcycle when moving residence to Malta. Apply within 30
+                    days of arrival (€100 fee on approval). If you later sell
+                    the vehicle in Malta,{" "}
+                    <strong>registration tax becomes due</strong> on its market
+                    value.
                   </p>
                 </div>
               </div>
             </div>
           )}
 
-          {(result.vintageEligible ||
-            result.vintage50Discount ||
-            result.vintageFullExemption) && (
+          {result.vintageEligible && (
             <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
               <div className="flex gap-3">
                 <Sparkles className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
                   <p className="font-semibold text-amber-700 dark:text-amber-400">
                     {result.vintageFullExemption
-                      ? "Full vintage exemption (50+ years)"
-                      : result.vintage50Discount
-                        ? "50 % vintage concession (35–50 years)"
-                        : "Vintage-eligible (30+ years)"}
+                      ? "Vintage: 0 % registration tax (50+ years)"
+                      : "Vintage-eligible (30–49 years)"}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Black plates · €0 annual road licence · €8 admin/year · max
-                    3 000 km/year · must remain in original condition ·
-                    re-certified every 5 years.
+                    Silver-on-black plates · annual road licence waived (€8
+                    admin) · max 3 000 km/year under 50 years · certified by
+                    Transport Malta&apos;s Vintage Vehicle Classification
+                    Committee after inspection.
                   </p>
-                  {result.vintageFmvaEstimate && (
+                  {result.vintageTaxRange && (
                     <p className="text-xs mt-2 p-2 rounded bg-amber-500/10 border border-amber-500/20">
-                      <strong>Real-world RegTax for vintage:</strong> the
-                      SOPV-02 formula below is an upper bound — once classified
-                      by FMVA, Transport Malta typically assigns a flat low
-                      RegTax in the range of{" "}
+                      <strong>Vintage registration tax:</strong> 25.5 %–37.5 %
+                      of the estimated value depending on engine size —{" "}
                       <strong>
-                        {formatCurrency(result.vintageFmvaEstimate.min)} –{" "}
-                        {formatCurrency(result.vintageFmvaEstimate.max)}
-                      </strong>{" "}
-                      instead.
+                        {formatCurrency(result.vintageTaxRange.min)} –{" "}
+                        {formatCurrency(result.vintageTaxRange.max)}
+                      </strong>
+                      . The total uses the mid-point.
                     </p>
                   )}
                 </div>
@@ -655,21 +669,22 @@ export function ImportVehicleCalculator() {
                   </p>
                   <ul className="list-disc list-inside text-xs text-muted-foreground space-y-1">
                     <li>
-                      <strong>RegTax: €0</strong> — both CO2 and length
-                      components waived
+                      <strong>RegTax: €0</strong> — exempt from registration tax
                     </li>
                     <li>
-                      <strong>Annual road tax: €0 for the first 5 years</strong>{" "}
-                      (~{formatCurrency(result.fiveYearRoadTaxSavings)} of
-                      circulation-tax savings over 5 y vs an ICE equivalent)
+                      <strong>Annual road tax: €0 for years 0–5</strong>, then
+                      €10/year (~{formatCurrency(result.fiveYearRoadTaxSavings)}{" "}
+                      of circulation-tax savings over 5 y vs an ICE equivalent)
                     </li>
-                    <li>
-                      <strong>
-                        Government grant: up to{" "}
-                        {formatCurrency(isNew ? 13000 : 2000)}
-                      </strong>{" "}
-                      (Transport Malta 2026 scheme, see toggle below)
-                    </li>
+                    {fuelType === "electric" && (
+                      <li>
+                        <strong>
+                          Government grant: up to{" "}
+                          {formatCurrency(isNew ? 9000 : 4000)}
+                        </strong>{" "}
+                        (Transport Malta 2026 scheme, see toggle below)
+                      </li>
+                    )}
                   </ul>
                   {fuelType === "plugin_hybrid" && (
                     <p className="text-xs text-amber-700 dark:text-amber-400">
@@ -681,50 +696,52 @@ export function ImportVehicleCalculator() {
                 </div>
               </div>
 
-              <div className="space-y-2 pt-3 border-t border-green-500/20">
-                <label className="flex items-start gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={applyEvGrant}
-                    onChange={(e) => setApplyEvGrant(e.target.checked)}
-                    className="mt-0.5 accent-primary"
-                  />
-                  <div className="text-xs">
-                    <div className="font-medium text-foreground">
-                      Apply Transport Malta EV grant
-                    </div>
-                    <div className="text-muted-foreground">
-                      {isNew
-                        ? "€11,000 base for new BEV/PHEV. 36-month retention required; refundable if vehicle is transferred sooner."
-                        : "€1,000 base for used BEV registered in Malta after 1 Jan 2025."}
-                    </div>
-                  </div>
-                </label>
-
-                {applyEvGrant && (
-                  <label className="flex items-start gap-2 cursor-pointer ml-6">
+              {fuelType === "electric" && (
+                <div className="space-y-2 pt-3 border-t border-green-500/20">
+                  <label className="flex items-start gap-2 cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={evGrantWithScrappage}
-                      onChange={(e) =>
-                        setEvGrantWithScrappage(e.target.checked)
-                      }
+                      checked={applyEvGrant}
+                      onChange={(e) => setApplyEvGrant(e.target.checked)}
                       className="mt-0.5 accent-primary"
                     />
                     <div className="text-xs">
                       <div className="font-medium text-foreground">
-                        + Scrappage bonus ({formatCurrency(isNew ? 2000 : 1000)}
-                        )
+                        Apply Transport Malta EV grant
                       </div>
                       <div className="text-muted-foreground">
-                        Requires deregistering a ≥ 10 y ICE vehicle at an
-                        Authorised Treatment Facility (Destruction Certificate
-                        dated 2025 or 2026).
+                        {isNew
+                          ? "€8,000 for a new BEV up to €40,000, €6,000 for €40,000–€100,000."
+                          : "€4,000 for a used EV first registered abroad (EU/UK) up to 3 months before; €3,000 for 3–6 months. Keep 36 months."}
                       </div>
                     </div>
                   </label>
-                )}
-              </div>
+
+                  {applyEvGrant && isNew && (
+                    <label className="flex items-start gap-2 cursor-pointer ml-6">
+                      <input
+                        type="checkbox"
+                        checked={evGrantWithScrappage}
+                        onChange={(e) =>
+                          setEvGrantWithScrappage(e.target.checked)
+                        }
+                        className="mt-0.5 accent-primary"
+                      />
+                      <div className="text-xs">
+                        <div className="font-medium text-foreground">
+                          + Scrappage bonus ({formatCurrency(1000)})
+                        </div>
+                        <div className="text-muted-foreground">
+                          Requires scrapping a car at least 10 years old at an
+                          Authorised Treatment Facility (€500 if its licence
+                          expired more than 3 months earlier). Gozo residents
+                          get a further €1,000.
+                        </div>
+                      </div>
+                    </label>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -737,14 +754,15 @@ export function ImportVehicleCalculator() {
                 </p>
                 <ul className="list-disc list-inside text-xs space-y-1">
                   <li>
-                    Registration tax: SOPV-02 formula —{" "}
+                    Registration tax: SOPV 02 v38 formula —{" "}
                     <code>
                       (CO2 × RV × CO2-rate) + (Length × RV × Length-rate)
                     </code>
                   </li>
                   <li>
-                    Default RV is approximated from purchase price; for the
-                    official figure use{" "}
+                    CO2 rate from the WLTP or NEDC table (NEDC by Euro
+                    standard); hybrids get a 30 % CO2 reduction. Default RV is
+                    the purchase price; for the official figure use{" "}
                     <a
                       href="https://www.valuation.vehicleregistration.gov.mt"
                       target="_blank"
@@ -756,17 +774,18 @@ export function ImportVehicleCalculator() {
                     .
                   </li>
                   <li>
-                    Non-EU: 10 % customs duty on CIF + 18 % VAT on (CIF + duty)
-                    + 18 % VAT on registration tax.
+                    Non-EU: 10 % customs duty on CIF + 18 % VAT on (CIF + duty).
+                    Used non-EU cars over 5 years old pay at least the SOPV 02
+                    minimum tax. No VAT on registration tax.
                   </li>
                   <li>
-                    Vintage rules: ≥30 y eligible (FMVA / VEH 15), 35–50 y → 50
-                    % RegTax discount, ≥50 y → zero RegTax. For vintage cars
-                    FMVA typically assigns a flat low RegTax.
+                    Vintage (VEH 15): ≥30 y eligible, 30–49 y pay 25.5 %–37.5 %
+                    of the estimated value, ≥50 y pay 0 %.
                   </li>
                   <li>
-                    All vehicles must pass VRT and meet Malta minimum emission
-                    standard (Euro 5b/6b for normal registration).
+                    Fees: €15 registration, €70 plates, €55 inspection for used
+                    non-EU imports, roadworthiness test max €30.27 (S.L. 65.15)
+                    when required.
                   </li>
                 </ul>
               </div>

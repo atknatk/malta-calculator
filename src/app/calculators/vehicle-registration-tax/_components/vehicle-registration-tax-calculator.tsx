@@ -2,7 +2,16 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Car, Fuel, Calendar, Euro, Leaf, Info, Globe } from "lucide-react";
+import {
+  Car,
+  Fuel,
+  Calendar,
+  Euro,
+  Leaf,
+  Info,
+  Globe,
+  Ruler,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NumericInput } from "@/components/ui/numeric-input";
 import {
@@ -10,6 +19,7 @@ import {
   formatCurrency,
   type VehicleRegistrationTaxOutput,
 } from "@/utils/vehicle-registration-tax-calculator";
+import type { Co2TestCycle } from "@/utils/malta-registration-tax";
 
 type FuelType = "petrol" | "diesel" | "hybrid" | "plugin_hybrid" | "electric";
 
@@ -52,8 +62,10 @@ function ToggleGroup<T extends string>({
 
 export function VehicleRegistrationTaxCalculator() {
   const [co2Emissions, setCo2Emissions] = useState(120);
+  const [co2TestCycle, setCo2TestCycle] = useState<Co2TestCycle>("wltp");
+  const [euroStandard, setEuroStandard] = useState<"6" | "5" | "4" | "3">("6");
+  const [lengthMm, setLengthMm] = useState(4300);
   const [vehicleAge, setVehicleAge] = useState(0);
-  const [engineCapacity, setEngineCapacity] = useState(1600);
   const [fuelType, setFuelType] = useState<FuelType>("petrol");
   const [vehicleValue, setVehicleValue] = useState(25000);
   const [isEU, setIsEU] = useState<"yes" | "no">("yes");
@@ -61,13 +73,24 @@ export function VehicleRegistrationTaxCalculator() {
   const result = useMemo<VehicleRegistrationTaxOutput>(() => {
     return calculateVehicleRegistrationTax({
       co2Emissions: fuelType === "electric" ? 0 : co2Emissions,
+      co2TestCycle,
+      euroStandard: Number(euroStandard),
+      lengthMm,
       vehicleAge,
-      engineCapacity,
       fuelType,
       vehicleValue,
       isEU: isEU === "yes",
     });
-  }, [co2Emissions, vehicleAge, engineCapacity, fuelType, vehicleValue, isEU]);
+  }, [
+    co2Emissions,
+    co2TestCycle,
+    euroStandard,
+    lengthMm,
+    vehicleAge,
+    fuelType,
+    vehicleValue,
+    isEU,
+  ]);
 
   return (
     <div className="space-y-8">
@@ -79,14 +102,14 @@ export function VehicleRegistrationTaxCalculator() {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
           <Car className="h-4 w-4" />
-          Transport Malta
+          Transport Malta SOPV 02 (2026)
         </div>
         <h1 className="font-cal text-3xl md:text-4xl font-bold">
           Vehicle Registration Tax Calculator
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Calculate the registration tax when registering a vehicle in Malta
-          based on CO2 emissions.
+          Calculate Malta&apos;s one-off registration tax for a passenger car
+          using the Transport Malta SOPV 02 (2026) CO2 + length formula.
         </p>
       </motion.div>
 
@@ -161,6 +184,59 @@ export function VehicleRegistrationTaxCalculator() {
               </div>
             )}
 
+            {fuelType !== "electric" && fuelType !== "plugin_hybrid" && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground/70">
+                  CO2 test cycle on the Certificate of Conformity
+                </label>
+                <ToggleGroup
+                  options={["wltp", "nedc"] as const}
+                  value={co2TestCycle}
+                  onChange={setCo2TestCycle}
+                  labels={{ wltp: "WLTP", nedc: "NEDC" }}
+                />
+                {co2TestCycle === "nedc" && (
+                  <>
+                    <label className="text-sm font-medium text-foreground/70">
+                      Euro emission standard
+                    </label>
+                    <ToggleGroup
+                      options={["6", "5", "4", "3"] as const}
+                      value={euroStandard}
+                      onChange={setEuroStandard}
+                      labels={{
+                        "6": "Euro 6",
+                        "5": "Euro 5",
+                        "4": "Euro 4",
+                        "3": "Euro 3 or older",
+                      }}
+                    />
+                  </>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  WLTP rates need an original CoC showing WLTP values (most cars
+                  from 2021). NEDC rates rise for older Euro standards.
+                </p>
+              </div>
+            )}
+
+            {/* Length */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
+                <Ruler className="h-4 w-4 text-primary/70" />
+                Vehicle Length (mm)
+              </label>
+              <NumericInput
+                value={lengthMm}
+                onChange={(v) => setLengthMm(v === "" ? 0 : v)}
+                min={2500}
+                max={6000}
+                allowDecimals={false}
+                suffix="mm"
+                className="h-14 text-xl px-5"
+              />
+            </div>
+
             {/* Vehicle Age */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
@@ -168,20 +244,22 @@ export function VehicleRegistrationTaxCalculator() {
                 Vehicle Age (years)
               </label>
               <div className="flex flex-wrap gap-2">
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((age) => (
-                  <button
-                    key={age}
-                    onClick={() => setVehicleAge(age)}
-                    className={cn(
-                      "w-12 h-12 rounded-xl text-sm font-medium transition-all",
-                      vehicleAge === age
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-background border border-border hover:bg-muted",
-                    )}
-                  >
-                    {age === 0 ? "New" : age === 10 ? "10+" : age}
-                  </button>
-                ))}
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(
+                  (age) => (
+                    <button
+                      key={age}
+                      onClick={() => setVehicleAge(age)}
+                      className={cn(
+                        "w-12 h-12 rounded-xl text-sm font-medium transition-all",
+                        vehicleAge === age
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background border border-border hover:bg-muted",
+                      )}
+                    >
+                      {age === 0 ? "New" : age === 14 ? "14+" : age}
+                    </button>
+                  ),
+                )}
               </div>
             </div>
 
@@ -189,7 +267,7 @@ export function VehicleRegistrationTaxCalculator() {
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
                 <Euro className="h-4 w-4 text-primary/70" />
-                Vehicle Value
+                Registration Value
               </label>
               <NumericInput
                 value={vehicleValue}
@@ -200,6 +278,10 @@ export function VehicleRegistrationTaxCalculator() {
                 className="h-14 text-xl px-5"
                 suffixClassName="text-lg"
               />
+              <p className="text-xs text-muted-foreground">
+                New car: invoice / CIF value. Used car: Transport Malta&apos;s
+                valuation (valuation.vehicleregistration.gov.mt).
+              </p>
             </div>
 
             {/* EU Origin */}
@@ -231,7 +313,11 @@ export function VehicleRegistrationTaxCalculator() {
               <div className="p-2.5 rounded-xl bg-primary/20">
                 <Car className="h-5 w-5 text-primary" />
               </div>
-              <span className="font-semibold">Total Registration Tax</span>
+              <span className="font-semibold">
+                {result.totalTax > result.registrationTax
+                  ? "Total Taxes (Registration Tax + Duty + VAT)"
+                  : "Registration Tax"}
+              </span>
             </div>
 
             <div className="text-center py-6">
@@ -290,8 +376,9 @@ export function VehicleRegistrationTaxCalculator() {
                     Electric Vehicle Benefits! ⚡
                   </p>
                   <p className="text-muted-foreground text-xs">
-                    Electric vehicles are exempt from CO2-based registration tax
-                    in Malta. Additional grants may be available.
+                    Battery EVs are exempt from registration tax and pay €0 road
+                    licence for years 0–5. In 2026 Transport Malta grants €8,000
+                    (≤ €40,000) or €6,000 (€40,000–€100,000) for a new EV.
                   </p>
                 </div>
               </div>
@@ -307,13 +394,25 @@ export function VehicleRegistrationTaxCalculator() {
                   Important Notes
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>Registration tax is based on CO2 emissions</li>
-                  <li>Older vehicles receive age depreciation discounts</li>
                   <li>
-                    Electric and hybrid vehicles get significant discounts
+                    Tax = (CO2 × RV × CO2 rate) + (length × RV × length rate)
                   </li>
-                  <li>Non-EU imports subject to 10% import duty</li>
-                  <li>VAT (18%) applies to new vehicles and non-EU imports</li>
+                  <li>
+                    No separate age discount: for used cars the Registration
+                    Value (Transport Malta valuation) already reflects age
+                  </li>
+                  <li>
+                    BEVs and PHEVs (≥ 50 km electric range) are exempt; hybrids
+                    get a 30% CO2 reduction
+                  </li>
+                  <li>
+                    Non-EU used cars over 5 years old pay at least the SOPV 02
+                    minimum tax
+                  </li>
+                  <li>
+                    Non-EU: 10% duty + 18% VAT; EU: VAT only on new cars. No VAT
+                    on the registration tax itself
+                  </li>
                 </ul>
               </div>
             </div>

@@ -20,7 +20,7 @@ const AUTHOR_PERSON = {
     "Malta Payroll",
     "Malta Vehicle Import (SOPV-02)",
     "Malta Vehicle Registration Tax",
-    "Malta Vintage Vehicle Classification (FMVA)",
+    "Malta Vintage Vehicle Classification",
     "Malta Transfer of Residence Exemption",
     "Malta EV / PHEV Incentives",
     "Malta Stamp Duty",
@@ -110,7 +110,7 @@ export function ArticleJsonLd({
 /**
  * DefinedTermSet — schema.org structured data for a glossary of acronyms /
  * jargon. Lets AI assistants (Claude, ChatGPT, Perplexity, Gemini) map
- * domain-specific terms (SOPV-02, VRT, TORE, FMVA, CIF, RV…) to authoritative
+ * domain-specific terms (SOPV-02, VRT, TORE, CIF, RV…) to authoritative
  * definitions hosted on this site. Anchor each term with `slug` so AI can
  * cite the canonical fragment URL.
  */
