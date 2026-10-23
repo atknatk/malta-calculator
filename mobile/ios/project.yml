@@ -46,3 +46,12 @@ targets:
       - MaltaPayslipsTests
     dependencies:
       - target: MaltaPayslips
+schemes:
+  MaltaPayslips:
+    build:
+      targets:
+        MaltaPayslips: all
+        MaltaPayslipsTests: [test]
+    test:
+      targets:
+        - MaltaPayslipsTests
