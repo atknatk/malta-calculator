@@ -78,7 +78,7 @@ export default function VerifyGate({
           <button
             onClick={handleContinue}
             disabled={loading || !captchaReady}
-            className="w-full rounded-lg bg-amber-600 px-4 py-3 font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-lg bg-brand px-4 py-3 font-semibold text-white transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Verifying..." : "View Payslip"}
           </button>

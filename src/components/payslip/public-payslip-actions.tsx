@@ -44,7 +44,7 @@ export default function PublicPayslipActions({
       <button
         onClick={handleDownload}
         disabled={downloading}
-        className="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-700 disabled:cursor-wait disabled:opacity-70"
+        className="flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-hover disabled:cursor-wait disabled:opacity-70"
       >
         <Download className="h-4 w-4" />
         {downloading ? "Generating..." : "Download PDF"}

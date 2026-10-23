@@ -56,7 +56,7 @@ export function PayslipCTA() {
                 key={feature.title}
                 className="rounded-xl border bg-card/50 p-4 text-center backdrop-blur-sm"
               >
-                <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-600">
+                <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-brand-from to-brand-to">
                   <feature.icon className="h-5 w-5 text-white" />
                 </div>
                 <h3 className="text-sm font-semibold">{feature.title}</h3>
@@ -71,7 +71,7 @@ export function PayslipCTA() {
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/sign-up"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:from-amber-600 hover:to-orange-700 hover:shadow-xl"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-from to-brand-to px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:from-brand-from-hover hover:to-brand-to-hover hover:shadow-xl"
             >
               Start Generating Payslips — Free
             </Link>

@@ -156,7 +156,7 @@ export default function PayslipActions({
       <button
         onClick={handleDownloadPDF}
         disabled={downloading}
-        className="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-700 disabled:cursor-wait disabled:opacity-70"
+        className="flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-hover disabled:cursor-wait disabled:opacity-70"
       >
         {downloading ? (
           <>
@@ -211,7 +211,7 @@ export default function PayslipActions({
       {isVoid && correctedPayslipId && (
         <Link
           href={`/payslip/${correctedPayslipId}`}
-          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-700"
+          className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-hover"
         >
           View corrected payslip
         </Link>
@@ -219,7 +219,7 @@ export default function PayslipActions({
       {isVoid && !correctedPayslipId && (
         <Link
           href={`/payslip/new?replaces=${payslipId}`}
-          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-700"
+          className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-hover"
         >
           Create corrected payslip
         </Link>

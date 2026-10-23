@@ -62,14 +62,14 @@ export default function PricingCard({
     <div
       className={`relative rounded-2xl border ${
         isPopular
-          ? "border-amber-500 shadow-xl shadow-amber-500/10"
+          ? "border-brand-from shadow-xl shadow-brand-from/10"
           : "border-slate-200 dark:border-slate-700"
       } bg-white p-6 dark:bg-slate-800`}
     >
       {/* Popular Badge */}
       {isPopular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="rounded-full bg-amber-500 px-3 py-1 text-xs font-semibold text-white">
+          <span className="rounded-full bg-brand-from px-3 py-1 text-xs font-semibold text-white">
             Most Popular
           </span>
         </div>
@@ -98,7 +98,7 @@ export default function PricingCard({
             className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400"
           >
             <svg
-              className="h-5 w-5 flex-shrink-0 text-amber-500"
+              className="h-5 w-5 flex-shrink-0 text-brand-from"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -121,7 +121,7 @@ export default function PricingCard({
         disabled={loading || isCurrent}
         className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition ${
           isPopular
-            ? "bg-amber-600 text-white hover:bg-amber-700 disabled:bg-amber-400"
+            ? "bg-brand text-white hover:bg-brand-hover disabled:bg-brand-muted"
             : plan === "free"
               ? "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
               : "bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"

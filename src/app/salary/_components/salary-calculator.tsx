@@ -472,7 +472,7 @@ export function SalaryCalculatorClient({
               {/* Generate Payslip CTA */}
               <Link
                 href="/sign-up"
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:from-amber-600 hover:to-orange-700 hover:shadow-lg"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-from to-brand-to px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:from-brand-from-hover hover:to-brand-to-hover hover:shadow-lg"
               >
                 <FileText className="h-4 w-4" />
                 Generate Payslip for Your Team

@@ -52,7 +52,7 @@ export default function PayslipNotFound() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-lg bg-amber-600 px-6 py-3 text-sm font-medium text-white hover:bg-amber-700 transition"
+              className="inline-flex items-center justify-center rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white hover:bg-brand-hover transition"
             >
               Go to Malta Calculator
             </Link>

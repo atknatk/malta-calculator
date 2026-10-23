@@ -70,7 +70,7 @@ export function MarketingMenu() {
                   <Link href="/sign-in">Sign In</Link>
                 </Button>
                 <Button
-                  className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700"
+                  className="flex-1 bg-gradient-to-r from-brand-from to-brand-to text-white hover:from-brand-from-hover hover:to-brand-to-hover"
                   asChild
                 >
                   <Link href="/sign-up">Start Free</Link>

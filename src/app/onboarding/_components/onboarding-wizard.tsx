@@ -125,7 +125,7 @@ export default function OnboardingWizard() {
               <button
                 type="submit"
                 disabled={loading || !formData.name.trim()}
-                className="w-full rounded-lg bg-amber-600 px-4 py-3 font-medium text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-lg bg-brand px-4 py-3 font-medium text-white transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">

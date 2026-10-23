@@ -52,7 +52,7 @@ export default function NotFound() {
             isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
           )}
         >
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg animate-glow">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br from-brand-from to-brand-to shadow-lg animate-glow">
             <Calculator className="h-8 w-8 md:h-10 md:w-10 text-white" />
           </div>
           {/* Error indicator */}

@@ -45,6 +45,15 @@
     --ring: 38 92% 50%;
     --radius: 0.75rem;
 
+    /* Marka CTA renkleri (RGB): Malta'da Tailwind amber-400/500/600/700 ve orange-600/700 ile birebir */
+    --brand: 217 119 6;
+    --brand-hover: 180 83 9;
+    --brand-muted: 251 191 36;
+    --brand-from: 245 158 11;
+    --brand-from-hover: 217 119 6;
+    --brand-to: 234 88 12;
+    --brand-to-hover: 194 65 12;
+
     /* === Premium Gradients === */
     --gradient-primary: linear-gradient(
       135deg,
@@ -142,43 +151,96 @@
   }
 
   /* === Alternative Theme: Fintech Blue === */
+  /* Tek mavi (#0066FF civarı) ve soğuk nötrler; mor, pembe ve çok renkli gradyan yok.
+     Nötrler de burada tanımlı: aksi halde Malta'nın sıcak taş tonları mavinin yanında kalır. */
   [data-theme="fintech"] {
-    --primary: 234 89% 74%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 280 65% 60%;
-    --secondary-foreground: 0 0% 100%;
-    --ring: 234 89% 74%;
+    --background: 220 20% 98%;
+    --foreground: 222 30% 12%;
 
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --muted: 220 16% 95%;
+    --muted-foreground: 220 10% 38%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 30% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 30% 12%;
+
+    --border: 220 14% 89%;
+    --input: 220 14% 89%;
+
+    --primary: 216 100% 44%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 195 80% 32%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 220 16% 93%;
+    --accent-foreground: 222 30% 12%;
+    --ring: 216 100% 50%;
+
+    /* Marka CTA'ları: beyaz yazıyla AA (açık ve koyu modda aynı) */
+    --brand: 11 95 230;
+    --brand-hover: 10 79 196;
+    --brand-muted: 125 168 245;
+    --brand-from: 29 111 242;
+    --brand-from-hover: 11 95 230;
+    --brand-to: 11 95 230;
+    --brand-to-hover: 10 79 196;
+
+    /* Aynı ton içinde gradyan (Malta altınındaki gibi); beyaz yazı ve koyu zeminde başlık için yeterli kontrast */
+    --gradient-primary: linear-gradient(135deg, #1d6ff2 0%, #0b5fe6 100%);
+    --gradient-secondary: linear-gradient(135deg, #0e7fa8 0%, #0b6a8c 100%);
     --gradient-mesh:
       radial-gradient(
-        at 40% 20%,
-        hsla(234, 89%, 74%, 0.25) 0px,
+        at 0% 0%,
+        hsla(216, 100%, 50%, 0.08) 0px,
         transparent 50%
       ),
-      radial-gradient(at 80% 0%, hsla(280, 65%, 60%, 0.2) 0px, transparent 50%),
       radial-gradient(
-        at 0% 50%,
-        hsla(340, 100%, 76%, 0.15) 0px,
+        at 100% 0%,
+        hsla(195, 80%, 45%, 0.06) 0px,
         transparent 50%
       );
-    --shadow-glow: 0 0 60px rgba(102, 126, 234, 0.3);
+    --shadow-glow: 0 0 60px rgba(11, 95, 230, 0.18);
   }
 
+  /* Koyu: grafit zemin. Tek --primary hem metin hem dolgu olduğundan açık mavi + koyu yazı
+     (Malta koyu temadaki altın + koyu yazı ile aynı kural); gradyan butonlar beyaz yazılı kalır */
   [data-theme="fintech"].dark {
+    --background: 222 18% 7%;
+    --foreground: 220 20% 96%;
+
+    --muted: 222 14% 15%;
+    --muted-foreground: 220 10% 68%;
+
+    --popover: 222 16% 10%;
+    --popover-foreground: 220 20% 96%;
+
+    --card: 222 16% 10%;
+    --card-foreground: 220 20% 96%;
+
+    --border: 222 12% 19%;
+    --input: 222 12% 19%;
+
+    --primary: 213 100% 66%;
+    --primary-foreground: 222 47% 8%;
+    --secondary: 195 75% 60%;
+    --secondary-foreground: 222 18% 7%;
+    --accent: 222 14% 18%;
+    --accent-foreground: 220 20% 96%;
+    --ring: 213 100% 66%;
+
     --gradient-mesh:
       radial-gradient(
-        at 40% 20%,
-        hsla(234, 80%, 60%, 0.15) 0px,
+        at 0% 0%,
+        hsla(216, 100%, 50%, 0.07) 0px,
         transparent 50%
       ),
       radial-gradient(
-        at 80% 0%,
-        hsla(280, 60%, 50%, 0.12) 0px,
+        at 100% 0%,
+        hsla(195, 80%, 45%, 0.05) 0px,
         transparent 50%
-      ),
-      radial-gradient(at 0% 50%, hsla(340, 80%, 60%, 0.1) 0px, transparent 50%);
+      );
+    --shadow-glow: 0 0 60px rgba(11, 95, 230, 0.15);
   }
 }
 
@@ -249,7 +311,6 @@
     --md-outline-variant: 80 69 57;
   }
 }
-
 
 @layer base {
   * {
@@ -373,6 +434,25 @@
 
   .animate-glow {
     animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse-fintech {
+    0%,
+    100% {
+      box-shadow:
+        0 0 20px rgba(11, 95, 230, 0.25),
+        0 0 40px rgba(11, 95, 230, 0.08);
+    }
+
+    50% {
+      box-shadow:
+        0 0 30px rgba(11, 95, 230, 0.4),
+        0 0 60px rgba(11, 95, 230, 0.15);
+    }
+  }
+
+  [data-theme="fintech"] .animate-glow {
+    animation-name: glow-pulse-fintech;
   }
 
   /* Orb Float */
@@ -565,6 +645,31 @@
     );
   }
 
+  /* Fintech: süs ışıkları da aynı mavi aileden */
+  [data-theme="fintech"] .orb-gold {
+    background: radial-gradient(
+      circle,
+      hsla(216, 100%, 50%, 0.3) 0%,
+      transparent 70%
+    );
+  }
+
+  [data-theme="fintech"] .orb-blue {
+    background: radial-gradient(
+      circle,
+      hsla(195, 80%, 45%, 0.25) 0%,
+      transparent 70%
+    );
+  }
+
+  [data-theme="fintech"] .orb-coral {
+    background: radial-gradient(
+      circle,
+      hsla(222, 30%, 50%, 0.15) 0%,
+      transparent 70%
+    );
+  }
+
   /* Hero Text Gradient */
   .text-gradient {
     background: var(--gradient-primary);
@@ -611,6 +716,14 @@
 
   .btn-glow:hover::after {
     transform: translateX(100%);
+  }
+
+  [data-theme="fintech"] .btn-glow {
+    box-shadow: 0 4px 15px rgba(11, 95, 230, 0.25);
+  }
+
+  [data-theme="fintech"] .btn-glow:hover {
+    box-shadow: 0 6px 25px rgba(11, 95, 230, 0.35);
   }
 
   /* Section Divider */
