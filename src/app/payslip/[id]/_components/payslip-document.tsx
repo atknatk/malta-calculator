@@ -82,6 +82,11 @@ export interface PayslipDocumentProps {
   };
   payslipUrl?: string;
   accessToken?: string;
+  /** Düzeltilmiş bordro: sürüm no ve yerine geçtiği bordronun numarası */
+  revision?: {
+    number: number;
+    replacesNumber: string;
+  };
 }
 
 const months = [
@@ -215,6 +220,7 @@ export default function PayslipDocument({
   voided,
   payslipUrl,
   accessToken,
+  revision,
 }: PayslipDocumentProps) {
   const isDraft = status === PAYSLIP_STATUS.DRAFT;
   const isVoid = status === PAYSLIP_STATUS.VOID;
@@ -395,6 +401,12 @@ export default function PayslipDocument({
             <p className="mt-2 text-[11px]" style={{ color: MUTED }}>
               {months[periodMonth - 1]} {periodYear} · No. {payslipNumber}
             </p>
+            {revision && (
+              <p className="mt-0.5 text-[11px]" style={{ color: MUTED }}>
+                Revision {revision.number} · replaces No.{" "}
+                {revision.replacesNumber}
+              </p>
+            )}
           </div>
           <div className="text-right text-[14px]">
             <p style={{ color: ACCENT }}>Pay Day</p>

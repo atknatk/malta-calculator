@@ -9,6 +9,12 @@ import {
   isValidAccessCookie,
 } from "@/lib/payslip/access-cookie";
 import PublicPayslipPage from "@/components/payslip/public-payslip-page";
+import { isPdfArchiveEnabled } from "@/lib/payslip/pdf-archive";
+import {
+  currentVersion,
+  loadPayslipVersions,
+} from "@/lib/payslip/revisions";
+import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 import VerifyGate from "./_components/verify-gate";
 
 export const metadata: Metadata = {
@@ -85,10 +91,24 @@ export default async function PayslipVerifyPage({
     );
   }
 
-  return <PublicPayslipPage
+  // Revize edilmiş bordro: QR, geçerli sürümü gösterir
+  const versions = await loadPayslipVersions(supabase, payslip);
+  const current = currentVersion(versions);
+  const supersededBy =
+    payslip.status === PAYSLIP_STATUS.VOID && current
+      ? { version: current, href: `/payslip/verify/${current.accessToken}` }
+      : undefined;
+
+  return (
+    <PublicPayslipPage
       document={props}
       verified
       integrity={integrity}
       contentHash={payslip.content_hash}
-    />;
+      shareToken={payslip.access_token}
+      pdfEnabled={integrity === "verified" && isPdfArchiveEnabled()}
+      versions={versions}
+      supersededBy={supersededBy}
+    />
+  );
 }

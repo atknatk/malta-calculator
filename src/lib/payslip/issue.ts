@@ -16,6 +16,10 @@ import {
 } from "@/lib/payslip/document-props";
 import { createSnapshot } from "@/lib/payslip/snapshot";
 import { schedulePayslipArchive } from "@/lib/payslip/pdf-archive";
+import {
+  buildRevisionPayslipNumber,
+  resolveRevision,
+} from "@/lib/payslip/revisions";
 import { notifyPayslipEvent } from "@/lib/notify/employee-notify";
 import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 
@@ -91,6 +95,16 @@ export async function issuePayslip(
     employee,
     ytdTotals,
   );
+
+  // Düzeltilmiş bordro: ilk sürümün numarası + "-R<n>" ve revizyon bilgisi
+  const revision = await resolveRevision(supabase, payslip.replaces_payslip_id);
+  if (revision) {
+    document.revision = revision;
+    document.payslipNumber = buildRevisionPayslipNumber(
+      revision.replacesNumber,
+      revision.number,
+    );
+  }
   const { snapshot, contentHash } = createSnapshot(document, issuedAt);
 
   const { data, error } = await supabase
