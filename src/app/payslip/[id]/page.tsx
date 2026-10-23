@@ -10,7 +10,11 @@ import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 import { resolvePayslipDocument } from "@/lib/payslip/document-props";
 import { freezeLegacyPayslip } from "@/lib/payslip/issue";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { getPayslipPdfArchive } from "@/lib/payslip/pdf-archive";
+import { isPdfArchiveEnabled } from "@/lib/payslip/pdf-archive";
+import {
+  currentVersion,
+  loadPayslipVersions,
+} from "@/lib/payslip/revisions";
 import PayslipIntegrityNotice from "@/components/payslip/payslip-integrity";
 
 const months = [
@@ -70,10 +74,14 @@ export default async function PayslipViewPage({
     );
   }
 
-  // R2'de arşivlenmiş PDF (yayınlanmış bordrolar)
-  const archive = isDraft
-    ? null
-    : await getPayslipPdfArchive(supabase, payslip.id);
+  // Yayınlanmış bordro PDF'i R2'den verilir (yoksa indirirken üretilir)
+  const pdfUrl =
+    !isDraft && integrity === "verified" && isPdfArchiveEnabled()
+      ? `/api/payslip/${payslip.id}/pdf`
+      : undefined;
+
+  // Void bordronun yerine çıkarılmış güncel sürüm
+  const current = isVoid ? currentVersion(await loadPayslipVersions(supabase, payslip)) : null;
 
   return (
     <div className="mx-auto max-w-[210mm]">
@@ -103,7 +111,8 @@ export default async function PayslipViewPage({
             status={payslip.status}
             payslipNumber={payslipNumber}
             employeeName={payslip.employee.name}
-            archivedAt={archive?.archived_at}
+            pdfUrl={pdfUrl}
+            correctedPayslipId={current?.id}
           />
         </div>
         {isDraft && (

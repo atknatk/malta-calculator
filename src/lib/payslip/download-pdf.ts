@@ -81,3 +81,27 @@ export async function downloadPayslipPdf(filename: string): Promise<void> {
     window.print();
   }
 }
+
+/**
+ * Yayınlanmış bordronun R2'deki PDF'ini indirir. Sunucu PDF'i veremezse
+ * (henüz üretilemedi vb.) belge tarayıcıda çizilir.
+ */
+export async function downloadStoredPayslipPdf(
+  pdfUrl: string,
+  fallbackFilename: string,
+): Promise<void> {
+  try {
+    const separator = pdfUrl.includes("?") ? "&" : "?";
+    const response = await fetch(`${pdfUrl}${separator}json=1`);
+    if (response.ok) {
+      const { url } = (await response.json()) as { url?: string };
+      if (url) {
+        window.location.href = url;
+        return;
+      }
+    }
+  } catch (error) {
+    console.error("Stored PDF download failed:", error);
+  }
+  await downloadPayslipPdf(fallbackFilename);
+}

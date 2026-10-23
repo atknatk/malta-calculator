@@ -5,23 +5,30 @@ import { Download, Printer } from "lucide-react";
 import {
   buildPayslipFilename,
   downloadPayslipPdf,
+  downloadStoredPayslipPdf,
 } from "@/lib/payslip/download-pdf";
 
 interface PublicPayslipActionsProps {
   payslipNumber: string;
   employeeName: string;
+  /** Yayınlanmış bordronun R2'deki PDF'i; yoksa PDF tarayıcıda çizilir */
+  pdfUrl?: string;
 }
 
 /** Herkese açık sayfalarda (çalışan / QR doğrulama) yazdır ve PDF indir */
 export default function PublicPayslipActions({
   payslipNumber,
   employeeName,
+  pdfUrl,
 }: PublicPayslipActionsProps) {
   const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
     setDownloading(true);
-    await downloadPayslipPdf(buildPayslipFilename(payslipNumber, employeeName));
+    const filename = buildPayslipFilename(payslipNumber, employeeName);
+    await (pdfUrl
+      ? downloadStoredPayslipPdf(pdfUrl, filename)
+      : downloadPayslipPdf(filename));
     setDownloading(false);
   };
 

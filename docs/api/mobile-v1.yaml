@@ -92,8 +92,17 @@ paths:
                       fingerprint: { type: [string, "null"], example: "3F2A 9C1E 5B7D 4E8A" }
                   document:
                     type: object
-                    description: PayslipDocumentProps (src/app/payslip/[id]/_components/payslip-document.tsx) — company, employee, period, gross/net, incomeTax, sscEmployee, ytdTotals, payslipNumber, earnings/leave details. Render natively; generate the PDF on device.
+                    description: PayslipDocumentProps (src/app/payslip/[id]/_components/payslip-document.tsx) — company, employee, period, gross/net, incomeTax, sscEmployee, ytdTotals, payslipNumber, earnings/leave details, and `revision` ({ number, replacesNumber }) on corrected payslips. Render natively; for the PDF use /payslips/{id}/pdf.
         "404": { description: Not found or not yours }
+  /payslips/{id}/pdf:
+    get:
+      summary: The issued payslip PDF (the same file the web serves, stored in Cloudflare R2)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "302": { description: Redirect to a short-lived signed download URL (5 minutes) }
+        "404": { description: Not found or not yours }
+        "503": { description: PDF storage not configured, or the PDF could not be generated yet }
   /summary:
     get:
       summary: Year totals per employer (final payslips only)

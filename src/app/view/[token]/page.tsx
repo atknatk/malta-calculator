@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { fetchPublishedPayslipDocument } from "@/lib/payslip/document-props";
@@ -8,6 +8,12 @@ import {
   isValidAccessCookie,
 } from "@/lib/payslip/access-cookie";
 import PublicPayslipPage from "@/components/payslip/public-payslip-page";
+import { isPdfArchiveEnabled } from "@/lib/payslip/pdf-archive";
+import {
+  currentVersion,
+  loadPayslipVersions,
+} from "@/lib/payslip/revisions";
+import { PAYSLIP_STATUS } from "@/utils/payslip-details";
 import PinAuth from "./_components/pin-auth";
 
 export default async function EmployeeViewPage({
@@ -30,6 +36,18 @@ export default async function EmployeeViewPage({
 
   const { payslip, employee, props, integrity } = result;
 
+  // Paylaşılan link her zaman güncel sürümü açar: bordro revize edildiyse
+  // (void + düzeltilmiş bordro) yeni sürüme yönlendirilir
+  const versions = await loadPayslipVersions(supabase, payslip);
+  const current = currentVersion(versions);
+  if (
+    payslip.status === PAYSLIP_STATUS.VOID &&
+    current &&
+    current.id !== payslip.id
+  ) {
+    redirect(`/view/${current.accessToken}`);
+  }
+
   // İmzalı çerez: PIN (doğum tarihi) doğrulandıysa
   const cookieStore = await cookies();
   const isAuthenticated = isValidAccessCookie(
@@ -50,11 +68,16 @@ export default async function EmployeeViewPage({
     );
   }
 
-  return <PublicPayslipPage
+  return (
+    <PublicPayslipPage
       document={props}
       integrity={integrity}
       contentHash={payslip.content_hash}
-    />;
+      shareToken={token}
+      pdfEnabled={integrity === "verified" && isPdfArchiveEnabled()}
+      versions={versions}
+    />
+  );
 }
 
 export const metadata = {

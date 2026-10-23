@@ -33,6 +33,7 @@ export interface PayslipRecord {
   content_hash?: string | null;
   voided_at?: string | null;
   void_reason?: string | null;
+  replaces_payslip_id?: string | null;
 }
 
 /**
