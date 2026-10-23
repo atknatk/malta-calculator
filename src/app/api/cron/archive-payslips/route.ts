@@ -6,7 +6,8 @@ import {
 } from "@/lib/payslip/pdf-archive";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 300;
+// Hobby planında üst sınır 60 sn; daha fazlası production deploy'unu düşürüyor
+export const maxDuration = 60;
 
 /**
  * Arşivlenmemiş yayınlanmış bordroları R2'ye yükler (Vercel Cron).
