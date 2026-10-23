@@ -8,6 +8,10 @@ import type { BlogComment, BlogCommentWithReplies } from "@/types/database";
 export async function getApprovedComments(
   slug: string,
 ): Promise<BlogCommentWithReplies[]> {
+  // Preview ortamında service role yok; build yorumsuz devam etsin
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return [];
+  }
   const supabase = createAdminClient();
 
   const { data, error } = await supabase

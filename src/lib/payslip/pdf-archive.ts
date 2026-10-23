@@ -173,11 +173,22 @@ export function schedulePayslipArchive(payslipIds: string[]): void {
   });
 }
 
-/** Arşivlenmemiş yayınlanmış bordroları işler (cron) */
+/**
+ * Arşivlenmemiş yayınlanmış bordroları işler (cron).
+ * timeBudgetMs dolunca yeni bordroya başlamaz; kalanlar sonraki çalışmaya kalır
+ * (Hobby planında fonksiyon süresi en fazla 60 sn).
+ */
 export async function archivePendingPayslips(
   supabase: SupabaseClient,
   limit = 25,
-): Promise<{ processed: number; archived: number; failed: string[] }> {
+  timeBudgetMs = 45_000,
+): Promise<{
+  processed: number;
+  archived: number;
+  failed: string[];
+  remaining: number;
+}> {
+  const startedAt = Date.now();
   const { data, error } = await supabase
     .from("payslips_pending_pdf_archive")
     .select("id")
@@ -186,9 +197,13 @@ export async function archivePendingPayslips(
 
   if (error) throw new Error(error.message);
 
+  const ids = ((data as { id: string }[]) ?? []).map((row) => row.id);
   const failed: string[] = [];
   let archived = 0;
-  for (const { id } of (data as { id: string }[]) ?? []) {
+  let processed = 0;
+  for (const id of ids) {
+    if (Date.now() - startedAt > timeBudgetMs) break;
+    processed += 1;
     const result = await archivePayslipPdf(supabase, id);
     if (result.status === "archived" || result.status === "exists") {
       archived += 1;
@@ -196,5 +211,5 @@ export async function archivePendingPayslips(
       failed.push(id);
     }
   }
-  return { processed: data?.length ?? 0, archived, failed };
+  return { processed, archived, failed, remaining: ids.length - processed };
 }
