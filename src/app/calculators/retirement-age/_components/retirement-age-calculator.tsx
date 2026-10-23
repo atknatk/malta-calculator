@@ -226,9 +226,11 @@ export function RetirementAgeCalculator() {
                     Early Retirement Option
                   </p>
                   <p className="text-muted-foreground text-xs">
-                    You may retire at 61 if you have at least 35 years of
+                    You may retire at 61 if you have at least{" "}
+                    {result.requiredContributionYears} years of paid
                     contributions and are not in gainful employment until your
-                    statutory retirement age.
+                    statutory retirement age. If you qualify but wait, your
+                    pension increases by up to 29%.
                   </p>
                 </div>
               </div>

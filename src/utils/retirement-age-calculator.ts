@@ -21,8 +21,10 @@ export interface RetirementAgeOutput {
   yearsUntilRetirement: number;
   /** Months remaining until retirement */
   monthsUntilRetirement: number;
-  /** Whether eligible for early retirement at 61 */
+  /** Whether an early pension at 61 is possible (pension age above 61) */
   eligibleForEarlyRetirement: boolean;
+  /** Paid contribution years needed for early retirement / a full pension */
+  requiredContributionYears: number;
 }
 
 /**
@@ -78,8 +80,19 @@ export function calculateRetirementAge(
   const yearsUntilRetirement = retirementYear - currentYear;
   const monthsUntilRetirement = yearsUntilRetirement * 12 - currentMonth;
 
-  // Early retirement is possible at 61 if you have 35 years of contributions
+  // 61'de erken emeklilik: doğum yılına göre tam katkı yılı (35/40/41/42)
+  // ve emeklilik yaşına kadar çalışmamak şartıyla
   const eligibleForEarlyRetirement = retirementAge > 61;
+  const requiredContributionYears =
+    birthYear < 1952
+      ? 30
+      : birthYear < 1962
+        ? 35
+        : birthYear <= 1968
+          ? 40
+          : birthYear <= 1975
+            ? 41
+            : 42;
 
   return {
     retirementAge,
@@ -88,6 +101,7 @@ export function calculateRetirementAge(
     yearsUntilRetirement,
     monthsUntilRetirement: Math.max(0, monthsUntilRetirement),
     eligibleForEarlyRetirement,
+    requiredContributionYears,
   };
 }
 

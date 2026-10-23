@@ -249,7 +249,7 @@ export function PensionCalculator() {
               <label className="text-sm font-medium text-foreground/70">
                 Deferral Plan{" "}
                 <span className="text-xs text-muted-foreground">
-                  (claim later for a bonus)
+                  (if you qualify to retire at 61)
                 </span>
               </label>
               <ToggleGroup<DeferralYears>
@@ -265,7 +265,9 @@ export function PensionCalculator() {
                 }}
               />
               <p className="text-xs text-muted-foreground">
-                Bonus: +1y (6.5%) · +2y (13.5%) · +3y (21%) · +4y (29%)
+                Claim at 62 (+6.5%) · 63 (+13.5%) · 64 (+21%) · 65 (+29%)
+                instead of 61. Only with full contributions; no increase after
+                your pension age.
               </p>
             </div>
           </div>
@@ -424,10 +426,6 @@ export function PensionCalculator() {
                   value={`+${formatEUR(result.deferralBonusAmount)}`}
                 />
               )}
-              <BreakdownRow
-                label="COLA increase (€10/week)"
-                value={`+${formatEUR(result.annualCola)}`}
-              />
               <div className="h-px bg-border my-2" />
               <BreakdownRow
                 label="State pension (annual)"
@@ -472,7 +470,8 @@ export function PensionCalculator() {
                     : "Partial tax liability"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Under LN 53/2026, pension income is 100% exempt up to{" "}
+                  Under LN 53/2026, total pension income (state, occupational,
+                  private and foreign) of people aged 61+ is 100% exempt up to{" "}
                   {formatEUR(PENSION_EXEMPTION_LIMIT_2026)}.{" "}
                   {result.isPensionFullyExempt
                     ? "Your estimated pension is below this threshold — no income tax due."
@@ -512,7 +511,9 @@ export function PensionCalculator() {
                 <p className="text-xs">
                   Based on Malta Social Security Act (Cap. 318), LN 53/2026
                   (pension income exemption) and Department of Social Security
-                  pension formula. Guidance only — contact the{" "}
+                  pension formula. Figures are in 2026 terms: pensions in
+                  payment also get the yearly budget increase (2026: +€10/week)
+                  after award. Guidance only — contact the{" "}
                   <strong>Department of Social Security</strong> for an official
                   pension assessment.
                 </p>

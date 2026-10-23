@@ -66,7 +66,7 @@ export default function MaltaRetirementAgeGuidePage() {
         description="Complete guide to statutory retirement age in Malta based on birth year."
         slug="malta-retirement-age-guide-2026"
         datePublished="2026-01-01"
-        dateModified="2026-10-21"
+        dateModified="2026-10-23"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -182,10 +182,10 @@ export default function MaltaRetirementAgeGuidePage() {
               </p>
               <ul>
                 <li>
-                  Enough paid or credited contributions:{" "}
-                  <strong>35 years</strong> if born 1952-1961,{" "}
-                  <strong>40 years</strong> if born 1962-1968 and{" "}
-                  <strong>41 years</strong> if born 1969 or later
+                  Enough paid contributions: <strong>35 years</strong> if born
+                  1952-1961, <strong>40 years</strong> if born 1962-1968,{" "}
+                  <strong>41 years</strong> if born 1969-1975 and{" "}
+                  <strong>42 years</strong> if born 1976 or later
                 </li>
                 <li>A yearly average of at least 50 weekly contributions</li>
                 <li>
@@ -193,7 +193,12 @@ export default function MaltaRetirementAgeGuidePage() {
                   retirement age
                 </li>
               </ul>
-              <p>Early retirement may result in a reduced pension amount.</p>
+              <p>
+                The pension is not reduced for retiring at 61. If you qualify
+                but keep working and claim later, it is increased for life by
+                6.5% (at 62), 13.5% (63), 21% (64) or 29% (65). There is no
+                extra increase for claiming after 65.
+              </p>
             </section>
 
             <section id="pension-eligibility" className="mt-12">
@@ -202,13 +207,17 @@ export default function MaltaRetirementAgeGuidePage() {
               <ul>
                 <li>To reach your statutory retirement age</li>
                 <li>Sufficient National Insurance contributions</li>
-                <li>At least 10 years of paid or credited contributions</li>
+                <li>
+                  At least 10 years of paid contributions for a reduced pension;
+                  the full pension needs 30 to 42 years depending on your birth
+                  year
+                </li>
               </ul>
             </section>
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
-              dateModified="2026-10-21"
+              dateModified="2026-10-23"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter
