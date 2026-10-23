@@ -319,7 +319,7 @@ export default function PayslipDocument({
       {isVoid && <Watermark label="VOID" color="#dc2626" />}
 
       <div
-        className="relative flex flex-col"
+        className="ps-body relative flex flex-col"
         style={{ height: "100%", zIndex: 1 }}
       >
         {/* ============ TOP: QR / LOGO ============ */}
@@ -359,7 +359,7 @@ export default function PayslipDocument({
         </div>
 
         {/* ============ PARTIES ============ */}
-        <div className="mt-8 flex justify-between gap-8">
+        <div className="ps-parties mt-8 flex justify-between gap-8">
           <div>
             <p className="text-[14px] font-bold">{employee.name}</p>
             {employee.position && (
@@ -380,7 +380,7 @@ export default function PayslipDocument({
               </p>
             )}
           </div>
-          <div className="text-right">
+          <div className="ps-company text-right">
             <p className="text-[14px] font-bold">{company.name}</p>
             {companyAddressLines.map((line) => (
               <p key={line}>{line}</p>
@@ -390,7 +390,7 @@ export default function PayslipDocument({
         </div>
 
         {/* ============ TITLE ============ */}
-        <div className="mt-10 flex items-end justify-between">
+        <div className="ps-title mt-10 flex items-end justify-between">
           <div>
             <h1
               className="font-bold leading-none tracking-tight"
@@ -408,7 +408,7 @@ export default function PayslipDocument({
               </p>
             )}
           </div>
-          <div className="text-right text-[14px]">
+          <div className="ps-payinfo text-right text-[14px]">
             <p style={{ color: ACCENT }}>Pay Day</p>
             <p>{payDay}</p>
             <p style={{ color: ACCENT }}>Pay Period</p>
@@ -417,7 +417,7 @@ export default function PayslipDocument({
         </div>
 
         {/* ============ EARNINGS & DEDUCTIONS ============ */}
-        <div className="mt-3 grid grid-cols-2 gap-10">
+        <div className="ps-tables mt-3 grid grid-cols-2 gap-10">
           <table className="w-full self-start text-[13px]">
             <thead>
               <SectionHeader label="Earnings" columns={["Hours", "Amount"]} />
@@ -428,7 +428,7 @@ export default function PayslipDocument({
                   <td className="py-2.5">
                     {row.label}
                     {row.hint && (
-                      <span className="ml-1 text-[9px]" style={{ color: MUTED }}>
+                      <span className="ps-hint ml-1 text-[9px]" style={{ color: MUTED }}>
                         {row.hint}
                       </span>
                     )}
@@ -459,7 +459,7 @@ export default function PayslipDocument({
                 <tr style={{ borderBottom: RULE }}>
                   <td className="py-2.5">
                     SSC {sscCategory}
-                    <span className="ml-1 text-[9px]" style={{ color: MUTED }}>
+                    <span className="ps-hint ml-1 text-[9px]" style={{ color: MUTED }}>
                       {sscWeeks} weeks
                     </span>
                   </td>
@@ -470,7 +470,7 @@ export default function PayslipDocument({
                 <tr style={{ borderBottom: RULE }}>
                   <td className="py-2.5">
                     FSS {taxTypeLabel}
-                    <span className="ml-1 text-[9px]" style={{ color: MUTED }}>
+                    <span className="ps-hint ml-1 text-[9px]" style={{ color: MUTED }}>
                       Taxable {fmt(grossSalary)}
                       {childHint}
                     </span>
@@ -487,7 +487,7 @@ export default function PayslipDocument({
             </table>
 
             {employerContributions && employerTotal > 0 && (
-              <div className="mt-6 text-right text-[10px] leading-snug">
+              <div className="ps-employer mt-6 text-right text-[10px] leading-snug">
                 <p>Your employer has contributed:</p>
                 <p>{fmt(employerContributions.sscEmployer)} in SSC,</p>
                 <p>
@@ -525,11 +525,11 @@ export default function PayslipDocument({
           </div>
         )}
 
-        <div className="flex-grow" />
+        <div className="ps-spacer flex-grow" />
 
         {/* ============ TAKE-HOME PAY ============ */}
         <div
-          className="flex items-center justify-between py-4"
+          className="ps-takehome flex items-center justify-between py-4"
           style={{ borderTop: `1.5px solid ${ACCENT}` }}
         >
           <span className="text-[26px] font-bold">TAKE-HOME PAY</span>
@@ -538,7 +538,7 @@ export default function PayslipDocument({
 
         {/* ============ TOTALS TO DATE & LEAVE ============ */}
         <div
-          className="grid grid-cols-2 gap-10 pb-2 text-[12px]"
+          className="ps-totals grid grid-cols-2 gap-10 pb-2 text-[12px]"
           style={{ borderBottom: RULE }}
         >
           <div>
@@ -560,7 +560,7 @@ export default function PayslipDocument({
           {leave && (
             <div>
               <p
-                className="mb-1 text-right text-[12px]"
+                className="ps-leave-title mb-1 text-right text-[12px]"
                 style={{ color: ACCENT }}
               >
                 Vacation Leave (hours)
@@ -582,7 +582,7 @@ export default function PayslipDocument({
 
         {/* ============ FOOTER ============ */}
         <div
-          className="mt-2 flex items-start justify-between gap-4 text-[9.5px]"
+          className="ps-footer mt-2 flex items-start justify-between gap-4 text-[9.5px]"
           style={{ color: ACCENT }}
         >
           <div>

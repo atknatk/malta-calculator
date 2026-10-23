@@ -202,9 +202,10 @@ export default function PublicPayslipPage({
           className="mx-auto mb-6 max-w-[210mm] print:hidden"
         />
 
-        {/* A4 belge: dar ekranlarda yatay kaydırılır */}
-        <div className="overflow-x-auto pb-4 print:overflow-visible print:pb-0">
-          <div className="mx-auto w-[210mm] shadow-xl print:shadow-none">
+        {/* A4 belge: A4'ten dar ekranlarda tek sütuna akar (globals.css,
+            .payslip-responsive); baskı ve PDF her zaman tek A4 sayfa kalır */}
+        <div className="payslip-responsive pb-4 print:pb-0">
+          <div className="mx-auto w-full max-w-[210mm] shadow-xl print:shadow-none">
             <PayslipDocument {...document} />
           </div>
         </div>
