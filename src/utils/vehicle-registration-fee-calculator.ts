@@ -14,7 +14,7 @@ export interface VehicleRegistrationFeeInput {
   vehicleType: "car" | "motorcycle" | "van" | "commercial";
   /** Number plate type */
   plateType: "random" | "personalised" | "customised";
-  /** Whether vehicle is imported (requires VRT inspection) */
+  /** Used vehicle imported from the UK / outside the EU (€55 inspection) */
   isImported: boolean;
   /** Engine capacity in cc (for circulation fee) */
   engineCapacity?: number;
@@ -39,7 +39,7 @@ export interface VehicleRegistrationFeeOutput {
   administrationFee: number;
   /** Number plates fee */
   platesFee: number;
-  /** VRT inspection fee */
+  /** Import inspection fee */
   vrtInspectionFee: number;
   /** First year circulation fee (annual road tax) */
   firstYearCirculationFee: number;
@@ -56,7 +56,7 @@ export interface VehicleRegistrationFeeOutput {
 const ADMINISTRATION_FEE = 15;
 
 /**
- * VRT (Vehicle Registration Tax) inspection fee for imported vehicles
+ * Transport Malta inspection fee for used vehicles imported from the UK / outside the EU
  * Source: Transport Malta (2026)
  */
 const VRT_INSPECTION_FEE = 55;
@@ -78,7 +78,7 @@ const PLATE_FEES = {
   },
   motorcycle: {
     random: 35,
-    personalised: 200,
+    personalised: 100,
     customised: 1500,
   },
   commercial: {
@@ -147,9 +147,10 @@ export function calculateVehicleRegistrationFee(
   const vrtInspectionFee = isImported ? VRT_INSPECTION_FEE : 0;
   if (isImported) {
     breakdown.push({
-      label: "VRT Inspection Fee",
+      label: "Import Inspection Fee",
       amount: vrtInspectionFee,
-      description: "Required for all imported vehicles",
+      description:
+        "Transport Malta inspection for used vehicles imported from the UK or outside the EU",
     });
   }
 
@@ -214,7 +215,7 @@ export function calculateVehicleRegistrationFee(
   description += ". Includes administration fee, number plates, ";
 
   if (isImported) {
-    description += "VRT inspection, ";
+    description += "import inspection, ";
   }
 
   if (firstYearCirculationFee > 0) {

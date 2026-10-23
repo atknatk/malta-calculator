@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title:
     "Malta VRT (MOT) 2026: Vehicle Roadworthiness Test Guide | Malta Calculator",
   description:
-    "Malta VRT 2026 guide. Vehicle roadworthiness test fees, frequency, requirements, and what to expect during inspection.",
+    "Malta VRT 2026: Vehicle Roadworthiness Test maximum fees (car €30.27), test intervals, the 90-day rule before road licence renewal and rules for imported cars.",
   keywords: [
     "Malta VRT",
     "Malta MOT",
@@ -101,57 +101,94 @@ export default function VRTGuidePage() {
             <section id="what-is-vrt">
               <h2>What is VRT?</h2>
               <p>
-                VRT (Vehicle Roadworthiness Test) is Malta&apos;s equivalent of
-                the UK MOT. It ensures vehicles meet safety and environmental
-                standards for road use.
+                In this guide, VRT means the{" "}
+                <strong>Vehicle Roadworthiness Test</strong>, Malta&apos;s
+                equivalent of the UK MOT. It is not the vehicle registration
+                tax, which is a separate one-off tax paid when a car is first
+                registered in Malta. The roadworthiness test checks that a
+                vehicle meets safety and environmental standards, and it is
+                carried out at testing stations licensed by Transport Malta
+                under Subsidiary Legislation 65.15.
               </p>
             </section>
 
             <section id="fees" className="mt-12">
               <h2>Test Fees</h2>
+              <p>
+                S.L. 65.15 (Eighth Schedule) sets the <strong>maximum</strong>{" "}
+                fees a testing station may charge, including VAT, in force since
+                1 January 2023. Stations may charge less, so prices vary. A
+                re-test may cost no more than 50% of the full fee.
+              </p>
               <div className="overflow-x-auto not-prose my-8">
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr className="bg-muted">
                       <th className="border border-border p-3">Vehicle Type</th>
-                      <th className="border border-border p-3">Test Fee</th>
-                      <th className="border border-border p-3">Re-test</th>
+                      <th className="border border-border p-3">
+                        Maximum Test Fee
+                      </th>
+                      <th className="border border-border p-3">
+                        Re-test (max 50%)
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-border p-3">Private Car</td>
-                      <td className="border border-border p-3">€36</td>
-                      <td className="border border-border p-3">€18</td>
-                    </tr>
-                    <tr className="bg-muted/50">
-                      <td className="border border-border p-3">Motorcycle</td>
-                      <td className="border border-border p-3">€25</td>
-                      <td className="border border-border p-3">€12</td>
-                    </tr>
-                    <tr>
                       <td className="border border-border p-3">
-                        Light Commercial
+                        Private car / taxi / hire car (M1)
                       </td>
-                      <td className="border border-border p-3">€42</td>
-                      <td className="border border-border p-3">€21</td>
+                      <td className="border border-border p-3">€30.27</td>
+                      <td className="border border-border p-3">up to €15.14</td>
                     </tr>
                     <tr className="bg-muted/50">
                       <td className="border border-border p-3">
-                        Heavy Commercial
+                        Motorcycle (Category VII)
                       </td>
-                      <td className="border border-border p-3">€58</td>
-                      <td className="border border-border p-3">€29</td>
+                      <td className="border border-border p-3">€24.33</td>
+                      <td className="border border-border p-3">up to €12.17</td>
                     </tr>
                     <tr>
-                      <td className="border border-border p-3">Bus</td>
-                      <td className="border border-border p-3">€65</td>
-                      <td className="border border-border p-3">€32</td>
+                      <td className="border border-border p-3">
+                        Light goods vehicle / van (N1)
+                      </td>
+                      <td className="border border-border p-3">€41.32</td>
+                      <td className="border border-border p-3">up to €20.66</td>
                     </tr>
                     <tr className="bg-muted/50">
-                      <td className="border border-border p-3">Trailer</td>
-                      <td className="border border-border p-3">€30</td>
-                      <td className="border border-border p-3">€15</td>
+                      <td className="border border-border p-3">
+                        Heavy goods vehicle (N2/N3)
+                      </td>
+                      <td className="border border-border p-3">€46.10</td>
+                      <td className="border border-border p-3">up to €23.05</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        Bus (M2/M3) up to 3.5 t
+                      </td>
+                      <td className="border border-border p-3">€41.32</td>
+                      <td className="border border-border p-3">up to €20.66</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        Bus (M2/M3) over 3.5 t
+                      </td>
+                      <td className="border border-border p-3">€46.10</td>
+                      <td className="border border-border p-3">up to €23.05</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-border p-3">
+                        Trailer up to 3.5 t
+                      </td>
+                      <td className="border border-border p-3">€41.32</td>
+                      <td className="border border-border p-3">up to €20.66</td>
+                    </tr>
+                    <tr className="bg-muted/50">
+                      <td className="border border-border p-3">
+                        Trailer over 3.5 t
+                      </td>
+                      <td className="border border-border p-3">€46.10</td>
+                      <td className="border border-border p-3">up to €23.05</td>
                     </tr>
                   </tbody>
                 </table>
@@ -160,22 +197,66 @@ export default function VRTGuidePage() {
 
             <section id="frequency" className="mt-12">
               <h2>Test Frequency</h2>
+              <p>Test intervals are counted from first registration:</p>
               <ul>
                 <li>
-                  <strong>Cars/Motorcycles (0-4 years):</strong> No test
-                  required
+                  <strong>Private cars and hire cars (M1):</strong> first test
+                  at 4 years, then every 2 years. Once the odometer passes
+                  160,000 km, the test becomes annual.
                 </li>
                 <li>
-                  <strong>Cars/Motorcycles (4-10 years):</strong> Every 2 years
+                  <strong>Taxis, chauffeur-driven cars and ambulances:</strong>{" "}
+                  annual from the first year.
                 </li>
                 <li>
-                  <strong>Cars/Motorcycles (10+ years):</strong> Annual
+                  <strong>Light goods vehicles / vans (N1):</strong> first test
+                  at 2 years, then every 2 years (annual after 160,000 km).
                 </li>
                 <li>
-                  <strong>Commercial vehicles:</strong> Annual from first year
+                  <strong>Heavy goods vehicles (N2/N3) and buses:</strong>{" "}
+                  annual from the first year.
                 </li>
                 <li>
-                  <strong>Buses:</strong> Every 6 months
+                  <strong>Light trailers (O1/O2):</strong> first test at 2
+                  years, then every 2 years. Heavy trailers (O3/O4) are tested
+                  annually.
+                </li>
+                <li>
+                  <strong>Motorcycles over 125cc:</strong> the interval is set
+                  by ministerial notice, so confirm the current rule with
+                  Transport Malta.
+                </li>
+              </ul>
+            </section>
+
+            <section id="road-licence" className="mt-12">
+              <h2>VRT and Your Road Licence Renewal</h2>
+              <p>
+                When a test is due, you cannot renew the road licence without a
+                pass. The VRT certificate must be dated{" "}
+                <strong>within 90 days before</strong> the road licence renewal,
+                so book the test in the three months before your licence
+                expires.
+              </p>
+            </section>
+
+            <section id="imports" className="mt-12">
+              <h2>Imported Vehicles</h2>
+              <ul>
+                <li>
+                  <strong>From outside the EU:</strong> a VRT is needed if the
+                  vehicle is over 4 years old, or over 1 year old with more than
+                  160,000 km (L-category vehicles such as motorcycles are
+                  excluded from this rule).
+                </li>
+                <li>
+                  <strong>From the UK:</strong> a VRT is needed unless the
+                  vehicle has 160,000 km or less and is an M1 car up to 4 years
+                  old (N1 vans up to 2 years old).
+                </li>
+                <li>
+                  <strong>From the EU:</strong> a valid roadworthiness
+                  certificate issued in another EU member state is recognised.
                 </li>
               </ul>
             </section>
@@ -188,6 +269,11 @@ export default function VRTGuidePage() {
                 <li>Photo ID</li>
                 <li>Appointment confirmation</li>
               </ul>
+              <p>
+                Fees and rules are correct as of October 2026. Budget 2027,
+                presented on 26 October 2026, may change vehicle-related rates,
+                so recheck with Transport Malta after the budget.
+              </p>
             </section>
 
             <BlogArticleAuthor

@@ -75,7 +75,7 @@ export function VehicleRegistrationFeeCalculator() {
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Calculate the total cost to register your vehicle in Malta, including
-          plates, VRT inspection, and first year road tax.
+          plates, import inspection, and first year road tax.
         </p>
       </motion.div>
 
@@ -141,7 +141,10 @@ export function VehicleRegistrationFeeCalculator() {
                     {
                       value: "personalised",
                       label: "Personalised",
-                      desc: "€200 (Custom choice)",
+                      desc:
+                        vehicleType === "motorcycle"
+                          ? "€100 (Custom choice)"
+                          : "€200 (Custom choice)",
                     },
                     {
                       value: "customised",
@@ -200,7 +203,8 @@ export function VehicleRegistrationFeeCalculator() {
               </div>
               {isImported && (
                 <p className="text-xs text-muted-foreground">
-                  Imported vehicles require a VRT inspection (€55)
+                  Used vehicles imported from the UK or outside the EU pay a €55
+                  Transport Malta inspection fee
                 </p>
               )}
             </div>
@@ -346,7 +350,7 @@ export function VehicleRegistrationFeeCalculator() {
                       ? "bg-blue-500/10"
                       : item.label.includes("Plates")
                         ? "bg-purple-500/10"
-                        : item.label.includes("VRT")
+                        : item.label.includes("Inspection")
                           ? "bg-amber-500/10"
                           : item.label.includes("Circulation")
                             ? "bg-green-500/10"
@@ -405,11 +409,11 @@ export function VehicleRegistrationFeeCalculator() {
                   Malta&apos;s one-time vehicle registration tax is a percentage
                   of your vehicle&apos;s official{" "}
                   <strong>Registration Value (CIF)</strong> based on CO2, length
-                  and Euro standard, with a €2,000 minimum for M1 cars. This
-                  calculator estimates only the <strong>fixed fees</strong>{" "}
-                  (admin, plates, VRT, first year road licence). For an exact
-                  registration tax figure, look up your make/model on the
-                  official{" "}
+                  and Euro standard (non-EU used cars over 5 years old pay at
+                  least a minimum tax). This calculator estimates only the{" "}
+                  <strong>fixed fees</strong> (admin, plates, import inspection,
+                  first year road licence). For an exact registration tax
+                  figure, look up your make/model on the official{" "}
                   <a
                     href="https://www.valuation.vehicleregistration.gov.mt/"
                     target="_blank"
@@ -437,26 +441,30 @@ export function VehicleRegistrationFeeCalculator() {
                     <strong>Administration:</strong> €15 flat
                   </li>
                   <li>
-                    <strong>Random plates:</strong> €70 (car / van /
-                    commercial), €35 (motorcycle)
+                    <strong>Random plates:</strong> €70 pair (car / van /
+                    commercial), €35 (motorcycle); third plate €45
                   </li>
                   <li>
-                    <strong>Personalised plates:</strong> €200 (your choice of
-                    letters/numbers, subject to availability)
+                    <strong>Personalised plates:</strong> €200 car, €100
+                    motorcycle (subject to availability)
                   </li>
                   <li>
                     <strong>Customised plates:</strong> €1,500 (premium format)
                   </li>
                   <li>
-                    <strong>VRT inspection:</strong> €55, required for all
-                    imported vehicles
+                    <strong>Import inspection:</strong> €55 for used vehicles
+                    from the UK or outside the EU
                   </li>
                   <li>
                     <strong>First year road licence:</strong> estimate based on
-                    engine size, CO2 and age (€100–€650 petrol / €100–€749
-                    diesel range; EVs and qualifying PHEVs €0 for 5 years)
+                    CO2 and year of manufacture (SOPV 33: €100–€525 when new, up
+                    to €1,125 for older high-CO2 cars; EVs and PHEVs with ≥ 50
+                    km range €0 for years 0–5)
                   </li>
-                  <li>Only Euro 6 or newer vehicles can be registered</li>
+                  <li>
+                    Register an imported vehicle within 30 days of arrival
+                    (€30/day penalty after that)
+                  </li>
                 </ul>
               </div>
             </div>
