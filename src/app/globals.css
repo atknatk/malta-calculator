@@ -882,3 +882,117 @@
     font-size: 24px !important;
   }
 }
+
+/* ========================================
+   PAYSLIP - MOBILE (public /v, /view, verify)
+   Yalnızca ekranda: .payslip-responsive container olur, A4 (794px) sığmadığında
+   belge tek sütuna akar. Baskıda container yok, html2pdf klonu bu kapsayıcının
+   dışında çizilir; ikisi de A4 düzenini korur.
+   ======================================== */
+
+@media screen {
+  .payslip-responsive {
+    container-type: inline-size;
+  }
+}
+
+@container (max-width: 793px) {
+  .payslip-responsive [data-payslip-document] {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 20px 16px 16px !important;
+    overflow: hidden;
+    font-size: 13px !important;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-body {
+    height: auto !important;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-parties {
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-company,
+  .payslip-responsive [data-payslip-document] .ps-payinfo,
+  .payslip-responsive [data-payslip-document] .ps-employer,
+  .payslip-responsive [data-payslip-document] .ps-leave-title,
+  .payslip-responsive [data-payslip-document] .ps-footer > * {
+    text-align: left;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-title h1 {
+    font-size: 34px !important;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-payinfo {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 12px;
+    font-size: 13px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-tables,
+  .payslip-responsive [data-payslip-document] .ps-totals {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-tables {
+    margin-top: 16px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-employer {
+    margin-top: 12px;
+    font-size: 11px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-hint {
+    display: block;
+    margin-left: 0;
+    font-size: 10px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-spacer {
+    display: none;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-takehome {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin-top: 24px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-takehome > span {
+    font-size: 20px !important;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-takehome > span:last-child {
+    font-size: 24px !important;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-totals {
+    padding-bottom: 12px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-footer {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 10.5px;
+  }
+
+  .payslip-responsive [data-payslip-document] .ps-footer .font-mono {
+    word-break: break-all;
+  }
+}

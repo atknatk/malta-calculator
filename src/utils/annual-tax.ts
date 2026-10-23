@@ -22,9 +22,14 @@ export interface AnnualTaxResult {
   effectiveRate: number;
 }
 
+/**
+ * Dilimler artan sırada ve tam sayı sınırlıdır (ör. 16000 / 16001); yalnızca
+ * üst sınıra bakılır ki 16000.50 gibi küsuratlı gelir iki dilim arasındaki
+ * boşluğa düşüp son dilime (%35) atanmasın.
+ */
 function findBracket(income: number, brackets: TaxBracket[]): TaxBracket {
   for (const bracket of brackets) {
-    if (income >= bracket.min && income <= bracket.max) {
+    if (income <= bracket.max) {
       return bracket;
     }
   }
