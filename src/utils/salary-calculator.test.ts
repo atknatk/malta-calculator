@@ -149,6 +149,45 @@ describe("calculateMonthlyDeductions — önceki işveren (FS3)", () => {
   });
 });
 
+describe("vergi dilimi sınırları — küsuratlı yıllık gelir", () => {
+  // Dilimler tam sayı sınırlı (16000 / 16001); aradaki gelir %35'e düşmemeli
+  it("iki dilim arasındaki gelir üst dilimden vergilenir", () => {
+    const single = config({
+      previousEmployment: { taxableIncome: 16000.5, taxPaid: 0 },
+    });
+    // 16000.50 × %25 − 3400
+    expect(calculateYearEndTaxPosition([], single).annualTaxLiability).toBe(
+      600.13,
+    );
+
+    const married = config({
+      taxRateType: "married",
+      simpleTaxType: "married",
+      previousEmployment: { taxableIncome: 23000.5, taxPaid: 0 },
+    });
+    // 23000.50 × %25 − 4550
+    expect(calculateYearEndTaxPosition([], married).annualTaxLiability).toBe(
+      1200.13,
+    );
+  });
+
+  it("aylık kesinti sınırın hemen üstündeki gelirle aynı dilimde kalır", () => {
+    // 1333.375 × 12 = 16000.50 (ikili sistemde tam temsil edilir)
+    const gap = calculateMonthlyDeductions(
+      Object.values(Month).map((month) => ({ month, grossWage: 1333.375 })),
+      config(),
+    );
+    // 1333.42 × 12 = 16001.04
+    const above = calculateMonthlyDeductions(monthlyInputs(16001), config());
+
+    const gapTax = sum(gap.map((d) => d.incomeTax));
+    expect(gapTax).toBeGreaterThan(0);
+    expect(Math.abs(gapTax - sum(above.map((d) => d.incomeTax)))).toBeLessThan(
+      1,
+    );
+  });
+});
+
 describe("parseDateOnly", () => {
   it("YYYY-MM-DD metnini yerel tarihe çevirir", () => {
     const date = parseDateOnly("2026-10-21")!;
