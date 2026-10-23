@@ -53,8 +53,9 @@ export interface PensionOutput {
   baseAnnualPension: number; // 2/3 × pensionable × proportion (COLA hariç)
   deferralBonusRate: number;
   deferralBonusAmount: number;
-  annualCola: number;
-  annualPension: number; // Final annual (deferral + COLA dahil)
+  /** Uygulanan erteleme yılı (emeklilik yaşı ve erken emeklilik şartına göre sınırlı) */
+  appliedDeferralYears: DeferralYears;
+  annualPension: number; // Final annual (deferral dahil)
   monthlyPension: number;
   weeklyPension: number;
 
@@ -91,8 +92,12 @@ export function getMPI(birthYear: number): number {
   return birthYear < 1962 ? MPI_2026_PRE_1962 : MPI_2026;
 }
 
-/** 2026 pensioner weekly COLA (€/week) — ayrı, payroll COLA'sından farklı */
-export const WEEKLY_COLA_PENSIONER_2026 = 10;
+/**
+ * Budget 2026: ödenmekte olan emekli maaşlarına haftalık €10 artış
+ * (€4,66 COLA + €5,34). Yeni bağlanan maaşa eklenmez: 2026 MPI'nin 2/3'ü
+ * zaten 2026 tavan maaşıdır. Bu sabit yalnızca bilgi amaçlı gösterilir.
+ */
+export const PENSION_INCREASE_2026_WEEKLY = 10;
 
 /** Minimum SSC contribution years to qualify for any pension */
 export const MIN_CONTRIBUTION_YEARS = 10;
@@ -117,6 +122,7 @@ export const TARGETED_REBATE_CAP = 540;
  * Kaynak: Social Security Act güncellemeleri.
  */
 export function getRequiredYears(birthYear: number): number {
+  if (birthYear < 1952) return 30;
   if (birthYear < 1962) return 35;
   if (birthYear <= 1968) return 40;
   if (birthYear <= 1975) return 41;
@@ -150,7 +156,8 @@ export function getChildCredits(birthYear: number, children: number): number {
 }
 
 /**
- * Deferral bonus — 61 yaşından sonra erteleme yıllarına göre kümülatif artış.
+ * Deferral bonus — 61'de erken emekli olabilecek kişi maaşı 62-65'e
+ * ertelerse kümülatif artış. 65'ten sonra erteleme artışı yoktur.
  * Kaynak: DSS Pensions Information (61→62 %6.5, →63 %13.5, →64 %21, →65 %29)
  */
 export function getDeferralBonusRate(years: DeferralYears): number {
@@ -218,12 +225,28 @@ export function calculatePension(input: PensionInput): PensionOutput {
     ? pensionableIncome * (2 / 3) * proportion
     : 0;
 
-  const deferralBonusRate = getDeferralBonusRate(deferralYears);
+  // Erteleme yalnız 61 yaşında erken emeklilik hakkı olanlar için ve
+  // statutory emeklilik yaşına kadar geçerli (61 + n ≤ emeklilik yaşı).
+  const qualifiesForEarly = isEligible && effectiveYears >= requiredYears;
+  const maxDeferral = Math.max(0, Math.min(4, retirementAge - 61));
+  const appliedDeferralYears = (
+    qualifiesForEarly ? Math.min(deferralYears, maxDeferral) : 0
+  ) as DeferralYears;
+  if (deferralYears > 0 && !qualifiesForEarly) {
+    warnings.push(
+      `The deferral bonus only applies if you could retire early at 61 with the full ${requiredYears} years of contributions.`,
+    );
+  } else if (deferralYears > appliedDeferralYears) {
+    warnings.push(
+      `Deferral increases stop at your pension age of ${retirementAge}; there is no extra increase for claiming later.`,
+    );
+  }
+
+  const deferralBonusRate = getDeferralBonusRate(appliedDeferralYears);
   const deferralBonusAmount = baseAnnualPension * deferralBonusRate;
   const pensionAfterDeferral = baseAnnualPension + deferralBonusAmount;
 
-  const annualCola = isEligible ? WEEKLY_COLA_PENSIONER_2026 * 52 : 0;
-  const annualPension = pensionAfterDeferral + annualCola;
+  const annualPension = pensionAfterDeferral;
   const weeklyPension = annualPension / 52;
   const monthlyPension = annualPension / 12;
 
@@ -269,7 +292,7 @@ export function calculatePension(input: PensionInput): PensionOutput {
     baseAnnualPension,
     deferralBonusRate,
     deferralBonusAmount,
-    annualCola,
+    appliedDeferralYears,
     annualPension,
     monthlyPension,
     weeklyPension,
@@ -289,7 +312,8 @@ export function calculatePension(input: PensionInput): PensionOutput {
  */
 export function getPensionReferenceTable() {
   return [
-    { birthYears: "Before 1962", requiredYears: 35, retirementAge: "61-64" },
+    { birthYears: "Before 1952", requiredYears: 30, retirementAge: "61" },
+    { birthYears: "1952 – 1961", requiredYears: 35, retirementAge: "62-64" },
     { birthYears: "1962 – 1968", requiredYears: 40, retirementAge: "65" },
     { birthYears: "1969 – 1975", requiredYears: 41, retirementAge: "65" },
     { birthYears: "1976 or later", requiredYears: 42, retirementAge: "65" },

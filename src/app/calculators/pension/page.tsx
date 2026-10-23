@@ -75,9 +75,9 @@ export default function PensionPage() {
           "Child credits — 4 years per child for the first 3 (post-1962), 2 from the 4th",
           "Deferral bonus schedule: +6.5% / +13.5% / +21% / +29% for 1–4 year deferral",
           "LN 53/2026 — 100% pension income tax exemption up to €37,104/year",
-          "Pensioner COLA 2026: €10/week (€520/year)",
+          "2026 pension increase for pensions in payment: €10/week (€4.66 COLA + €5.34)",
           "Private pension tax credit — 25% of contributions, capped at €750/year",
-          "Birth-year contribution requirement (35 / 40 / 41 / 42 years)",
+          "Birth-year contribution requirement (30 / 35 / 40 / 41 / 42 years)",
         ]}
       />
       <CustomFAQJsonLd
@@ -85,44 +85,44 @@ export default function PensionPage() {
           {
             question: "What is the maximum Malta state pension in 2026?",
             answer:
-              "The maximum Two-Thirds Pension in 2026 is approximately €19,388/year (roughly €373/week) before COLA. This is based on the Maximum Pensionable Income (MPI) cap of €29,083 × 2/3 for those born in 1962 or later. For those born before 1962 the 2026 MPI is €25,500. The pensioner COLA increase adds a further €10/week (€520/year) on top of the base pension.",
+              "The maximum Two-Thirds Pension in 2026 is approximately €19,389/year (roughly €373/week). This is two-thirds of the Maximum Pensionable Income (MPI) of €29,083.36 for those born in 1962 or later. For those born before 1962 the 2026 MPI is €25,500, so the maximum is about €17,000/year (€327/week). Pensions already in payment rose by €10/week in 2026 (€4.66 COLA plus €5.34), and further increases are set in each year's Budget.",
           },
           {
             question:
               "How many SSC contribution years are needed for a full Malta pension?",
             answer:
-              "It depends on your birth year. Born before 1962: 35 years. Born 1962–1968: 40 years. Born 1969–1975: 41 years. Born 1976 onwards: 42 years. The absolute minimum to qualify for any pension is 10 years (520 weeks). If you are close but short, you may be able to retrospectively pay back up to 5 years of missing contributions.",
+              "It depends on your birth year. Born before 1952: 30 years. Born 1952–1961: 35 years. Born 1962–1968: 40 years. Born 1969–1975: 41 years. Born 1976 onwards: 42 years. The minimum to qualify for any pension is 10 years (520 weeks) of paid contributions; those born from 1962 also need 12 years in total, which can include up to 2 credited years. From 2026 you can pay up to 5 years of missing contributions to reach the 10-year threshold, even if you are no longer working.",
           },
           {
             question: "How do child credits work in the Malta pension system?",
             answer:
-              "Parents born in 1962 or later receive 4 years of credited contributions for each of their first 3 children and 2 years for each child from the 4th onwards. Those born before 1962 receive 2 years per child for the first 3 children and 1 year from the 4th. From 2026, credits run until the child turns 10 for the first three children. Child credits count toward the contribution proportion used in the two-thirds formula but do not raise your pensionable income average.",
+              "Parents born in 1962 or later receive 4 years of credited contributions for each of their first 3 children and 2 years for each child from the 4th onwards (only if the parent returns to work for at least as long as the credit). Credits are doubled for a child with a disability. Those born 1952–1961 receive 2 years per child for the first 3 children and 1 year from the 4th. From 2026, credits for the first three children run until the child's 10th year. Full-time studies also earn credits (for example 26 weeks per year of a degree at MQF level 6 for those born from 1962). Child credits count toward the contribution proportion used in the two-thirds formula but do not raise your pensionable income average.",
           },
           {
             question: "Is my Malta state pension taxable in 2026?",
             answer:
-              "Under LN 53/2026, effective 1 January 2026, pension income is 100% exempt from income tax up to €37,104 per year. Because the maximum state pension is below this threshold, most pensioners will owe no income tax on their state pension. The previous pensioners' rebate under S.L. 123.174 was discontinued; a new targeted rebate applies from 2026 for those with chargeable income above €15,000 (capped at €540).",
+              "Under LN 53/2026, effective from basis year 2026, the total pension income of people aged 61 and over (state, service, occupational, private and foreign pensions combined) is 100% exempt from income tax up to €37,104 per year. Because the maximum state pension is below this threshold, most pensioners owe no income tax on their pension. Other income, such as a salary, is still taxed at normal rates. The old pensioners' tax rebate was discontinued for income after 31 December 2025 (LN 52/2026).",
           },
           {
             question: "What is the deferral bonus for Malta pensions?",
             answer:
-              "If you defer claiming your state pension past retirement age, your weekly payment increases. The schedule, counted from age 61, is: +1 year → +6.5%, +2 years → +13.5%, +3 years → +21%, +4 years → +29%. You cannot be in gainful employment while deferring an early pension, so deferral is most useful for those who intend to keep working past their statutory retirement age.",
+              "If you qualify for early retirement at 61 (full contribution years) but wait, your pension is increased for life. The schedule, counted from age 61, is: claim at 62 → +6.5%, 63 → +13.5%, 64 → +21%, 65 → +29%. The increase stops at your statutory pension age: there is no extra increase for claiming after 65. Those who take an early pension at 61 cannot be in gainful employment until they reach pension age, while those who defer can keep working.",
           },
           {
             question: "How does the private pension tax credit work?",
             answer:
-              "Contributions to a qualifying Personal Retirement Scheme (PRS) or workplace pension earn a 25% tax credit, capped at €750 per year. This means a maximum qualifying contribution of €3,000/year. You can claim this credit in addition to the 100% pension income exemption and, if you also participate in a workplace scheme, you can claim the tax credit on both.",
+              "Contributions to a qualifying Personal Retirement Scheme (PRS) earn a 25% tax credit, capped at €750 per year (maximum qualifying contribution €3,000/year). Employee contributions to a voluntary occupational pension scheme earn a separate 25% credit, also capped at €750. From 2026, pension payouts from these schemes fall under the €37,104 pension income exemption.",
           },
           {
             question:
               "How much extra do I get if I defer my Malta pension by 4 years?",
             answer:
-              "Malta's Department of Social Security applies a deferral uplift of +5% after 1 year, +10% after 2 years, +18% after 3 years and +29% after 4 years. On the maximum 2026 base pension of approximately €19,388, a 4-year deferral adds roughly €5,623 per year, for a gross annual pension of around €25,011 before the €520 pensioner COLA. You cannot be in gainful employment while deferring an early pension.",
+              "If you could retire at 61 with full contributions and instead claim at 65, the Department of Social Security increases your pension by 29% (6.5% at 62, 13.5% at 63, 21% at 64). On the maximum 2026 pension of approximately €19,389, that adds roughly €5,623 per year, for about €25,012 a year. There is no further increase for claiming after 65.",
           },
           {
             question: "At what age can I claim a Malta pension?",
             answer:
-              "Your statutory retirement age depends on your birth year: born 1951 or earlier → 61, 1952–1955 → 62, 1956–1958 → 63, 1959–1961 → 64, and 1962 or later → 65. You can claim at these ages provided you meet the minimum 10 years (520 weeks) of paid contributions. For a full pension you need 35 years (born <1962), 40 years (1962–1968), 41 years (1969–1975) or 42 years (born 1976+).",
+              "Your statutory retirement age depends on your birth year: born 1951 or earlier → 61, 1952–1955 → 62, 1956–1958 → 63, 1959–1961 → 64, and 1962 or later → 65. You can claim at these ages provided you meet the minimum 10 years (520 weeks) of paid contributions. For a full pension you need 30 years (born before 1952), 35 years (1952–1961), 40 years (1962–1968), 41 years (1969–1975) or 42 years (born 1976+). With the full number of years you can retire from 61 if you stop working.",
           },
         ]}
       />
@@ -133,7 +133,7 @@ export default function PensionPage() {
         steps={[
           {
             name: "Enter your birth year and contribution history",
-            text: "Your birth year sets your retirement age (61–65) and the required full-pension contribution years (35 if born before 1962, up to 42 for 1976+). The minimum to qualify for any pension is 10 years (520 weeks).",
+            text: "Your birth year sets your retirement age (61–65) and the required full-pension contribution years (35 if born 1952–1961, up to 42 for 1976+). The minimum to qualify for any pension is 10 years (520 weeks).",
           },
           {
             name: "Enter your average best-years salary",
@@ -144,12 +144,12 @@ export default function PensionPage() {
             text: "Base annual pension = pensionable income × 2/3 × (effective years / required years). Effective years include child credits: 4 years each for the first 3 children and 2 from the 4th (born 1962 or later), or 2 years each for the first 3 and 1 from the 4th (born before 1962).",
           },
           {
-            name: "Add deferral bonus and pensioner COLA",
-            text: "If you defer claiming, add +6.5% (1 year), +13.5% (2 years), +21% (3 years) or +29% (4 years), counted from age 61. Then add the 2026 pensioner COLA of €10/week (€520/year).",
+            name: "Add the deferral bonus",
+            text: "If you qualify to retire at 61 but claim later, add +6.5% (at 62), +13.5% (63), +21% (64) or +29% (65). There is no increase for claiming after your pension age.",
           },
           {
             name: "Check tax treatment and private pension credit",
-            text: "Under LN 53/2026 the first €37,104 of annual pension income is 100% income-tax exempt. Personal Retirement Scheme contributions earn a 25% tax credit capped at €750/year (max qualifying contribution €3,000/year).",
+            text: "Under LN 53/2026 the first €37,104 of annual pension income of people aged 61+ is 100% income-tax exempt. Personal Retirement Scheme contributions earn a 25% tax credit capped at €750/year (max qualifying contribution €3,000/year).",
           },
         ]}
       />

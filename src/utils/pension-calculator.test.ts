@@ -46,4 +46,43 @@ describe("pension calculator", () => {
     expect(getChildCredits(1960, 3)).toBe(6);
     expect(getChildCredits(1960, 4)).toBe(7);
   });
+
+  it("has no add-on to a newly awarded pension beyond 2/3 of MPI", () => {
+    const r = calculatePension({ ...base, birthYear: 1980 });
+    expect(r.annualPension).toBeCloseTo((29083 * 2) / 3, 2);
+  });
+
+  it("requires 30 years if born before 1952 and 42 years from 1976", () => {
+    expect(calculatePension({ ...base, birthYear: 1950 }).requiredYears).toBe(
+      30,
+    );
+    expect(calculatePension({ ...base, birthYear: 1976 }).requiredYears).toBe(
+      42,
+    );
+  });
+
+  it("caps deferral at pension age and needs full contributions", () => {
+    // 1954 doğumlu: emeklilik yaşı 62 → en fazla 1 yıl erteleme
+    const capped = calculatePension({
+      ...base,
+      birthYear: 1954,
+      deferralYears: 4,
+    });
+    expect(capped.appliedDeferralYears).toBe(1);
+    expect(capped.deferralBonusRate).toBe(0.065);
+    // Eksik katkı → erken emeklilik yok → erteleme artışı yok
+    const short = calculatePension({
+      ...base,
+      birthYear: 1980,
+      paidYears: 30,
+      deferralYears: 4,
+    });
+    expect(short.deferralBonusRate).toBe(0);
+    const full = calculatePension({
+      ...base,
+      birthYear: 1980,
+      deferralYears: 4,
+    });
+    expect(full.deferralBonusRate).toBe(0.29);
+  });
 });

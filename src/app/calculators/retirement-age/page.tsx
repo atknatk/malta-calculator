@@ -67,12 +67,12 @@ export default function RetirementAgePage() {
           {
             question: "What is the statutory retirement age in Malta?",
             answer:
-              "The statutory retirement age in Malta depends on your year of birth. For those born before 1952, retirement age is 61. It gradually increases to 65 for those born in 1968 or later. The phased increase was introduced under the Social Security Act to align with increased life expectancy.",
+              "The statutory retirement age in Malta depends on your year of birth. For those born before 1952, retirement age is 61. It gradually increases to 65 for those born in 1962 or later. The phased increase was introduced under the Social Security Act to align with increased life expectancy.",
           },
           {
             question: "Can you retire early in Malta?",
             answer:
-              "Yes, early retirement is possible in Malta under certain conditions. Individuals may be able to retire before the statutory retirement age if they have accumulated the required number of Social Security Contributions (SSC) and meet the minimum age requirements set by the Social Security Act. Early retirement typically results in a reduced pension amount.",
+              "Yes, early retirement is possible in Malta under certain conditions. You can retire from age 61 if you have the full number of paid contributions for your birth year (35 years if born 1952–1961, 40 if born 1962–1968, 41 if born 1969–1975, 42 if born 1976 or later) and you do not work until your statutory pension age. The pension is not cut for retiring at 61, but those who qualify and wait until 62–65 get a lifelong increase of 6.5% to 29%.",
           },
           {
             question: "At what age can you claim a pension in Malta?",
@@ -83,7 +83,7 @@ export default function RetirementAgePage() {
             question:
               "How many SSC contribution years are needed for a full pension in Malta?",
             answer:
-              "To receive a full contributory retirement pension in Malta, you generally need a minimum of 35 years of Social Security Contributions (SSC). Individuals with fewer contribution years may receive a reduced pension. For those who started working later, contributions made while employed, self-employed, or voluntarily may all count towards the total.",
+              "To receive a full contributory retirement pension in Malta, you need 30 years of Social Security Contributions (SSC) if born before 1952, 35 years if born 1952–1961, 40 years if born 1962–1968, 41 years if born 1969–1975 and 42 years if born 1976 or later. With fewer years (minimum 10 years paid) you receive a reduced, pro-rata pension. For those who started working later, contributions made while employed, self-employed, or voluntarily may all count towards the total.",
           },
           {
             question: "Is there a mandatory retirement age in Malta?",
