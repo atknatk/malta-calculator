@@ -1,0 +1,5 @@
+// Gizli olmayan istemci ayarları. Clerk publishable key istemciye açıktır.
+// Kendi değerlerini Config/Secrets.xcconfig dosyasına yaz (git'e girmez).
+API_BASE_URL = https:/$()/www.maltacalculator.com/api/mobile/v1
+CLERK_PUBLISHABLE_KEY =
+#include? "Secrets.xcconfig"

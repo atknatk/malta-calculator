@@ -1,0 +1,7 @@
+*.xcodeproj
+Config/Secrets.xcconfig
+MaltaPayslips/Resources/GoogleService-Info.plist
+DerivedData/
+build/
+xcuserdata/
+.swiftpm/
