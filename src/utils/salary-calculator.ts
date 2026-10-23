@@ -91,13 +91,18 @@ function calculateSSCTax(
 
 /**
  * Yıllık gelir için uygulanacak vergi dilimini bulur
+ *
+ * Dilimler artan sırada ve tam sayı sınırlıdır (ör. 16000 / 16001). Kıst ay
+ * hesabında yıllık gelir küsuratlı olabildiğinden yalnızca üst sınıra bakılır;
+ * aksi halde 16000.50 gibi bir gelir iki dilim arasındaki boşluğa düşer ve
+ * son dilime (%35) atanır.
  */
 function findTaxBracket(
   annualIncome: number,
   brackets: TaxBracket[],
 ): TaxBracket | null {
   for (const bracket of brackets) {
-    if (annualIncome >= bracket.min && annualIncome <= bracket.max) {
+    if (annualIncome <= bracket.max) {
       return bracket;
     }
   }
