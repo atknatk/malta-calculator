@@ -29,7 +29,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.maltacalculator.employee
-        PRODUCT_NAME: Malta Payslips
+        PRODUCT_NAME: MaltaPayslips
         INFOPLIST_FILE: MaltaPayslips/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: MaltaPayslips/Resources/MaltaPayslips.entitlements
         TARGETED_DEVICE_FAMILY: "1"
