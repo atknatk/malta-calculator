@@ -13,6 +13,8 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 interface R2Config {
   accountId: string;
+  /** Bucket jurisdiction ("eu" vb.); jurisdiction'lı bucket'lar kendi endpoint'inden erişilir */
+  jurisdiction: string | null;
   accessKeyId: string;
   secretAccessKey: string;
   bucket: string;
@@ -24,7 +26,8 @@ function readConfig(): R2Config | null {
   const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
   const bucket = process.env.R2_PAYSLIP_BUCKET;
   if (!accountId || !accessKeyId || !secretAccessKey || !bucket) return null;
-  return { accountId, accessKeyId, secretAccessKey, bucket };
+  const jurisdiction = process.env.R2_JURISDICTION?.trim().toLowerCase() || null;
+  return { accountId, jurisdiction, accessKeyId, secretAccessKey, bucket };
 }
 
 export function isR2Configured(): boolean {
@@ -42,7 +45,9 @@ function getR2(): { client: S3Client; bucket: string } {
   cached = {
     client: new S3Client({
       region: "auto",
-      endpoint: `https://${config.accountId}.r2.cloudflarestorage.com`,
+      endpoint: config.jurisdiction
+        ? `https://${config.accountId}.${config.jurisdiction}.r2.cloudflarestorage.com`
+        : `https://${config.accountId}.r2.cloudflarestorage.com`,
       credentials: {
         accessKeyId: config.accessKeyId,
         secretAccessKey: config.secretAccessKey,
