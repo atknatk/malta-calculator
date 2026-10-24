@@ -16,11 +16,9 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 import { marketingPagesConfig } from "@/config/pages";
-import { socialsConfig } from "@/config/socials";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { BrandName } from "./brand-name";
-import { SocialIconButton } from "./social-icon-button";
 import { DarkThemeSwitch } from "../theme-toggle";
 
 /** Ana sayfa maaş hesaplayıcısı olduğu için "/" de Salary'yi aktif sayar */
@@ -174,13 +172,6 @@ export function MarketingMenu() {
         </nav>
         <DarkThemeSwitch className="mt-4" />
         <div className="mt-auto flex flex-col gap-2.5 pt-6">
-          <ul className="flex gap-2">
-            {socialsConfig.map((props) => (
-              <li key={props.title}>
-                <SocialIconButton {...props} />
-              </li>
-            ))}
-          </ul>
           <SignedOut>
             <Button
               variant="outline"
