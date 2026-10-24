@@ -3,75 +3,103 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { marketingPagesConfig } from "@/config/pages";
+import { marketingPagesConfig, type Page } from "@/config/pages";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { ThemeIconToggle } from "../theme-toggle";
 import { BrandName } from "./brand-name";
-import { MarketingMenu } from "./marketing-menu";
+import {
+  MarketingMenu,
+  MarketingTabletMenu,
+  externalLinkProps,
+  isMarketingPageActive,
+} from "./marketing-menu";
 
 interface Props {
   className?: string;
 }
 
+// Mobil < md: marka + tam ekran menü; tablet md–lg: tema, Start Free, açılır menü; masaüstü lg+: pill nav
 export function MarketingHeader({ className }: Props) {
   const pathname = usePathname();
 
   return (
     <header
       className={cn(
-        "grid w-full grid-cols-2 gap-2 md:grid-cols-5 py-2",
+        "flex h-[60px] w-full items-center justify-between gap-4 md:h-[72px] lg:h-20",
         className,
       )}
     >
-      <div className="flex items-center md:col-span-1">
-        <BrandName />
-      </div>
-      <nav className="mx-auto hidden items-center justify-center rounded-full glass border border-primary/10 px-2 md:col-span-3 md:flex md:gap-1 shadow-lg shadow-primary/5">
-        {marketingPagesConfig.map(({ href, title, segment }) => {
-          const isExternal = href.startsWith("http");
-          const externalProps = isExternal ? { target: "_blank" } : {};
-          const isActive = pathname.startsWith(href);
+      <BrandName />
+      <nav
+        aria-label="Main"
+        className="hidden items-center gap-1 rounded-full border border-primary/15 bg-[var(--glass-bg)] p-1 shadow-sm backdrop-blur-[20px] lg:flex"
+      >
+        {marketingPagesConfig.map(({ href, title, shortTitle }: Page) => {
+          const isActive = isMarketingPageActive(pathname, href);
           return (
-            <Button
-              key={segment}
-              variant="link"
+            <Link
+              key={href}
+              href={href}
+              aria-current={isActive ? "page" : undefined}
               className={cn(
-                "transition-colors",
+                "rounded-full px-[18px] py-2 text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 isActive
-                  ? "font-semibold text-primary"
-                  : "text-muted-foreground hover:text-foreground",
+                  ? "bg-primary/10 font-semibold text-primary-ink"
+                  : "font-medium text-muted-foreground hover:text-primary",
               )}
-              asChild
+              {...externalLinkProps(href)}
             >
-              <Link href={href} {...externalProps}>
-                {title}
-              </Link>
-            </Button>
+              {shortTitle ?? title}
+            </Link>
           );
         })}
       </nav>
-      <div className="flex items-center justify-end gap-3 md:col-span-1">
-        <div className="hidden md:flex md:items-center md:gap-2">
+      <div className="flex items-center gap-2">
+        {/* Masaüstü */}
+        <div className="hidden items-center gap-2 lg:flex">
+          <ThemeIconToggle />
           <SignedOut>
-            <Button variant="ghost" size="sm" asChild>
+            <Button
+              variant="ghost"
+              className="rounded-[10px] px-3.5 hover:text-primary"
+              asChild
+            >
               <Link href="/sign-in">Sign In</Link>
             </Button>
+            <Button className="rounded-[10px] px-[18px] font-semibold" asChild>
+              <Link href="/sign-up">Start Free</Link>
+            </Button>
+          </SignedOut>
+          <SignedIn>
             <Button
-              size="sm"
-              className="rounded-full bg-gradient-to-r from-brand-from to-brand-to text-white shadow-md hover:from-brand-from-hover hover:to-brand-to-hover"
+              variant="ghost"
+              className="rounded-[10px] px-3.5 hover:text-primary"
+              asChild
+            >
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+        </div>
+        {/* Tablet */}
+        <div className="hidden items-center gap-2 md:flex lg:hidden">
+          <ThemeIconToggle className="h-11 w-11" />
+          <SignedOut>
+            <Button
+              className="h-11 rounded-[10px] px-[18px] font-semibold"
               asChild
             >
               <Link href="/sign-up">Start Free</Link>
             </Button>
           </SignedOut>
           <SignedIn>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/dashboard">Dashboard</Link>
-            </Button>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
+          <MarketingTabletMenu />
         </div>
-        <div className="block md:hidden">
+        {/* Mobil */}
+        <div className="md:hidden">
           <MarketingMenu />
         </div>
       </div>

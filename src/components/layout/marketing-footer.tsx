@@ -4,101 +4,113 @@ import Link from "next/link";
 import { socialsConfig } from "@/config/socials";
 import { cn } from "@/lib/utils";
 import { BrandName } from "./brand-name";
+import { FooterLinkGroup } from "./footer-link-group";
 import { SocialIconButton } from "./social-icon-button";
-import { ThemeToggle } from "../theme-toggle";
-import { Shell } from "../dashboard/shell";
+import { ColorThemePicker, ThemeModeSegment } from "../theme-toggle";
 
 interface Props {
   className?: string;
 }
 
+const footerGroups: { title: string; links: FooterLinkProps[] }[] = [
+  {
+    title: "Guides",
+    links: [
+      { href: "/blog", label: "All Articles" },
+      {
+        href: "/blog/malta-tax-rates-2026-complete-guide",
+        label: "Tax Rates 2026",
+      },
+      {
+        href: "/blog/malta-ssc-contributions-2026-explained",
+        label: "SSC Guide",
+      },
+      { href: "/blog/understanding-cola-malta-2026", label: "COLA Explained" },
+      { href: "/blog/malta-minimum-wage-2026-guide", label: "Minimum Wage" },
+      {
+        href: "/blog/malta-public-holidays-2026-complete-guide",
+        label: "Public Holidays",
+      },
+      {
+        href: "/blog/malta-expat-tax-hqp-scheme-guide",
+        label: "Expat Tax (HQP)",
+      },
+      {
+        href: "/blog/malta-pension-system-2026-guide",
+        label: "Pension System",
+      },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { href: "/about", label: "About" },
+      { href: "/pricing", label: "Pricing" },
+      { href: "/sign-up", label: "Payslip Generator" },
+      { href: "/contact", label: "Contact" },
+      { href: "/changelog", label: "Changelog" },
+      { href: "/terms", label: "Terms" },
+      { href: "/privacy", label: "Privacy" },
+    ],
+  },
+  {
+    title: "Calculators",
+    links: [
+      { href: "/calculators", label: "All Calculators" },
+      { href: "/salary", label: "Salary Calculator" },
+      { href: "/calculators/pension", label: "Pension Estimator" },
+      { href: "/calculators/childcare", label: "Childcare Subsidy" },
+      { href: "/calculators/vacation", label: "Vacation Days" },
+      { href: "/timer", label: "Countdown Timer" },
+    ],
+  },
+];
+
 export function MarketingFooter({ className }: Props) {
   return (
-    <footer className={cn("w-full", className)}>
-      <Shell className="grid gap-6">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-5">
-          <div className="col-span-2 flex flex-col gap-3">
-            <div>
-              <BrandName />
-              <p className="mt-2 font-light text-muted-foreground text-sm">
-                A comprehensive calculation app that supports you at every stage
-                of your professional life, ensuring accurate calculations and
-                simplifying your work processes for greater efficiency and peace
-                of mind!
-                <br />
-                <span className="underline decoration-dotted underline-offset-2">
-                  Salary Calculator
-                </span>
+    <footer
+      className={cn("mt-auto w-full border-t bg-[var(--glass-bg)]", className)}
+    >
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-[18px] px-4 pb-7 pt-6 md:gap-7 md:px-8 md:pt-9 lg:gap-8 lg:pb-8 lg:pt-12">
+        <div className="grid gap-[18px] md:gap-7 lg:grid-cols-[2fr_1fr_1fr_1fr] lg:gap-8">
+          <div className="flex items-start justify-between gap-3 md:gap-6 lg:max-w-[360px] lg:flex-col lg:justify-start lg:gap-3.5">
+            <div className="flex flex-col gap-2 md:max-w-[420px] md:gap-3 lg:gap-3.5">
+              <BrandName className="self-start text-lg md:text-xl" />
+              <p className="text-sm text-muted-foreground">
+                Free salary, tax and social security calculators for people who
+                live and work in Malta.
               </p>
             </div>
+            <ul className="flex shrink-0 gap-2">
+              {socialsConfig.map(({ title, href, icon }) => (
+                <li key={title}>
+                  <SocialIconButton {...{ href, icon, title }} />
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="order-1 flex flex-col gap-3 text-sm">
-            <p className="font-semibold text-foreground">Guides</p>
-            <FooterLink href="/blog" label="All Articles" />
-            <FooterLink
-              href="/blog/malta-tax-rates-2026-complete-guide"
-              label="Tax Rates 2026"
-            />
-            <FooterLink
-              href="/blog/malta-ssc-contributions-2026-explained"
-              label="SSC Guide"
-            />
-            <FooterLink
-              href="/blog/understanding-cola-malta-2026"
-              label="COLA Explained"
-            />
-            <FooterLink
-              href="/blog/malta-minimum-wage-2026-guide"
-              label="Minimum Wage"
-            />
-            <FooterLink
-              href="/blog/malta-public-holidays-2026-complete-guide"
-              label="Public Holidays"
-            />
-            <FooterLink
-              href="/blog/malta-expat-tax-hqp-scheme-guide"
-              label="Expat Tax (HQP)"
-            />
-            <FooterLink
-              href="/blog/malta-pension-system-2026-guide"
-              label="Pension System"
-            />
-          </div>
-          <div className="order-2 flex flex-col gap-3 text-sm">
-            <p className="font-semibold text-foreground">Company</p>
-            <FooterLink href="/about" label="About" />
-            <FooterLink href="/pricing" label="Pricing" />
-            <FooterLink href="/sign-up" label="Payslip Generator" />
-            <FooterLink href="/contact" label="Contact" />
-            <FooterLink href="/changelog" label="Changelog" />
-            <FooterLink href="/terms" label="Terms" />
-            <FooterLink href="/privacy" label="Privacy" />
-          </div>
-
-          <div className="order-3 flex flex-col gap-3 text-sm">
-            <p className="font-semibold text-foreground">Calculators</p>
-            <FooterLink href="/calculators" label="All Calculators" />
-            <FooterLink href="/salary" label="Salary Calculator" />
-            <FooterLink href="/calculators/pension" label="Pension Estimator" />
-            <FooterLink
-              href="/calculators/childcare"
-              label="Childcare Subsidy"
-            />
-            <FooterLink href="/calculators/vacation" label="Vacation Days" />
-            <FooterLink href="/timer" label="Countdown Timer" />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-2">
-            {socialsConfig.map(({ title, href, icon }) => (
-              <SocialIconButton key={title} {...{ href, icon, title }} />
+          <div className="flex flex-col md:grid md:grid-cols-3 md:gap-6 lg:contents">
+            {footerGroups.map((group) => (
+              <FooterLinkGroup key={group.title} title={group.title}>
+                {group.links.map((link) => (
+                  <FooterLink key={link.href} {...link} />
+                ))}
+              </FooterLinkGroup>
             ))}
           </div>
-          <div className="text-right md:text-left">
-            <ThemeToggle />
-          </div>
         </div>
-      </Shell>
+        <div className="flex flex-col gap-2.5 border-t pt-4 md:gap-5 md:pt-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:pt-6">
+          <div className="flex flex-col gap-2.5 md:flex-row md:flex-wrap md:items-center md:gap-3 lg:order-2 lg:shrink-0">
+            <ThemeModeSegment className="grid grid-cols-3 md:flex" />
+            <ColorThemePicker className="grid grid-cols-2 gap-2 md:flex md:gap-1.5" />
+          </div>
+          <p className="max-w-[560px] text-[13px] text-muted-foreground lg:order-1">
+            Figures are estimates based on rates from the Malta Tax and Customs
+            Administration (MTCA) and the Department of Social Security. ©{" "}
+            {new Date().getFullYear()} Malta Calculator.
+          </p>
+        </div>
+      </div>
     </footer>
   );
 }
@@ -121,7 +133,7 @@ function FooterLink({ href, label, external = false }: FooterLinkProps) {
 
   return (
     <Link
-      className="inline-flex w-fit items-center text-muted-foreground underline underline-offset-4 hover:text-foreground hover:no-underline"
+      className="inline-flex min-h-11 w-fit items-center text-[15px] text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:min-h-9 md:text-sm lg:min-h-0"
       href={href}
       {...externalProps}
     >

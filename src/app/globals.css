@@ -687,6 +687,12 @@
     -webkit-text-fill-color: transparent;
   }
 
+  /* primary/10 zemin üzerinde primary metin (aktif nav): Malta açıkta düz primary AA'yı tutmuyor,
+     foreground ile %25 karıştırınca dört temada da 4.5:1 üstünde kalıyor */
+  .text-primary-ink {
+    color: color-mix(in srgb, hsl(var(--primary)) 75%, hsl(var(--foreground)));
+  }
+
   /* Button Variants */
   .btn-glow {
     @apply relative overflow-hidden;
