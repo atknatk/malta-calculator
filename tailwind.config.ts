@@ -60,6 +60,20 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        /* Durum renkleri ve form kenarlığı (globals.css) */
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
+        field: "hsl(var(--field))",
+        /* Ters yüzey bandı */
+        band: {
+          DEFAULT: "hsl(var(--band))",
+          foreground: "hsl(var(--band-foreground))",
+          muted: "hsl(var(--band-muted))",
+          accent: "hsl(var(--band-accent))",
+          border: "hsl(var(--band-border))",
+          cta: "hsl(var(--band-cta))",
+          "cta-foreground": "hsl(var(--band-cta-foreground))",
+        },
         /* Marka CTA renkleri: renk temasına göre değişir (globals.css --brand-*) */
         brand: {
           DEFAULT: "rgb(var(--brand) / <alpha-value>)",

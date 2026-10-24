@@ -1,4 +1,5 @@
 import { SalaryCalculatorServer } from "./_components/salary-calculator-server";
+import { SalaryHero } from "./_components/salary-hero";
 import SalaryPlaygroundCards from "./_components/play-ground-cart";
 import { salaryParamsCache } from "./search-params";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
@@ -54,7 +55,7 @@ export default async function SalaryCalculatorPage({
   const params = await salaryParamsCache.parse(searchParams);
 
   return (
-    <main role="main" aria-label="Malta Salary Calculator">
+    <>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: SITE_URL },
@@ -66,13 +67,13 @@ export default async function SalaryCalculatorPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
       />
 
-      <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
-        <SalaryCalculatorServer initialParams={params}>
-          <SalaryPlaygroundCards />
-        </SalaryCalculatorServer>
-      </div>
+      <SalaryHero />
+
+      <SalaryCalculatorServer initialParams={params}>
+        <SalaryPlaygroundCards />
+      </SalaryCalculatorServer>
 
       <AffiliateCard slug="salary" />
-    </main>
+    </>
   );
 }

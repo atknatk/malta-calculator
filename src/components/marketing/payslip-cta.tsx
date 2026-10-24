@@ -1,90 +1,105 @@
 import Link from "next/link";
-import { FileText, Shield, Zap, Users } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 const features = [
   {
-    icon: Zap,
-    title: "Auto Calculations",
-    description: "Tax, SSC, COLA calculated automatically",
+    title: "Auto calculations",
+    description: "Tax, SSC and COLA worked out for you.",
   },
   {
-    icon: Shield,
-    title: "Malta Compliant",
-    description: "Aligned with MTCA & Social Security rules",
+    title: "Malta compliant",
+    description: "Aligned with MTCA and Social Security rules.",
   },
   {
-    icon: Users,
-    title: "Employee Management",
-    description: "Add employees, generate payslips in bulk",
+    title: "Employee management",
+    description: "Add employees and generate payslips in bulk.",
   },
   {
-    icon: FileText,
     title: "Professional PDFs",
-    description: "Download & share branded payslips",
+    description: "Download and share branded payslips.",
   },
 ];
 
+// Ters yüzey bandı (bg-band): açık temada da koyu
 export function PayslipCTA() {
   return (
-    <section className="w-full py-8">
-      <div className="relative overflow-hidden rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-8 md:p-12">
-        {/* Background decoration */}
-        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-secondary/5 blur-3xl" />
-
-        <div className="relative z-10">
-          {/* Header */}
-          <div className="mb-8 text-center">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <FileText className="h-3 w-3" />
-              For Employers
-            </div>
-            <h2 className="font-cal text-2xl font-bold md:text-3xl">
-              Generate Professional Payslips
-              <span className="text-gradient"> for Your Team</span>
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              Automate your Malta payroll. Create accurate, compliant payslips
-              in minutes — not hours.
-            </p>
-          </div>
-
-          {/* Features grid */}
-          <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="rounded-xl border bg-card/50 p-4 text-center backdrop-blur-sm"
-              >
-                <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-brand-from to-brand-to">
-                  <feature.icon className="h-5 w-5 text-white" />
-                </div>
-                <h3 className="text-sm font-semibold">{feature.title}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/sign-up"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-from to-brand-to px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:from-brand-from-hover hover:to-brand-to-hover hover:shadow-xl"
-            >
-              Start Generating Payslips — Free
-            </Link>
-            <Link
-              href="/pricing"
-              className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition hover:text-foreground"
-            >
-              View pricing plans
-              <span aria-hidden="true">&rarr;</span>
-            </Link>
-          </div>
+    <section
+      aria-labelledby="employers-heading"
+      className="mt-10 flex w-full flex-col gap-5 rounded-[20px] border bg-band p-6 md:mt-14 md:p-8 lg:mt-16 lg:grid lg:grid-cols-2 lg:items-center lg:gap-12 lg:rounded-3xl lg:px-12 lg:py-10"
+    >
+      <div className="flex flex-col items-start gap-2 lg:gap-3">
+        <span className="text-xs font-semibold uppercase tracking-[0.06em] text-band-accent lg:text-[13px]">
+          For employers
+        </span>
+        <h2
+          id="employers-heading"
+          className="font-cal text-[26px] leading-[1.15] text-band-foreground lg:text-[32px]"
+        >
+          Generate payslips for your whole team
+        </h2>
+        <p className="text-[15px] text-band-muted lg:text-base">
+          The same 2026 rates as this calculator, for every employee on your
+          payroll.
+        </p>
+        <div className="mt-2 hidden items-center gap-2 lg:flex">
+          <EmployerActions />
         </div>
       </div>
+
+      {/* Mobil/tablet: kısa onay listesi, masaüstü: açıklamalı ızgara */}
+      <ul className="grid grid-cols-2 gap-3 border-t border-band-border pt-4 lg:hidden">
+        {features.map((feature) => (
+          <li
+            key={feature.title}
+            className="flex items-start gap-2 text-sm font-medium leading-[1.35] text-band-foreground"
+          >
+            <Check
+              className="mt-px h-4 w-4 shrink-0 text-band-accent"
+              aria-hidden="true"
+            />
+            {feature.title}
+          </li>
+        ))}
+      </ul>
+      <ul className="hidden grid-cols-2 gap-x-8 gap-y-6 lg:grid">
+        {features.map((feature) => (
+          <li
+            key={feature.title}
+            className="flex flex-col gap-1 border-t border-band-border pt-3.5"
+          >
+            <span className="text-[15px] font-semibold text-band-foreground">
+              {feature.title}
+            </span>
+            <span className="text-sm text-band-muted">
+              {feature.description}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="flex flex-col gap-2 md:flex-row lg:hidden">
+        <EmployerActions />
+      </div>
     </section>
+  );
+}
+
+function EmployerActions() {
+  return (
+    <>
+      <Link
+        href="/sign-up"
+        className="inline-flex h-12 items-center justify-center gap-2 rounded-[10px] bg-band-cta px-6 text-[15px] font-semibold text-band-cta-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-band-accent focus-visible:ring-offset-2 focus-visible:ring-offset-band"
+      >
+        Start Free
+        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      </Link>
+      <Link
+        href="/pricing"
+        className="inline-flex h-12 items-center justify-center rounded-[10px] px-[18px] text-[15px] font-semibold text-band-foreground transition-colors hover:bg-band-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-band-accent"
+      >
+        View Pricing
+      </Link>
+    </>
   );
 }
