@@ -58,7 +58,7 @@ export function MarketingHeader({ className }: Props) {
             </Button>
             <Button
               size="sm"
-              className="rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md hover:from-amber-600 hover:to-orange-700"
+              className="rounded-full bg-gradient-to-r from-brand-from to-brand-to text-white shadow-md hover:from-brand-from-hover hover:to-brand-to-hover"
               asChild
             >
               <Link href="/sign-up">Start Free</Link>

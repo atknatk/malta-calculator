@@ -53,7 +53,7 @@ const CATEGORY_META: Record<
 > = {
   "Employment & Salary": {
     icon: <Briefcase className="h-6 w-6 text-white" />,
-    gradient: "from-amber-500 to-orange-600",
+    gradient: "from-brand-from to-brand-to",
   },
   "Family & Children": {
     icon: <Baby className="h-6 w-6 text-white" />,

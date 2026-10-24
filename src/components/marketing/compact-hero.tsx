@@ -36,7 +36,7 @@ export function CompactHero() {
 
         {/* Main Title - Compact for mobile */}
         <div className="flex items-center gap-3 md:gap-4">
-          <div className="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg">
+          <div className="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-brand-from to-brand-to shadow-lg">
             <Calculator className="h-6 w-6 md:h-8 md:w-8 text-white" />
           </div>
           <div className="text-left">

@@ -444,7 +444,7 @@ export default function PayslipWizard({
                 <Button
                   onClick={() => setStep(2)}
                   disabled={!selectedEmployee}
-                  className="bg-amber-600 hover:bg-amber-700"
+                  className="bg-brand hover:bg-brand-hover"
                 >
                   Continue →
                 </Button>
@@ -608,7 +608,7 @@ export default function PayslipWizard({
                           }
                           className={
                             salaryDetails.childCount === count
-                              ? "bg-amber-600 hover:bg-amber-700"
+                              ? "bg-brand hover:bg-brand-hover"
                               : ""
                           }
                         >
@@ -843,7 +843,7 @@ export default function PayslipWizard({
                   type="button"
                   onClick={handleCalculate}
                   disabled={loading !== null}
-                  className="bg-amber-600 hover:bg-amber-700"
+                  className="bg-brand hover:bg-brand-hover"
                 >
                   {loading === "calculate"
                     ? "Calculating..."
@@ -1068,7 +1068,7 @@ export default function PayslipWizard({
                   <Button
                     onClick={() => handleGenerate(PAYSLIP_STATUS.FINAL)}
                     disabled={loading !== null || !canIssue}
-                    className="bg-amber-600 hover:bg-amber-700"
+                    className="bg-brand hover:bg-brand-hover"
                   >
                     {loading === PAYSLIP_STATUS.FINAL
                       ? "Issuing..."

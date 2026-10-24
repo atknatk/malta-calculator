@@ -97,7 +97,7 @@ export default function AdminNav({
           href="/dashboard"
           className="mb-6 flex items-center gap-3 rounded-2xl px-3 py-1"
         >
-          <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md-1">
+          <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-from to-brand-to text-white shadow-md-1">
             <Calculator className="size-5" />
           </div>
           <div className="leading-tight">
@@ -195,7 +195,7 @@ export default function AdminNav({
           {companyName ? (
             <CompanyMark name={companyName} logo={companyLogo} />
           ) : (
-            <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-from to-brand-to text-white">
               <Calculator className="size-5" />
             </div>
           )}

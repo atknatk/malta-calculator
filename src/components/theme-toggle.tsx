@@ -29,7 +29,7 @@ const colorThemes: { id: ColorTheme; name: string; colors: string[] }[] = [
   {
     id: "fintech",
     name: "Fintech Blue",
-    colors: ["#667eea", "#764ba2", "#f093fb"],
+    colors: ["#0066ff", "#38bdf8", "#10b981"],
   },
 ];
 
