@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { BookOpen, ArrowRight, TrendingUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, ChevronRight } from "lucide-react";
 
 interface GuideCard {
   href: string;
@@ -59,86 +58,75 @@ const featuredGuides: GuideCard[] = [
   },
 ];
 
-function GuideCardComponent({ guide }: { guide: GuideCard }) {
-  return (
-    <Link
-      href={guide.href}
-      className={cn(
-        "group relative overflow-hidden rounded-2xl",
-        "bg-card border border-border/50",
-        "p-5 transition-all duration-300",
-        "hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5",
-        "hover:-translate-y-1",
-        "h-full flex flex-col",
-      )}
-    >
-      {/* Category & Read Time */}
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary">
-          {guide.category}
-        </span>
-        <span className="text-xs text-muted-foreground">{guide.readTime}</span>
-      </div>
-
-      {/* Title */}
-      <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-1">
-        {guide.title}
-      </h3>
-
-      {/* Description - fixed height with 2 lines */}
-      <p className="text-sm text-muted-foreground line-clamp-2 mb-3 min-h-[2.5rem]">
-        {guide.description}
-      </p>
-
-      {/* Read More - always at bottom */}
-      <div className="flex items-center gap-1 mt-auto text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-        <span>Read guide</span>
-        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-      </div>
-    </Link>
-  );
-}
-
+// Tablet/masaüstünde kart ızgarası, mobilde tek kart içinde liste
 export function FeaturedGuides() {
   return (
-    <section className="w-full py-8" aria-label="Malta Tax and Salary Guides">
-      {/* Section Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 text-sm font-medium text-primary mb-4">
-          <BookOpen className="h-4 w-4" />
-          <span>Expert Guides</span>
-        </div>
-        <h2 className="text-2xl md:text-3xl font-cal font-bold text-foreground mb-3">
-          Malta Tax & Salary Guides
+    <section
+      aria-labelledby="popular-guides-heading"
+      className="mt-10 flex w-full flex-col gap-3 md:mt-14 md:gap-5 lg:mt-16"
+    >
+      <div className="flex items-baseline justify-between">
+        <h2
+          id="popular-guides-heading"
+          className="font-cal text-[22px] leading-[1.33] lg:text-2xl"
+        >
+          Popular Guides
         </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto text-sm">
-          In-depth guides on Malta&apos;s tax system, employment regulations,
-          and financial planning.
-        </p>
-      </div>
-
-      {/* Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
-        {featuredGuides.map((guide) => (
-          <GuideCardComponent key={guide.href} guide={guide} />
-        ))}
-      </div>
-
-      {/* View All Link */}
-      <div className="text-center mt-6">
         <Link
           href="/blog"
-          className={cn(
-            "inline-flex items-center gap-2 px-6 py-3 rounded-full",
-            "bg-primary/10 text-primary font-medium",
-            "hover:bg-primary hover:text-primary-foreground",
-            "transition-all duration-300",
-          )}
+          className="hidden items-center gap-1.5 text-sm font-semibold text-primary-ink hover:underline md:inline-flex"
         >
-          <TrendingUp className="h-4 w-4" />
-          <span>View All 30+ Guides</span>
-          <ArrowRight className="h-4 w-4" />
+          All Guides
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
+      </div>
+
+      <div className="overflow-hidden rounded-2xl border bg-card md:hidden">
+        {featuredGuides.map((guide) => (
+          <Link
+            key={guide.href}
+            href={guide.href}
+            className="flex min-h-16 items-center justify-between gap-3 border-b px-4 py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+          >
+            <span className="flex flex-col gap-0.5">
+              <span className="text-xs font-semibold uppercase tracking-[0.06em] text-secondary-ink">
+                {guide.category}
+              </span>
+              <span className="text-base font-semibold">{guide.title}</span>
+            </span>
+            <ChevronRight
+              className="h-4 w-4 shrink-0 text-muted-foreground"
+              aria-hidden="true"
+            />
+          </Link>
+        ))}
+        <Link
+          href="/blog"
+          className="flex h-[52px] items-center justify-center gap-2 text-[15px] font-semibold text-primary-ink"
+        >
+          All Guides
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      </div>
+
+      <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+        {featuredGuides.map((guide) => (
+          <Link
+            key={guide.href}
+            href={guide.href}
+            className="flex flex-col gap-2 rounded-2xl border bg-card p-[22px] transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.06em] text-secondary-ink">
+              {guide.category}
+            </span>
+            <span className="font-cal text-xl leading-[1.4]">
+              {guide.title}
+            </span>
+            <span className="text-sm text-muted-foreground">
+              {guide.description}
+            </span>
+          </Link>
+        ))}
       </div>
     </section>
   );
