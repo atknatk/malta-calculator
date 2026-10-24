@@ -1,8 +1,8 @@
 import { MarketingLayout } from "@/components/layout/marketing-layout";
-import { Shell } from "@/components/dashboard/shell";
-import { BackButton } from "@/components/layout/back-button";
-import { RelatedGuide } from "@/components/marketing/related-guide";
-import { RelatedCalculators } from "@/components/marketing/related-calculators";
+import { CalculatorPageHeader } from "@/components/calculator-page/calculator-page-header";
+import { CalculatorInfoSection } from "@/components/calculator-page/calculator-info-section";
+import { RelatedCalculatorCards } from "@/components/calculator-page/related-calculator-cards";
+import type { FaqItem } from "@/components/calculator-page/faq-accordion";
 import { AffiliateCard } from "@/components/affiliate/affiliate-card";
 import type { Metadata } from "next";
 import {
@@ -36,6 +36,35 @@ export const metadata: Metadata = {
   },
 };
 
+// Görünür SSS ve FAQ JSON-LD aynı listeden
+const faq: FaqItem[] = [
+  {
+    question: "What is the overtime rate in Malta?",
+    answer:
+      "In Malta, the standard overtime rate is 1.5 times (150%) the normal hourly rate for overtime worked on regular working days and weekends. This rate applies under the Employment and Industrial Relations Act (EIRA) and applicable Wage Regulation Orders.",
+  },
+  {
+    question: "What rate is paid for working on public holidays in Malta?",
+    answer:
+      "Employees who are required to work on public holidays in Malta are entitled to double pay — 2 times (200%) their normal hourly rate. This applies to all 14 official Maltese public holidays. If the public holiday falls on a weekly rest day, additional compensatory leave may also be applicable.",
+  },
+  {
+    question: "Is there a maximum number of overtime hours in Malta?",
+    answer:
+      "Yes. Under EU Working Time Directive regulations as applied in Malta, the maximum average working time including overtime is 48 hours per week, averaged over a reference period (usually 17 weeks). Employees may opt out of the 48-hour limit individually in writing, but this cannot be made a condition of employment.",
+  },
+  {
+    question: "Can employers make overtime mandatory in Malta?",
+    answer:
+      "Employers in Malta can require employees to work reasonable overtime under certain circumstances, especially if specified in the employment contract or applicable Wage Regulation Order. However, employees cannot be forced to work beyond the statutory maximum hours, and overtime must be compensated at the correct statutory rates.",
+  },
+  {
+    question: "How is overtime pay calculated for public holidays in Malta?",
+    answer:
+      "For public holiday overtime in Malta, the calculation is: (Annual Salary ÷ 52 ÷ Standard Weekly Hours) × 2. For example, if an employee earns €25,000 per year and works 40 hours per week, their hourly rate is approximately €12.02, and their public holiday overtime rate would be €24.04 per hour.",
+  },
+];
+
 export default function OvertimePage() {
   return (
     <MarketingLayout>
@@ -62,50 +91,35 @@ export default function OvertimePage() {
           "EIRA-compliant calculations",
         ]}
       />
-      <CustomFAQJsonLd
-        questions={[
-          {
-            question: "What is the overtime rate in Malta?",
-            answer:
-              "In Malta, the standard overtime rate is 1.5 times (150%) the normal hourly rate for overtime worked on regular working days and weekends. This rate applies under the Employment and Industrial Relations Act (EIRA) and applicable Wage Regulation Orders.",
-          },
-          {
-            question:
-              "What rate is paid for working on public holidays in Malta?",
-            answer:
-              "Employees who are required to work on public holidays in Malta are entitled to double pay — 2 times (200%) their normal hourly rate. This applies to all 14 official Maltese public holidays. If the public holiday falls on a weekly rest day, additional compensatory leave may also be applicable.",
-          },
-          {
-            question: "Is there a maximum number of overtime hours in Malta?",
-            answer:
-              "Yes. Under EU Working Time Directive regulations as applied in Malta, the maximum average working time including overtime is 48 hours per week, averaged over a reference period (usually 17 weeks). Employees may opt out of the 48-hour limit individually in writing, but this cannot be made a condition of employment.",
-          },
-          {
-            question: "Can employers make overtime mandatory in Malta?",
-            answer:
-              "Employers in Malta can require employees to work reasonable overtime under certain circumstances, especially if specified in the employment contract or applicable Wage Regulation Order. However, employees cannot be forced to work beyond the statutory maximum hours, and overtime must be compensated at the correct statutory rates.",
-          },
-          {
-            question:
-              "How is overtime pay calculated for public holidays in Malta?",
-            answer:
-              "For public holiday overtime in Malta, the calculation is: (Annual Salary ÷ 52 ÷ Standard Weekly Hours) × 2. For example, if an employee earns €25,000 per year and works 40 hours per week, their hourly rate is approximately €12.02, and their public holiday overtime rate would be €24.04 per hour.",
-          },
+      <CustomFAQJsonLd questions={faq} />
+      <CalculatorPageHeader
+        breadcrumbs={[
+          { name: "Home", href: "/" },
+          { name: "Calculators", href: "/calculators" },
+          { name: "Overtime Calculator" },
         ]}
+        category="Employment & Salary"
+        title="Overtime Calculator"
+        description="Calculate your overtime pay based on Malta’s employment regulations."
+        meta="Updated for 2026 · Based on the Employment and Industrial Relations Act (EIRA)"
       />
-      <main role="main" aria-label="Overtime Calculator">
-        <BackButton href="/calculators" />
-        <Shell className="max-w-4xl py-8">
-          <OvertimeCalculator />
-          <RelatedGuide
-            href="/blog/malta-overtime-pay-rates-2026"
-            title="Malta Overtime Pay Rates 2026"
-            description="Complete guide to overtime regulations, pay rates, and compensation in Malta."
-          />
-          <AffiliateCard slug="overtime" />
-          <RelatedCalculators slug="overtime" />
-        </Shell>
-      </main>
+      <OvertimeCalculator />
+      <CalculatorInfoSection
+        notes={[
+          "Maximum 48 hours a week on average, including overtime.",
+          "Rates may vary by sector under Wage Regulation Orders.",
+          "Overtime must be agreed upon by both parties.",
+        ]}
+        guide={{
+          href: "/blog/malta-overtime-pay-rates-2026",
+          title: "Malta Overtime Pay Rates 2026",
+          description:
+            "Complete guide to overtime regulations, pay rates, and compensation in Malta.",
+        }}
+        faq={faq}
+      />
+      <AffiliateCard slug="overtime" />
+      <RelatedCalculatorCards slug="overtime" />
     </MarketingLayout>
   );
 }

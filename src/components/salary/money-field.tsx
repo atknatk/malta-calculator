@@ -17,6 +17,8 @@ interface Props {
   emptyWhenZero?: boolean;
   disabled?: boolean;
   className?: string;
+  /** Input'a ek sınıf (ör. ortalı saat alanı) */
+  inputClassName?: string;
   "aria-label"?: string;
   "aria-describedby"?: string;
 }
@@ -46,6 +48,7 @@ export function MoneyField({
   emptyWhenZero = false,
   disabled,
   className,
+  inputClassName,
   ...aria
 }: Props) {
   const [text, setText] = React.useState(() => display(value, emptyWhenZero));
@@ -103,6 +106,7 @@ export function MoneyField({
             "text-[26px] font-semibold tracking-[-0.01em] sm:text-[30px]",
           size === "md" && "text-base font-medium",
           size === "sm" && "text-right text-sm",
+          inputClassName,
         )}
         {...aria}
       />
