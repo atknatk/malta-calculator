@@ -21,6 +21,7 @@ import SalaryPlaygroundCards from "./salary/_components/play-ground-cart";
 import { defaultSalaryParams } from "./salary/search-params";
 import { CompactHero } from "@/components/marketing/compact-hero";
 import { AffiliateCard } from "@/components/affiliate/affiliate-card";
+import { SponsorStrip } from "@/components/marketing/sponsor-strip";
 
 // Static page - SEO için force-static
 export const revalidate = false;
@@ -82,6 +83,8 @@ export default function Home() {
         {/* Featured Guides - SEO Internal Linking */}
         <FeaturedGuides />
       </main>
+
+      <SponsorStrip className="mt-10 md:mt-12 lg:mt-14" />
     </MarketingLayout>
   );
 }

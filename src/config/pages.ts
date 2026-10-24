@@ -2,6 +2,8 @@ import { ValidIcon } from "@/components/icons";
 
 export type Page = {
   title: string;
+  /** Masaüstü pill nav için kısa etiket */
+  shortTitle?: string;
   description: string;
   href: string;
   icon: ValidIcon;
@@ -204,6 +206,7 @@ export const marketingPagesConfig = [
   {
     href: "/salary",
     title: "Salary Calculator",
+    shortTitle: "Salary",
     description: "Calculate net salary with tax, SSC & COLA",
     segment: "salary",
     icon: "candlestick-chart",
@@ -211,13 +214,14 @@ export const marketingPagesConfig = [
   {
     href: "/calculators",
     title: "All Calculators",
+    shortTitle: "Calculators",
     description: "Browse all 9+ Malta financial calculators",
     segment: "calculators",
     icon: "layout-dashboard",
   },
   {
     href: "/blog",
-    title: "Blog",
+    title: "Guides",
     description: "Guides, tips, and Malta financial information",
     segment: "blog",
     icon: "book",
