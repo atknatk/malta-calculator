@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Check, CheckCircle2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PricingCardProps {
   plan: "free" | "basic" | "pro";
@@ -11,6 +13,10 @@ interface PricingCardProps {
   isLoggedIn: boolean;
   isCurrent: boolean;
   isPopular?: boolean;
+  /** "Up to 10 employees · 10 payslips a month" */
+  limit: string;
+  /** Ekip sayısı yardımcısına göre önerilen plan */
+  fits?: boolean;
 }
 
 export default function PricingCard({
@@ -21,6 +27,8 @@ export default function PricingCard({
   isLoggedIn,
   isCurrent,
   isPopular = false,
+  limit,
+  fits = false,
 }: PricingCardProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -58,74 +66,62 @@ export default function PricingCard({
     }
   };
 
+  const priceLabel =
+    price > 0
+      ? `€${price.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+      : "€0";
+
   return (
-    <div
-      className={`relative rounded-2xl border ${
-        isPopular
-          ? "border-brand-from shadow-xl shadow-brand-from/10"
-          : "border-slate-200 dark:border-slate-700"
-      } bg-white p-6 dark:bg-slate-800`}
-    >
-      {/* Popular Badge */}
-      {isPopular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="rounded-full bg-brand-from px-3 py-1 text-xs font-semibold text-white">
-            Most Popular
-          </span>
-        </div>
+    <article
+      aria-label={`${name} plan${fits ? ", fits your team" : ""}`}
+      className={cn(
+        "relative flex flex-col gap-5 rounded-3xl border bg-card px-5 pb-[22px] pt-7 transition-[border-color,box-shadow] md:px-6 lg:px-7 lg:pb-7 lg:pt-8",
+        fits
+          ? "border-primary shadow-[0_0_0_1px_hsl(var(--primary)),var(--shadow-elevation)]"
+          : isPopular
+            ? "border-primary/40 shadow-[var(--shadow-elevation)]"
+            : "",
       )}
-
-      {/* Plan Name */}
-      <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-white">
-        {name}
-      </h3>
-
-      {/* Price */}
-      <div className="mb-6">
-        <span className="text-4xl font-bold text-slate-900 dark:text-white">
-          €{price}
+    >
+      {isPopular ? (
+        <span className="absolute -top-[13px] left-1/2 inline-flex h-[26px] -translate-x-1/2 items-center whitespace-nowrap rounded-full bg-primary px-3 text-xs font-semibold text-primary-foreground">
+          Most Popular
         </span>
-        {price > 0 && (
-          <span className="text-slate-500 dark:text-slate-400">/month</span>
-        )}
+      ) : null}
+
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="font-cal text-2xl leading-[1.2]">{name}</h2>
+        {fits ? (
+          <span className="inline-flex h-[26px] items-center gap-1.5 rounded-full bg-success/10 px-2.5 text-xs font-semibold text-success-ink">
+            <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+            Fits your team
+          </span>
+        ) : null}
       </div>
 
-      {/* Features */}
-      <ul className="mb-6 space-y-3">
-        {features.map((feature, index) => (
-          <li
-            key={index}
-            className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400"
-          >
-            <svg
-              className="h-5 w-5 flex-shrink-0 text-brand-from"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            {feature}
-          </li>
-        ))}
-      </ul>
+      <div className="flex flex-col gap-1.5">
+        <span className="flex items-baseline gap-1.5">
+          <span className="text-[44px] font-bold leading-none tracking-[-0.02em] tabular-nums lg:text-5xl">
+            {priceLabel}
+          </span>
+          {price > 0 ? (
+            <span className="text-base text-muted-foreground">/month</span>
+          ) : null}
+        </span>
+        <span className="text-sm text-muted-foreground">{limit}</span>
+      </div>
 
-      {/* CTA Button */}
       <button
         onClick={handleUpgrade}
         disabled={loading || isCurrent}
-        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition ${
+        className={cn(
+          "flex h-12 items-center justify-center rounded-xl border text-[15px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60",
           isPopular
-            ? "bg-brand text-white hover:bg-brand-hover disabled:bg-brand-muted"
+            ? "border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
             : plan === "free"
-              ? "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
-              : "bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
-        } disabled:cursor-not-allowed`}
+              ? "border-field bg-card text-foreground hover:bg-accent"
+              : "border-transparent bg-foreground text-background hover:bg-foreground/90",
+        )}
       >
         {loading
           ? "Loading..."
@@ -135,6 +131,21 @@ export default function PricingCard({
               ? "Get Started Free"
               : `Upgrade to ${name}`}
       </button>
-    </div>
+
+      <ul className="flex flex-col gap-3 border-t pt-5">
+        {features.map((feature) => (
+          <li
+            key={feature}
+            className="flex items-start gap-2.5 text-[15px] leading-[1.45]"
+          >
+            <Check
+              className="mt-0.5 h-[18px] w-[18px] shrink-0 text-success"
+              aria-hidden="true"
+            />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </article>
   );
 }

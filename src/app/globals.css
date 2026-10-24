@@ -730,6 +730,11 @@
     color: color-mix(in srgb, hsl(var(--primary)) 75%, hsl(var(--foreground)));
   }
 
+  /* success/10 zemin üzerinde success metin (rozetler): açık temada düz success 4.43:1 */
+  .text-success-ink {
+    color: color-mix(in srgb, hsl(var(--success)) 75%, hsl(var(--foreground)));
+  }
+
   /* secondary metin (rehber etiketleri): Malta açıktaki %48 mavi kartta 2.85:1; %60 karışımla 5.74:1 */
   .text-secondary-ink {
     color: color-mix(in srgb, hsl(var(--secondary)) 60%, hsl(var(--foreground)));
