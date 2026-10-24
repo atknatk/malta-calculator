@@ -1,306 +1,407 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
-import { Clock, Euro, Timer, Info, Percent } from "lucide-react";
+import Link from "next/link";
+import { useMemo, useRef, useState } from "react";
+import { ArrowRight, Check, Copy, Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { NumericInput } from "@/components/ui/numeric-input";
+import { MoneyField } from "@/components/salary/money-field";
+import { SegmentedControl } from "@/components/salary/segmented-control";
+import { StickyResultBar } from "@/components/calculator-page/sticky-result-bar";
 import {
-  calculateOvertime,
   calculateHourlyRate,
-  formatCurrency,
+  calculateOvertime,
   getOvertimeRates,
-  type OvertimeOutput,
   type OvertimeType,
 } from "@/utils/overtime-calculator";
 
-// Premium Toggle Group
-function ToggleGroup<T extends string>({
-  options,
-  value,
-  onChange,
-  labels,
-}: {
-  options: readonly T[];
-  value: T;
-  onChange: (value: T) => void;
-  labels?: Partial<Record<T, string>>;
-}) {
-  return (
-    <div className="w-full inline-flex items-center rounded-lg border border-input bg-background shadow-sm">
-      {options.map((option, index) => (
-        <button
-          key={option}
-          type="button"
-          onClick={() => onChange(option)}
-          className={cn(
-            "flex-1 relative font-medium transition-all duration-200 h-12 text-sm px-3",
-            "hover:bg-accent hover:text-accent-foreground",
-            "focus:z-10 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1",
-            index === 0 && "rounded-l-lg",
-            index === options.length - 1 && "rounded-r-lg",
-            index !== 0 && "border-l border-input",
-            value === option
-              ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-              : "bg-background text-foreground",
-          )}
-        >
-          {labels?.[option] || option}
-        </button>
-      ))}
-    </div>
-  );
-}
+const euro = new Intl.NumberFormat("en-GB", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+const formatEuro = (value: number) => `€${euro.format(value)}`;
+const formatHours = (value: number) =>
+  (Math.round(value * 100) / 100).toLocaleString("en-GB", {
+    maximumFractionDigits: 2,
+  });
+
+const basisOptions = [
+  { value: "hourly", label: "Hourly rate" },
+  { value: "annual", label: "Annual salary" },
+] as const;
+
+// Mobilde kısa etiketler (short / shortSub)
+const typeOptions: {
+  value: OvertimeType;
+  label: string;
+  sub: string;
+  short: string;
+  shortSub: string;
+}[] = [
+  {
+    value: "weekday",
+    label: "Weekday",
+    sub: "1.5× rate",
+    short: "Weekday",
+    shortSub: "1.5×",
+  },
+  {
+    value: "sunday",
+    label: "Sunday or rest day",
+    sub: "2× rate",
+    short: "Rest day",
+    shortSub: "Sunday · 2×",
+  },
+  {
+    value: "holiday",
+    label: "Public holiday",
+    sub: "2× rate",
+    short: "Holiday",
+    shortSub: "Public · 2×",
+  },
+];
 
 export function OvertimeCalculator() {
-  const [inputType, setInputType] = useState<"hourly" | "annual">("hourly");
+  const [basis, setBasis] = useState<"hourly" | "annual">("hourly");
   const [hourlyRate, setHourlyRate] = useState(15);
   const [annualSalary, setAnnualSalary] = useState(25000);
   const [overtimeHours, setOvertimeHours] = useState(10);
   const [overtimeType, setOvertimeType] = useState<OvertimeType>("weekday");
+  const [copied, setCopied] = useState(false);
+  const resultRef = useRef<HTMLElement>(null);
 
   const effectiveHourlyRate =
-    inputType === "hourly" ? hourlyRate : calculateHourlyRate(annualSalary);
+    basis === "hourly" ? hourlyRate : calculateHourlyRate(annualSalary);
 
-  const result = useMemo<OvertimeOutput>(() => {
-    return calculateOvertime({
-      hourlyRate: effectiveHourlyRate,
-      overtimeHours,
-      overtimeType,
-    });
-  }, [effectiveHourlyRate, overtimeHours, overtimeType]);
-
+  const result = useMemo(
+    () =>
+      calculateOvertime({
+        hourlyRate: effectiveHourlyRate,
+        overtimeHours,
+        overtimeType,
+      }),
+    [effectiveHourlyRate, overtimeHours, overtimeType],
+  );
   const rates = getOvertimeRates();
+  const multiplier = `${result.multiplier.toFixed(1)}×`;
+
+  const stepHours = (delta: number) =>
+    setOvertimeHours((hours) =>
+      Math.max(0, Math.round((hours + delta) * 100) / 100),
+    );
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `${window.location.origin}${window.location.pathname}`,
+      );
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  const steps = [
+    {
+      title: "Your hourly rate",
+      rule:
+        basis === "hourly"
+          ? "Your normal hourly rate, as entered."
+          : "Annual salary ÷ (40 hours × 52 weeks).",
+      live: `${formatEuro(result.baseHourlyRate)} an hour`,
+    },
+    {
+      title: "Your overtime rate",
+      rule: "Hourly rate × 1.5 on weekdays, or × 2 on Sundays, rest days and public holidays.",
+      live: `${formatEuro(result.baseHourlyRate)} × ${multiplier.slice(0, -1)} = ${formatEuro(result.overtimeRate)}`,
+    },
+    {
+      title: "Your overtime pay",
+      rule: "Overtime rate × the overtime hours you worked.",
+      live: `${formatEuro(result.overtimeRate)} × ${formatHours(result.hours)} h = ${formatEuro(result.totalOvertimePay)}`,
+    },
+  ];
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center space-y-4"
+    <div className="flex w-full flex-col">
+      <section
+        aria-label="Calculator"
+        className="mt-5 grid items-start gap-4 md:mt-7 md:grid-cols-[minmax(0,1fr)_320px] md:gap-5 lg:mt-8 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-6"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-          <Clock className="h-4 w-4" />
-          Employment Tool
-        </div>
-        <h1 className="font-cal text-3xl md:text-4xl font-bold">
-          Overtime Calculator
-        </h1>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          Calculate your overtime pay based on Malta&apos;s employment
-          regulations.
-        </p>
-      </motion.div>
-
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Input Section */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-6"
-        >
-          <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/5 via-background to-secondary/5 border border-border/50 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-primary/10">
-                <Euro className="h-5 w-5 text-primary" />
-              </div>
-              <span className="font-semibold">Rate Details</span>
-            </div>
-
-            {/* Input Type Toggle */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground/70">
-                Calculate from
-              </label>
-              <ToggleGroup
-                options={["hourly", "annual"] as const}
-                value={inputType}
-                onChange={setInputType}
-                labels={{
-                  hourly: "💵 Hourly Rate",
-                  annual: "📊 Annual Salary",
-                }}
-              />
-            </div>
-
-            {/* Rate Input */}
-            {inputType === "hourly" ? (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
-                  <Euro className="h-4 w-4 text-primary/70" />
-                  Hourly Rate
-                </label>
-                <NumericInput
-                  value={hourlyRate}
-                  onChange={(v) => setHourlyRate(v === "" ? 0 : v)}
-                  min={0}
-                  allowDecimals={true}
-                  suffix="€/hr"
-                  className="h-14 px-4 text-lg"
-                />
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
-                  <Euro className="h-4 w-4 text-primary/70" />
-                  Annual Gross Salary
-                </label>
-                <NumericInput
-                  value={annualSalary}
-                  onChange={(v) => setAnnualSalary(v === "" ? 0 : v)}
-                  min={0}
-                  allowDecimals={false}
-                  suffix="€/yr"
-                  className="h-14 px-4 text-lg"
-                />
-                <p className="text-xs text-muted-foreground">
-                  Hourly rate: {formatCurrency(effectiveHourlyRate)}/hr (based
-                  on 40hr/week)
-                </p>
-              </div>
-            )}
-
-            {/* Overtime Hours */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
-                <Timer className="h-4 w-4 text-primary/70" />
-                Overtime Hours
-              </label>
-              <NumericInput
-                value={overtimeHours}
-                onChange={(v) => setOvertimeHours(v === "" ? 0 : v)}
-                min={0}
-                allowDecimals={true}
-                className="h-14 px-4 text-lg"
-              />
-            </div>
-
-            {/* Overtime Type */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground/70">
-                Overtime Type
-              </label>
-              <ToggleGroup
-                options={["weekday", "sunday", "holiday"] as const}
-                value={overtimeType}
-                onChange={setOvertimeType}
-                labels={{
-                  weekday: "📅 Weekday",
-                  sunday: "🌞 Sunday",
-                  holiday: "🎉 Holiday",
-                }}
-              />
-            </div>
+        <div className="flex flex-col gap-[22px] rounded-[20px] border bg-card p-[18px] shadow-sm md:gap-6 md:rounded-3xl md:p-6 lg:gap-[26px] lg:px-8 lg:py-7">
+          {/* Mobil: ödeme türü ayrı satırda */}
+          <div className="flex flex-col gap-2 sm:hidden">
+            <span id="ot-basis-mobile" className="text-sm font-semibold">
+              Your pay
+            </span>
+            <SegmentedControl
+              labelledBy="ot-basis-mobile"
+              options={basisOptions}
+              value={basis}
+              onChange={setBasis}
+              stretch
+              itemClassName="h-[42px]"
+            />
           </div>
-        </motion.div>
-
-        {/* Result Section */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-6"
-        >
-          {/* Main Result Card */}
-          <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-primary/20">
-                <Euro className="h-5 w-5 text-primary" />
-              </div>
-              <span className="font-semibold">Overtime Pay</span>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between gap-2">
+              <label htmlFor="ot-amount" className="text-sm font-semibold">
+                {basis === "hourly"
+                  ? "Normal hourly rate"
+                  : "Annual gross salary"}
+              </label>
+              <SegmentedControl
+                ariaLabel="Pay basis"
+                options={basisOptions}
+                value={basis}
+                onChange={setBasis}
+                className="hidden sm:inline-flex"
+                itemClassName="h-[30px] px-3 text-[13px]"
+              />
             </div>
+            <MoneyField
+              id="ot-amount"
+              size="lg"
+              value={basis === "hourly" ? hourlyRate : annualSalary}
+              onValueChange={
+                basis === "hourly" ? setHourlyRate : setAnnualSalary
+              }
+              suffix={basis === "hourly" ? "/ hour" : "/ year"}
+              aria-describedby="ot-amount-help"
+            />
+            <p
+              id="ot-amount-help"
+              className="text-[13px] text-muted-foreground"
+            >
+              {basis === "hourly"
+                ? "Your normal hourly rate before overtime."
+                : `Hourly rate: ${formatEuro(effectiveHourlyRate)} (based on 40 hours × 52 weeks).`}
+            </p>
+          </div>
 
-            <div className="text-center py-6">
-              <motion.div
-                key={result.totalOvertimePay}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="text-5xl md:text-6xl font-bold text-primary"
+          <div className="flex flex-col gap-2">
+            <label htmlFor="ot-hours" className="text-sm font-semibold">
+              Overtime hours
+            </label>
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                aria-label="One hour less"
+                onClick={() => stepHours(-1)}
+                className="inline-flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-xl border border-field bg-card transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                {formatCurrency(result.totalOvertimePay)}
-              </motion.div>
-              <p className="text-muted-foreground mt-2">{result.description}</p>
+                <Minus className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <MoneyField
+                id="ot-hours"
+                prefix={null}
+                value={overtimeHours}
+                onValueChange={setOvertimeHours}
+                suffix="hours"
+                aria-describedby="ot-hours-help"
+                className="h-[52px] flex-1 px-4"
+                inputClassName="text-center text-xl font-semibold"
+              />
+              <button
+                type="button"
+                aria-label="One hour more"
+                onClick={() => stepHours(1)}
+                className="inline-flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-xl border border-field bg-card transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Plus className="h-5 w-5" aria-hidden="true" />
+              </button>
             </div>
-
-            {/* Breakdown */}
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
-                <span className="text-sm text-muted-foreground">
-                  Base Hourly Rate
-                </span>
-                <span className="font-semibold">
-                  {formatCurrency(result.baseHourlyRate)}/hr
-                </span>
-              </div>
-              <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
-                <span className="text-sm text-muted-foreground">
-                  Multiplier
-                </span>
-                <span className="font-semibold text-primary">
-                  {result.multiplier}×
-                </span>
-              </div>
-              <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
-                <span className="text-sm text-muted-foreground">
-                  Overtime Rate
-                </span>
-                <span className="font-semibold">
-                  {formatCurrency(result.overtimeRate)}/hr
-                </span>
-              </div>
-              <div className="flex justify-between items-center p-3 rounded-xl bg-background/50">
-                <span className="text-sm text-muted-foreground">
-                  Hours Worked
-                </span>
-                <span className="font-semibold">{result.hours}h</span>
-              </div>
-            </div>
+            <p id="ot-hours-help" className="text-[13px] text-muted-foreground">
+              The overtime hours you want to price, for example one week or one
+              month.
+            </p>
           </div>
 
-          {/* Rate Table */}
-          <div className="p-4 rounded-xl bg-muted/30">
-            <div className="flex items-center gap-2 mb-3">
-              <Percent className="h-4 w-4 text-primary" />
-              <span className="font-medium text-sm">Malta Overtime Rates</span>
+          <div className="flex flex-col gap-2">
+            <span id="ot-type" className="text-sm font-semibold">
+              When you work the overtime
+            </span>
+            <div
+              role="group"
+              aria-labelledby="ot-type"
+              className="grid grid-cols-3 gap-1 rounded-xl border border-field p-1"
+            >
+              {typeOptions.map((option) => {
+                const isActive = option.value === overtimeType;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setOvertimeType(option.value)}
+                    className={cn(
+                      "flex min-h-14 flex-col items-center justify-center gap-px rounded-lg px-2 text-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "text-foreground hover:bg-accent",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "text-[15px]",
+                        isActive ? "font-semibold" : "font-medium",
+                      )}
+                    >
+                      <span className="sm:hidden">{option.short}</span>
+                      <span className="hidden sm:inline">{option.label}</span>
+                    </span>
+                    <span className="text-xs">
+                      <span className="sm:hidden">{option.shortSub}</span>
+                      <span className="hidden sm:inline">{option.sub}</span>
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <div className="space-y-2">
-              {rates.map((rate) => (
+          </div>
+        </div>
+
+        <aside
+          ref={resultRef}
+          id="overtime-result"
+          aria-label="Your result"
+          className="flex scroll-mt-4 flex-col gap-4 rounded-[20px] border bg-card p-[18px] shadow-[var(--shadow-elevation)] md:sticky md:top-4 md:rounded-3xl md:p-[22px] lg:top-6 lg:gap-5 lg:p-7"
+        >
+          <h2 className="text-sm font-semibold text-muted-foreground">
+            Overtime pay
+          </h2>
+          <div aria-live="polite" className="flex flex-col gap-1 lg:gap-1.5">
+            <span className="text-[42px] font-bold leading-[1.1] tracking-[-0.03em] tabular-nums md:text-[38px] lg:text-[52px] lg:leading-[1.05]">
+              {formatEuro(Math.max(0, result.totalOvertimePay))}
+            </span>
+            <p className="text-sm text-muted-foreground">
+              {result.description} · gross
+              <span className="hidden lg:inline">, before tax and SSC</span>
+            </p>
+          </div>
+
+          <dl className="flex flex-col text-[15px] tabular-nums">
+            {[
+              [
+                "Normal hourly rate",
+                `${formatEuro(result.baseHourlyRate)} / hr`,
+              ],
+              ["Multiplier", multiplier],
+              ["Overtime rate", `${formatEuro(result.overtimeRate)} / hr`],
+              ["Hours", `${formatHours(result.hours)} h`],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="flex h-11 items-center justify-between border-b"
+              >
+                <dt className="text-muted-foreground">{label}</dt>
+                <dd className="font-medium">{value}</dd>
+              </div>
+            ))}
+            <div className="flex h-12 items-center justify-between">
+              <dt className="font-semibold">Overtime pay</dt>
+              <dd className="text-base font-bold">
+                {formatEuro(result.totalOvertimePay)}
+              </dd>
+            </div>
+          </dl>
+
+          <div className="flex flex-col gap-1.5 rounded-[14px] bg-muted px-3.5 py-3 lg:px-4 lg:py-3.5">
+            <span className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+              Malta overtime rates
+            </span>
+            {rates.map((rate) => {
+              const isActive = rate.type === overtimeType;
+              return (
                 <div
                   key={rate.type}
                   className={cn(
-                    "flex justify-between items-center p-2 rounded-lg text-sm",
-                    rate.type === overtimeType ? "bg-primary/10" : "",
+                    "-mx-2 flex h-[34px] items-center justify-between rounded-lg px-2 text-sm lg:h-8",
+                    isActive && "bg-primary/15 font-semibold",
                   )}
                 >
                   <span>{rate.label}</span>
-                  <span className="font-medium">
-                    {rate.rate} ({rate.percent})
+                  <span className="tabular-nums">
+                    {rate.rate}{" "}
+                    <span className="font-normal text-muted-foreground">
+                      ({rate.percent})
+                    </span>
                   </span>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
-          {/* Info Box */}
-          <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
-            <div className="flex gap-3">
-              <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-muted-foreground">
-                <p className="font-medium text-foreground mb-1">
-                  Important Notes
-                </p>
-                <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>Maximum 48 hours/week average (including overtime)</li>
-                  <li>Rates may vary by sector (Wage Regulation Orders)</li>
-                  <li>Overtime must be agreed upon by both parties</li>
-                </ul>
-              </div>
-            </div>
+          <div className="flex flex-col gap-2 lg:flex-row">
+            <button
+              type="button"
+              onClick={copyLink}
+              className="inline-flex h-12 shrink-0 items-center justify-center lg:px-4 gap-2 rounded-[10px] border border-field bg-card text-[15px] font-semibold transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:h-11 md:text-sm"
+            >
+              {copied ? (
+                <Check className="h-4 w-4 text-success" aria-hidden="true" />
+              ) : (
+                <Copy className="h-4 w-4" aria-hidden="true" />
+              )}
+              <span aria-live="polite">
+                {copied ? "Link copied" : "Copy link"}
+              </span>
+            </button>
+            <Link
+              href="/"
+              className="hidden h-11 flex-1 items-center justify-center whitespace-nowrap rounded-[10px] border border-field bg-card px-3 text-sm font-semibold transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:inline-flex"
+            >
+              Net pay in Salary Calculator
+            </Link>
           </div>
-        </motion.div>
-      </div>
+          <Link
+            href="/"
+            className="flex min-h-11 items-center justify-between gap-2.5 border-t pt-3 text-sm font-semibold text-primary-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
+          >
+            <span>See your net pay in the Salary Calculator</span>
+            <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+          </Link>
+        </aside>
+      </section>
+
+      <section
+        aria-labelledby="ot-how"
+        className="mt-10 flex flex-col gap-4 md:mt-14 md:gap-5 lg:mt-16"
+      >
+        <h2
+          id="ot-how"
+          className="font-cal text-2xl leading-[1.25] lg:text-[28px]"
+        >
+          How it’s calculated
+        </h2>
+        <ol className="grid gap-3 md:grid-cols-3 md:gap-3.5 lg:gap-5">
+          {steps.map((step, index) => (
+            <li
+              key={step.title}
+              className="flex flex-col gap-2.5 rounded-2xl border bg-card p-[18px] lg:p-[22px]"
+            >
+              <span
+                aria-hidden="true"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground"
+              >
+                {index + 1}
+              </span>
+              <span className="text-base font-semibold">{step.title}</span>
+              <span className="text-sm text-muted-foreground">{step.rule}</span>
+              <span className="mt-auto border-t pt-2.5 text-[15px] font-semibold tabular-nums">
+                {step.live}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <StickyResultBar
+        targetRef={resultRef}
+        targetId="overtime-result"
+        label="Overtime pay"
+        value={formatEuro(Math.max(0, result.totalOvertimePay))}
+      />
     </div>
   );
 }
