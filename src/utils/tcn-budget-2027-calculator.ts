@@ -57,12 +57,15 @@ export interface TcnBudget2027Input {
 export interface TcnCostItem {
   key:
     | "permit"
+    | "renewal"
     | "infrastructure"
     | "transport"
     | "driving"
     | "atypical"
     | "childcare";
   label: string;
+  /** 2027'de ödenecek yıllık tutar (EUR) */
+  cost: number;
   /** 2026'ya göre yıllık ek maliyet (EUR) */
   extraCost: number;
   /** Çoğunlukla kim öder */
@@ -74,9 +77,13 @@ export interface TcnBudget2027Result {
   affected: boolean;
   reason?: string;
   items: TcnCostItem[];
+  /** Listelenen kalemlerin 2027 toplamı (EUR/yıl) */
+  totalYearly: number;
+  totalMonthly: number;
+  /** 2026'ya göre fark (EUR/yıl) */
   totalExtraYearly: number;
   totalExtraMonthly: number;
-  /** İşverenin tipik olarak üstlendiği kısım (başvuru ücreti artışı) */
+  /** İşverenin tipik olarak üstlendiği kısım (başvuru ücreti) */
   employerShare: number;
   /** Çalışan/hanenin üstlendiği kısım */
   householdShare: number;
@@ -85,6 +92,11 @@ export interface TcnBudget2027Result {
 function clamp(value: number, min: number, max: number): number {
   if (!Number.isFinite(value)) return min;
   return Math.min(max, Math.max(min, value));
+}
+
+/** 2026'da ücretsiz olan kalemler: 2027 tutarının tamamı ek maliyettir */
+function sameCost(amount: number): { cost: number; extraCost: number } {
+  return { cost: amount, extraCost: amount };
 }
 
 function round2(value: number): number {
@@ -99,6 +111,8 @@ export function calculateTcnBudget2027(
 ): TcnBudget2027Result {
   const empty = {
     items: [],
+    totalYearly: 0,
+    totalMonthly: 0,
     totalExtraYearly: 0,
     totalExtraMonthly: 0,
     employerShare: 0,
@@ -130,17 +144,28 @@ export function calculateTcnBudget2027(
     if (input.permitAction === "new") {
       items.push({
         key: "permit",
-        label: "Work permit application fee increase",
+        label: "Work permit application fee",
+        cost: c.PERMIT_APPLICATION_FEE_2027 * holders,
         extraCost:
           (c.PERMIT_APPLICATION_FEE_2027 - c.PERMIT_APPLICATION_FEE_2026) *
           holders,
         paidBy: "employer",
-        note: `€${c.PERMIT_APPLICATION_FEE_2026} → €${c.PERMIT_APPLICATION_FEE_2027} per new application`,
+        note: `€${c.PERMIT_APPLICATION_FEE_2027} per new application (was €${c.PERMIT_APPLICATION_FEE_2026})`,
+      });
+    } else {
+      items.push({
+        key: "renewal",
+        label: "Single permit renewal fee",
+        cost: c.PERMIT_RENEWAL_FEE * holders,
+        extraCost: 0,
+        paidBy: "employer",
+        note: `€${c.PERMIT_RENEWAL_FEE} per renewal (unchanged)`,
       });
     }
     items.push({
       key: "infrastructure",
       label: "Annual infrastructure contribution",
+      cost: c.INFRASTRUCTURE_CONTRIBUTION * holders,
       extraCost: c.INFRASTRUCTURE_CONTRIBUTION * holders,
       paidBy: "worker",
       note: `€${c.INFRASTRUCTURE_CONTRIBUTION} per person per year, on new applications and renewals (under-18s exempt)`,
@@ -151,7 +176,7 @@ export function calculateTcnBudget2027(
     items.push({
       key: "transport",
       label: "Public transport no longer free",
-      extraCost: round2(clamp(input.monthlyTransportCost, 0, 500) * 12),
+      ...sameCost(round2(clamp(input.monthlyTransportCost, 0, 500) * 12)),
       paidBy: "worker",
       note: "Free Tallinja travel limited to Maltese, EU citizens and long-term residents",
     });
@@ -162,7 +187,7 @@ export function calculateTcnBudget2027(
     items.push({
       key: "driving",
       label: "Driving licence administrative fee (Cat B/B1)",
-      extraCost: c.DRIVING_LICENCE_MONTHLY_FEE * months,
+      ...sameCost(c.DRIVING_LICENCE_MONTHLY_FEE * months),
       paidBy: "worker",
       note: `€${c.DRIVING_LICENCE_MONTHLY_FEE}/month on licences issued or renewed from 2027`,
     });
@@ -172,7 +197,7 @@ export function calculateTcnBudget2027(
     items.push({
       key: "atypical",
       label: "Atypical working hours cheque lost",
-      extraCost: c.ATYPICAL_CHEQUE_YEARLY,
+      ...sameCost(c.ATYPICAL_CHEQUE_YEARLY),
       paidBy: "worker",
       note: "Cheque no longer paid to TCNs without long-term residence",
     });
@@ -184,30 +209,32 @@ export function calculateTcnBudget2027(
     items.push({
       key: "childcare",
       label: "Free childcare not available (new registrations)",
-      extraCost: round2(
-        clamp(input.monthlyChildcareCost, 0, 3000) * months * children,
+      ...sameCost(
+        round2(clamp(input.monthlyChildcareCost, 0, 3000) * months * children),
       ),
       paidBy: "household",
       note: "Children already enrolled keep free childcare while they remain eligible",
     });
   }
 
-  const totalExtraYearly = round2(
-    items.reduce((sum, item) => sum + item.extraCost, 0),
-  );
-  const employerShare = round2(
-    items
-      .filter((i) => i.paidBy === "employer")
-      .reduce((sum, item) => sum + item.extraCost, 0),
+  const sum = (list: TcnCostItem[], field: "cost" | "extraCost"): number =>
+    round2(list.reduce((total, item) => total + item[field], 0));
+  const totalYearly = sum(items, "cost");
+  const totalExtraYearly = sum(items, "extraCost");
+  const employerShare = sum(
+    items.filter((i) => i.paidBy === "employer"),
+    "cost",
   );
 
   return {
     affected: true,
     items,
+    totalYearly,
+    totalMonthly: round2(totalYearly / 12),
     totalExtraYearly,
     totalExtraMonthly: round2(totalExtraYearly / 12),
     employerShare,
-    householdShare: round2(totalExtraYearly - employerShare),
+    householdShare: round2(totalYearly - employerShare),
   };
 }
 
