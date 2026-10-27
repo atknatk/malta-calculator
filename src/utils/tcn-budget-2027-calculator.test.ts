@@ -20,16 +20,19 @@ const base: TcnBudget2027Input = {
 };
 
 describe("calculateTcnBudget2027", () => {
-  it("renewal adds only the €400 infrastructure contribution", () => {
+  it("renewal costs €150 fee + €400 contribution, €400 more than 2026", () => {
     const r = calculateTcnBudget2027(base);
+    expect(r.totalYearly).toBe(550);
     expect(r.totalExtraYearly).toBe(400);
-    expect(r.employerShare).toBe(0);
+    expect(r.employerShare).toBe(150);
   });
 
-  it("new application adds €200 fee increase (employer) plus €400", () => {
+  it("new application shows the full €800 fee plus €400", () => {
     const r = calculateTcnBudget2027({ ...base, permitAction: "new" });
+    expect(r.items.find((i) => i.key === "permit")?.cost).toBe(800);
+    expect(r.totalYearly).toBe(1200);
     expect(r.totalExtraYearly).toBe(600);
-    expect(r.employerShare).toBe(200);
+    expect(r.employerShare).toBe(800);
     expect(r.householdShare).toBe(400);
   });
 
@@ -55,8 +58,9 @@ describe("calculateTcnBudget2027", () => {
       receivedAtypicalCheque: true,
       newChildcareChildren: 1,
     });
-    // 800 + 396 + 150 + 4800
+    // 800 + 396 + 150 + 4800 (+ 2 × €150 yenileme ücreti, değişmedi)
     expect(r.totalExtraYearly).toBe(6146);
+    expect(r.totalYearly).toBe(6446);
   });
 
   it("EU citizens and long-term residents are not affected", () => {

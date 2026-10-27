@@ -181,10 +181,10 @@ export function TcnBudget2027Calculator() {
           TCN Budget 2027 Cost Calculator
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto px-2">
-          Estimate how much more you will pay in 2027 as a non-EU worker in
-          Malta: new permit fees, the €400 infrastructure contribution, the
-          €83/month driving licence fee and the loss of free transport and
-          childcare.
+          Estimate what you will pay in 2027, and how much more than 2026, as a
+          non-EU worker in Malta: new permit fees, the €400 infrastructure
+          contribution, the €83/month driving licence fee and the loss of free
+          transport and childcare.
         </p>
       </motion.div>
 
@@ -327,7 +327,7 @@ export function TcnBudget2027Calculator() {
                 )}
               </div>
               <span className="font-semibold">
-                {result.affected ? "Extra Cost in 2027" : "Not Affected"}
+                {result.affected ? "Your 2027 Costs" : "Not Affected"}
               </span>
             </div>
 
@@ -335,17 +335,22 @@ export function TcnBudget2027Calculator() {
               <>
                 <div className="text-center py-4 sm:py-6">
                   <motion.div
-                    key={result.totalExtraYearly}
+                    key={result.totalYearly}
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary"
                   >
-                    {formatCurrency(result.totalExtraYearly)}
+                    {formatCurrency(result.totalYearly)}
                   </motion.div>
                   <p className="text-muted-foreground mt-2 text-sm sm:text-base">
-                    more per year (≈ {formatCurrency(result.totalExtraMonthly)}
-                    /month) than in 2026
+                    in 2027 (≈ {formatCurrency(result.totalMonthly)}/month)
                   </p>
+                  {result.totalExtraYearly > 0 && (
+                    <p className="mt-2 text-sm font-medium text-amber-600">
+                      {formatCurrency(result.totalExtraYearly)} more than in
+                      2026
+                    </p>
+                  )}
                 </div>
 
                 {result.items.length > 0 ? (
@@ -360,11 +365,14 @@ export function TcnBudget2027Calculator() {
                             {item.label}
                           </span>
                           <span className="font-semibold whitespace-nowrap">
-                            {formatCurrency(item.extraCost)}
+                            {formatCurrency(item.cost)}
                           </span>
                         </div>
                         <p className="text-xs text-muted-foreground/80 mt-1">
                           {item.note}
+                          {item.extraCost > 0 &&
+                            item.extraCost !== item.cost &&
+                            ` · +${formatCurrency(item.extraCost)} vs 2026`}
                           {item.paidBy === "employer" &&
                             " · usually paid by the employer"}
                         </p>
