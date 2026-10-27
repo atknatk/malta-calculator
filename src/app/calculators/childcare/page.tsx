@@ -19,6 +19,7 @@ import {
   CalculatorJsonLd,
   CustomFAQJsonLd,
 } from "@/components/json-ld";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -110,6 +111,15 @@ export default function ChildcarePage() {
         <BackButton href="/calculators" />
         <Shell className="max-w-4xl py-8">
           <ChildcareCalculator />
+          <Budget2027Update
+            title="Budget 2027: free childcare and non-EU families"
+            href="/blog/malta-budget-2027-third-country-nationals"
+            linkLabel="Read the Budget 2027 TCN guide"
+            items={[
+              "From 2027, new registrations in the Free Childcare Scheme are limited to Maltese, EU citizens and long-term residents",
+              "Children already enrolled keep free childcare while they remain eligible",
+            ]}
+          />
           <RelatedGuide
             href="/blog/malta-childrens-allowance-guide-2026"
             title="Malta Children's Allowance 2026: Complete Guide"

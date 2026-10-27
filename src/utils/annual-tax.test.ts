@@ -35,3 +35,42 @@ describe("calculateAnnualTax — küsuratlı gelir", () => {
     expect(r.marginalRate).toBe(0.25);
   });
 });
+
+describe("calculateAnnualTax — Budget 2027 aile dilimleri", () => {
+  it("bütçede yayımlanan örneklerle eşleşir", () => {
+    // CSB: parent 2+ @ €42.000 → 2026 €5.175, 2027 €3.550
+    expect(calculateAnnualTax(42000, 2026, "parent", 2).tax).toBe(5175);
+    expect(calculateAnnualTax(42000, 2027, "parent", 2).tax).toBe(3550);
+    // RSM: €30.000 için 2027 vergisi
+    expect(calculateAnnualTax(30000, 2027, "parent", 1).tax).toBe(2650);
+    expect(calculateAnnualTax(30000, 2027, "parent", 2).tax).toBe(900);
+    expect(calculateAnnualTax(30000, 2027, "married", 1).tax).toBe(1500);
+    expect(calculateAnnualTax(30000, 2027, "married", 2).tax).toBe(0);
+  });
+
+  it("çocuksuz kategoriler 2026 ile aynı kalır", () => {
+    for (const type of ["single", "married", "parent"] as const) {
+      expect(calculateAnnualTax(45000, 2027, type).tax).toBe(
+        calculateAnnualTax(45000, 2026, type).tax,
+      );
+    }
+  });
+
+  it("azami tasarruf 2025 married/parent'a göre bütçe rakamlarıyla aynı", () => {
+    // €100.000'de fark = 35% dilim indirim farkı
+    const married2025 = calculateAnnualTax(100000, 2025, "married").tax;
+    const parent2025 = calculateAnnualTax(100000, 2025, "parent").tax;
+    expect(
+      married2025 - calculateAnnualTax(100000, 2027, "married", 1).tax,
+    ).toBe(1450);
+    expect(
+      married2025 - calculateAnnualTax(100000, 2027, "married", 2).tax,
+    ).toBe(4050);
+    expect(parent2025 - calculateAnnualTax(100000, 2027, "parent", 1).tax).toBe(
+      1150,
+    );
+    expect(parent2025 - calculateAnnualTax(100000, 2027, "parent", 2).tax).toBe(
+      3250,
+    );
+  });
+});

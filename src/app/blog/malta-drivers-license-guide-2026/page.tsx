@@ -20,6 +20,7 @@ import {
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -59,6 +60,7 @@ export default function DriversLicenseGuidePage() {
         description="Complete guide to driving license in Malta."
         slug="malta-drivers-license-guide-2026"
         datePublished="2026-01-01"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -100,6 +102,33 @@ export default function DriversLicenseGuidePage() {
                 Fees, tests, and requirements explained.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Budget 2027: new rules for non-EU drivers"
+              href="/blog/malta-budget-2027-third-country-nationals"
+              linkLabel="Read the Budget 2027 TCN guide"
+              items={[
+                <>
+                  Residence permit holders can drive on a non-EU licence for{" "}
+                  <strong>12 months from arrival</strong>; from 2027 the period
+                  no longer restarts after leaving Malta (existing holders: 12
+                  months from last entry before 1 January 2027)
+                </>,
+                <>
+                  A <strong>€83 monthly administrative fee</strong> (≈€996/yr)
+                  applies to Category B/B1 licences issued or renewed for TCNs
+                  from 2027
+                </>,
+                <>
+                  Exempt: EU/EEA citizens, long-term residents and spouses, UK,
+                  Australian and UAE citizens, and permits for driving jobs
+                </>,
+                <>
+                  The licence expires with the residence permit and cannot be
+                  renewed while charges are unpaid
+                </>,
+              ]}
+            />
 
             <section id="categories">
               <h2>License Categories</h2>
@@ -231,6 +260,7 @@ export default function DriversLicenseGuidePage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

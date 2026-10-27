@@ -20,6 +20,7 @@ import {
   CustomFAQJsonLd,
   HowToJsonLd,
 } from "@/components/json-ld";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -157,6 +158,13 @@ export default function PensionPage() {
         <BackButton href="/calculators" />
         <Shell className="max-w-6xl py-8">
           <PensionCalculator />
+          <Budget2027Update
+            title="Budget 2027: pension changes from January 2027"
+            items={[
+              "This calculator uses 2026 rules. In 2027 pensions rise by €10 a week (including COLA)",
+              "Tax-free pension income threshold rises to €37,624; maximum pensionable income for those born before 1962 rises to €28,000",
+            ]}
+          />
           <RelatedGuide
             href="/blog/malta-pension-system-2026-guide"
             title="Malta Pension System 2026 Guide"

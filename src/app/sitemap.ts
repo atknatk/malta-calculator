@@ -37,6 +37,9 @@ const PAGE_LAST_UPDATED: Record<string, string> = {
   "/blog/malta-work-permit-health-screening-2026": "2026-05-01",
   "/blog/malta-family-reunification-guide-2026": "2026-10-20",
   "/calculators/family-reunification": "2026-10-20",
+  "/blog/malta-budget-2027-guide": "2026-10-27",
+  "/blog/malta-budget-2027-third-country-nationals": "2026-10-27",
+  "/calculators/tcn-budget-2027": "2026-10-27",
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -231,6 +234,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       changeFrequency: "yearly" as const,
     },
+    // Budget 2027 blog pages
+    {
+      url: `${baseUrl}/blog/malta-budget-2027-guide`,
+      priority: 0.9,
+      changeFrequency: "monthly" as const,
+    },
+    {
+      url: `${baseUrl}/blog/malta-budget-2027-third-country-nationals`,
+      priority: 0.9,
+      changeFrequency: "monthly" as const,
+    },
     // Employment & Social Security blog pages
     {
       url: `${baseUrl}/blog/malta-social-security-number-guide-2026`,
@@ -364,6 +378,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "malta-savings-rates",
     "malta-personal-loan-rates",
     "family-reunification",
+    "tcn-budget-2027",
     "children-allowance",
     // Transport calculators
     "vehicle-registration-tax",

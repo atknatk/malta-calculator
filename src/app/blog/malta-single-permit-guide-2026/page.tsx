@@ -39,6 +39,7 @@ import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { CompanySizeRulesChecker } from "@/app/blog/_shared/company-size-rules-checker";
 import { PolicyTimeline } from "@/app/blog/_shared/policy-timeline";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 // All facts in this article are cited against primary sources from
 // Malta's identity, employment and skills authorities. Whenever a
@@ -131,7 +132,7 @@ export default function MaltaSinglePermitGuide2026Page() {
         description="Verified, source-cited 2026 guide to Malta's Single Permit. Covers government fees, KEI and SEI fast-track routes, the mandatory Pre-Departure Course (Skills Pass), the 30+30 day post-termination grace period, and the full document checklist."
         slug="malta-single-permit-guide-2026"
         datePublished="2026-04-07"
-        dateModified="2026-10-21"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <HowToJsonLd
@@ -278,6 +279,36 @@ export default function MaltaSinglePermitGuide2026Page() {
                 grace period and the full document checklist are all covered.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Budget 2027: Single Permit fees rise from 1 January 2027"
+              href="/blog/malta-budget-2027-third-country-nationals"
+              linkLabel="See every Budget 2027 change for TCNs"
+              items={[
+                <>
+                  New Single Permit application: <strong>€600 → €800</strong>
+                </>,
+                <>
+                  New <strong>€400 yearly infrastructure contribution</strong>{" "}
+                  on new applications and every renewal (under-18s exempt); the
+                  €150 renewal fee stays
+                </>,
+                <>
+                  First year for a new worker: €1,200; each renewal year: €550
+                </>,
+                <>
+                  Free public transport, the atypical hours cheque and free
+                  childcare (new registrations) end for TCNs without long-term
+                  residence
+                </>,
+                <>
+                  Estimate your own cost with the{" "}
+                  <Link href="/calculators/tcn-budget-2027">
+                    TCN Budget 2027 calculator
+                  </Link>
+                </>,
+              ]}
+            />
 
             {/* Verification banner */}
             <div className="not-prose mb-10 flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm">
@@ -2237,7 +2268,7 @@ export default function MaltaSinglePermitGuide2026Page() {
 
             <BlogArticleAuthor
               datePublished="2026-04-07"
-              dateModified="2026-10-21"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
 

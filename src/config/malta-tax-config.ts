@@ -3,6 +3,9 @@
  * Bu dosya Malta vergi dilimleri ve SSC oranlarını yıl bazında içerir.
  * Kaynak: Malta CFR (Commissioner for Revenue) ve Social Security Department
  *
+ * Güncelleme: 2026-10-27
+ * - 2027 (Budget 2027) vergi dilimleri, SSC ve bonuslar eklendi
+ *
  * Güncelleme: 2026-01-23
  * - 2024, 2025, 2026 vergi dilimleri resmi kaynaklardan güncellendi
  * - 2026 için çocuk sayısına göre vergi kategorileri eklendi
@@ -86,7 +89,7 @@ export type YearlyCOLAConfig = {
 // ==================== VERGİ DİLİMLERİ ====================
 
 /**
- * Malta Gelir Vergisi Dilimleri (2020-2026)
+ * Malta Gelir Vergisi Dilimleri (2020-2027)
  * Kaynak: https://mtca.gov.mt/personal-tax/tax-rates/tax-ratesindividuals
  *
  * Hesaplama formülü: tax = (income * rate) - deduction
@@ -309,12 +312,66 @@ export const taxBracketsByYear: YearlyTaxConfig[] = [
       ],
     },
   },
+  {
+    // ==================== 2027: Budget 2027 (26 Eki 2026) ====================
+    // Single / married / parent (çocuksuz) değişmedi. Çocuklu kategorilerde
+    // Budget 2026'da ilan edilen 3 yıllık geçişin 2. adımı.
+    // Eşikler bütçe açıklamasından; 15%/25% sınırları ve indirimler
+    // "2025'e göre azami tasarruf" rakamlarından türetildi ve yayımlanan
+    // örneklerle (ör. parent 2+ @ €42.000 = €3.550) doğrulandı.
+    // MTCA 2027 tablosu yayımlanınca tekrar kontrol et.
+    year: 2027,
+    brackets: {
+      single: [
+        { min: 0, max: 12000, rate: 0, deduction: 0 },
+        { min: 12001, max: 16000, rate: 0.15, deduction: 1800 },
+        { min: 16001, max: 60000, rate: 0.25, deduction: 3400 },
+        { min: 60001, max: Infinity, rate: 0.35, deduction: 9400 },
+      ],
+      married: [
+        { min: 0, max: 15000, rate: 0, deduction: 0 },
+        { min: 15001, max: 23000, rate: 0.15, deduction: 2250 },
+        { min: 23001, max: 60000, rate: 0.25, deduction: 4550 },
+        { min: 60001, max: Infinity, rate: 0.35, deduction: 10550 },
+      ],
+      married_1child: [
+        { min: 0, max: 20000, rate: 0, deduction: 0 },
+        { min: 20001, max: 30000, rate: 0.15, deduction: 3000 },
+        { min: 30001, max: 60000, rate: 0.25, deduction: 6000 },
+        { min: 60001, max: Infinity, rate: 0.35, deduction: 12000 },
+      ],
+      married_2plus: [
+        { min: 0, max: 30000, rate: 0, deduction: 0 },
+        { min: 30001, max: 41000, rate: 0.15, deduction: 4500 },
+        { min: 41001, max: 60000, rate: 0.25, deduction: 8600 },
+        { min: 60001, max: Infinity, rate: 0.35, deduction: 14600 },
+      ],
+      parent: [
+        { min: 0, max: 13000, rate: 0, deduction: 0 },
+        { min: 13001, max: 17500, rate: 0.15, deduction: 1950 },
+        { min: 17501, max: 60000, rate: 0.25, deduction: 3700 },
+        { min: 60001, max: Infinity, rate: 0.35, deduction: 9700 },
+      ],
+      parent_1child: [
+        { min: 0, max: 16000, rate: 0, deduction: 0 },
+        { min: 16001, max: 24500, rate: 0.15, deduction: 2400 },
+        { min: 24501, max: 60000, rate: 0.25, deduction: 4850 },
+        { min: 60001, max: Infinity, rate: 0.35, deduction: 10850 },
+      ],
+      parent_2plus: [
+        { min: 0, max: 24000, rate: 0, deduction: 0 },
+        { min: 24001, max: 33500, rate: 0.15, deduction: 3600 },
+        { min: 33501, max: 60000, rate: 0.25, deduction: 6950 },
+        { min: 60001, max: Infinity, rate: 0.35, deduction: 12950 },
+      ],
+    },
+  },
 ];
 
 // ==================== SSC ORANLARI ====================
 
 /**
- * Malta Sosyal Güvenlik Katkı Oranları (2020-2026)
+ * Malta Sosyal Güvenlik Katkı Oranları (2020-2027)
  * Kaynak: socialsecurity.gov.mt
  */
 export const sscRatesByYear: YearlySSCConfig[] = [
@@ -418,6 +475,22 @@ export const sscRatesByYear: YearlySSCConfig[] = [
       minimumWage: 229.44, // 2026 asgari ücret (18+), Cat. A/B üst sınırı
     },
   },
+  {
+    // 2027 SSC — Budget 2027: katkı oranları değişmedi. Tavanlar 2024'ten beri
+    // sabit; DSS 2027 Class 1 tablosunu yayımlayınca tekrar kontrol et.
+    year: 2027,
+    rates: {
+      categoryA: 6.62,
+      categoryB: 22.94,
+      categoryCOld: 49.04,
+      categoryCNew: 55.93,
+      categoryDOld: 49.04,
+      categoryDNew: 55.93,
+      weeklyCapOld: 490.38,
+      weeklyCapNew: 559.31,
+      minimumWage: 239.85, // 2027 asgari ücret: €229.44 + €10.41 (COLA €6.41 dahil)
+    },
+  },
 ];
 
 // ==================== COLA (Government Bonus) ====================
@@ -447,6 +520,16 @@ export const colaByYear: YearlyCOLAConfig[] = [
   },
   {
     year: 2026,
+    cola: {
+      march: 121.16,
+      june: 135.1,
+      september: 121.16,
+      december: 135.1,
+    },
+  },
+  {
+    // Budget 2027: statutory bonus / weekly allowance tutarları değişmedi
+    year: 2027,
     cola: {
       march: 121.16,
       june: 135.1,

@@ -298,6 +298,13 @@ export const CALCULATORS: CalculatorInfo[] = [
     tagline: "Salary requirements for sponsoring family",
     category: "Immigration & Visa",
   },
+  {
+    slug: "tcn-budget-2027",
+    href: "/calculators/tcn-budget-2027",
+    title: "TCN Budget 2027 Costs",
+    tagline: "New 2027 fees for non-EU workers",
+    category: "Immigration & Visa",
+  },
 ];
 
 /** Slug → CalculatorInfo hızlı arama tablosu. */
@@ -368,7 +375,8 @@ export const RELATED_CALCULATORS: Record<string, string[]> = {
   "drivers-license": ["vrt", "road-license", "vehicle-registration-fee"],
   vrt: ["vehicle-registration-fee", "road-license", "drivers-license"],
   "import-vehicle": ["vehicle-registration-tax", "vehicle-finance", "vrt"],
-  "family-reunification": ["expatriate-tax", "salary", "children-allowance"],
+  "family-reunification": ["tcn-budget-2027", "expatriate-tax", "salary"],
+  "tcn-budget-2027": ["family-reunification", "childcare", "drivers-license"],
 };
 
 /** Bir hesaplayıcının ilgili hesaplayıcılarını (var olanları) döndürür. */

@@ -20,6 +20,7 @@ import {
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -78,7 +79,7 @@ export default function MaltaPensionSystemPage() {
         description="Complete guide to Malta's state pension system, eligibility, and contribution requirements."
         slug="malta-pension-system-2026-guide"
         datePublished="2026-01-01"
-        dateModified="2026-10-23"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -121,6 +122,29 @@ export default function MaltaPensionSystemPage() {
                 maximize your retirement benefits.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Pensions in 2027 (Budget 2027)"
+              items={[
+                <>
+                  Retirement, invalidity and widow's pensions rise by{" "}
+                  <strong>€10 a week</strong> from January 2027 (including COLA)
+                </>,
+                <>
+                  Tax-free pension income threshold rises by €520 to{" "}
+                  <strong>€37,624</strong>
+                </>,
+                <>
+                  Maximum pensionable income for pensioners born before 1962
+                  rises to <strong>€28,000</strong>
+                </>,
+                <>
+                  Retirement age and contribution rates are unchanged; pension
+                  contributions can be transferred between spouses in certain
+                  cases
+                </>,
+              ]}
+            />
 
             <section id="types">
               <h2>Types of State Pension</h2>
@@ -337,7 +361,7 @@ export default function MaltaPensionSystemPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
-              dateModified="2026-10-23"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

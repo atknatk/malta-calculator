@@ -30,6 +30,7 @@ import {
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { CompanySizeRulesChecker } from "@/app/blog/_shared/company-size-rules-checker";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -109,6 +110,7 @@ export default function EmployerCompliancePage() {
         description="Complete employer-side guide to Malta's 2025–2026 Single Permit rules: termination rate thresholds, workforce limits, First Employment Rule, disability quota, Jobsplus deadlines and the Exemplary Employer register."
         slug="malta-single-permit-employer-compliance-2026"
         datePublished="2026-04-07"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -234,6 +236,28 @@ export default function EmployerCompliancePage() {
                 — and a live checker so you can see exactly what applies to you.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Budget 2027: higher cost of hiring third-country nationals"
+              href="/blog/malta-budget-2027-third-country-nationals"
+              linkLabel="Read the Budget 2027 TCN guide"
+              items={[
+                <>
+                  New Single Permit application fee rises by €200 to{" "}
+                  <strong>€800</strong> from 2027
+                </>,
+                <>
+                  A new <strong>€400 yearly infrastructure contribution</strong>{" "}
+                  applies to new applications and renewals (minors exempt);
+                  other Identità fees are also due to rise
+                </>,
+                <>
+                  Use the new 2027 FSS tax tables for parents from the first
+                  2027 payroll; COLA is €6.41/week and the minimum wage
+                  €239.85/week
+                </>,
+              ]}
+            />
 
             <div className="not-prose mb-10 flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm">
               <BadgeCheck className="h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400" />
@@ -1119,6 +1143,7 @@ export default function EmployerCompliancePage() {
 
             <BlogArticleAuthor
               datePublished="2026-04-07"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
 
