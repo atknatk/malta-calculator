@@ -31,6 +31,24 @@ export const metadata: Metadata = {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "malta-budget-2027-guide",
+    title: "Malta Budget 2027: Tax Bands, COLA €6.41 & Super Bonus",
+    description:
+      "Budget 2027 explained: new family tax bands, €6.41 COLA, €239.85 minimum wage, €1,000 Super Bonus, +€10 pensions, with the full 2027 tax tables.",
+    date: "October 2026",
+    readTime: "10 min read",
+    category: "Budget Guide",
+  },
+  {
+    slug: "malta-budget-2027-third-country-nationals",
+    title: "Malta Budget 2027 for TCNs: New Fees & Lost Benefits",
+    description:
+      "€800 work permits, a €400 yearly infrastructure levy, an €83/month licence fee and no free bus or childcare for non-EU workers from 2027.",
+    date: "October 2026",
+    readTime: "9 min read",
+    category: "Immigration",
+  },
+  {
     slug: "malta-bank-interest-tax-guide-2026",
     title: "Malta Bank Interest Tax 2026: 15% Withholding or Declare Gross?",
     description:

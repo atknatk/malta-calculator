@@ -20,6 +20,7 @@ import {
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -65,7 +66,7 @@ export default function MaltaMinimumWagePage() {
         description="Complete guide to Malta's National Minimum Wage for 2026. Learn about current rates, annual increases, and comparisons."
         slug="malta-minimum-wage-2026-guide"
         datePublished="2026-01-01"
-        dateModified="2026-10-21"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -109,6 +110,25 @@ export default function MaltaMinimumWagePage() {
                 comparisons.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Minimum wage 2027: €239.85 a week"
+              items={[
+                <>
+                  Budget 2027 raises the minimum wage by{" "}
+                  <strong>€10.41 a week</strong> (including the €6.41 COLA),
+                  from €229.44 to <strong>€239.85</strong> for workers aged 18+
+                </>,
+                <>
+                  That is about €12,472 a year; minimum-wage earners still pay
+                  no income tax
+                </>,
+                <>
+                  The Low Wage Commission will be reappointed to agree increases
+                  from 2028
+                </>,
+              ]}
+            />
 
             <section id="current-rates">
               <h2>2026 Minimum Wage Rates</h2>
@@ -202,7 +222,7 @@ export default function MaltaMinimumWagePage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
-              dateModified="2026-10-21"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

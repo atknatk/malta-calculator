@@ -27,6 +27,7 @@ import {
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -83,7 +84,7 @@ export default function MaltaWorkPermitGuidePage() {
         description="Complete guide to working in Malta including work permits, employment licenses, and worker rights."
         slug="malta-work-permit-employment-guide-2026"
         datePublished="2026-02-01"
-        dateModified="2026-10-21"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -131,6 +132,31 @@ export default function MaltaWorkPermitGuidePage() {
                 employment licenses, and your rights as an employee.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Budget 2027: what changes for non-EU workers in 2027"
+              href="/blog/malta-budget-2027-third-country-nationals"
+              linkLabel="Read the Budget 2027 TCN guide"
+              items={[
+                <>
+                  Work permit application €600 → €800, plus a new €400 yearly
+                  infrastructure contribution (new and renewals)
+                </>,
+                <>
+                  Free Tallinja bus travel, free childcare (new registrations)
+                  and the atypical hours cheque limited to Maltese, EU citizens
+                  and long-term residents
+                </>,
+                <>
+                  €83/month fee on Category B/B1 driving licences issued or
+                  renewed for TCNs from 2027
+                </>,
+                <>
+                  Minimum wage rises to €239.85/week and COLA is €6.41/week for
+                  all employees
+                </>,
+              ]}
+            />
 
             <nav className="p-6 bg-muted/30 rounded-2xl mb-12 not-prose">
               <h2 className="text-lg font-semibold mb-4">Table of Contents</h2>
@@ -678,7 +704,7 @@ export default function MaltaWorkPermitGuidePage() {
 
             <BlogArticleAuthor
               datePublished="2026-02-01"
-              dateModified="2026-10-21"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

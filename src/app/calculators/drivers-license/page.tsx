@@ -18,6 +18,7 @@ import {
   CalculatorJsonLd,
   CustomFAQJsonLd,
 } from "@/components/json-ld";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -99,6 +100,16 @@ export default function DriversLicensePage() {
         <BackButton href="/calculators" />
         <Shell className="max-w-4xl py-8">
           <DriversLicenseCalculator />
+          <Budget2027Update
+            title="Budget 2027: €83/month licence fee for non-EU drivers"
+            href="/blog/malta-budget-2027-third-country-nationals"
+            linkLabel="Read the Budget 2027 TCN guide"
+            items={[
+              "TCNs pay an €83 monthly administrative fee on Category B/B1 licences issued or renewed from 2027 (not included above)",
+              "Exempt: EU/EEA citizens, long-term residents and spouses, UK, Australian and UAE citizens, driving jobs",
+              "Foreign licences can be used for 12 months from arrival, with no reset on re-entry",
+            ]}
+          />
           <RelatedGuide
             href="/blog/malta-drivers-license-guide-2026"
             title="Malta Driver's License Guide 2026"

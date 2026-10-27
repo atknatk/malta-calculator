@@ -28,6 +28,7 @@ import {
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -83,7 +84,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
         description="Complete step-by-step guide to calculating your net salary in Malta for 2026, including income tax brackets, SSC contributions, and COLA adjustments."
         slug="how-to-calculate-net-salary-malta-2026"
         datePublished="2026-03-02"
-        dateModified="2026-10-21"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <HowToJsonLd
@@ -205,6 +206,22 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
                 brackets introduced this year.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Calculating 2027 salaries"
+              items={[
+                <>
+                  Choose <strong>2027</strong> in the{" "}
+                  <Link href="/">salary calculator</Link> to use the new Budget
+                  2027 family tax bands
+                </>,
+                <>
+                  Add the €6.41/week COLA to the basic wage; the minimum wage is
+                  €239.85/week
+                </>,
+                <>SSC rates and the statutory bonuses are unchanged</>,
+              ]}
+            />
 
             {/* Key Takeaways */}
             <div className="p-6 bg-primary/5 border border-primary/20 rounded-2xl mb-10 not-prose">
@@ -1331,7 +1348,7 @@ export default function HowToCalculateNetSalaryMalta2026Page() {
 
             <BlogArticleAuthor
               datePublished="2026-03-02"
-              dateModified="2026-10-21"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
 

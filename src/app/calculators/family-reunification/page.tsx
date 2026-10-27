@@ -18,6 +18,7 @@ import {
   CalculatorJsonLd,
   CustomFAQJsonLd,
 } from "@/components/json-ld";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -154,6 +155,14 @@ export default function FamilyReunificationPage() {
         <BackButton href="/calculators" />
         <Shell className="max-w-4xl py-8">
           <FamilyReunificationCalculator />
+          <Budget2027Update
+            title="Budget 2027: new costs for TCN families"
+            href="/blog/malta-budget-2027-third-country-nationals"
+            linkLabel="Read the Budget 2027 TCN guide"
+            items={[
+              "From 2027: €400 yearly infrastructure contribution per adult permit holder, no free public transport and no free childcare for new registrations",
+            ]}
+          />
           <RelatedGuide
             href="/blog/malta-family-reunification-guide-2026"
             title="Malta Family Reunification Guide 2026"

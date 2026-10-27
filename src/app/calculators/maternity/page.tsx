@@ -19,6 +19,7 @@ import {
   CalculatorJsonLd,
   CustomFAQJsonLd,
 } from "@/components/json-ld";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -110,6 +111,12 @@ export default function MaternityPage() {
         <BackButton href="/calculators" />
         <Shell className="max-w-4xl py-8">
           <MaternityCalculator />
+          <Budget2027Update
+            title="Budget 2027: minimum wage rises to €239.85"
+            items={[
+              "Maternity Leave Benefit is paid at the national minimum wage, which rises from €229.44 to €239.85 a week in 2027 (confirm with DSS in January)",
+            ]}
+          />
           <RelatedGuide
             href="/blog/malta-maternity-leave-2026-guide"
             title="Malta Maternity Leave 2026: Complete Guide"

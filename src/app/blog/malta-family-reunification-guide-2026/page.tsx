@@ -32,6 +32,7 @@ import {
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -74,7 +75,7 @@ export const metadata: Metadata = {
   },
 };
 
-const LAST_UPDATED = "2026-10-20";
+const LAST_UPDATED = "2026-10-27";
 
 const ARTICLE_SOURCES = [
   {
@@ -200,6 +201,29 @@ export default function FamilyReunificationGuidePage() {
                 holders.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Budget 2027: extra costs for TCN families from 2027"
+              href="/blog/malta-budget-2027-third-country-nationals"
+              linkLabel="Read the Budget 2027 TCN guide"
+              items={[
+                <>
+                  Free childcare for newly registered children and free public
+                  transport end for TCNs without long-term residence (children
+                  already enrolled keep their place)
+                </>,
+                <>
+                  New €400 yearly infrastructure contribution per adult permit
+                  holder (minors exempt)
+                </>,
+                <>
+                  Estimate your household's extra cost with the{" "}
+                  <Link href="/calculators/tcn-budget-2027">
+                    TCN Budget 2027 calculator
+                  </Link>
+                </>,
+              ]}
+            />
 
             <nav className="p-6 bg-muted/30 rounded-2xl mb-12 not-prose">
               <h2 className="text-lg font-semibold mb-4">Table of Contents</h2>

@@ -34,6 +34,7 @@ import {
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -94,7 +95,7 @@ export default function MaltaBudget2026GuidePage() {
         description="Complete guide to Malta Budget 2026 tax changes including new family tax brackets, pension exemptions, and business incentives."
         slug="malta-budget-2026-family-tax-savings-guide"
         datePublished="2026-02-16"
-        dateModified="2026-10-21"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -175,6 +176,29 @@ export default function MaltaBudget2026GuidePage() {
                 you need to know.
               </p>
             </header>
+
+            <Budget2027Update
+              title="Budget 2027 confirms the next step of the family tax cut"
+              linkLabel="See the 2027 tax tables"
+              items={[
+                <>
+                  2027 tax-free thresholds: €20,000 (married, 1 child), €30,000
+                  (married, 2+), €16,000 (parent, 1 child), €24,000 (parent, 2+)
+                </>,
+                <>
+                  Maximum saving vs 2025: €1,450, €4,050, €1,150 and €3,250 a
+                  year respectively
+                </>,
+                <>
+                  2028 final step: €22,500 / €37,000 / €18,000 / €30,000
+                  thresholds
+                </>,
+                <>
+                  Plus a tax-free Super Bonus of up to €1,000 for 2025 workers,
+                  paid in Q1 2027
+                </>,
+              ]}
+            />
 
             <nav className="p-6 bg-muted/30 rounded-2xl mb-12 not-prose">
               <h2 className="text-lg font-semibold mb-4">Table of Contents</h2>
@@ -1115,7 +1139,7 @@ export default function MaltaBudget2026GuidePage() {
             </section>
             <BlogArticleAuthor
               datePublished="2026-02-16"
-              dateModified="2026-10-21"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter

@@ -24,6 +24,7 @@ import {
 } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -82,7 +83,7 @@ export default function MaltaTaxRates2026Page() {
         description="Complete guide to Malta income tax rates for 2026 including brackets for single, married, and parent taxpayers."
         slug="malta-tax-rates-2026-complete-guide"
         datePublished="2026-01-01"
-        dateModified="2026-10-21"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <HowToJsonLd
@@ -157,6 +158,31 @@ export default function MaltaTaxRates2026Page() {
                 rates, and thresholds for single, married, and parent taxpayers.
               </p>
             </header>
+
+            <Budget2027Update
+              title="2027 tax bands announced in Budget 2027"
+              linkLabel="See the full 2027 tax tables"
+              items={[
+                <>
+                  Single, married (no children) and parent (no children) rates
+                  stay the same in 2027
+                </>,
+                <>
+                  Tax-free band rises to <strong>€20,000</strong> (married, 1
+                  child), <strong>€30,000</strong> (married, 2+),{" "}
+                  <strong>€16,000</strong> (parent, 1 child) and{" "}
+                  <strong>€24,000</strong> (parent, 2+)
+                </>,
+                <>
+                  Income above €60,000 is still taxed at 35%; no change to
+                  income tax rates
+                </>,
+                <>
+                  The <Link href="/">salary calculator</Link> now includes the
+                  2027 bands
+                </>,
+              ]}
+            />
 
             {/* Table of Contents */}
             <nav className="p-6 bg-muted/30 rounded-2xl mb-12 not-prose">
@@ -734,7 +760,7 @@ export default function MaltaTaxRates2026Page() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
-              dateModified="2026-10-21"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
 

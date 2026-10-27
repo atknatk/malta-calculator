@@ -21,6 +21,7 @@ import {
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { BlogArticleFooter } from "@/components/blog/blog-article-footer";
 import { BlogArticleAuthor } from "@/components/blog/blog-article-author";
+import { Budget2027Update } from "@/app/blog/_shared/budget-2027-update";
 
 const ARTICLE_SOURCES = [
   {
@@ -74,7 +75,7 @@ export default function MaltaCOLAPage() {
         description="What is COLA in Malta and how does it affect your salary? Complete guide to the Cost of Living Adjustment."
         slug="understanding-cola-malta-2026"
         datePublished="2026-01-01"
-        dateModified="2026-10-21"
+        dateModified="2026-10-27"
         sources={ARTICLE_SOURCES}
       />
       <BreadcrumbJsonLd
@@ -121,6 +122,25 @@ export default function MaltaCOLAPage() {
                 receive in 2026.
               </p>
             </header>
+
+            <Budget2027Update
+              title="COLA 2027: €6.41 a week"
+              items={[
+                <>
+                  The cost of living adjustment for 2027 is{" "}
+                  <strong>€6.41 per week</strong> (€333.32 a year), up from
+                  €4.66 in 2026; part-timers get it pro rata
+                </>,
+                <>
+                  Pensions rise by €10 a week including COLA; the statutory
+                  bonuses (€121.16 and €135.10) are unchanged
+                </>,
+                <>
+                  The enhanced COLA mechanism continues with extra payments of
+                  €200 to €1,500 for eligible households
+                </>,
+              ]}
+            />
 
             <nav className="p-6 bg-muted/30 rounded-2xl mb-12 not-prose">
               <h2 className="text-lg font-semibold mb-4">Table of Contents</h2>
@@ -420,7 +440,7 @@ export default function MaltaCOLAPage() {
 
             <BlogArticleAuthor
               datePublished="2026-01-01"
-              dateModified="2026-10-21"
+              dateModified="2026-10-27"
               sources={ARTICLE_SOURCES}
             />
             <BlogArticleFooter
