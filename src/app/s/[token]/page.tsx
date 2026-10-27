@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MarketingLayout } from "@/components/layout/marketing-layout";
 import { SalaryCalculatorServer } from "@/app/salary/_components/salary-calculator-server";
+import { SalaryHero } from "@/app/salary/_components/salary-hero";
 import SalaryPlaygroundCards from "@/app/salary/_components/play-ground-cart";
 import { defaultSalaryParams } from "@/app/salary/search-params";
 import type { SalarySearchParams } from "@/app/salary/search-params";
@@ -58,13 +59,10 @@ export default async function SharedCalculationPage({
 
   return (
     <MarketingLayout>
-      <main role="main" aria-label="Malta Salary Calculator - Shared">
-        <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
-          <SalaryCalculatorServer initialParams={initialParams}>
-            <SalaryPlaygroundCards />
-          </SalaryCalculatorServer>
-        </div>
-      </main>
+      <SalaryHero />
+      <SalaryCalculatorServer initialParams={initialParams}>
+        <SalaryPlaygroundCards />
+      </SalaryCalculatorServer>
     </MarketingLayout>
   );
 }

@@ -45,6 +45,23 @@
     --ring: 38 92% 50%;
     --radius: 0.75rem;
 
+    /* Durum renkleri: net ödeme (success) ve kesintiler (warning) */
+    --success: 142 72% 29%;
+    --warning: 17 88% 40%;
+
+    /* Form kontrol kenarlığı: tasarım sistemindeki 3:1 "input" sınırı.
+       Global --input'u (tüm formlar) değiştirmemek için ayrı tutuluyor */
+    --field: 40 20% 53%;
+
+    /* Ters yüzey bandı (ana sayfadaki "For employers" bölümü) */
+    --band: 220 20% 10%;
+    --band-foreground: 40 20% 96%;
+    --band-muted: 40 10% 70%;
+    --band-accent: 38 92% 55%;
+    --band-border: 220 15% 26%;
+    --band-cta: 38 92% 48%;
+    --band-cta-foreground: 20 14% 8%;
+
     /* Marka CTA renkleri (RGB): Malta'da Tailwind amber-400/500/600/700 ve orange-600/700 ile birebir */
     --brand: 217 119 6;
     --brand-hover: 180 83 9;
@@ -128,6 +145,11 @@
 
     --ring: 38 92% 55%;
 
+    --success: 142 69% 58%;
+    --warning: 27 96% 61%;
+    --field: 220 15% 42%;
+    --band: 220 15% 15%;
+
     /* Dark Mode Mesh */
     --gradient-mesh:
       radial-gradient(at 0% 0%, hsla(38, 80%, 45%, 0.12) 0px, transparent 50%),
@@ -176,6 +198,15 @@
     --accent: 220 16% 93%;
     --accent-foreground: 222 30% 12%;
     --ring: 216 100% 50%;
+
+    --field: 220 10% 56%;
+    --band: 222 30% 11%;
+    --band-foreground: 220 20% 96%;
+    --band-muted: 220 10% 70%;
+    --band-accent: 213 100% 74%;
+    --band-border: 222 14% 24%;
+    --band-cta: 216 100% 50%;
+    --band-cta-foreground: 0 0% 100%;
 
     /* Marka CTA'ları: beyaz yazıyla AA (açık ve koyu modda aynı) */
     --brand: 11 95 230;
@@ -228,6 +259,12 @@
     --accent: 222 14% 18%;
     --accent-foreground: 220 20% 96%;
     --ring: 213 100% 66%;
+
+    --success: 152 55% 52%;
+    --warning: 36 90% 60%;
+    --field: 222 10% 42%;
+    --band: 222 16% 12%;
+    --band-border: 222 12% 22%;
 
     --gradient-mesh:
       radial-gradient(
@@ -691,6 +728,11 @@
      foreground ile %25 karıştırınca dört temada da 4.5:1 üstünde kalıyor */
   .text-primary-ink {
     color: color-mix(in srgb, hsl(var(--primary)) 75%, hsl(var(--foreground)));
+  }
+
+  /* secondary metin (rehber etiketleri): Malta açıktaki %48 mavi kartta 2.85:1; %60 karışımla 5.74:1 */
+  .text-secondary-ink {
+    color: color-mix(in srgb, hsl(var(--secondary)) 60%, hsl(var(--foreground)));
   }
 
   /* Button Variants */
