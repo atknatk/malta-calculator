@@ -215,9 +215,16 @@ export default function MaltaBudget2027TcnPage() {
                       Category B/B1 driving licences issued or renewed from 2027
                     </li>
                     <li>
-                      • Free public transport, the atypical hours cheque and
-                      free childcare (new registrations) limited to Maltese, EU
-                      citizens and long-term residents
+                      • <strong>No more free buses</strong>: free Tallinja
+                      travel ends for TCNs without long-term residence
+                    </li>
+                    <li>
+                      • <strong>No free childcare for new registrations</strong>
+                      ; children already enrolled keep their place
+                    </li>
+                    <li>
+                      • <strong>No atypical hours cheque</strong> (about €150 a
+                      year) for TCNs without long-term residence
                     </li>
                     <li>
                       • Foreign licence valid for 12 months from arrival, with
